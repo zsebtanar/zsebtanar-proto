@@ -1,0 +1,38 @@
+{
+  "name": "zsebtanar-firebase",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.16.1",
+    "prop-types": "^15.5.10",
+    "ramda": "^0.23.0",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-redux": "^5.0.4",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-react": "^6.24.1",
+    "react-scripts": "0.9.5",
+    "source-map-loader": "^0.2.1",
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "buildx": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "build": "webpack -p --config ./build/webpack.config.js",
+    "dev": "webpack-dev-server --config ./build/webpack.config.js --content-base public",
+    "deploy": "npm run build && firebase deploy"
+  }
+}

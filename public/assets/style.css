@@ -1,0 +1,54 @@
+
+/* Space out content a bit */
+body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.header .logo{
+    background: url(./logo.png) no-repeat left center;
+    background-size: contain;
+    padding-left: 2.5em;
+    height: 2em;
+    line-height: 2em;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+/* Custom page header */
+.header {
+    border-bottom: .05rem solid #e5e5e5;
+}
+/* Custom page footer */
+.footer {
+    padding-top: 1.5rem;
+    color: #777;
+    border-top: .05rem solid #e5e5e5;
+}
+
+/* Customize container */
+@media (min-width: 48em) {
+    .container {
+        max-width: 46rem;
+    }
+}
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 48em) {
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    /* Space out the masthead */
+    .header {
+        margin-bottom: 2rem;
+    }
+}
