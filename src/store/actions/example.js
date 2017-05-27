@@ -30,11 +30,3 @@ export function updateData(key, data) {
   return dispatch => data.child(key).update(data)
 }
 
-
-const Exerciseis = DB.ref('exercise')
-export function createExercise(data) {
-  const _key = Exerciseis.push().key;
-  return dispatch => Exerciseis
-    .child(_key)
-    .update({...data, _key, _created: new Date(), draft: true})
-}

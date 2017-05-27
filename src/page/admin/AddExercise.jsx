@@ -1,7 +1,7 @@
 import {reduce} from 'ramda'
-import React, {Component} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
-import {createExercise} from '../../store/actions'
+import {createExercise} from '../../store/actions/exercise'
 
 const saveExercise = (props) => (event) => {
   event.preventDefault()
