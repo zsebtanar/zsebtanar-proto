@@ -12,6 +12,7 @@
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
@@ -31,7 +32,7 @@
     "buildx": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "build": "webpack -p --config ./build/webpack.config.js",
+    "build": "NODE_ENV=production webpack -p --config ./build/webpack.config.js",
     "dev": "webpack-dev-server --config ./build/webpack.config.js --content-base public",
     "deploy": "npm run build && firebase deploy"
   }

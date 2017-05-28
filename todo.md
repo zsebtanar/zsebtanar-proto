@@ -1,6 +1,7 @@
 # TODO
 
-- add login
+- add login with username/password
+- add login with provider
 - Exercise
     - add form
     - solving exercise
@@ -8,6 +9,9 @@
 - add analytics
 - mobil navigation
 - move firebase under zsebtanar
+- add ESLint
+- add test
+- add CI build
 
 ## DONE:
 
