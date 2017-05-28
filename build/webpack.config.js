@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
   entry: './src/index.jsx',
   output: {
@@ -44,4 +46,10 @@ module.exports = {
     "react": "React",
     "react-dom": "ReactDOM"
   },*/
+  plugins: [
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+      __PRODUCTION__: JSON.stringify(process.env.NODE_ENV === 'production'),
+    })
+  ]
 }
