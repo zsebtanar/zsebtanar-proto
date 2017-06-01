@@ -1,6 +1,6 @@
 # TODO
 
-- add login with username/password
+- update readme.md
 - add login with provider
 - Exercise
     - add form
@@ -15,6 +15,7 @@
 
 ## DONE:
 
+- ~~add login with username/password~~
 - ~~add to git~~
 - ~~manifest~~
 - ~~deploy on Firebase~~    
