@@ -1,22 +1,18 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import {connect} from 'react-redux'
 
-import TodoItem from '../component/TodoItem'
-import * as PropTypes from 'prop-types'
+const mapStateToProps = (state) => ({
+  session: state.session
+})
 
-class App extends Component {
-  static propTypes = {
-  }
-
-
-  render () {
-    return (
+export default connect(mapStateToProps)(function Home(props) {
+  return (
+    <div>
       <h1>Home</h1>
-    )
-  }
-}
-
-export default connect(({ }) => ({
-    todos: []
-  })
-)(App)
+      <hr/>
+      <h2 className="text-center">
+        {props.session.signedIn ? `Hi ${props.session.userData.displayName || props.session.userData.email}` : 'Hello'}
+      </h2>
+    </div>
+  )
+})

@@ -1,20 +1,22 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
-import rootReducer from './reducer'
+import rootReducer from './reducers'
 
-export default function configureStore(initialState, history) {
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export default function configureStore(initialState) {
   const middlewares = [thunk];
-  if (__DEV__ !== `production`) {
+  if (__DEV__) {
     const logger = require(`redux-logger`).createLogger({ collapsed: true })
     middlewares.push(logger);
   }
 
-  const store = compose(applyMiddleware(...middlewares))(createStore)(rootReducer);
+  const store = composeEnhancers(applyMiddleware(...middlewares))(createStore)(rootReducer, initialState);
 
   if (typeof module !== 'undefined' && module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./reducer', () => {
-      const nextRootReducer = require('./reducer')
+    module.hot.accept('./reducers', () => {
+      const nextRootReducer = require('./reducers')
       store.replaceReducer(nextRootReducer)
     })
   }
