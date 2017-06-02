@@ -21,6 +21,9 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header(pr
             <NavLink activeClassName="active" className="nav-link" exact to="/">Home</NavLink>
           </li>
           <li className="nav-item">
+            <NavLink activeClassName="active" className="nav-link" exact to="/exercise">Exercises</NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink activeClassName="active" className="nav-link" to="/add-exercise">
               <i className="fa fa-plus"/> Add exercise
             </NavLink>
