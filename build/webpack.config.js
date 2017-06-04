@@ -1,4 +1,5 @@
-const webpack = require('webpack');
+const webpack = require('webpack')
+const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   entry: './src/index.jsx',
@@ -16,7 +17,9 @@ module.exports = {
   },
 
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: {
+      index: '/'
+    }
   },
   module: {
     rules: [
@@ -48,8 +51,9 @@ module.exports = {
   },*/
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
-      __PRODUCTION__: JSON.stringify(process.env.NODE_ENV === 'production'),
+      __DEV__: JSON.stringify(!isProd),
+      __PRODUCTION__: JSON.stringify(isProd),
+      __FN_PATH__: JSON.stringify(isProd ? '/' : 'https://zsebtanar-proto.firebaseapp.com/')
     })
   ]
 }

@@ -41,6 +41,7 @@
   ],
   "related_applications": [
     {
+      "url": "https://zsebtanar-proto.firebaseapp.com/",
       "platform": "web"
     }
   ]
