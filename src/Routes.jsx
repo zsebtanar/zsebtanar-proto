@@ -20,7 +20,7 @@ export default (props) =>
         <Route path="/" exact component={Home}/>
         <Route path="/exercise" exact component={ExerciseList}/>
         <Route path="/exercise/:key" component={Exercise}/>
-        <Route path="/add-exercise" component={AddExercise}/>
+        <Route path="/exercise-add" component={AddExercise}/>
         <Route path="/sign-up" component={SignUp}/>
         <Route path="/sign-in" component={SignIn}/>
       </div>

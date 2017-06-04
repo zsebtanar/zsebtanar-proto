@@ -21,12 +21,7 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header(pr
             <NavLink activeClassName="active" className="nav-link" exact to="/">Home</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink activeClassName="active" className="nav-link" exact to="/exercise">Exercises</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink activeClassName="active" className="nav-link" to="/add-exercise">
-              <i className="fa fa-plus"/> Add exercise
-            </NavLink>
+            <NavLink activeClassName="active" className="nav-link" to="/exercise">Exercises</NavLink>
           </li>
           {
             props.session.signedIn
@@ -50,7 +45,9 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header(pr
           }
         </ul>
       </nav>
-      <h3 className="text-muted logo">Zsebtanár</h3>
+      <NavLink exact to="/">
+        <h4 className="text-muted logo"/>
+      </NavLink>
     </div>
   )
 }))

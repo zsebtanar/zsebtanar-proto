@@ -17,6 +17,11 @@ export default connect(mapStateToProps, {fetchAllExercise})
     return (
       <div>
         <h2>Exercises:</h2>
+        <div>
+          <NavLink exact to="/exercise-add" className="btn btn-primary">
+            <i className="fa fa-plus"/> Add new exercise
+          </NavLink>
+        </div>
         <ul>
           {this.props.exercises ? this.renderItem() : 'Loading...'}
         </ul>
