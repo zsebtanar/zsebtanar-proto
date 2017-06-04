@@ -1,6 +1,12 @@
 {
   "hosting": {
     "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.map"
+    ],
     "headers": [
       {
         "source": "manifest.json",

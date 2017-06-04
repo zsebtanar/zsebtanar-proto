@@ -1,15 +1,18 @@
-# Zsebtanár
+# Zsebtanár prototype
 
-Dependencies:
+This is a prototype project for the next version of Zsebtanár
+
+## Project Dependencies:
  - nodejs 6+
- - yarn (optional)
- - firebase (for deploy)
+ - firebase tool (for deploy)
 
 
-Init: `npm install` or `yarn install`
+## Available commands
+ 
+- Install dependencies: `npm install`
 
-Development: `npm run dev`
+- Run application in dev mod: `npm run dev`
 
-Build production: `npm run build`
+- Create build for production: `npm run build`
 
-Deploy: `firebase deploy`
+- Build & deploy: `npm run deploy`
