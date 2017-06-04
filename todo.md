@@ -5,7 +5,6 @@
 - Exercise
     - add form
     - solving exercise
-    - validation with cloud function
 - add analytics
 - mobil navigation
 - move firebase under zsebtanar
@@ -15,6 +14,8 @@
 
 ## DONE:
 
+- Exercise
+    - ~~validation with cloud function~~
 - ~~add login with username/password~~
 - ~~add to git~~
 - ~~manifest~~

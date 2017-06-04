@@ -1,9 +1,15 @@
 import {values} from 'ramda'
+import axios from 'axios'
+
 const DB = window.firebase.database()
 
 export const FETCH_ALL_EXERCISE = 'FETCH_ALL_EXERCISE'
 export const FETCH_EXERCISE = 'FETCH_EXERCISE'
 export const CREATE_EXERCISE = 'CREATE_EXERCISE'
+export const EXERCISE_CHECK_SUCCESS = 'EXERCISE_CHECK_SUCCESS'
+export const EXERCISE_CHECK_FAIL = 'EXERCISE_CHECK_FAIL'
+export const EXERCISE_CHECK_ERROR = 'EXERCISE_CHECK_ERROR'
+
 
 const Exercises = DB.ref('exercise')
 
@@ -29,7 +35,7 @@ export function fetchExercise(id) {
 }
 
 export function createExercise(data) {
-  const _key = Exercises.push().key;
+  const _key = Exercises.push().key
   return dispatch => Exercises
     .child(_key)
     .update({...data, _key, _created: new Date(), draft: true})
@@ -39,4 +45,14 @@ export function createExercise(data) {
         payload: data
       })
     )
+}
+
+export function checkSolution(key, solution) {
+  return dispatch =>
+    axios
+      .get(`${__FN_PATH__}api/check-exercise`, {params: {key, solution}})
+      .then(({data}) =>
+        dispatch({type: data.valid ? EXERCISE_CHECK_SUCCESS : EXERCISE_CHECK_FAIL})
+      )
+      .catch((error) => dispatch({type: EXERCISE_CHECK_ERROR, payload: error}))
 }

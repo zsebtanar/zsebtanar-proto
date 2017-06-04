@@ -1,8 +1,18 @@
-var functions = require('firebase-functions');
+const functions = require('firebase-functions')
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+const cors = require('cors')({origin: true})
+const admin = require('firebase-admin')
+admin.initializeApp(functions.config().firebase)
+
+exports.checkExercise = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    const exerciseId = req.query.key
+    const solution = req.query.solution
+
+    admin.database()
+      .ref(`/exercise/${exerciseId}`)
+      .on('value', snapshot => {
+        res.status(200).send({valid: snapshot.val().solution === solution})
+      })
+  })
+})

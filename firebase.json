@@ -19,10 +19,8 @@
       }
     ],
     "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
+      {"source": "/api/check-exercise", "function": "checkExercise"},
+      {"source": "**", "destination": "/index.html"}
     ]
   },
   "database": {
