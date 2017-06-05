@@ -33,12 +33,8 @@ export default connect(mapStateToProps, {fetchExercise, checkSolution})
           !this.props.exercise
             ? 'loading...'
             :<div className="row">
-              <div className="col">
-                {this.renderDetails()}
-              </div>
-              <div className="col">
-                {this.renderTask()}
-              </div>
+              <div className="col">{this.renderDetails()}</div>
+              <div className="col">{this.renderTask()}</div>
             </div>
         }
       </div>
