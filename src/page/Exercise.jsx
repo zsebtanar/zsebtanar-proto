@@ -47,12 +47,15 @@ export default connect(mapStateToProps, {fetchExercise, checkSolution})
     return (<ul>
       <li><b>key</b>: {ex['_key']}</li>
       <li><b>created</b>: {new Date(ex['_created']).toLocaleDateString()}</li>
-      <li><b>description</b>: {ex['description']}</li>
+      <li><b>created</b>: {new Date(ex['_updated']).toLocaleDateString()}</li>
+      <li><b>Subject</b> {ex['subject']}</li>
+      <li><b>Topic</b> {ex['topic']}</li>
+      <li><b>Class</b> {ex['class']}</li>
+      <li><b>Tags</b> {ex['tags']}</li>
+      <li><b>Description</b>: ...</li>
       <li><b>draft</b>: {ex['draft']}</li>
       <li><b>input-type</b> {ex['input']}</li>
-      <li><b>math-topic</b> {ex['math']}</li>
       <li><b>solution</b>: {ex['solution']}</li>
-      <li><b>tags</b>: {ex['tags']}</li>
     </ul>)
   }
 
@@ -71,7 +74,7 @@ export default connect(mapStateToProps, {fetchExercise, checkSolution})
 
       <hr/>
 
-      <p>{ex.description}</p>
+      <div dangerouslySetInnerHTML={{__html: ex.htmlDescription}}/>
 
       <div className="form-group">
         <input type="text" className="form-control" placeholder="Enter solution" ref="solution"/>

@@ -32,7 +32,7 @@ export default connect(mapStateToProps, {fetchAllExercise})
   renderItem(){
     return this.props.exercises.map(ex =>
       <li key={ex._key}>
-        <NavLink exact to={`/exercise/${ex._key}`}>{ex.description}</NavLink>
+        <NavLink exact to={`/exercise/${ex._key}`}>{ex.subject}/{ex.topic}</NavLink>
       </li>
     )
   }
