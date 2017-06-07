@@ -1,6 +1,28 @@
 {
   "rules": {
-    ".read": true,
-    ".write": true
+    // admin can read and write everything
+    ".read": "root.child('users/'+auth.uid+'/admin').val() === true",
+    ".write": "root.child('users/'+auth.uid+'/admin').val() === true",
+
+    "users": {
+      "$uid": {
+        ".write": "$uid === auth.uid",
+        ".read": "auth != null && auth.uid == $uid"
+      }
+    },
+
+    "classifications":{
+      ".read": true
+    },
+
+    "exercises": {
+      "private": {
+        ".read": "root.child('users/'+auth.uid+'/admin').val() === true",
+        ".write": "root.child('users/'+auth.uid+'/admin').val() === true"
+      },
+      "public": {
+        ".read": true
+      }
+    }
   }
 }
