@@ -38,7 +38,7 @@ export function createExercise(data) {
   const _key = Exercises.push().key
   return dispatch => Exercises
     .child(_key)
-    .update({...data, _key, _created: new Date(), draft: true})
+    .update({...data, _key})
     .then(() =>
       dispatch({
         type: CREATE_EXERCISE,
@@ -50,7 +50,7 @@ export function createExercise(data) {
 export function checkSolution(key, solution) {
   return dispatch =>
     axios
-      .get(`${__FN_PATH__}api/check-exercise`, {params: {key, solution}})
+      .get(`${__FN_PATH__}api/check-exercise`, {params: {key, solution, t:Date.now()}})
       .then(({data}) =>
         dispatch({type: data.valid ? EXERCISE_CHECK_SUCCESS : EXERCISE_CHECK_FAIL})
       )
