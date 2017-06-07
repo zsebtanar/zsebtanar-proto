@@ -16,7 +16,8 @@
     - [x] markdown description
     - [x] add form
     - [x] validation with cloud function
-
+- [x] add DB rules
+- [x] add user details to DB
 - [x] add login with username/password
 - [x] add to git
 - [x] manifest

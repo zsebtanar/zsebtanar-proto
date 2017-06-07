@@ -1,3 +1,6 @@
+import {createUser} from '../services/user'
+import {getUserAction} from './user'
+
 const AUTH = firebase.auth()
 
 export const SING_UP_ERROR = 'SING_UP_ERROR'
@@ -13,6 +16,7 @@ export function initUser() {
 export function watchAuth(store) {
   AUTH.onAuthStateChanged(function (user) {
     if (user) {
+      store.dispatch(getUserAction(user.uid))
       store.dispatch({type: SING_IN_SUCCESS, payload: user})
     } else {
       store.dispatch({type: SING_OUT_SUCCESS})
@@ -20,10 +24,11 @@ export function watchAuth(store) {
   })
 }
 
-export function signUp(email, password) {
+export function signUp(email, password, data) {
   return dispatch =>
     AUTH
       .createUserWithEmailAndPassword(email, password)
+      .then( user => createUser(user.uid, data))
       .catch(error =>
         dispatch({
           type: SING_UP_ERROR,

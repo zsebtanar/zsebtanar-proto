@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router'
 import {signUp} from '../../store/actions/auth'
 
 
@@ -8,18 +9,20 @@ const mapStateToProps = (state) => ({
   session: state.session
 })
 
-export default connect(mapStateToProps, {signUp})(function (props) {
+export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
   let nameField
   let emailField
   let pwField
 
   const onSubmit = (e) => {
     e.preventDefault()
-    props.signUp(
-      nameField.value,
-      emailField.value,
-      pwField.value
-    )
+    props
+      .signUp(
+        emailField.value,
+        pwField.value,
+        {name: nameField.value}
+      )
+      .then(() => props.history.push('/'))
   }
 
   return (<div>
@@ -29,36 +32,42 @@ export default connect(mapStateToProps, {signUp})(function (props) {
         ? <div className="alert alert-danger" role="alert">{props.session.error.message}</div>
         : ''
     }
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="offset-sm-2 col-sm-6">
       <div className="form-group">
-        <label htmlFor="exampleInputEmail1">Email address</label>
+        <input
+          type="text"
+          className="form-control"
+          id="id-username"
+          aria-describedby="emailHelp"
+          placeholder="Enter username"
+          ref={inp => nameField = inp}/>
+      </div>
+      <div className="form-group">
         <input
           type="email"
           className="form-control"
-          id="exampleInputEmail1"
+          id="id-email"
           aria-describedby="emailHelp"
           placeholder="Enter email"
           ref={inp => emailField = inp}/>
         <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
       </div>
       <div className="form-group">
-        <label htmlFor="exampleInputPassword1">Password</label>
         <input
           type="password"
           className="form-control"
-          id="exampleInputPassword1"
+          id="id-pw-1"
           placeholder="Password"
           ref={inp => pwField = inp}/>
       </div>
       <div className="form-group">
-        <label htmlFor="exampleInputPassword2">Password again</label>
         <input
           type="password"
           className="form-control"
-          id="exampleInputPassword2"
+          id="id-pw-2"
           placeholder="Password"/>
       </div>
       <button type="submit" className="btn btn-primary">Submit</button>
     </form>
   </div>)
-})
+}))
