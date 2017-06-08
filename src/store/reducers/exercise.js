@@ -1,6 +1,6 @@
 import {
-  FETCH_EXERCISE,
-  FETCH_ALL_EXERCISE,
+  EXERCISE_GET,
+  EXERCISE_GET_ALL,
   EXERCISE_CHECK_SUCCESS,
   EXERCISE_CHECK_FAIL
 } from '../actions/exercise'
@@ -12,9 +12,9 @@ const INIT_STATE = {
 
 export default function exerciseWorkflow(state=INIT_STATE, action) {
   switch (action.type) {
-    case FETCH_ALL_EXERCISE:
+    case EXERCISE_GET_ALL:
       return {...state, list: action.payload}
-    case FETCH_EXERCISE:
+    case EXERCISE_GET:
       return {...state, active: {details: action.payload, state: 'in-progress'}}
     case EXERCISE_CHECK_SUCCESS:
       return {...state, active: {...state.active, state: 'success'}}

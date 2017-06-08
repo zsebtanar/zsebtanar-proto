@@ -1,21 +1,21 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {checkSolution, fetchExercise} from '../store/actions/exercise'
+import {checkSolutionAction, getExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
 
 const mapStateToProps = (state) => ({
   exercise: state.exercise.active
 })
 
-export default connect(mapStateToProps, {fetchExercise, checkSolution})
+export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction})
 (class extends React.Component {
   componentWillMount() {
-    this.props.fetchExercise(this.props.match.params.key)
+    this.props.getExerciseAction(this.props.match.params.key)
   }
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.checkSolution(
+    this.props.checkSolutionAction(
       this.props.exercise.details._key,
       this.refs.solution.value
     )

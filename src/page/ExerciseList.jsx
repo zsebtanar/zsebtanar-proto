@@ -1,16 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {fetchAllExercise} from '../store/actions/exercise'
+import {getAllExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
 
 const mapStateToProps = (state) => ({
   exercises: state.exercise.list
 })
 
-export default connect(mapStateToProps, {fetchAllExercise})
+export default connect(mapStateToProps, {getAllExerciseAction})
 (class extends React.Component {
   componentWillMount() {
-    this.props.fetchAllExercise()
+    this.props.getAllExerciseAction()
   }
 
   render() {

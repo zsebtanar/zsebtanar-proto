@@ -1,12 +1,12 @@
 import {reduce} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
-import {createExercise} from '../../store/actions/exercise'
+import {createExerciseAction} from '../../store/actions/exercise'
 import Markdown from '../../component/general/Markdown'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
-export default connect(undefined, {createExercise})(
+export default connect(undefined, {createExercise: createExerciseAction})(
   class extends React.Component {
     state = {}
 
