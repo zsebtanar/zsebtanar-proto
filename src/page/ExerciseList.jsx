@@ -16,24 +16,50 @@ export default connect(mapStateToProps, {getAllExerciseAction})
   render() {
     return (
       <div>
-        <h2>Exercises:</h2>
-        <div>
-          <NavLink exact to="/exercise-add" className="btn btn-primary">
+        <div className="text-right">
+          <NavLink exact to="/exercise/add" className="btn btn-primary btn-sm">
             <i className="fa fa-plus"/> Add new exercise
           </NavLink>
         </div>
-        <ul>
-          {this.props.exercises ? this.renderItem() : 'Loading...'}
-        </ul>
+        <hr/>
+        <table className="table table-hover table">
+          <thead className="thead-default">
+            <tr>
+              <th>#</th>
+              <th>Subject</th>
+              <th>Topic</th>
+              <th>Grade</th>
+              <th>Tags</th>
+              <th>Created</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.exercises ? this.renderItem() : 'Loading...'}
+          </tbody>
+        </table>
       </div>
     )
   }
 
   renderItem(){
-    return this.props.exercises.map(ex =>
-      <li key={ex._key}>
-        <NavLink exact to={`/exercise/${ex._key}`}>{ex.subject}/{ex.topic}</NavLink>
-      </li>
+    return this.props.exercises.map((ex, idx) =>
+      <tr key={ex._key}>
+        <td>{idx+1}</td>
+        <td>{ex.classification.subject}</td>
+        <td>{ex.classification.topic}</td>
+        <td>{ex.classification.grade}</td>
+        <td>{ex.classification.tags}</td>
+        <td>{new Date(ex._created).toLocaleDateString()}</td>
+        <td>
+          <NavLink exact to={`/exercise/view/${ex._key}`} className="btn btn-sm" title="View">
+            <i className="fa fa-lg fa-eye"/>
+          </NavLink>
+          {/*<NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm">
+            <i className="fa fa-lg fa-edit"/>
+          </NavLink>*/}
+        </td>
+      </tr>
     )
   }
 })

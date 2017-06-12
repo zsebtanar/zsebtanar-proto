@@ -46,16 +46,16 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
 
     return (<ul>
       <li><b>key</b>: {ex['_key']}</li>
-      <li><b>created</b>: {new Date(ex['_created']).toLocaleDateString()}</li>
-      <li><b>created</b>: {new Date(ex['_updated']).toLocaleDateString()}</li>
-      <li><b>Subject</b> {ex['subject']}</li>
-      <li><b>Topic</b> {ex['topic']}</li>
-      <li><b>Class</b> {ex['class']}</li>
-      <li><b>Tags</b> {ex['tags']}</li>
+      <li><b>Subject</b> {ex.classification['subject']}</li>
+      <li><b>Topic</b> {ex.classification['topic']}</li>
+      <li><b>Grade</b> {ex.classification['grade']}</li>
+      <li><b>Tags</b> {ex.classification['tags']}</li>
       <li><b>Description</b>: ...</li>
       <li><b>draft</b>: {ex['draft']}</li>
-      <li><b>input-type</b> {ex['input']}</li>
+      <li><b>input-type</b> {ex['inputType']}</li>
       <li><b>solution</b>: {ex['solution']}</li>
+      <li><b>created</b>: {new Date(ex['_created']).toLocaleDateString()}</li>
+      <li><b>Updated</b>: {new Date(ex['_updated']).toLocaleDateString()}</li>
     </ul>)
   }
 

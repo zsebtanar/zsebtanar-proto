@@ -1,4 +1,4 @@
-import {reduce} from 'ramda'
+import {reduce, assocPath} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {createExerciseAction} from '../../store/actions/exercise'
@@ -13,7 +13,7 @@ export default connect(undefined, {createExercise: createExerciseAction})(
     saveExercise = (event) => {
       event.preventDefault()
       const inputs = event.target.querySelectorAll('[name]')
-      this.props.createExercise(reduce((acc, {name, value}) => ({...acc, [name]: value}), {}, inputs))
+      this.props.createExercise(reduce((acc, {name, value}) => assocPath(name.split('.'), value, acc), {}, inputs))
     }
 
     update = (event) => {
@@ -39,25 +39,25 @@ export default connect(undefined, {createExercise: createExerciseAction})(
         <div className="form-group row">
           <label className="col-4 col-form-label">Subject: </label>
           <div className="col-8">
-            <input className="form-control" type="text" name="subject" onKeyUp={this.update}/>
+            <input className="form-control" type="text" name="classification.subject" onKeyUp={this.update}/>
           </div>
         </div>
         <div className="form-group row">
           <label className="col-4 col-form-label">Topic: </label>
           <div className="col-8">
-            <input className="form-control" type="text" name="topic" onKeyUp={this.update}/>
+            <input className="form-control" type="text" name="classification.topic" onKeyUp={this.update}/>
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-4 col-form-label">Class: </label>
+          <label className="col-4 col-form-label">Grade: </label>
           <div className="col-8">
-            <input className="form-control" type="text" name="class" onKeyUp={this.update}/>
+            <input className="form-control" type="text" name="classification.grade" onKeyUp={this.update}/>
           </div>
         </div>
         <div className="form-group row">
           <label className="col-4 col-form-label">Tags:</label>
           <div className="col-8">
-            <input className="form-control" type="text" name="tags" onKeyUp={this.update}/>
+            <input className="form-control" type="text" name="classification.tags" onKeyUp={this.update}/>
           </div>
         </div>
         <div className="form-group">
@@ -68,7 +68,7 @@ export default connect(undefined, {createExercise: createExerciseAction})(
         <div className="form-group row">
           <label className="col-4 col-form-label">Input type:</label>
           <div className="col-8">
-            <select name="input-type" className="form-control" onKeyUp={this.update}>
+            <select name="inputType" className="form-control" onKeyUp={this.update}>
               <option value="number">Integer</option>
             </select>
           </div>

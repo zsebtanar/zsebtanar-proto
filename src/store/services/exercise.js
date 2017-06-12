@@ -1,32 +1,48 @@
-import {values} from 'ramda'
+import {pipe, values, prop, map} from 'ramda'
 import axios from 'axios'
 import {reseolveSnapshot} from '../../util/firebase'
 
 const DB = window.firebase.database()
 const Exercises = DB.ref('exercise')
 
-export function getExercise(uid) {
+export function getPrivateExercise(uid) {
   return Exercises
     .child(uid)
     .once('value')
-    .then(reseolveSnapshot)
+    .then(pipe(reseolveSnapshot, prop('private')))
 }
 
-export function getAllExercises() {
+export function getAllPrivateExercises() {
   return Exercises
     .once('value')
-    .then(reseolveSnapshot)
-    .then(values)
+    .then(pipe(reseolveSnapshot, values, map(prop('private'))))
 }
 
 export function createExercise(data) {
   const _key = Exercises.push().key
+  const now = new Date()
   return Exercises
     .child(_key)
-    .update({...data, _key})
+    .child('private')
+    .update({
+      ...data,
+      _key,
+      _created: now,
+      _updated: now
+    })
 }
 
-export function sheckSolution(key, solution) {
+export function updateExercise(key, data) {
+  return Exercises
+    .child(key)
+    .child('private')
+    .update({
+      ...data,
+      _updated: new Date(),
+    })
+}
+
+export function checkSolution(key, solution) {
   return axios
     .get(`${__FN_PATH__}api/check-exercise`, {params: {key, solution, t:Date.now()}})
 }
