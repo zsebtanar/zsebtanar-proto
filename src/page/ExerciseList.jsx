@@ -16,14 +16,14 @@ export default connect(mapStateToProps, {getAllExerciseAction})
   render() {
     return (
       <div>
-        <div className="text-right">
-          <NavLink exact to="/exercise/add" className="btn btn-primary btn-sm">
+        <div className="btn-toolbar justify-content-between align-items-center">
+          <h3>Exercise list</h3>
+          <NavLink exact to="/exercise/add" className="btn btn-secondary btn-sm">
             <i className="fa fa-plus"/> Add new exercise
           </NavLink>
         </div>
-        <hr/>
-        <table className="table table-hover table">
-          <thead className="thead-default">
+        <table className="table table-hover table mt-3">
+          <thead>
             <tr>
               <th>#</th>
               <th>Subject</th>
@@ -31,7 +31,7 @@ export default connect(mapStateToProps, {getAllExerciseAction})
               <th>Grade</th>
               <th>Tags</th>
               <th>Created</th>
-              <th>Action</th>
+              <th className="text-center"><i className="fa fa-lg fa-cog"/></th>
             </tr>
           </thead>
           <tbody>
@@ -51,13 +51,14 @@ export default connect(mapStateToProps, {getAllExerciseAction})
         <td>{ex.classification.grade}</td>
         <td>{ex.classification.tags}</td>
         <td>{new Date(ex._created).toLocaleDateString()}</td>
-        <td>
-          <NavLink exact to={`/exercise/view/${ex._key}`} className="btn btn-sm" title="View">
+        <td className="text-center">
+          <NavLink exact to={`/exercise/view/${ex._key}`} className="btn btn-sm btn-secondary" title="View">
             <i className="fa fa-lg fa-eye"/>
           </NavLink>
-          {/*<NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm">
+          &nbsp;
+          <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-secondary">
             <i className="fa fa-lg fa-edit"/>
-          </NavLink>*/}
+          </NavLink>
         </td>
       </tr>
     )

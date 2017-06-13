@@ -1,4 +1,7 @@
-import {createExercise, getAllPrivateExercises, getPrivateExercise, checkSolution} from '../services/exercise'
+import {
+  createExercise, getAllPrivateExercises, getPrivateExercise, checkSolution,
+  updateExercise
+} from '../services/exercise'
 
 export const EXERCISE_GET_ALL = 'EXERCISE_GET_ALL'
 export const EXERCISE_GET = 'EXERCISE_GET'
@@ -6,6 +9,7 @@ export const EXERCISE_CREATED = 'EXERCISE_CREATED'
 export const EXERCISE_CHECK_SUCCESS = 'EXERCISE_CHECK_SUCCESS'
 export const EXERCISE_CHECK_FAIL = 'EXERCISE_CHECK_FAIL'
 export const EXERCISE_CHECK_ERROR = 'EXERCISE_CHECK_ERROR'
+export const EXERCISE_UPDATED = 'EXERCISE_UPDATED'
 
 
 export function getAllExerciseAction() {
@@ -20,9 +24,13 @@ export function getExerciseAction(key) {
 }
 
 export function createExerciseAction(data) {
-  console.log(data);
   return dispatch => createExercise(data)
     .then(() =>dispatch({ type: EXERCISE_CREATED }))
+}
+
+export function updateExerciseAction(key, data) {
+  return dispatch => updateExercise(key, data)
+    .then(() =>dispatch({ type: EXERCISE_UPDATED }))
 }
 
 export function checkSolutionAction(key, solution) {

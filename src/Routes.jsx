@@ -5,7 +5,7 @@ import {
   Route,
 } from 'react-router-dom'
 import Home from './page/Home'
-import ExerciseFrom from './page/admin/ExerciseFrom'
+import ExerciseForm from './page/admin/ExerciseForm'
 import SignIn from './page/user/SignIn'
 import SignUp from './page/user/SignUp'
 import Header from './component/nav/Header'
@@ -19,9 +19,9 @@ export default (props) =>
       <div>
         <Route path="/" exact component={Home}/>
         <Route path="/exercise" exact component={ExerciseList}/>
-        <Route path="/exercise/add" component={ExerciseFrom}/>
+        <Route path="/exercise/add" component={ExerciseForm}/>
         <Route path="/exercise/view/:key" component={Exercise}/>
-        <Route path="/exercise/edit/:key" component={ExerciseFrom}/>
+        <Route path="/exercise/edit/:key" component={ExerciseForm}/>
         <Route path="/sign-up" component={SignUp}/>
         <Route path="/sign-in" component={SignIn}/>
       </div>

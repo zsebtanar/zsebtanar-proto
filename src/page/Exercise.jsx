@@ -24,11 +24,11 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
   render() {
     return (
       <div>
-        <h2>
-          <NavLink exact to="/exercise"><i className="fa fa-chevron-left "/></NavLink>
-          Exercise
-        </h2>
-
+        <div className="d-flex justify-content-between align-items-center">
+          <h2>Exercise</h2>
+          <NavLink exact to="/exercise">Cancel</NavLink>
+        </div>
+        <hr/>
         {
           !this.props.exercise
             ? 'loading...'
