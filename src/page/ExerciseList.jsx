@@ -1,16 +1,23 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getAllExerciseAction} from '../store/actions/exercise'
+import {getAllExerciseAction, removeExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
 
 const mapStateToProps = (state) => ({
   exercises: state.exercise.list
 })
 
-export default connect(mapStateToProps, {getAllExerciseAction})
+export default connect(mapStateToProps, {getAllExerciseAction, removeExerciseAction})
 (class extends React.Component {
   componentWillMount() {
     this.props.getAllExerciseAction()
+  }
+
+  removeExercise = (key) => () => {
+    if(confirm('Are you sure?')){
+      this.props.removeExerciseAction(key)
+        .then(this.props.getAllExerciseAction)
+    }
   }
 
   render() {
@@ -53,16 +60,20 @@ export default connect(mapStateToProps, {getAllExerciseAction})
         <td>{new Date(ex._created).toLocaleDateString()}</td>
         <td className="text-center">
           <NavLink exact to={`/exercise/view/${ex._key}`} className="btn btn-sm btn-secondary" title="View">
-            <i className="fa fa-lg fa-eye"/>
+            <i className="fa fa-eye"/>
           </NavLink>
           &nbsp;
           <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-secondary" title="Edit exercise">
-            <i className="fa fa-lg fa-edit"/>
+            <i className="fa fa-edit"/>
           </NavLink>
           &nbsp;
           <NavLink exact to={`/exercise/add/${ex._key}`} className="btn btn-sm btn-secondary" title="Clone exercise">
-            <i className="fa fa-lg fa-clone"/>
+            <i className="fa fa-clone"/>
           </NavLink>
+          &nbsp;
+          <button type="button" className="btn btn-sm btn-secondary" title="Remove exercise" onClick={this.removeExercise(ex._key)}>
+            <span className="text-danger"><i className="fa fa-trash"/></span>
+          </button>
         </td>
       </tr>
     )

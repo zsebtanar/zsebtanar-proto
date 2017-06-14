@@ -42,6 +42,12 @@ export function updateExercise(key, data) {
     })
 }
 
+export function removeExercise(key) {
+  return Exercises
+    .child(key)
+    .remove()
+}
+
 export function checkSolution(key, solution) {
   return axios
     .get(`${__FN_PATH__}api/check-exercise`, {params: {key, solution, t:Date.now()}})
