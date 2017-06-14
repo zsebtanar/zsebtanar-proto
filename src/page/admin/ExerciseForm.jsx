@@ -1,13 +1,12 @@
-import {assocPath, pathOr} from 'ramda'
+import {assocPath, dissoc, pathOr} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
-import {NavLink}from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import Markdown from '../../component/general/Markdown'
 import {createExerciseAction, updateExerciseAction} from '../../store/actions/exercise'
 import {getPrivateExercise} from '../../store/services/exercise'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
-
 
 export default connect(undefined, {createExerciseAction, updateExerciseAction})(
   class extends React.Component {
@@ -18,11 +17,17 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
 
     componentWillMount() {
       const key = this.props.match.params.key
+      const cloneKey = this.props.match.params.clone
       if (key) {
-        getPrivateExercise(key).then(this.setExercise)
-      } else {
-        this.setExercise({})
+        return getPrivateExercise(key)
+          .then(this.setExercise)
       }
+      if (cloneKey) {
+        return getPrivateExercise(cloneKey)
+          .then(dissoc('_key'))
+          .then(this.setExercise)
+      }
+      return this.setExercise({})
     }
 
     setExercise = (exercise) => {

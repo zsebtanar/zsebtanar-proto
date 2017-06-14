@@ -38,7 +38,7 @@ exports.finalizeExercise = functions.database.ref('/exercise/{exerciseId}/privat
     // Exit when the exercise in draft
     if (original.draft) return
 
-    const publicData = PUBLIC_PROPS.reduce(mapPublicData(original))
+    const publicData = PUBLIC_PROPS.reduce(mapPublicData(original), {})
 
     try {
       publicData.htmlDescription = new Markdown({})

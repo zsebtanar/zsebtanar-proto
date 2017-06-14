@@ -22,7 +22,8 @@ export default (props) =>
         <Switch>
           <Route path="/" exact component={Home}/>
           <Route path="/exercise" exact component={ExerciseList}/>
-          <Route path="/exercise/add" component={ExerciseForm}/>
+          <Route path="/exercise/add/:clone" component={ExerciseForm}/>
+          <Route path="/exercise/add/" component={ExerciseForm}/>
           <Route path="/exercise/view/:key" component={Exercise}/>
           <Route path="/exercise/edit/:key" component={ExerciseForm}/>
           <Route path="/sign-up" component={SignUp}/>

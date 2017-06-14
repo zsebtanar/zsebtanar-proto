@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {checkSolutionAction, getExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
+import Markdown from '../component/general/Markdown'
 
 const mapStateToProps = (state) => ({
   exercise: state.exercise.active
@@ -74,7 +75,7 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
 
       <hr/>
 
-      <div dangerouslySetInnerHTML={{__html: ex.htmlDescription}}/>
+      <Markdown source={ex.description}/>
 
       <div className="form-group">
         <input type="text" className="form-control" placeholder="Enter solution" ref="solution"/>

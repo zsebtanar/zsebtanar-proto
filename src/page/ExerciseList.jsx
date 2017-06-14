@@ -56,8 +56,12 @@ export default connect(mapStateToProps, {getAllExerciseAction})
             <i className="fa fa-lg fa-eye"/>
           </NavLink>
           &nbsp;
-          <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-secondary">
+          <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-secondary" title="Edit exercise">
             <i className="fa fa-lg fa-edit"/>
+          </NavLink>
+          &nbsp;
+          <NavLink exact to={`/exercise/add/${ex._key}`} className="btn btn-sm btn-secondary" title="Clone exercise">
+            <i className="fa fa-lg fa-clone"/>
           </NavLink>
         </td>
       </tr>
