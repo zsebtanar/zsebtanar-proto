@@ -33,6 +33,7 @@ export default connect(mapStateToProps, {getAllExerciseAction, removeExerciseAct
           <thead>
             <tr>
               <th>#</th>
+              <th>Title</th>
               <th>Subject</th>
               <th>Topic</th>
               <th>Grade</th>
@@ -53,6 +54,7 @@ export default connect(mapStateToProps, {getAllExerciseAction, removeExerciseAct
     return this.props.exercises.map((ex, idx) =>
       <tr key={ex._key}>
         <td>{idx+1}</td>
+        <td>{ex.title}</td>
         <td>{ex.classification.subject}</td>
         <td>{ex.classification.topic}</td>
         <td>{ex.classification.grade}</td>

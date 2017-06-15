@@ -1,4 +1,4 @@
-import {assocPath, dissoc, pathOr} from 'ramda'
+import {assocPath, assoc, dissoc, pathOr, pipe} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
@@ -25,6 +25,7 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
       if (cloneKey) {
         return getPrivateExercise(cloneKey)
           .then(dissoc('_key'))
+          .then(ex => assoc('title', (ex.title || '') + ' (copy)'))
           .then(this.setExercise)
       }
       return this.setExercise({})
@@ -76,6 +77,17 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
     renderForm() {
       const ex = this.state.exercise
       return (<form onSubmit={this.saveExercise}>
+        <div className="form-group row">
+          <label className="col-4 col-form-label">Title: </label>
+          <div className="col-8">
+            <input
+              className="form-control"
+              type="text"
+              name="title"
+              onChange={this.update}
+              value={pathOr('', ['title'], ex)}/>
+          </div>
+        </div>
         <div className="form-group row">
           <label className="col-4 col-form-label">Subject: </label>
           <div className="col-8">
