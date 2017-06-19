@@ -31,7 +31,9 @@ body {
     color: #777;
     border-top: .05rem solid #e5e5e5;
 }
-
+.modal.show .modal-dialog{
+    z-index: 1100;
+}
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 48em) {
     /* Remove the padding we set earlier */

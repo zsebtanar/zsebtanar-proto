@@ -5,10 +5,11 @@ import {NavLink} from 'react-router-dom'
 import Markdown from '../../component/general/Markdown'
 import {createExerciseAction, updateExerciseAction} from '../../store/actions/exercise'
 import {getPrivateExercise} from '../../store/services/exercise'
+import {openAlertModal} from '../../store/actions/modal'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
-export default connect(undefined, {createExerciseAction, updateExerciseAction})(
+export default connect(undefined, {openAlertModal, createExerciseAction, updateExerciseAction})(
   class extends React.Component {
     state = {
       loading: true,
@@ -85,7 +86,8 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
               type="text"
               name="title"
               onChange={this.update}
-              value={pathOr('', ['title'], ex)}/>
+              value={pathOr('', ['title'], ex)}
+            />
           </div>
         </div>
         <div className="form-group row">
@@ -96,7 +98,8 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
               type="text"
               name="classification.subject"
               onChange={this.update}
-              value={pathOr('', ['classification', 'subject'], ex)}/>
+              value={pathOr('', ['classification', 'subject'], ex)}
+            />
           </div>
         </div>
         <div className="form-group row">
@@ -107,7 +110,8 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
               type="text"
               name="classification.topic"
               onChange={this.update}
-              value={pathOr('', ['classification', 'topic'], ex)}/>
+              value={pathOr('', ['classification', 'topic'], ex)}
+            />
           </div>
         </div>
         <div className="form-group row">
@@ -118,7 +122,8 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
               type="text"
               name="classification.grade"
               onChange={this.update}
-              value={pathOr('', ['classification', 'grade'], ex)}/>
+              value={pathOr('', ['classification', 'grade'], ex)}
+            />
           </div>
         </div>
         <div className="form-group row">
@@ -129,17 +134,29 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
               type="text"
               name="classification.tags"
               onChange={this.update}
-              value={pathOr('', ['classification', 'tags'], ex)}/>
+              value={pathOr('', ['classification', 'tags'], ex)}
+            />
           </div>
         </div>
         <div className="form-group">
-          <label>Description: </label>
+          <label className="d-flex justify-content-between align-items-center">
+            <div>Description:</div>
+            <button
+              type="button"
+              className="btn btn-sm btn-link"
+              onClick={() => this.props.openAlertModal('Help', 'Help text for markdown...')}
+            >
+              Help for markdown
+            </button>
+
+          </label>
           <textarea
             className="form-control"
             name="description"
             rows="10"
             onChange={this.update}
-            value={pathOr('', ['description'], ex)}/>
+            value={pathOr('', ['description'], ex)}
+          />
         </div>
         <h4>Solution 1</h4>
         <div className="form-group row">
@@ -149,7 +166,8 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
               name="inputType"
               className="form-control"
               onChange={this.update}
-              value={pathOr('', ['inputType'], ex)}>
+              value={pathOr('', ['inputType'], ex)}
+            >
               <option value="number">Integer</option>
             </select>
           </div>
@@ -162,7 +180,8 @@ export default connect(undefined, {createExerciseAction, updateExerciseAction})(
               type="number"
               name="solution"
               onChange={this.update}
-              value={pathOr('', ['solution'], ex)}/>
+              value={pathOr('', ['solution'], ex)}
+            />
           </div>
         </div>
         <div className="col-sm-8 offset-sm-4">
