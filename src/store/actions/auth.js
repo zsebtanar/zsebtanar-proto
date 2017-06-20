@@ -32,7 +32,8 @@ export function signUp(email, password, data) {
       .catch(error =>
         dispatch({
           type: SING_UP_ERROR,
-          payload: error
+          payload: error,
+          error: true
         })
       )
 }
@@ -44,7 +45,8 @@ export function signIn(email, password) {
       .catch(error =>
         dispatch({
           type: SING_IN_ERROR,
-          payload: error
+          payload: error,
+          error: true
         })
       )
 }
@@ -57,6 +59,7 @@ export function signOut() {
       .signOut()
       .catch(error => dispatch({
         type: SING_OUT_ERROR,
-        payload: error
+        payload: error,
+        error: true
       }))
 }

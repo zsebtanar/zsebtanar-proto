@@ -16,7 +16,7 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
     e.preventDefault();
     props
       .signIn(emailField.value, pwField.value)
-      .then(() => props.history.push('/'))
+      .then(({error}) => error ? null : props.history.push('/'))
   }
 
   return (<div>
