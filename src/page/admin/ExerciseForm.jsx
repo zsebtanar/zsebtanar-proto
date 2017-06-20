@@ -1,4 +1,4 @@
-import {assocPath, assoc, dissoc, pathOr, pipe} from 'ramda'
+import {assocPath, assoc, dissoc, pathOr} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
@@ -79,14 +79,14 @@ export default connect(undefined, {openAlertModal, createExerciseAction, updateE
       const ex = this.state.exercise
       return (<form onSubmit={this.saveExercise}>
         <div className="form-group row">
-          <label className="col-4 col-form-label">Title: </label>
+          <label className="col-4 col-form-label">Grade: </label>
           <div className="col-8">
             <input
               className="form-control"
               type="text"
-              name="title"
+              name="classification.grade"
               onChange={this.update}
-              value={pathOr('', ['title'], ex)}
+              value={pathOr('', ['classification', 'grade'], ex)}
             />
           </div>
         </div>
@@ -115,14 +115,14 @@ export default connect(undefined, {openAlertModal, createExerciseAction, updateE
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-4 col-form-label">Grade: </label>
+          <label className="col-4 col-form-label">Title: </label>
           <div className="col-8">
             <input
               className="form-control"
               type="text"
-              name="classification.grade"
+              name="title"
               onChange={this.update}
-              value={pathOr('', ['classification', 'grade'], ex)}
+              value={pathOr('', ['title'], ex)}
             />
           </div>
         </div>
