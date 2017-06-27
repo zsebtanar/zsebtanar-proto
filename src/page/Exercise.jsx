@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import {checkSolutionAction, getExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
 import Markdown from '../component/general/Markdown'
+import SingleChoice from '../component/input/SingleChoice'
+import SingleChoiceAdmin from '../component/input/SingleChoiceAdmin'
 
 const mapStateToProps = (state) => ({
   exercise: state.exercise.active
@@ -54,7 +56,7 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
       <li><b>Description</b>: ...</li>
       <li><b>draft</b>: {ex['draft']}</li>
       <li><b>input-type</b> {ex['inputType']}</li>
-      <li><b>solution</b>: {ex['solution']}</li>
+      <li><b>solution</b>: {JSON.stringify(ex['solution'], null, 3)}</li>
       <li><b>created</b>: {new Date(ex['_created']).toLocaleDateString()}</li>
       <li><b>Updated</b>: {new Date(ex['_updated']).toLocaleDateString()}</li>
     </ul>)
@@ -80,6 +82,8 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
       <div className="form-group">
         <input type="text" className="form-control" placeholder="Enter solution" ref="solution"/>
       </div>
+
+      <SingleChoice options={ex.solution.items} />
 
       <button type="submit" className="btn btn-primary">Submit</button>
 

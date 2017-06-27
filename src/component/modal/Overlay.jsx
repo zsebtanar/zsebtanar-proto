@@ -22,7 +22,7 @@ export default connect(mapStateToProps, {closeModal})(
         style={{display: 'block'}}
       >
         <div className="modal-backdrop fade show" onClick={close}/>
-        <Modal {...{...parameters, close}} />
+        <Modal {...parameters} close={close} />
       </div>)
     }
 

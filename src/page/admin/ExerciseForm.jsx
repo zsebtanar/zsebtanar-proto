@@ -6,6 +6,7 @@ import Markdown from '../../component/general/Markdown'
 import {createExerciseAction, updateExerciseAction} from '../../store/actions/exercise'
 import {getPrivateExercise} from '../../store/services/exercise'
 import {openAlertModal} from '../../store/actions/modal'
+import SingleChoiceAdmin from '../../component/input/SingleChoiceAdmin'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
@@ -51,7 +52,7 @@ export default connect(undefined, {openAlertModal, createExerciseAction, updateE
     }
 
     update = (event) => {
-      const {name, value} = event.currentTarget
+      const {name, value} = event.currentTarget || event
       this.setState(() => ({exercise: assocPath(name.split('.'), value, this.state.exercise)}))
     }
 
@@ -142,6 +143,7 @@ export default connect(undefined, {openAlertModal, createExerciseAction, updateE
           <label className="d-flex justify-content-between align-items-center">
             <div>Description:</div>
             <button
+              tabIndex="-1"
               type="button"
               className="btn btn-sm btn-link"
               onClick={() => this.props.openAlertModal('Help', 'Help text for markdown...')}
@@ -168,19 +170,17 @@ export default connect(undefined, {openAlertModal, createExerciseAction, updateE
               onChange={this.update}
               value={pathOr('', ['inputType'], ex)}
             >
-              <option value="number">Integer</option>
+              <option value="single-choice">Single choice</option>
             </select>
           </div>
         </div>
         <div className="form-group row">
           <label className="col-4 col-form-label">Solution: </label>
           <div className="col-8">
-            <input
-              className="form-control"
-              type="number"
+            <SingleChoiceAdmin
               name="solution"
-              onChange={this.update}
               value={pathOr('', ['solution'], ex)}
+              onChange={this.update}
             />
           </div>
         </div>
