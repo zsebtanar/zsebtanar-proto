@@ -20,9 +20,13 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header(pr
           <li className="nav-item">
             <NavLink activeClassName="active" className="nav-link" exact to="/">Home</NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink activeClassName="active" className="nav-link" to="/exercise">Exercises</NavLink>
-          </li>
+          {
+            props.session.signedIn
+            ? <li className="nav-item">
+                <NavLink activeClassName="active" className="nav-link" to="/exercise">Exercises</NavLink>
+              </li>
+            : null
+          }
           {
             props.session.signedIn
               ?
