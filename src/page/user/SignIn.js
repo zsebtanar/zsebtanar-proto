@@ -19,16 +19,15 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
       .then(({error}) => error ? null : props.history.push('/'))
   }
 
-  return (<div>
+  return (<div className="col-6 offset-3">
     <h1>Sign-up</h1>
     {
       props.session && props.session.error
         ? <div className="alert alert-danger" role="alert">{props.session.error.message}</div>
         : ''
     }
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="my-5">
       <div className="form-group">
-        <label htmlFor="exampleInputEmail1">Email address</label>
         <input
           type="email"
           className="form-control"
@@ -38,7 +37,6 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
           ref={inp => emailField = inp}/>
       </div>
       <div className="form-group">
-        <label htmlFor="exampleInputPassword1">Password</label>
         <input
           type="password"
           className="form-control"

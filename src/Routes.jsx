@@ -20,7 +20,7 @@ export default (props) =>
     <div className="app">
       <div className="container">
         <Header/>
-        <div>
+        <div className="content">
           <Switch>
             <Route path="/" exact component={Home}/>
             <Route path="/exercise" exact component={ExerciseList}/>

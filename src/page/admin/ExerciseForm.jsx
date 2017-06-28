@@ -65,7 +65,6 @@ export default connect(undefined, {openAlertModal, createExerciseAction, updateE
         : (<div>
             <div className="d-flex justify-content-between align-items-center">
               <h2>{key ? 'Update' : 'Add'} exercise</h2>
-              <NavLink exact to="/exercise">Cancel</NavLink>
             </div>
             <hr/>
             <div className="row">
@@ -185,6 +184,8 @@ export default connect(undefined, {openAlertModal, createExerciseAction, updateE
           </div>
         </div>
         <div className="col-sm-8 offset-sm-4">
+          <NavLink exact to="/exercise" className="btn btn-secondary">Cancel</NavLink>
+          &nbsp;
           <button type="submit" className="btn btn-primary">Save</button>
         </div>
       </form>)

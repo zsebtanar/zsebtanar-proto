@@ -1,5 +1,21 @@
 
 /* Space out content a bit */
+html,
+body,
+#root,
+.app,
+.container{
+    height: 100%;
+}
+
+.app .container{
+    display: flex;
+    flex-flow: column;
+}
+.app .container .content{
+    flex: 1 0 auto;
+}
+
 body {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
@@ -13,9 +29,7 @@ body {
     line-height: 2em;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
-.marketing,
 .footer {
     padding-right: 1rem;
     padding-left: 1rem;
@@ -27,6 +41,7 @@ body {
 }
 /* Custom page footer */
 .footer {
+    margin-top: 1rem;
     padding-top: 1.5rem;
     color: #777;
     border-top: .05rem solid #e5e5e5;

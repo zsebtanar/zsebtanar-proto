@@ -25,14 +25,14 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
       .then(() => props.history.push('/'))
   }
 
-  return (<div>
+  return (<div className="col-6 offset-3">
     <h1>Sign-up</h1>
     {
       props.session && props.session.error
         ? <div className="alert alert-danger" role="alert">{props.session.error.message}</div>
         : ''
     }
-    <form onSubmit={onSubmit} className="offset-sm-2 col-sm-6">
+    <form onSubmit={onSubmit} className="my-5">
       <div className="form-group">
         <input
           type="text"
