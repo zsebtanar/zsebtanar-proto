@@ -5,12 +5,12 @@ import {NavLink} from 'react-router-dom'
 import Markdown from '../../component/general/Markdown'
 import {createExerciseAction, updateExerciseAction} from '../../store/actions/exercise'
 import {getPrivateExercise} from '../../store/services/exercise'
-import {openAlertModal} from '../../store/actions/modal'
+import {openMarkdownHelpModal} from '../../store/actions/modal'
 import SingleChoiceAdmin from '../../component/input/SingleChoiceAdmin'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
-export default connect(undefined, {openAlertModal, createExerciseAction, updateExerciseAction})(
+export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
   class extends React.Component {
     state = {
       loading: true,
@@ -145,7 +145,7 @@ export default connect(undefined, {openAlertModal, createExerciseAction, updateE
               tabIndex="-1"
               type="button"
               className="btn btn-sm btn-link"
-              onClick={() => this.props.openAlertModal('Help', 'Help text for markdown...')}
+              onClick={this.props.openMarkdownHelpModal}
             >
               Help for markdown
             </button>

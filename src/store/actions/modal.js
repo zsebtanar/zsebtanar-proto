@@ -1,6 +1,7 @@
 import {identity} from 'ramda'
 import AlertModal from '../../component/modal/AlertModal'
 import InputModal from '../../component/modal/InputModal'
+import MarkdownHelpModal from '../../component/modal/MarkdownHelpModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -17,7 +18,11 @@ export function closeModal() {
 }
 
 export function openAlertModal(params) {
-  return openModal(AlertModal, {title: 'Alert', text: '', onClose: identity, ...params})
+  return openModal(AlertModal, {title: 'Alert', text: '', element: undefined, onClose: identity, ...params})
+}
+
+export function openMarkdownHelpModal(params) {
+  return openModal(MarkdownHelpModal, {onClose: identity, ...params})
 }
 
 export function openInputModal(params) {

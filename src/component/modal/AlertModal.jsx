@@ -1,8 +1,16 @@
 import React from 'react'
 
-export default (function AlertModal(props) {;
+const modalSize = (size) => {
+  switch (size){
+    case 'small': return 'modal-sm'
+    case 'large': return 'modal-lg'
+    default: return ''
+  }
+}
+
+export default (function AlertModal(props) {
   return (
-    <div className="modal-dialog" role="document">
+    <div className={`modal-dialog ${modalSize(props.size)}`} role="document">
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">{props.title}</h5>
