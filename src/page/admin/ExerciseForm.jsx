@@ -1,4 +1,4 @@
-import {assocPath, assoc, dissoc, pathOr} from 'ramda'
+import {assocPath, assoc, dissoc, pathOr, pipe, omit, values} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
@@ -6,7 +6,9 @@ import Markdown from '../../component/general/Markdown'
 import {createExerciseAction, updateExerciseAction} from '../../store/actions/exercise'
 import {getPrivateExercise} from '../../store/services/exercise'
 import {openMarkdownHelpModal} from '../../store/actions/modal'
-import SingleChoiceAdmin from '../../component/input/SingleChoiceAdmin'
+import UserControls from '../../component/userControls/UserControl'
+import UserControlAdmin from '../../component/userControls/UserControlAdmin'
+import {SINGLE_CHOICE} from '../../component/userControls/controlTypes'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
@@ -53,7 +55,17 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
 
     update = (event) => {
       const {name, value} = event.currentTarget || event
-      this.setState(() => ({exercise: assocPath(name.split('.'), value, this.state.exercise)}))
+      this.setState({exercise: assocPath(name.split('.'), value, this.state.exercise)})
+    }
+
+    updateSolution = ({name, value}) => {
+      this.setState({
+        exercise: pipe(
+          assocPath(['controls', name, 'order'], parseInt(name, 10)),
+          assocPath(['solutions', name], value.solution),
+          assocPath(['controls', name, 'controlProps'], omit(['solution'], value))
+        )(this.state.exercise)
+      })
     }
 
     render() {
@@ -159,30 +171,38 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             value={pathOr('', ['description'], ex)}
           />
         </div>
-        <h4>Solution 1</h4>
-        <div className="form-group row">
-          <label className="col-4 col-form-label">Input type:</label>
-          <div className="col-8">
-            <select
-              name="inputType"
-              className="form-control"
-              onChange={this.update}
-              value={pathOr('', ['inputType'], ex)}
-            >
-              <option value="single-choice">Single choice</option>
-            </select>
+        <h4>Solutions</h4>
+        <div className="row">
+          <div className="col-11 offset-1">
+            <div className="form-group">
+              <select
+                name="controls.0.controlType"
+                className="form-control"
+                onChange={this.update}
+                value={pathOr('', ['controls', '0', 'controlType'], ex)}
+              >
+                <option value="">-- Select a control type --</option>
+                <option value={SINGLE_CHOICE}>Single choice</option>
+              </select>
+            </div>
+            {
+              pathOr(false, ['controls', '0', 'controlType'], ex)
+                ? <UserControlAdmin
+                  controlType={pathOr('', ['controls', '0', 'controlType'], ex)}
+                  controlProps={{
+                    name: '0',
+                    value: {
+                      ...pathOr('', ['controls', '0', 'controlProps'], ex),
+                      solution: pathOr('', ['solutions', '0'], ex)
+                    },
+                    onChange: this.updateSolution
+                  }}
+                />
+                : null
+            }
           </div>
         </div>
-        <div className="form-group row">
-          <label className="col-4 col-form-label">Solution: </label>
-          <div className="col-8">
-            <SingleChoiceAdmin
-              name="solution"
-              value={pathOr('', ['solution'], ex)}
-              onChange={this.update}
-            />
-          </div>
-        </div>
+
         <div className="col-sm-8 offset-sm-4">
           <NavLink exact to="/exercise" className="btn btn-secondary">Cancel</NavLink>
           &nbsp;
@@ -192,7 +212,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
     }
 
     renderPreview() {
-      const {classification, description} = this.state.exercise
+      const {classification, description, controls} = this.state.exercise
       return (<div>
         <h4>{classification && classification.subject || <Muted>Subject</Muted>}
           / {classification && classification.topic || <Muted>Topic</Muted>}</h4>
@@ -200,6 +220,17 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
           description
             ? <Markdown source={description}/>
             : <Muted>Description...</Muted>
+        }
+        {
+          (values(controls) || []).map(({controlType, controlProps, order}) => <UserControls key={controlType} {...{controlType, controlProps}}/>)
+        }
+
+        {
+          __DEV__
+            ? <pre>{
+              JSON.stringify(this.state, null, 3)
+            }</pre>
+            : ''
         }
       </div>)
     }

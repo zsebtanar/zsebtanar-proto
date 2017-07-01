@@ -1,0 +1,1 @@
+export const SINGLE_CHOICE = 'single-choice'

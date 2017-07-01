@@ -7,7 +7,7 @@ export default (class extends React.Component {
 
   render() {
     return (<div className="single-choice">
-      {this.props.options.map(x => RadioInput({...x, name: 'random', onChange: this.onChange}))}
+      {(this.props.options || []).map(x => RadioInput({...x, name: 'random', onChange: this.onChange}))}
     </div>)
   }
 })

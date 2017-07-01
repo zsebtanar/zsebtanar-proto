@@ -3,8 +3,10 @@ import {connect} from 'react-redux'
 import {checkSolutionAction, getExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
 import Markdown from '../component/general/Markdown'
-import SingleChoice from '../component/input/SingleChoice'
-import SingleChoiceAdmin from '../component/input/SingleChoiceAdmin'
+import SingleChoice from '../component/userControls/singleChoice/SingleChoice'
+import SingleChoiceAdmin from '../component/userControls/singleChoice/SingleChoiceAdmin'
+import UserControls from '../component/userControls/UserControl'
+import {values} from 'ramda'
 
 const mapStateToProps = (state) => ({
   exercise: state.exercise.active
@@ -79,11 +81,9 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
 
       <Markdown source={ex.description}/>
 
-      <div className="form-group">
-        <input type="text" className="form-control" placeholder="Enter solution" ref="solution"/>
-      </div>
-
-      <SingleChoice options={ex.solution.items} />
+      {
+        (values(ex.controls) || []).map(({controlType, controlProps, order}) => <UserControls key={controlType} {...{controlType, controlProps}}/>)
+      }
 
       <button type="submit" className="btn btn-primary">Submit</button>
 
