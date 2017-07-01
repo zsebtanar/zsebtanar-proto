@@ -10,14 +10,24 @@ const katex = require('markdown-it-katex')
 exports.checkExercise = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     const exerciseId = req.query.key
-    const solution = req.query.solution
+    const userSolutions = req.query.solutions
+
+    const validate = (exercise) => {
+      return userSolutions.map( (us, idx) => {
+        switch (exercise.controls[idx].controlType){
+          case 'single-choice':
+            return exercise.solutions[idx] === us
+          default: return false;
+        }
+      })
+    }
 
     admin.database()
-      .ref(`/exercise/${exerciseId}/private/solution`)
+      .ref(`/exercise/${exerciseId}/private`)
       .on('value', snapshot => {
         res
           .status(200)
-          .send({valid: snapshot.val() === solution})
+          .send({ valid: validate(snapshot.val()) })
       })
   })
 })

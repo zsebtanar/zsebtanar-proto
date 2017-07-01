@@ -2,6 +2,7 @@ import {
   createExercise, getAllPrivateExercises, getPrivateExercise, checkSolution,
   updateExercise, removeExercise
 } from '../services/exercise'
+import {all, identity} from 'ramda'
 
 export const EXERCISE_GET_ALL = 'EXERCISE_GET_ALL'
 export const EXERCISE_GET = 'EXERCISE_GET'
@@ -39,11 +40,12 @@ export function removeExerciseAction(key) {
     .then(() =>dispatch({ type: EXERCISE_REMOVED }))
 }
 
-export function checkSolutionAction(key, solution) {
-  return dispatch => checkSolution(key, solution)
+export function checkSolutionAction(key, solutions) {
+  return dispatch => checkSolution(key, solutions)
       .then(({data}) =>
         dispatch({
-          type: data.valid ? EXERCISE_CHECK_SUCCESS : EXERCISE_CHECK_FAIL
+          type: all(identity, data.valid) ? EXERCISE_CHECK_SUCCESS : EXERCISE_CHECK_FAIL,
+          payload: data
         })
       )
       .catch((error) => dispatch({type: EXERCISE_CHECK_ERROR, payload: error}))

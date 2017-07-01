@@ -2,7 +2,11 @@ import React from 'react'
 
 export default (class extends React.Component {
   onChange = (e) => {
-    console.log(e.currentTarget.value);
+    if (this.props.onChange)
+      this.props.onChange({
+        name: this.props.name,
+        value: e.currentTarget.value
+      });
   }
 
   render() {
