@@ -50,5 +50,5 @@ export function removeExercise(key) {
 
 export function checkSolution(key, solutions) {
   return axios
-    .get(`${__FN_PATH__}api/check-exercise`, {params: {key, solutions, t:Date.now()}})
+    .post(`${__FN_PATH__}api/check-exercise`, {key, solutions})
 }

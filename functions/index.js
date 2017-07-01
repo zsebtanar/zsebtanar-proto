@@ -9,8 +9,8 @@ const katex = require('markdown-it-katex')
 
 exports.checkExercise = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
-    const exerciseId = req.query.key
-    const userSolutions = req.query.solutions
+    const exerciseId = req.body.key
+    const userSolutions = req.body.solutions
 
     const validate = (exercise) => {
       return userSolutions.map( (us, idx) => {
