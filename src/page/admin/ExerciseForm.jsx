@@ -8,7 +8,7 @@ import {getPrivateExercise} from '../../store/services/exercise'
 import {openMarkdownHelpModal} from '../../store/actions/modal'
 import UserControls from '../../component/userControls/UserControl'
 import UserControlAdmin from '../../component/userControls/UserControlAdmin'
-import {SINGLE_CHOICE} from '../../component/userControls/controlTypes'
+import {SINGLE_CHOICE, SINGLE_NUMBER} from '../../component/userControls/controlTypes'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
@@ -58,14 +58,26 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
       this.setState({exercise: assocPath(name.split('.'), value, this.state.exercise)})
     }
 
+    updateUserControlType = (event) => {
+      const {name, value} = event.currentTarget || event
+      this.setState(() => ({
+        exercise: pipe(
+          assocPath(['controls', name, 'controlType'], value),
+          assocPath(['controls', name, 'order'], parseInt(name, 10)),
+          assocPath(['solutions', name], null),
+          assocPath(['controls', name, 'controlProps'], {})
+        )(this.state.exercise)
+      }))
+    }
+
     updateSolution = ({name, value}) => {
-      this.setState({
+      this.setState((state) => ({
         exercise: pipe(
           assocPath(['controls', name, 'order'], parseInt(name, 10)),
           assocPath(['solutions', name], value.solution),
           assocPath(['controls', name, 'controlProps'], omit(['solution'], value))
-        )(this.state.exercise)
-      })
+        )(state.exercise)
+      }))
     }
 
     render() {
@@ -176,30 +188,33 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
           <div className="col-11 offset-1">
             <div className="form-group">
               <select
-                name="controls.0.controlType"
+                name="0"
                 className="form-control"
-                onChange={this.update}
+                onChange={this.updateUserControlType}
                 value={pathOr('', ['controls', '0', 'controlType'], ex)}
               >
                 <option value="">-- Select a control type --</option>
                 <option value={SINGLE_CHOICE}>Single choice</option>
+                <option value={SINGLE_NUMBER}>Single number</option>
               </select>
             </div>
-            {
-              pathOr(false, ['controls', '0', 'controlType'], ex)
-                ? <UserControlAdmin
-                  controlType={pathOr('', ['controls', '0', 'controlType'], ex)}
-                  controlProps={{
-                    name: '0',
-                    value: {
-                      ...pathOr('', ['controls', '0', 'controlProps'], ex),
-                      solution: pathOr('', ['solutions', '0'], ex)
-                    },
-                    onChange: this.updateSolution
-                  }}
-                />
-                : null
-            }
+            <div className="form-group">
+              {
+                pathOr(false, ['controls', '0', 'controlType'], ex)
+                  ? <UserControlAdmin
+                    controlType={pathOr('', ['controls', '0', 'controlType'], ex)}
+                    controlProps={{
+                      name: '0',
+                      value: {
+                        ...pathOr('', ['controls', '0', 'controlProps'], ex),
+                        solution: pathOr('', ['solutions', '0'], ex)
+                      },
+                      onChange: this.updateSolution
+                    }}
+                  />
+                  : null
+              }
+            </div>
           </div>
         </div>
 
@@ -222,7 +237,8 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             : <Muted>Description...</Muted>
         }
         {
-          (values(controls) || []).map(({controlType, controlProps, order}) => <UserControls key={controlType} {...{controlType, controlProps}}/>)
+          (values(controls) || []).map(({controlType, controlProps, order}) => <UserControls
+            key={controlType} {...{controlType, controlProps}}/>)
         }
 
         {

@@ -63,3 +63,8 @@ body {
         margin-bottom: 2rem;
     }
 }
+
+
+.single-number input{
+    width: 100px;
+}

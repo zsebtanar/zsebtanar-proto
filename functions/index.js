@@ -16,6 +16,7 @@ exports.checkExercise = functions.https.onRequest((req, res) => {
       return userSolutions.map( (us, idx) => {
         switch (exercise.controls[idx].controlType){
           case 'single-choice':
+          case 'single-number':
             return exercise.solutions[idx] === us
           default: return false;
         }

@@ -92,11 +92,14 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
 
       <Markdown source={ex.description}/>
 
-      {
-        (values(ex.controls) || []).map(({controlType, controlProps, order}) =>
-          <UserControls key={controlType} {...{controlType, controlProps: {...controlProps, name: order, onChange: this.onChange}}}/>
-        )
-      }
+
+        {
+          (values(ex.controls) || []).map(({controlType, controlProps, order}) =>
+            <div className="form-group " key={controlType} >
+              <UserControls {...{controlType, controlProps: {...controlProps, name: order, onChange: this.onChange}}}/>
+            </div>
+          )
+        }
 
       <button type="submit" className="btn btn-primary">Submit</button>
 
