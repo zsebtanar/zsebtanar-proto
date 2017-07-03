@@ -1,4 +1,8 @@
-import {assocPath, assoc, dissoc, pathOr, pipe, omit, values} from 'ramda'
+import {
+  __,
+  merge, assocPath, assoc, dissoc, pathOr, pipe, omit, values, evolve, append, map, identity,
+  toPairs, flip
+} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
@@ -9,6 +13,7 @@ import {openMarkdownHelpModal} from '../../store/actions/modal'
 import UserControls from '../../component/userControls/UserControl'
 import UserControlAdmin from '../../component/userControls/UserControlAdmin'
 import {SINGLE_CHOICE, SINGLE_NUMBER} from '../../component/userControls/controlTypes'
+import {uid} from '../../util/uuid'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
@@ -32,7 +37,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
           .then(ex => assoc('title', (ex.title || '') + ' (copy)'))
           .then(this.setExercise)
       }
-      return this.setExercise({})
+      return this.setExercise({controls: {}, solutions: {}})
     }
 
     setExercise = (exercise) => {
@@ -60,23 +65,45 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
 
     updateUserControlType = (event) => {
       const {name, value} = event.currentTarget || event
-      this.setState(() => ({
-        exercise: pipe(
-          assocPath(['controls', name, 'controlType'], value),
-          assocPath(['controls', name, 'order'], parseInt(name, 10)),
-          assocPath(['solutions', name], null),
-          assocPath(['controls', name, 'controlProps'], {})
-        )(this.state.exercise)
+      this.setState(evolve({
+        exercise: {
+          controls: {
+            [name]: merge(__, {
+              controlType: value,
+              controlProps: {}
+            })
+          },
+          solutions: {[name]: identity(null)}
+        }
       }))
     }
 
     updateSolution = ({name, value}) => {
-      this.setState((state) => ({
-        exercise: pipe(
-          assocPath(['controls', name, 'order'], parseInt(name, 10)),
-          assocPath(['solutions', name], value.solution),
-          assocPath(['controls', name, 'controlProps'], omit(['solution'], value))
-        )(state.exercise)
+      console.log(name, value)
+      this.setState(evolve({
+        exercise: {
+          controls: {
+            [name]: merge(__, { controlProps: omit(['solution'], value) })
+          },
+          solutions: merge(__, {[name]: value.solution})
+        }
+      }))
+    }
+
+    addUserControl = () => {
+      this.setState(evolve({
+        exercise: {
+          controls: (c) => ({...c, [uid()]: {order: values(c).length}})
+        }
+      }))
+    }
+
+    removeUserControl = (key) => () => {
+      this.setState(evolve({
+        exercise: {
+          controls: dissoc(key),
+          solutions: dissoc(key)
+        }
       }))
     }
 
@@ -101,6 +128,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
 
     renderForm() {
       const ex = this.state.exercise
+      const controls = toPairs(ex.controls)
       return (<form onSubmit={this.saveExercise}>
         <div className="form-group row">
           <label className="col-4 col-form-label">Grade: </label>
@@ -183,40 +211,25 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             value={pathOr('', ['description'], ex)}
           />
         </div>
-        <h4>Solutions</h4>
-        <div className="row">
-          <div className="col-11 offset-1">
-            <div className="form-group">
-              <select
-                name="0"
-                className="form-control"
-                onChange={this.updateUserControlType}
-                value={pathOr('', ['controls', '0', 'controlType'], ex)}
-              >
-                <option value="">-- Select a control type --</option>
-                <option value={SINGLE_CHOICE}>Single choice</option>
-                <option value={SINGLE_NUMBER}>Single number</option>
-              </select>
-            </div>
-            <div className="form-group">
-              {
-                pathOr(false, ['controls', '0', 'controlType'], ex)
-                  ? <UserControlAdmin
-                    controlType={pathOr('', ['controls', '0', 'controlType'], ex)}
-                    controlProps={{
-                      name: '0',
-                      value: {
-                        ...pathOr('', ['controls', '0', 'controlProps'], ex),
-                        solution: pathOr('', ['solutions', '0'], ex)
-                      },
-                      onChange: this.updateSolution
-                    }}
-                  />
-                  : null
-              }
-            </div>
-          </div>
+
+        <div className="d-flex justify-content-between align-items-center">
+          <h4>User controls</h4>
+          <button
+            type="button"
+            className="btn btn-primary"
+            title="Add user control"
+            onClick={this.addUserControl}
+          >
+            <i className="fa fa-plus"/>
+          </button>
         </div>
+        <ol>
+          {
+            controls.length
+              ? controls.map(this.renderUserControlItem)
+              : <div className="alert alert-info">Please add at least one user control</div>
+          }
+        </ol>
 
         <div className="col-sm-8 offset-sm-4">
           <NavLink exact to="/exercise" className="btn btn-secondary">Cancel</NavLink>
@@ -225,6 +238,47 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
         </div>
       </form>)
     }
+
+    renderUserControlItem = ([key, item]) => {
+      const ex = this.state.exercise
+      const controlType = pathOr('', ['controlType'], item)
+      const controlProps = pathOr('', ['controlProps'], item)
+      const solution = pathOr('', ['solutions', key], ex)
+
+      return (
+        <li key={key}>
+          <div className="form-group d-flex justify-content-between align-items-center">
+            <select
+              name={key}
+              className="form-control"
+              onChange={this.updateUserControlType}
+              value={controlType}
+            >
+              <option value="">-- Select a control type --</option>
+              <option value={SINGLE_CHOICE}>Single choice</option>
+              <option value={SINGLE_NUMBER}>Single number</option>
+            </select>
+            <button
+              type="button"
+              className="btn btn-sm btn-secondary text-danger mx-1"
+              onClick={this.removeUserControl(key)}
+            >
+              <i className="fa fa-trash"/>
+            </button>
+          </div>
+          <div className="form-group">
+            {
+              pathOr(false, ['controlType'], item)
+                ? <UserControlAdmin
+                  controlType={controlType}
+                  controlProps={{name: key, value: {...controlProps, solution}, onChange: this.updateSolution}}
+                />
+                : null
+            }
+          </div>
+        </li>)
+    }
+
 
     renderPreview() {
       const {classification, description, controls} = this.state.exercise
@@ -237,10 +291,13 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             : <Muted>Description...</Muted>
         }
         {
-          (values(controls) || []).map(({controlType, controlProps, order}) => <UserControls
-            key={controlType} {...{controlType, controlProps}}/>)
+          (toPairs(controls) || []).map(([key, {controlType, controlProps}]) =>
+            <div className="form-group" key={key}>
+              <UserControls {...{controlType, controlProps}}/>
+            </div>
+          )
         }
-
+        <hr/>
         {
           __DEV__
             ? <pre>{
