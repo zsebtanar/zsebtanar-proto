@@ -4,10 +4,14 @@ import {openInputModal} from '../../../store/actions/modal'
 
 
 export default connect(undefined, {openInputModal})(class extends React.Component {
-  state = {
-    prefix: undefined,
-    postfix: undefined,
-    solution: null
+  constructor(props){
+    super(props)
+
+    this.state = {
+      prefix: props.value.prefix || null,
+      postfix: props.value.postfix || null,
+      solution: props.value.solution || ''
+    }
   }
 
   editLabel = labelName => () => {
@@ -37,12 +41,12 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
   }
 
   render() {
-    const {prefix, postfix} = this.state
+    const {prefix, postfix, solution} = this.state
     const {editLabel, deleteLabel} = this
 
     return (<div className="single-number single-number-admin d-flex align-items-center">
       <Label {...{name: 'prefix', value: prefix, editLabel, deleteLabel}} />
-      <input type="number" onChange={this.setSolution} className="form-control"/>
+      <input type="number" onChange={this.setSolution} className="form-control" value={solution}/>
       <Label {...{name: 'postfix', value: postfix, editLabel, deleteLabel}} />
     </div>)
   }
