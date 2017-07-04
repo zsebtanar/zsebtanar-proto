@@ -1,8 +1,4 @@
-import {
-  __,
-  merge, assocPath, assoc, dissoc, pathOr, pipe, omit, values, evolve, append, map, identity,
-  toPairs, flip
-} from 'ramda'
+import {__, merge, assocPath, assoc, dissoc, pathOr, omit, values, evolve, identity} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
@@ -14,6 +10,7 @@ import UserControls from '../../component/userControls/UserControl'
 import UserControlAdmin from '../../component/userControls/UserControlAdmin'
 import {SINGLE_CHOICE, SINGLE_NUMBER} from '../../component/userControls/controlTypes'
 import {uid} from '../../util/uuid'
+import {pairsInOrder} from '../../util/fn'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
@@ -128,7 +125,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
 
     renderForm() {
       const ex = this.state.exercise
-      const controls = toPairs(ex.controls)
+      const controls = pairsInOrder(ex.controls)
       return (<form onSubmit={this.saveExercise}>
         <div className="form-group row">
           <label className="col-4 col-form-label">Grade: </label>
@@ -291,7 +288,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             : <Muted>Description...</Muted>
         }
         {
-          (toPairs(controls) || []).map(([key, {controlType, controlProps}]) =>
+          (pairsInOrder(controls) || []).map(([key, {controlType, controlProps}]) =>
             <div className="form-group" key={key}>
               <UserControls {...{controlType, controlProps}}/>
             </div>

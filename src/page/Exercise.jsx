@@ -5,6 +5,7 @@ import {NavLink} from 'react-router-dom'
 import Markdown from '../component/general/Markdown'
 import UserControls from '../component/userControls/UserControl'
 import {values, pathOr} from 'ramda'
+import {pairsInOrder} from '../util/fn'
 
 const mapStateToProps = (state) => ({
   exercise: state.exercise.active
@@ -29,10 +30,8 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
     )
   }
 
-  onChange = (event) => {
-    const solutions = this.state.solutions.slice()
-    solutions[parseInt(event.name, 10)] = event.value
-    this.setState({solutions})
+  onChange = ({name, value}) => {
+    this.setState({solutions: {...this.state.solutions, [name]: value}})
   }
 
   toggleDetails = () => {
@@ -94,9 +93,9 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
 
 
         {
-          (values(ex.controls) || []).map(({controlType, controlProps, order}) =>
-            <div className="form-group " key={controlType} >
-              <UserControls {...{controlType, controlProps: {...controlProps, name: order, onChange: this.onChange}}}/>
+          (pairsInOrder(ex.controls)).map(([key, {controlType, controlProps, order}]) =>
+            <div className="form-group " key={key} >
+              <UserControls {...{controlType, controlProps: {...controlProps, name: key, onChange: this.onChange}}}/>
             </div>
           )
         }
