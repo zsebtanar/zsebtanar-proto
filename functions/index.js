@@ -1,3 +1,4 @@
+const {toPairs} = require('ramda')
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 admin.initializeApp(functions.config().firebase)
@@ -13,11 +14,11 @@ exports.checkExercise = functions.https.onRequest((req, res) => {
     const userSolutions = req.body.solutions
 
     const validate = (exercise) => {
-      return userSolutions.map( (us, idx) => {
-        switch (exercise.controls[idx].controlType){
+      return toPairs(userSolutions).map( ([key, us]) => {
+        switch (exercise.controls[key].controlType){
           case 'single-choice':
           case 'single-number':
-            return exercise.solutions[idx] === us
+            return exercise.solutions[key] === us
           default: return false;
         }
       })
@@ -26,9 +27,13 @@ exports.checkExercise = functions.https.onRequest((req, res) => {
     admin.database()
       .ref(`/exercise/${exerciseId}/private`)
       .on('value', snapshot => {
-        res
-          .status(200)
-          .send({ valid: validate(snapshot.val()) })
+        try{
+          res
+            .status(200)
+            .send({ valid: validate(snapshot.val()) })
+        } catch (e){
+          res.status(500).send(e.message)
+        }
       })
   })
 })
