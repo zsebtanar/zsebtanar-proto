@@ -81,6 +81,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
             name={item.name}
             value={item.value}
             checked={item.value === this.state.solution}
+            required={this.props.required}
             onChange={this.selectSolution}/>
           <span className="custom-control-indicator"/>
           <span className="custom-control-description">{item.label}</span>

@@ -25,7 +25,7 @@ export default (class extends React.Component {
 
 const RadioInput = (props) => (
   <label className="custom-control custom-radio d-block" key={props.value}>
-    <input {...props} type="radio" className="custom-control-input"/>
+    <input {...props} type="radio" className="custom-control-input" required={props.required}/>
     <span className="custom-control-indicator"/>
     <span className="custom-control-description">{props.label}</span>
   </label>)

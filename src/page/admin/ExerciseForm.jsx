@@ -135,6 +135,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               type="text"
               name="classification.grade"
               onChange={this.update}
+              required
               value={pathOr('', ['classification', 'grade'], ex)}
             />
           </div>
@@ -146,6 +147,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               className="form-control"
               type="text"
               name="classification.subject"
+              required
               onChange={this.update}
               value={pathOr('', ['classification', 'subject'], ex)}
             />
@@ -159,6 +161,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               type="text"
               name="classification.topic"
               onChange={this.update}
+              required
               value={pathOr('', ['classification', 'topic'], ex)}
             />
           </div>
@@ -170,6 +173,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               className="form-control"
               type="text"
               name="title"
+              required
               onChange={this.update}
               value={pathOr('', ['title'], ex)}
             />
@@ -204,6 +208,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             className="form-control"
             name="description"
             rows="10"
+            required
             onChange={this.update}
             value={pathOr('', ['description'], ex)}
           />
@@ -249,6 +254,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               name={key}
               className="form-control"
               onChange={this.updateUserControlType}
+              required
               value={controlType}
             >
               <option value="">-- Select a control type --</option>
@@ -268,7 +274,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               pathOr(false, ['controlType'], item)
                 ? <UserControlAdmin
                   controlType={controlType}
-                  controlProps={{name: key, value: {...controlProps, solution}, onChange: this.updateSolution}}
+                  controlProps={{name: key, value: {...controlProps, solution}, onChange: this.updateSolution, required: true}}
                 />
                 : null
             }
