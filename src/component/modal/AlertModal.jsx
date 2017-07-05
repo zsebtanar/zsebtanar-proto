@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '../general/Button'
 
 const modalSize = (size) => {
   switch (size){
@@ -22,13 +23,7 @@ export default (function AlertModal(props) {
           {props.text}
         </div>
         <div className="modal-footer text-center">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={props.close}
-          >
-            Ok
-          </button>
+          <Button onAction={props.close}>Ok</Button>
         </div>
       </div>
     </div>

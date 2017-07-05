@@ -4,8 +4,9 @@ import {checkSolutionAction, getExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
 import Markdown from '../component/general/Markdown'
 import UserControls from '../component/userControls/UserControl'
-import {values, pathOr} from 'ramda'
+import {pathOr} from 'ramda'
 import {pairsInOrder} from '../util/fn'
+import Button from '../component/general/Button'
 
 const mapStateToProps = (state) => ({
   exercise: state.exercise.active
@@ -100,7 +101,7 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
           )
         }
 
-      <button type="submit" className="btn btn-primary">Submit</button>
+      <Button submit primary>Submit</Button>
 
     </form>)
   }

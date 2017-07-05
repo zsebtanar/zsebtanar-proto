@@ -1,5 +1,6 @@
 import React from 'react'
 import Markdown from '../general/Markdown'
+import Button from '../general/Button'
 
 export default (function MarkdownHelpModal(props) {
   return (
@@ -237,13 +238,7 @@ Sample text here...
           </div>
         </div>
         <div className="modal-footer text-center">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={props.close}
-          >
-            Close
-          </button>
+          <Button onAction={props.close}>Close</Button>
         </div>
       </div>
     </div>

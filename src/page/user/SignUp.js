@@ -2,6 +2,7 @@ import * as React from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 import {signUp} from '../../store/actions/auth'
+import Button from '../../component/general/Button'
 
 
 const mapStateToProps = (state) => ({
@@ -67,7 +68,7 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
           id="id-pw-2"
           placeholder="Password"/>
       </div>
-      <button type="submit" className="btn btn-primary">Submit</button>
+      <Button submit primary>Submit</Button>
     </form>
   </div>)
 }))

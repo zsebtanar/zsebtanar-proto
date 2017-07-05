@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {openInputModal} from '../../../store/actions/modal'
+import Button from '../../general/Button'
 
 
 export default connect(undefined, {openInputModal})(class extends React.Component {
@@ -57,21 +58,14 @@ const Muted = (props) => (<i className="text-muted">{props.children}</i>)
 const Label = (props) => (
   <span>
     {props.value ? props.value : <Muted>{props.name}</Muted>}
-    <button
-      type="button"
-      className="btn btn-sm btn-secondary"
-      onClick={props.editLabel(props.name)}
-    >
+    <Button onAction={props.editLabel(props.name)}>
       <i className="fa fa-edit"/>
-    </button>
+    </Button>
     {
       props.value
-        ? <button
-          type="button"
-          className="btn btn-sm btn-secondary"
-          onClick={props.deleteLabel(props.name)}>
-          <i className="fa fa-trash"/>
-        </button>
+        ? <Button onAction={props.deleteLabel(props.name)}>
+            <i className="fa fa-trash"/>
+          </Button>
         : ''
     }
   </span>

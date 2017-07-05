@@ -2,6 +2,7 @@ import * as React from 'react'
 import {connect} from 'react-redux'
 import {signIn} from '../../store/actions/auth'
 import {withRouter} from 'react-router-dom'
+import Button from '../../component/general/Button'
 
 
 const mapStateToProps = (state) => ({
@@ -44,7 +45,7 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
           placeholder="Password"
           ref={inp => pwField = inp}/>
       </div>
-      <button type="submit" className="btn btn-primary">Submit</button>
+      <Button submit primary>Submit</Button>
     </form>
   </div>)
 }))

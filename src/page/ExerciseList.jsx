@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getAllExerciseAction, removeExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
+import Button from '../component/general/Button'
 
 const mapStateToProps = (state) => ({
   exercises: state.exercise.list
@@ -73,9 +74,9 @@ export default connect(mapStateToProps, {getAllExerciseAction, removeExerciseAct
             <i className="fa fa-clone"/>
           </NavLink>
           &nbsp;
-          <button type="button" className="btn btn-sm btn-secondary" title="Remove exercise" onClick={this.removeExercise(ex._key)}>
+          <Button title="Remove exercise" className="btn btn-sm btn-secondary" onAction={this.removeExercise(ex._key)}>
             <span className="text-danger"><i className="fa fa-trash"/></span>
-          </button>
+          </Button>
         </td>
       </tr>
     )

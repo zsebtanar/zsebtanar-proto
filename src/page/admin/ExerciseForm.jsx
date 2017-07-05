@@ -11,6 +11,7 @@ import UserControlAdmin from '../../component/userControls/UserControlAdmin'
 import {SINGLE_CHOICE, SINGLE_NUMBER} from '../../component/userControls/controlTypes'
 import {uid} from '../../util/uuid'
 import {pairsInOrder} from '../../util/fn'
+import Button from '../../component/general/Button'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
@@ -194,14 +195,13 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
         <div className="form-group">
           <label className="d-flex justify-content-between align-items-center">
             <div>Description:</div>
-            <button
+            <Button
               tabIndex="-1"
-              type="button"
-              className="btn btn-sm btn-link"
-              onClick={this.props.openMarkdownHelpModal}
+              className="btn-link"
+              onAction={this.props.openMarkdownHelpModal}
             >
               Help for markdown
-            </button>
+            </Button>
 
           </label>
           <textarea
@@ -216,14 +216,9 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
 
         <div className="d-flex justify-content-between align-items-center">
           <h4>User controls</h4>
-          <button
-            type="button"
-            className="btn btn-primary"
-            title="Add user control"
-            onClick={this.addUserControl}
-          >
+          <Button primary title="Add user control" onAction={this.addUserControl}>
             <i className="fa fa-plus"/>
-          </button>
+          </Button>
         </div>
         <ol>
           {
@@ -236,7 +231,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
         <div className="col-sm-8 offset-sm-4">
           <NavLink exact to="/exercise" className="btn btn-secondary">Cancel</NavLink>
           &nbsp;
-          <button type="submit" className="btn btn-primary">Save</button>
+          <Button submit primary>Save</Button>
         </div>
       </form>)
     }
@@ -261,13 +256,12 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               <option value={SINGLE_CHOICE}>Single choice</option>
               <option value={SINGLE_NUMBER}>Single number</option>
             </select>
-            <button
-              type="button"
-              className="btn btn-sm btn-secondary text-danger mx-1"
-              onClick={this.removeUserControl(key)}
+            <Button
+              className="btn-secondary text-danger mx-1"
+              onAction={this.removeUserControl(key)}
             >
               <i className="fa fa-trash"/>
-            </button>
+            </Button>
           </div>
           <div className="form-group">
             {

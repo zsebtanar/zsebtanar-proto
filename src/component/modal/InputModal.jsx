@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '../general/Button'
 
 export default (function InputModal(props) {
   let valueField
@@ -40,20 +41,12 @@ export default (function InputModal(props) {
           </div>
 
           <div className="modal-footer text-center">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={props.close}
-            >
+            <Button onAction={props.close}>
               Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={update}
-            >
+            </Button>
+            <Button submit primary onAction={update}>
               Update
-            </button>
+            </Button>
           </div>
         </div>
       </form>

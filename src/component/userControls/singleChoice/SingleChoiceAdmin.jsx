@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {map, findIndex, pick, propEq, update} from 'ramda'
 import {openInputModal} from '../../../store/actions/modal'
+import Button from '../../general/Button'
 
 
 export default connect(undefined, {openInputModal})(class extends React.Component {
@@ -58,13 +59,9 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
   render() {
     const options = this.state.options;
     return (<div className="single-choice single-choice-admin">
-      <button
-        type="button"
-        className="btn btn-sm btn-secondary"
-        onClick={this.addItem}
-      >
+      <Button onAction={this.addItem}>
         <i className="fa fa-plus"/> Add option
-      </button>
+      </Button>
       <ol>
         {options.map((data) => this.renderItem({...data, name: 'admin', isLast: options.length < 2}))}
       </ol>
@@ -89,21 +86,13 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
         {
           item.isLast
             ? ''
-            : <button
-              className="btn btn-sm btn-link"
-              type="button"
-              onClick={() => this.removeItem(item.value)}
-            >
+            : <Button className="btn-sm btn-link" onAction={() => this.removeItem(item.value)}>
               <span className="text-danger"><i className="fa fa-trash"/></span>
-            </button>
+            </Button>
         }
-        <button
-          className="btn btn-sm btn-link"
-          type="button"
-          onClick={() => this.editItem(item)}
-        >
+        <Button className="btn-sm btn-link" onAction={() => this.editItem(item)}>
           <i className="fa fa-edit"/>
-        </button>
+        </Button>
       </li>
     )
   }
