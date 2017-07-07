@@ -17,6 +17,7 @@ const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
 export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
   class extends React.Component {
+    mode = 'Add'
     state = {
       loading: true,
       exercise: {}
@@ -26,13 +27,15 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
       const key = this.props.match.params.key
       const cloneKey = this.props.match.params.clone
       if (key) {
+        this.mode = 'Update'
         return getPrivateExercise(key)
           .then(this.setExercise)
       }
       if (cloneKey) {
+        this.mode = 'Clone'
         return getPrivateExercise(cloneKey)
           .then(dissoc('_key'))
-          .then(ex => assoc('title', (ex.title || '') + ' (copy)'))
+          .then(ex => assoc('title', `${(ex.title || '')} [copy]`, ex))
           .then(this.setExercise)
       }
       return this.setExercise({controls: {}, solutions: {}})
@@ -106,14 +109,13 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
     }
 
     render() {
-      const key = this.props.match.params.key
       const loading = this.state.loading
 
       return loading
         ? (<Muted>Loading...</Muted>)
         : (<div>
             <div className="d-flex justify-content-between align-items-center">
-              <h2>{key ? 'Update' : 'Add'} exercise</h2>
+              <h2>{this.mode} exercise</h2>
             </div>
             <hr/>
             <div className="row">
@@ -128,70 +130,12 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
       const ex = this.state.exercise
       const controls = pairsInOrder(ex.controls)
       return (<form onSubmit={this.saveExercise}>
-        <div className="form-group row">
-          <label className="col-4 col-form-label">Grade: </label>
-          <div className="col-8">
-            <input
-              className="form-control"
-              type="text"
-              name="classification.grade"
-              onChange={this.update}
-              required
-              value={pathOr('', ['classification', 'grade'], ex)}
-            />
-          </div>
-        </div>
-        <div className="form-group row">
-          <label className="col-4 col-form-label">Subject: </label>
-          <div className="col-8">
-            <input
-              className="form-control"
-              type="text"
-              name="classification.subject"
-              required
-              onChange={this.update}
-              value={pathOr('', ['classification', 'subject'], ex)}
-            />
-          </div>
-        </div>
-        <div className="form-group row">
-          <label className="col-4 col-form-label">Topic: </label>
-          <div className="col-8">
-            <input
-              className="form-control"
-              type="text"
-              name="classification.topic"
-              onChange={this.update}
-              required
-              value={pathOr('', ['classification', 'topic'], ex)}
-            />
-          </div>
-        </div>
-        <div className="form-group row">
-          <label className="col-4 col-form-label">Title: </label>
-          <div className="col-8">
-            <input
-              className="form-control"
-              type="text"
-              name="title"
-              required
-              onChange={this.update}
-              value={pathOr('', ['title'], ex)}
-            />
-          </div>
-        </div>
-        <div className="form-group row">
-          <label className="col-4 col-form-label">Tags:</label>
-          <div className="col-8">
-            <input
-              className="form-control"
-              type="text"
-              name="classification.tags"
-              onChange={this.update}
-              value={pathOr('', ['classification', 'tags'], ex)}
-            />
-          </div>
-        </div>
+        {this.renderTextInput('Grade: ', ['classification', 'grade'])}
+        {this.renderTextInput('Subject: ', ['classification', 'subject'])}
+        {this.renderTextInput('Topic: ', ['classification', 'topic'])}
+        {this.renderTextInput('Title: ', ['title'])}
+        {this.renderTextInput('Tags: ', ['classification', 'tags'])}
+
         <div className="form-group">
           <label className="d-flex justify-content-between align-items-center">
             <div>Description:</div>
@@ -234,6 +178,23 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
           <Button submit primary>Save</Button>
         </div>
       </form>)
+    }
+
+    renderTextInput(label, path){
+      console.log(pathOr('', path, this.state.exercise))
+      return (<div className="form-group row">
+        <label className="col-4 col-form-label">{label}</label>
+        <div className="col-8">
+          <input
+            className="form-control"
+            type="text"
+            name={path.join('.')}
+            onChange={this.update}
+            required
+            value={pathOr('', path, this.state.exercise)}
+          />
+        </div>
+      </div>)
     }
 
     renderUserControlItem = ([key, item]) => {
