@@ -1,9 +1,8 @@
 import * as React from 'react'
 
-export default function Button(props){
-
+export default function Button (props) {
   const onClick = (event) => {
-    if (props.onAction){
+    if (props.onAction) {
       event.preventDefault()
       props.onAction(event)
     }

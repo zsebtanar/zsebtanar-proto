@@ -1,14 +1,14 @@
 import React from 'react'
 
-export default function(props){
+export default function (props) {
   const setSolution = (e) => {
-    if (props.onChange)
+    if (props.onChange) {
       props.onChange({
         name: props.name,
         value: e.currentTarget.value
-      });
+      })
+    }
   }
-
 
   return (<div className="single-number d-flex align-items-center">
     <span className="prefix">{props.prefix}</span>

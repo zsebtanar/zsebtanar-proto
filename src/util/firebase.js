@@ -1,3 +1,3 @@
-export function reseolveSnapshot(snapshot) {
+export function reseolveSnapshot (snapshot) {
   return snapshot.val()
 }

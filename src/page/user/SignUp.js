@@ -1,9 +1,8 @@
 import * as React from 'react'
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router'
-import {signUp} from '../../store/actions/auth'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
+import { signUp } from '../../store/actions/auth'
 import Button from '../../component/general/Button'
-
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
@@ -41,7 +40,7 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
           id="id-username"
           aria-describedby="emailHelp"
           placeholder="Enter username"
-          ref={inp => nameField = inp}/>
+          ref={inp => { nameField = inp }}/>
       </div>
       <div className="form-group">
         <input
@@ -50,7 +49,7 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
           id="id-email"
           aria-describedby="emailHelp"
           placeholder="Enter email"
-          ref={inp => emailField = inp}/>
+          ref={inp => { emailField = inp }}/>
         <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
       </div>
       <div className="form-group">
@@ -59,7 +58,7 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
           className="form-control"
           id="id-pw-1"
           placeholder="Password"
-          ref={inp => pwField = inp}/>
+          ref={inp => { pwField = inp }}/>
       </div>
       <div className="form-group">
         <input

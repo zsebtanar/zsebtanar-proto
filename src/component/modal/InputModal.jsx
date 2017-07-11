@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '../general/Button'
 
-export default (function InputModal(props) {
+export default (function InputModal (props) {
   let valueField
 
   const update = (e) => {
@@ -11,7 +11,7 @@ export default (function InputModal(props) {
   }
 
   const getRef = inp => {
-    if (inp){
+    if (inp) {
       inp.value = props.value || ''
       valueField = inp
     }

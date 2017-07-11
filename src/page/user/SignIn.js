@@ -1,9 +1,8 @@
 import * as React from 'react'
-import {connect} from 'react-redux'
-import {signIn} from '../../store/actions/auth'
-import {withRouter} from 'react-router-dom'
+import { connect } from 'react-redux'
+import { signIn } from '../../store/actions/auth'
+import { withRouter } from 'react-router-dom'
 import Button from '../../component/general/Button'
-
 
 const mapStateToProps = (state) => ({
   session: state.session
@@ -14,7 +13,7 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
   let pwField
 
   const onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     props
       .signIn(emailField.value, pwField.value)
       .then(({error}) => error ? null : props.history.push('/'))
@@ -35,7 +34,7 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
           placeholder="Enter email"
-          ref={inp => emailField = inp}/>
+          ref={inp => { emailField = inp }}/>
       </div>
       <div className="form-group">
         <input
@@ -43,7 +42,7 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
           className="form-control"
           id="exampleInputPassword1"
           placeholder="Password"
-          ref={inp => pwField = inp}/>
+          ref={inp => { pwField = inp }}/>
       </div>
       <Button submit primary>Submit</Button>
     </form>

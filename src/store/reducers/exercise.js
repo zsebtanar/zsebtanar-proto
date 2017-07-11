@@ -1,8 +1,9 @@
 import {
+  EXERCISE_CHECK_FAIL,
+  EXERCISE_CHECK_SUCCESS,
   EXERCISE_GET,
   EXERCISE_GET_ALL,
-  EXERCISE_CHECK_SUCCESS,
-  EXERCISE_CHECK_FAIL, HINT_GET
+  HINT_GET
 } from '../actions/exercise'
 
 const INIT_STATE = {
@@ -10,7 +11,7 @@ const INIT_STATE = {
   list: []
 }
 
-export default function exerciseWorkflow(state=INIT_STATE, action) {
+export default function exerciseWorkflow (state = INIT_STATE, action) {
   switch (action.type) {
     case EXERCISE_GET_ALL:
       return {...state, list: action.payload}

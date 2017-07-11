@@ -2,7 +2,7 @@ import React from 'react'
 import Markdown from '../general/Markdown'
 import Button from '../general/Button'
 
-export default (function MarkdownHelpModal(props) {
+export default (function MarkdownHelpModal (props) {
   return (
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">
@@ -119,7 +119,6 @@ _This is italic text_
               <p>2. Consectetur adipiscing elit</p>
               <p>3. Integer molestie lorem at massa</p>
 
-
               <p>1. You can use sequential numbers...</p>
               <p>1. ...or keep all the numbers as `1.`</p>
             </div>
@@ -217,7 +216,7 @@ Sample text here...
               <pre>
 ![Zsebtanar](/assets/logo.png)<br/>
 ![Zsebtanar](/assets/logo.png "Zsebtanár logó")
-            </pre>
+              </pre>
             </div>
             <div className="col-6">
               <Markdown source={`

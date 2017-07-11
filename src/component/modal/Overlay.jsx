@@ -1,13 +1,13 @@
-import {pipe} from 'ramda'
+import { pipe } from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
-import {closeModal} from '../../store/actions/modal'
+import { connect } from 'react-redux'
+import { closeModal } from '../../store/actions/modal'
 
 const mapStateToProps = (state) => state.modal
 const body = window.document.body
 
 export default connect(mapStateToProps, {closeModal})(
-  function Overlay({modal, parameters, closeModal}) {
+  function Overlay ({modal, parameters, closeModal}) {
     if (!modal) {
       body.className = body.className.replace(/\b(\s*modal-open\s*)\b/, '')
       return null
@@ -22,8 +22,7 @@ export default connect(mapStateToProps, {closeModal})(
         style={{display: 'block'}}
       >
         <div className="modal-backdrop fade show" onClick={close}/>
-        <Modal {...parameters} close={close} />
+        <Modal {...parameters} close={close}/>
       </div>)
     }
-
   })

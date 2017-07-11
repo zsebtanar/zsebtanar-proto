@@ -6,8 +6,7 @@ import modal from './modal'
 const rootReducer = combineReducers({
   session,
   exercise,
-  modal,
-  app: () => ({})
+  modal
 })
 
 export default rootReducer

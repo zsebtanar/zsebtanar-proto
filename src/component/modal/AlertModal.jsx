@@ -2,14 +2,14 @@ import React from 'react'
 import Button from '../general/Button'
 
 const modalSize = (size) => {
-  switch (size){
+  switch (size) {
     case 'small': return 'modal-sm'
     case 'large': return 'modal-lg'
     default: return ''
   }
 }
 
-export default (function AlertModal(props) {
+export default (function AlertModal (props) {
   return (
     <div className={`modal-dialog ${modalSize(props.size)}`} role="document">
       <div className="modal-content">

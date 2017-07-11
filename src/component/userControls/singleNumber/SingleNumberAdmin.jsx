@@ -1,11 +1,10 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {openInputModal} from '../../../store/actions/modal'
+import { connect } from 'react-redux'
+import { openInputModal } from '../../../store/actions/modal'
 import Button from '../../general/Button'
 
-
 export default connect(undefined, {openInputModal})(class extends React.Component {
-  constructor(props){
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -41,7 +40,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
     }
   }
 
-  render() {
+  render () {
     const {prefix, postfix, solution} = this.state
     const {editLabel, deleteLabel} = this
 
@@ -64,8 +63,8 @@ const Label = (props) => (
     {
       props.value
         ? <Button onAction={props.deleteLabel(props.name)} className="btn-sm btn-link text-danger">
-            <i className="fa fa-trash"/>
-          </Button>
+          <i className="fa fa-trash"/>
+        </Button>
         : ''
     }
   </span>

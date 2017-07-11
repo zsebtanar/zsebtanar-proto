@@ -3,11 +3,11 @@ import Markdown from 'markdown-it'
 import katex from 'markdown-it-katex'
 
 export default (class extends React.Component {
-  initMD(options) {
+  initMD (options) {
     this.md = new Markdown(options).use(katex)
   }
 
-  render() {
+  render () {
     return <div>
       {
         this.props.source
@@ -17,13 +17,13 @@ export default (class extends React.Component {
     </div>
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate (nextProps, nextState) {
     if (nextProps.options !== this.props.options) {
       this.initMD(nextProps.options)
     }
   }
 
-  renderMarkdown(source) {
+  renderMarkdown (source) {
     if (!this.md) {
       this.initMD(this.props.options)
     }

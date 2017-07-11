@@ -1,10 +1,6 @@
 import React from 'react'
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Home from './page/Home'
 import ExerciseForm from './page/admin/ExerciseForm'
 import SignIn from './page/user/SignIn'

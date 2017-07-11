@@ -1,5 +1,5 @@
-import {createUser} from '../services/user'
-import {getUserAction} from './user'
+import { createUser } from '../services/user'
+import { getUserAction } from './user'
 
 const AUTH = firebase.auth()
 
@@ -9,11 +9,11 @@ export const SING_IN_ERROR = 'SING_IN_ERROR'
 export const SING_OUT_SUCCESS = 'SING_OUT_SUCCESS'
 export const SING_OUT_ERROR = 'SING_OUT_ERROR'
 
-export function initUser() {
+export function initUser () {
   return AUTH.currentUser
 }
 
-export function watchAuth(store) {
+export function watchAuth (store) {
   AUTH.onAuthStateChanged(function (user) {
     if (user) {
       store.dispatch(getUserAction(user.uid))
@@ -24,11 +24,11 @@ export function watchAuth(store) {
   })
 }
 
-export function signUp(email, password, data) {
+export function signUp (email, password, data) {
   return dispatch =>
     AUTH
       .createUserWithEmailAndPassword(email, password)
-      .then( user => createUser(user.uid, data))
+      .then(user => createUser(user.uid, data))
       .catch(error =>
         dispatch({
           type: SING_UP_ERROR,
@@ -38,7 +38,7 @@ export function signUp(email, password, data) {
       )
 }
 
-export function signIn(email, password) {
+export function signIn (email, password) {
   return dispatch =>
     AUTH
       .signInWithEmailAndPassword(email, password)
@@ -51,9 +51,7 @@ export function signIn(email, password) {
       )
 }
 
-
-export function signOut() {
-
+export function signOut () {
   return dispatch =>
     AUTH
       .signOut()

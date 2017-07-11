@@ -1,9 +1,8 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {map, findIndex, pick, propEq, update} from 'ramda'
-import {openInputModal} from '../../../store/actions/modal'
+import { connect } from 'react-redux'
+import { findIndex, map, pick, propEq, update } from 'ramda'
+import { openInputModal } from '../../../store/actions/modal'
 import Button from '../../general/Button'
-
 
 export default connect(undefined, {openInputModal})(class extends React.Component {
   state = {
@@ -11,8 +10,8 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
     solution: undefined
   }
 
-  componentWillMount() {
-    if (this.props.value && this.props.value.options){
+  componentWillMount () {
+    if (this.props.value && this.props.value.options) {
       this.setState(this.props.value)
     } else if (this.state.options.length < 1) {
       this.addItem()
@@ -43,21 +42,24 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
   }
 
   updateState = (data) => {
-    if (data.options){
-      data.options = data.options.map((item, idx) =>  ({...item, value: idx.toString()}))
+    if (data.options) {
+      data.options = data.options.map((item, idx) => ({...item, value: idx.toString()}))
     }
     const state = {...this.state, ...data}
     this.setState(state)
-    if (this.props.onChange){
-      this.props.onChange({value: {
-        options: map(pick(['label', 'value']), state.options),
-        solution: state.solution
-      }, name: this.props.name})
+    if (this.props.onChange) {
+      this.props.onChange({
+        value: {
+          options: map(pick(['label', 'value']), state.options),
+          solution: state.solution
+        },
+        name: this.props.name
+      })
     }
   }
 
-  render() {
-    const options = this.state.options;
+  render () {
+    const options = this.state.options
     return (<div className="single-choice single-choice-admin">
       <Button className="btn-sm btn-secondary" onAction={this.addItem}>
         <i className="fa fa-plus"/> Add option
