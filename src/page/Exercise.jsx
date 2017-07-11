@@ -1,10 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {checkSolutionAction, getExerciseAction} from '../store/actions/exercise'
+import {checkSolutionAction, getHintAction, getPublicExerciseAction} from '../store/actions/exercise'
 import {NavLink} from 'react-router-dom'
-import Markdown from '../component/general/Markdown'
 import UserControls from '../component/userControls/UserControl'
-import {pathOr} from 'ramda'
+import {last, pathOr, propOr} from 'ramda'
 import {pairsInOrder} from '../util/fn'
 import Button from '../component/general/Button'
 
@@ -12,15 +11,19 @@ const mapStateToProps = (state) => ({
   exercise: state.exercise.active
 })
 
-export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction})
+export default connect(mapStateToProps, {getPublicExerciseAction, checkSolutionAction, getHintAction})
 (class extends React.Component {
   state = {
     solutions: [],
+    hints: [],
+    hintsLeft: 0,
     details: false
   }
 
   componentWillMount() {
-    this.props.getExerciseAction(this.props.match.params.key)
+    this.props
+      .getPublicExerciseAction(this.props.match.params.key)
+      .then(ex => this.setState({hintsLeft: this.props.exercise.details.hintCount || 0}))
   }
 
   onSubmit = (event) => {
@@ -37,6 +40,13 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
 
   toggleDetails = () => {
     this.setState({details: !this.state.details})
+  }
+
+  getNextHint = () => {
+    const _key = this.props.exercise.details._key;
+    const hints = this.props.exercise.hints;
+    this.props.getHintAction(_key, propOr(_key, 'key', last(hints || [])))
+      .then(() => this.setState({hintsLeft: (this.props.exercise.details.hintCount || 0) - (this.props.exercise.hints || []).length}))
   }
 
   render() {
@@ -83,6 +93,8 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
       'success': 'badge badge-success'
     }[this.props.exercise.state]
 
+    const hints = this.props.exercise.hints || []
+
     return (<form onSubmit={this.onSubmit}>
       <div className="">
         Exercise state: <span className={cx}>{this.props.exercise.state}</span> <code>({JSON.stringify(this.props.exercise.validity)})</code>
@@ -90,16 +102,35 @@ export default connect(mapStateToProps, {getExerciseAction, checkSolutionAction}
 
       <hr/>
 
-      <Markdown source={ex.description}/>
+      <div dangerouslySetInnerHTML={{__html: ex.htmlDescription}}/>
 
+      {
+        (pairsInOrder(ex.controls)).map(([key, {controlType, controlProps, order}]) =>
+          <div className="form-group " key={key} >
+            <UserControls {...{controlType, controlProps: {...controlProps, name: key, onChange: this.onChange}}}/>
+          </div>
+        )
+      }
 
+      <div className="form-group">
         {
-          (pairsInOrder(ex.controls)).map(([key, {controlType, controlProps, order}]) =>
-            <div className="form-group " key={key} >
-              <UserControls {...{controlType, controlProps: {...controlProps, name: key, onChange: this.onChange}}}/>
-            </div>
-          )
+          hints
+          ? <ol>
+              {hints.map(item => (<li key={item.key}>{item.hint.text}</li>))}
+            </ol>
+          : ''
         }
+
+        <div className="form-group">
+          {
+            this.state.hintsLeft > 0
+              ? <Button className="btn-sm btn-info" onAction={this.getNextHint}>
+                Next hint - {this.state.hintsLeft} hint(s) left
+              </Button>
+              : ''
+          }
+        </div>
+      </div>
 
       <Button submit primary>Submit</Button>
 

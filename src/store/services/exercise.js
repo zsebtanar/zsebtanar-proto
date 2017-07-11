@@ -5,6 +5,13 @@ import {reseolveSnapshot} from '../../util/firebase'
 const DB = window.firebase.database()
 const Exercises = DB.ref('exercise')
 
+export function getPublicExercise(uid) {
+  return Exercises
+    .child(uid)
+    .once('value')
+    .then(pipe(reseolveSnapshot, prop('public')))
+}
+
 export function getPrivateExercise(uid) {
   return Exercises
     .child(uid)
@@ -51,4 +58,9 @@ export function removeExercise(key) {
 export function checkSolution(key, solutions) {
   return axios
     .post(`${__FN_PATH__}api/check-exercise`, {key, solutions})
+}
+
+export function getHint(key, hint) {
+  return axios
+    .get(`${__FN_PATH__}api/get-next-hint`, {params: {key, hint}})
 }

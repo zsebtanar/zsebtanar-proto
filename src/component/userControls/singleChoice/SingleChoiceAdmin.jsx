@@ -59,7 +59,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
   render() {
     const options = this.state.options;
     return (<div className="single-choice single-choice-admin">
-      <Button onAction={this.addItem}>
+      <Button className="btn-sm btn-secondary" onAction={this.addItem}>
         <i className="fa fa-plus"/> Add option
       </Button>
       <ol>

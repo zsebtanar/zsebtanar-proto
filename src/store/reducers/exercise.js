@@ -2,7 +2,7 @@ import {
   EXERCISE_GET,
   EXERCISE_GET_ALL,
   EXERCISE_CHECK_SUCCESS,
-  EXERCISE_CHECK_FAIL
+  EXERCISE_CHECK_FAIL, HINT_GET
 } from '../actions/exercise'
 
 const INIT_STATE = {
@@ -20,6 +20,9 @@ export default function exerciseWorkflow(state=INIT_STATE, action) {
       return {...state, active: {...state.active, state: 'success', validity: action.payload}}
     case EXERCISE_CHECK_FAIL:
       return {...state, active: {...state.active, state: 'fail', validity: action.payload}}
+    case HINT_GET:
+      const hints = (state.active.hints || []).concat(action.payload)
+      return {...state, active: {...state.active, hints}}
     default:
       return state
   }

@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom'
 import Markdown from '../../component/general/Markdown'
 import {createExerciseAction, updateExerciseAction} from '../../store/actions/exercise'
 import {getPrivateExercise} from '../../store/services/exercise'
-import {openMarkdownHelpModal} from '../../store/actions/modal'
+import {openInputModal, openMarkdownHelpModal} from '../../store/actions/modal'
 import UserControls from '../../component/userControls/UserControl'
 import UserControlAdmin from '../../component/userControls/UserControlAdmin'
 import {SINGLE_CHOICE, SINGLE_NUMBER} from '../../component/userControls/controlTypes'
@@ -15,7 +15,7 @@ import Button from '../../component/general/Button'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
-export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
+export default connect(undefined, {openInputModal, openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
   class extends React.Component {
     mode = 'Add'
     state = {
@@ -38,15 +38,18 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
           .then(ex => assoc('title', `${(ex.title || '')} [copy]`, ex))
           .then(this.setExercise)
       }
-      return this.setExercise({controls: {}, solutions: {}})
+      return this.setExercise({})
     }
 
     setExercise = (exercise) => {
-      this.setState({exercise, loading: false})
+      this.setState({exercise: merge({controls: {}, solutions: {}, hints: {}}, exercise), loading: false})
     }
 
     saveExercise = (event) => {
       event.preventDefault()
+      if (values(this.state.exercise.controls).length < 1){
+        return alert('Please add at least one user control')
+      }
       const ex = this.state.exercise
       if (ex._key) {
         this.props.updateExerciseAction(ex._key, ex).then(this.back)
@@ -80,7 +83,6 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
     }
 
     updateSolution = ({name, value}) => {
-      console.log(name, value)
       this.setState(evolve({
         exercise: {
           controls: {
@@ -108,6 +110,32 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
       }))
     }
 
+    addHint = () => {
+      this.props.openInputModal({title: 'Add hint', label: 'Hint', value: '', onUpdate: (text) => {
+        this.setState(evolve({
+          exercise: {
+            hints: (c) => ({...c, [uid()]: {order: values(c).length, text}})
+          }
+        }))
+      }})
+    }
+
+    updateHint = (key) => () => {
+      this.props.openInputModal({title: 'Update hint', label: 'Hint', value: pathOr('', ['exercise', 'hints', key, 'text'], this.state), onUpdate: (text) => {
+        this.setState(evolve({
+          exercise: {
+            hints: {[key]: merge(__, {text})}
+          }
+        }))
+      }})
+    }
+
+    removeHint = (key) => () => {
+      this.setState(evolve({
+        exercise: { hints: dissoc(key) }
+      }))
+    }
+
     render() {
       const loading = this.state.loading
 
@@ -129,6 +157,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
     renderForm() {
       const ex = this.state.exercise
       const controls = pairsInOrder(ex.controls)
+      const hints = pairsInOrder(ex.hints)
       return (<form onSubmit={this.saveExercise}>
         {this.renderTextInput('Grade: ', ['classification', 'grade'])}
         {this.renderTextInput('Subject: ', ['classification', 'subject'])}
@@ -164,24 +193,43 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             <i className="fa fa-plus"/>
           </Button>
         </div>
-        <ol>
-          {
-            controls.length
-              ? controls.map(this.renderUserControlItem)
-              : <div className="alert alert-info">Please add at least one user control</div>
-          }
-        </ol>
+        <div className="my-2">
+          <ol>
+            {
+              controls.length
+                ? controls.map(this.renderUserControlItem)
+                : <div className="alert alert-info">Please add at least one user control</div>
+            }
+          </ol>
+        </div>
+
+        <div className="d-flex justify-content-between align-items-center">
+          <h4>Hints</h4>
+          <Button primary title="Add hint" onAction={this.addHint}>
+            <i className="fa fa-plus"/>
+          </Button>
+        </div>
+
+        <div className="my-2">
+          <ol>
+            {
+              hints.length
+                ? hints.map(this.renderHint)
+                : <div className="alert alert-info">You can add one or more hints for the user</div>
+            }
+          </ol>
+        </div>
 
         <div className="col-sm-8 offset-sm-4">
           <NavLink exact to="/exercise" className="btn btn-secondary">Cancel</NavLink>
           &nbsp;
           <Button submit primary>Save</Button>
         </div>
+
       </form>)
     }
 
     renderTextInput(label, path){
-      console.log(pathOr('', path, this.state.exercise))
       return (<div className="form-group row">
         <label className="col-4 col-form-label">{label}</label>
         <div className="col-8">
@@ -218,7 +266,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               <option value={SINGLE_NUMBER}>Single number</option>
             </select>
             <Button
-              className="btn-secondary text-danger mx-1"
+              className="btn-link text-danger mx-1"
               onAction={this.removeUserControl(key)}
             >
               <i className="fa fa-trash"/>
@@ -235,6 +283,18 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             }
           </div>
         </li>)
+    }
+
+    renderHint = ([key, item]) => {
+      return (<li key={key}>
+        {item.text}
+        <Button className="bnt-sm btn-link" onAction={this.updateHint(key)}>
+          <i className="fa fa-edit"/>
+        </Button>
+        <Button className="bnt-sm btn-link text-danger" onAction={this.removeHint(key)}>
+          <i className="fa fa-trash"/>
+        </Button>
+      </li>)
     }
 
 

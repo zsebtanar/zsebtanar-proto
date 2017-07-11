@@ -25,6 +25,10 @@
         "function": "checkExercise"
       },
       {
+        "source": "/api/get-next-hint",
+        "function": "getNextHint"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

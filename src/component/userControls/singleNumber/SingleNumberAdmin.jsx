@@ -58,12 +58,12 @@ const Muted = (props) => (<i className="text-muted">{props.children}</i>)
 const Label = (props) => (
   <span>
     {props.value ? props.value : <Muted>{props.name}</Muted>}
-    <Button onAction={props.editLabel(props.name)}>
+    <Button onAction={props.editLabel(props.name)} className="btn-sm btn-link">
       <i className="fa fa-edit"/>
     </Button>
     {
       props.value
-        ? <Button onAction={props.deleteLabel(props.name)}>
+        ? <Button onAction={props.deleteLabel(props.name)} className="btn-sm btn-link text-danger">
             <i className="fa fa-trash"/>
           </Button>
         : ''

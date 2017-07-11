@@ -1,6 +1,6 @@
 import {
   createExercise, getAllPrivateExercises, getPrivateExercise, checkSolution,
-  updateExercise, removeExercise
+  updateExercise, removeExercise, getHint, getPublicExercise
 } from '../services/exercise'
 import {all, identity} from 'ramda'
 
@@ -13,6 +13,8 @@ export const EXERCISE_CHECK_ERROR = 'EXERCISE_CHECK_ERROR'
 export const EXERCISE_UPDATED = 'EXERCISE_UPDATED'
 export const EXERCISE_REMOVED = 'EXERCISE_REMOVED'
 
+export const HINT_GET = 'HINT_GET'
+export const HINT_GET_ERROR = 'HINT_GET_ERROR'
 
 export function getAllExerciseAction() {
    return dispatch => getAllPrivateExercises()
@@ -22,6 +24,11 @@ export function getAllExerciseAction() {
 
 export function getExerciseAction(key) {
   return dispatch => getPrivateExercise(key)
+    .then( payload => dispatch({ type: EXERCISE_GET, payload }))
+}
+
+export function getPublicExerciseAction(key) {
+  return dispatch => getPublicExercise(key)
     .then( payload => dispatch({ type: EXERCISE_GET, payload }))
 }
 
@@ -49,4 +56,15 @@ export function checkSolutionAction(key, solutions) {
         })
       )
       .catch((error) => dispatch({type: EXERCISE_CHECK_ERROR, payload: error}))
+}
+
+export function getHintAction(key, lastHintKey) {
+  return dispatch => getHint(key, lastHintKey)
+      .then(({data}) =>
+        dispatch({
+          type: HINT_GET,
+          payload: data
+        })
+      )
+      .catch((error) => dispatch({type: HINT_GET_ERROR, payload: error}))
 }
