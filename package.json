@@ -42,6 +42,6 @@
     "build": "NODE_ENV=production webpack -p --config ./build/webpack.config.js",
     "dev": "webpack-dev-server --progress --inline --hot --config ./build/webpack.config.js --content-base public",
     "deploy": "npm run lint && npm run build && firebase deploy",
-    "lint": "./node_modules/.bin/eslint src functions"
+    "lint": "./node_modules/.bin/eslint src"
   }
 }
