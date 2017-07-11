@@ -23,7 +23,7 @@ export default (function InputModal (props) {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">{props.title}</h5>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
               <span aria-hidden={true} onClick={props.close}>&times;</span>
             </button>
           </div>
@@ -35,17 +35,18 @@ export default (function InputModal (props) {
                 id="id-input-modal"
                 type="text"
                 className="form-control"
-                placeholder="Empty"
+                placeholder="Üres szöveg"
+                autoFocus
                 ref={getRef}/>
             </div>
           </div>
 
           <div className="modal-footer text-center">
             <Button onAction={props.close}>
-              Cancel
+              Mégsem
             </Button>
             <Button submit primary onAction={update}>
-              Update
+              Kész
             </Button>
           </div>
         </div>

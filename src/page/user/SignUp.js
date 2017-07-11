@@ -25,8 +25,8 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
       .then(() => props.history.push('/'))
   }
 
-  return (<div className="col-6 offset-3">
-    <h1>Sign-up</h1>
+  return (<div className="col-md-6 offset-md-3 my-4">
+    <h1>Regisztráció</h1>
     {
       props.session && props.session.error
         ? <div className="alert alert-danger" role="alert">{props.session.error.message}</div>
@@ -39,7 +39,7 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
           className="form-control"
           id="id-username"
           aria-describedby="emailHelp"
-          placeholder="Enter username"
+          placeholder="Felhasználói név"
           ref={inp => { nameField = inp }}/>
       </div>
       <div className="form-group">
@@ -47,17 +47,15 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
           type="email"
           className="form-control"
           id="id-email"
-          aria-describedby="emailHelp"
-          placeholder="Enter email"
+          placeholder="E-mail"
           ref={inp => { emailField = inp }}/>
-        <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
       </div>
       <div className="form-group">
         <input
           type="password"
           className="form-control"
           id="id-pw-1"
-          placeholder="Password"
+          placeholder="Jelszó"
           ref={inp => { pwField = inp }}/>
       </div>
       <div className="form-group">
@@ -65,9 +63,9 @@ export default withRouter(connect(mapStateToProps, {signUp})(function (props) {
           type="password"
           className="form-control"
           id="id-pw-2"
-          placeholder="Password"/>
+          placeholder="Jelszó mégegyszer"/>
       </div>
-      <Button submit primary>Submit</Button>
+      <Button submit primary>Mehet</Button>
     </form>
   </div>)
 }))

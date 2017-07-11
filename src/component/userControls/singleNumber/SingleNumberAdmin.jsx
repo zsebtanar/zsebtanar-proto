@@ -16,7 +16,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
 
   editLabel = labelName => () => {
     this.props.openInputModal({
-      title: 'Label editor',
+      title: 'Felirat szerkesztő',
       label: labelName,
       value: this.state[labelName],
       onUpdate: (label) => this.updateState({[labelName]: label})

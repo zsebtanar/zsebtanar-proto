@@ -33,7 +33,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
       const options = update(idx, {...item, label}, this.state.options)
       this.updateState({options})
     }
-    this.props.openInputModal({title: 'Options label editor', label: 'Options label', value: item.label, onUpdate})
+    this.props.openInputModal({title: 'Válasz szövegének szerkesztése', label: 'Válasz szövege', value: item.label, onUpdate})
   }
 
   selectSolution = (e) => {
@@ -62,7 +62,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
     const options = this.state.options
     return (<div className="single-choice single-choice-admin">
       <Button className="btn-sm btn-secondary" onAction={this.addItem}>
-        <i className="fa fa-plus"/> Add option
+        <i className="fa fa-plus"/> Válasz lehetőség hozzáadása
       </Button>
       <ol>
         {options.map((data) => this.renderItem({...data, name: 'admin', isLast: options.length < 2}))}

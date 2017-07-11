@@ -18,29 +18,29 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header (p
       <nav>
         <ul className="nav nav-pills float-right">
           <li className="nav-item">
-            <NavLink activeClassName="active" className="nav-link" exact to="/">Home</NavLink>
+            <NavLink activeClassName="active" className="nav-link" exact to="/">Kezdőlap</NavLink>
           </li>
           {
             props.session.signedIn
               ? <li className="nav-item">
-                <NavLink activeClassName="active" className="nav-link" to="/exercise">Exercises</NavLink>
+                <NavLink activeClassName="active" className="nav-link" to="/exercise">Feladatok</NavLink>
               </li>
               : null
           }
           {
             props.session.signedIn
               ? <li className="nav-item" key="sing-out">
-                <a href="#" className="nav-link" onClick={signOut}>Sing-out</a>
+                <a href="#" className="nav-link" onClick={signOut}>Kijelentkezés</a>
               </li>
               : [
                 <li className="nav-item" key="sign-up">
                   <NavLink activeClassName="active" className="nav-link" to="/sign-up">
-                    <i className="fa fa-plus"/> Sign up
+                    <i className="fa fa-plus"/> Regisztráció
                   </NavLink>
                 </li>,
                 <li className="nav-item" key="sign-in">
                   <NavLink activeClassName="active" className="nav-link" to="/sign-in">
-                    <i className="fa fa-sign-in"/> Sign in
+                    <i className="fa fa-sign-in"/> Belépés
                   </NavLink>
                 </li>
               ]

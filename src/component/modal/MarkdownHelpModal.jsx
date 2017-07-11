@@ -7,7 +7,7 @@ export default (function MarkdownHelpModal (props) {
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Markdown help</h5>
+          <h5 className="modal-title">Markdown súgó</h5>
           <button type="button" className="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden={true} onClick={props.close}>&times;</span>
           </button>
@@ -17,40 +17,40 @@ export default (function MarkdownHelpModal (props) {
             <div className="col-6">
               <h3>Markdown</h3>
 
-              <h4>Headers</h4>
+              <h4>Címsorok</h4>
 
-              <p># h1 Heading</p>
-              <p>## h2 Heading</p>
-              <p>### h3 Heading</p>
-              <p>#### h4 Heading</p>
-              <p>##### h5 Heading</p>
-              <p>###### h6 Heading</p>
+              <p># h1 címsor</p>
+              <p>## h2 címsor</p>
+              <p>### h3 címsor</p>
+              <p>#### h4 címsor</p>
+              <p>##### h5 címsor</p>
+              <p>###### h6 címsor</p>
             </div>
             <div className="col-6">
-              <h3>Rendered</h3>
+              <h3>Előnézet</h3>
 
               <Markdown source={`
-#### Headers
+#### Címsorok
 
-# h1 Heading
-## h2 Heading
-### h3 Heading
-#### h4 Heading
-##### h5 Heading
-###### h6 Heading
+# h1 címsor
+## h2 címsor
+### h3 címsor
+#### h4 címsor
+##### h5 címsor
+###### h6 címsor
 `}/>
             </div>
           </div>
 
           <div className="row">
             <div className="col-6">
-              <h4>Horizontal Rules</h4>
+              <h4>Vízszintes vonal</h4>
               <p>---</p>
               <p>***</p>
             </div>
             <div className="col-6">
               <Markdown source={`
-#### Horizontal Rules
+#### Vízszintes vonal
 
 ---
 
@@ -62,39 +62,39 @@ export default (function MarkdownHelpModal (props) {
           <div className="row">
             <div className="col-6">
 
-              <h4>Emphasis</h4>
+              <h4>Kiemelés</h4>
 
-              <p>**This is bold text**</p>
-              <p>__This is bold text__</p>
-              <p>*This is italic text*</p>
-              <p>_This is italic text_</p>
-              <p>~~Strikethrough~~</p>
+              <p>**félkövér**</p>
+              <p>__félkövér__</p>
+              <p>*dölt*</p>
+              <p>_dölt_</p>
+              <p>~~áthúzott~~</p>
 
-              <h4>Blockquotes</h4>
+              <h4>Idézetek</h4>
 
               <p>
-                > Blockquotes can also be nested...
+                > Az idézetek egymásba ágyazhatók...
               </p>
             </div>
             <div className="col-6">
               <Markdown source={`
-#### Emphasis
+#### Kiemelés
 
-**This is bold text**
+**félkövér**
 
-__This is bold text__
+__félkövér__
 
-*This is italic text*
+*dölt*
 
-_This is italic text_
+_dölt_
 
-~~Strikethrough~~
-
-
-#### Blockquotes
+~~áthúzott~~
 
 
-> Blockquotes can also be nested...
+#### Idézetek
+
+
+> Az idézetek egymásba ágyazhatók...
 `}/>
             </div>
           </div>
@@ -102,76 +102,76 @@ _This is italic text_
           <div className="row">
             <div className="col-6">
 
-              <h4>Lists</h4>
+              <h4>Listák</h4>
 
-              <h5>Unordered</h5>
+              <h5>Felsorolás</h5>
 
-              <p>+ Starting a line with `+`, `-`, or `*`</p>
-              <p>+ Sub-lists are made by indenting 2 spaces:</p>
-              <p>&nbsp;&nbsp;- Marker character change forces new list start:</p>
+              <p>+ A felsorolás kezdődhet `+`, `-`, vagy `*`</p>
+              <p>+ allista létrehozható 2 szöközös behúzással:</p>
+              <p>&nbsp;&nbsp;- Jelölő karakter váltása új listát kezd:</p>
               <p>&nbsp;&nbsp;&nbsp;&nbsp;* Ac tristique libero volutpat at</p>
               <p>&nbsp;&nbsp;&nbsp;&nbsp;+ Facilisis in pretium nisl aliquet</p>
               <p>&nbsp;&nbsp;&nbsp;&nbsp;- Nulla volutpat aliquam velit</p>
-              <p>+ Very easy!</p>
+              <p>+ egyszerű, ugye?</p>
 
-              <h5>Ordered</h5>
+              <h5>Számozott felsorolás</h5>
               <p>1. Lorem ipsum dolor sit amet</p>
               <p>2. Consectetur adipiscing elit</p>
               <p>3. Integer molestie lorem at massa</p>
 
-              <p>1. You can use sequential numbers...</p>
-              <p>1. ...or keep all the numbers as `1.`</p>
+              <p>1. Lehet növekvő számokat használni...</p>
+              <p>1. ...vagy végig ugyanazt `1.`</p>
             </div>
             <div className="col-6">
               <Markdown source={`
-#### Lists
+#### Listák
 
-Unordered
+Felsorolás
 
-+ Create a list by starting a line with \`+\`, \`-\`, or \`*\`
-+ Sub-lists are made by indenting 2 spaces:
-  - Marker character change forces new list start:
++ A felsorolás kezdődhet \`+\`, \`-\`, vagy \`*\`
++ allista létrehozható 2 szöközös behúzással:
+  - Jelölő karakter váltása új listát kezd:
     * Ac tristique libero volutpat at
     + Facilisis in pretium nisl aliquet
     - Nulla volutpat aliquam velit
-+ Very easy!
++ egyszerű, ugya?
 
-Ordered
+Számozott felsorolás
 
 1. Lorem ipsum dolor sit amet
 2. Consectetur adipiscing elit
 3. Integer molestie lorem at massa
 
 
-1. You can use sequential numbers...
-1. ...or keep all the numbers as \`1.\`
+1. Lehet növekvő számokat használni...
+1. ...vagy végig ugyanazt \`1.\`
 `}/>
             </div>
           </div>
 
           <div className="row">
             <div className="col-6">
-              <h4>Code</h4>
+              <h4>Kód</h4>
 
-              <p>Inline `code`</p>
+              <p>`kód` soron belül</p>
 
-              <p>Block code "fences"</p>
+              <p>Kód blokk</p>
 
               ```
-              Sample text here...
+              minta kód helye...
               ```
             </div>
             <div className="col-6">
               <Markdown source={`
-#### Code
+#### Kód
 
-Inline \`code\`
+\`kód\` soron belül
 
 
-Block code "fences"
+Kód blokk
 
 \`\`\`
-Sample text here...
+minta kód helye...
 \`\`\`
 `}/>
             </div>
@@ -179,39 +179,39 @@ Sample text here...
 
           <div className="row">
             <div className="col-6">
-              <h4>Tables</h4>
+              <h4>Táblázat</h4>
 
               <pre>
-                | col 1 | col2 |<br/>
+                | oszlop 1| oszlop 2 |<br/>
                 | -----: | ---- |<br/>
-                | data | 1 |<br/>
-                | engine | 2 |<br/>
-                | ext | 3 |<br/>
+                | A | 1 |<br/>
+                | B | 2 |<br/>
+                | C | 3 |<br/>
               </pre>
             </div>
             <div className="col-6">
               <Markdown source={`
 
-#### Tables
+#### Táblázat
 
-| col 1 | col2 |
+| oszlop 1| oszlop 2 |
 | -----: | ---- |
-| data | 1 |
-| engine | 2 |
-| ext | 3 |
+| A | 1 |
+| B | 2 |
+| C | 3 |
 `}/>
             </div>
           </div>
 
           <div className="row">
             <div className="col-6">
-              <h4>Links</h4>
+              <h4>Linkek</h4>
 
-              [link text](http://dev.nodeca.com)
+              [link szövege](http://link.cime.hu)
 
-              [link with title](http://nodeca.github.io/pica/demo/ "title text!")
+              [link cimkével](http://link.cime.hu/ "Cimke szövege!")
 
-              <h4>Images</h4>
+              <h4>Képek</h4>
 
               <pre>
 ![Zsebtanar](/assets/logo.png)<br/>
@@ -220,14 +220,14 @@ Sample text here...
             </div>
             <div className="col-6">
               <Markdown source={`
-#### Links
+#### Linkek
 
-[link text](http://dev.nodeca.com)
+[link szövege](http://link.cime.hu)
 
-[link with title](http://nodeca.github.io/pica/demo/ "title text!")
+[link cimkével](http://link.cime.hu/ "Cimke szövege!")
 
 
-#### Images
+#### Képek
 
 ![Zsebtanar](/assets/logo.png)
 ![Zsebtanar](/assets/logo.png "Zsebtanár logó")

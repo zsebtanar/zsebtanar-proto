@@ -19,8 +19,8 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
       .then(({error}) => error ? null : props.history.push('/'))
   }
 
-  return (<div className="col-6 offset-3">
-    <h1>Sign-up</h1>
+  return (<div className="col-md-6 offset-md-3 my-4">
+    <h1>Belépés</h1>
     {
       props.session && props.session.error
         ? <div className="alert alert-danger" role="alert">{props.session.error.message}</div>
@@ -33,7 +33,7 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
           className="form-control"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
-          placeholder="Enter email"
+          placeholder="E-mail"
           ref={inp => { emailField = inp }}/>
       </div>
       <div className="form-group">
@@ -41,10 +41,10 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
           type="password"
           className="form-control"
           id="exampleInputPassword1"
-          placeholder="Password"
+          placeholder="Jelszó"
           ref={inp => { pwField = inp }}/>
       </div>
-      <Button submit primary>Submit</Button>
+      <Button submit primary>Mehet</Button>
     </form>
   </div>)
 }))

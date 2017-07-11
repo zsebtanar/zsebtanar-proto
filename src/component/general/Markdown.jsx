@@ -17,7 +17,7 @@ export default (class extends React.Component {
     </div>
   }
 
-  componentWillUpdate (nextProps, nextState) {
+  componentWillUpdate (nextProps) {
     if (nextProps.options !== this.props.options) {
       this.initMD(nextProps.options)
     }

@@ -15,7 +15,7 @@ export default (function AlertModal (props) {
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">{props.title}</h5>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
             <span aria-hidden={true} onClick={props.close}>&times;</span>
           </button>
         </div>

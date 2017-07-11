@@ -35,7 +35,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         this.mode = 'Clone'
         return getPrivateExercise(cloneKey)
           .then(dissoc('_key'))
-          .then(ex => assoc('title', `${(ex.title || '')} [copy]`, ex))
+          .then(ex => assoc('title', `${(ex.title || '')} [másolat]`, ex))
           .then(this.setExercise)
       }
       return this.setExercise({})
@@ -48,7 +48,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     saveExercise = (event) => {
       event.preventDefault()
       if (values(this.state.exercise.controls).length < 1) {
-        return alert('Please add at least one user control')
+        return alert('Kérlek hozz létre legalább egy bevitel mezőt')
       }
       const ex = this.state.exercise
       if (ex._key) {
@@ -112,8 +112,8 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
 
     addHint = () => {
       this.props.openInputModal({
-        title: 'Add hint',
-        label: 'Hint',
+        title: 'Tipp hozzáadása',
+        label: 'Tipp szövege',
         value: '',
         onUpdate: (text) => {
           this.setState(evolve({
@@ -127,8 +127,8 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
 
     updateHint = (key) => () => {
       this.props.openInputModal({
-        title: 'Update hint',
-        label: 'Hint',
+        title: 'Tipp módosítása',
+        label: 'Tipp szövege',
         value: pathOr('', ['exercise', 'hints', key, 'text'], this.state),
         onUpdate: (text) => {
           this.setState(evolve({
@@ -148,12 +148,17 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
 
     render () {
       const loading = this.state.loading
+      const modeLabel = {
+        Add: 'létrehozása',
+        Update: 'módosítása',
+        Clone: 'másolása',
+      }[this.mode]
 
       return loading
         ? (<Muted>Loading...</Muted>)
         : (<div>
             <div className="d-flex justify-content-between align-items-center">
-              <h2>{this.mode} exercise</h2>
+              <h2>Feladat {modeLabel}</h2>
             </div>
             <hr/>
             <div className="row">
@@ -169,21 +174,21 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
       const controls = pairsInOrder(ex.controls)
       const hints = pairsInOrder(ex.hints)
       return (<form onSubmit={this.saveExercise}>
-        {this.renderTextInput('Grade: ', ['classification', 'grade'])}
-        {this.renderTextInput('Subject: ', ['classification', 'subject'])}
-        {this.renderTextInput('Topic: ', ['classification', 'topic'])}
-        {this.renderTextInput('Title: ', ['title'])}
-        {this.renderTextInput('Tags: ', ['classification', 'tags'])}
+        {this.renderTextInput('Osztály: ', ['classification', 'grade'])}
+        {this.renderTextInput('Tantárgy: ', ['classification', 'subject'])}
+        {this.renderTextInput('Témakör: ', ['classification', 'topic'])}
+        {this.renderTextInput('Cím: ', ['title'])}
+        {this.renderTextInput('Tag-ek: ', ['classification', 'tags'])}
 
         <div className="form-group">
           <label className="d-flex justify-content-between align-items-center">
-            <div>Description:</div>
+            <div>Feladatleírás:</div>
             <Button
               tabIndex="-1"
               className="btn-link"
               onAction={this.props.openMarkdownHelpModal}
             >
-              Help for markdown
+              Segítség markdown-hoz
             </Button>
 
           </label>
@@ -198,7 +203,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         </div>
 
         <div className="d-flex justify-content-between align-items-center">
-          <h4>User controls</h4>
+          <h4>Beviteli mezők</h4>
           <Button primary title="Add user control" onAction={this.addUserControl}>
             <i className="fa fa-plus"/>
           </Button>
@@ -208,13 +213,13 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
             {
               controls.length
                 ? controls.map(this.renderUserControlItem)
-                : <div className="alert alert-info">Please add at least one user control</div>
+                : <div className="alert alert-info">Kérlek hozz létre legalább egy bevitel mezőt</div>
             }
           </ol>
         </div>
 
         <div className="d-flex justify-content-between align-items-center">
-          <h4>Hints</h4>
+          <h4>Tippek</h4>
           <Button primary title="Add hint" onAction={this.addHint}>
             <i className="fa fa-plus"/>
           </Button>
@@ -225,15 +230,15 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
             {
               hints.length
                 ? hints.map(this.renderHint)
-                : <div className="alert alert-info">You can add one or more hints for the user</div>
+                : <div className="alert alert-info">Megadhatsz egy vagy több tippet a feladat megoldásához</div>
             }
           </ol>
         </div>
 
         <div className="col-sm-8 offset-sm-4">
-          <NavLink exact to="/exercise" className="btn btn-secondary">Cancel</NavLink>
+          <NavLink exact to="/exercise" className="btn btn-secondary">Mégsem</NavLink>
           &nbsp;
-          <Button submit primary>Save</Button>
+          <Button submit primary>Mentés</Button>
         </div>
 
       </form>)
@@ -271,9 +276,9 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
               required
               value={controlType}
             >
-              <option value="">-- Select a control type --</option>
-              <option value={SINGLE_CHOICE}>Single choice</option>
-              <option value={SINGLE_NUMBER}>Single number</option>
+              <option value="">-- Válasz mező típust --</option>
+              <option value={SINGLE_CHOICE}>Felelet választó</option>
+              <option value={SINGLE_NUMBER}>Szám</option>
             </select>
             <Button
               className="btn-link text-danger mx-1"
@@ -315,12 +320,12 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     renderPreview () {
       const {classification, description, controls} = this.state.exercise
       return (<div>
-        <h4>{(classification && classification.subject) || <Muted>Subject</Muted>}
-          / {(classification && classification.topic) || <Muted>Topic</Muted>}</h4>
+        <h4>{(classification && classification.subject) || <Muted>Tantárgy</Muted>}
+          / {(classification && classification.topic) || <Muted>Témakör</Muted>}</h4>
         {
           description
             ? <Markdown source={description}/>
-            : <Muted>Description...</Muted>
+            : <Muted>feladatleírás...</Muted>
         }
         {
           (pairsInOrder(controls) || []).map(([key, {controlType, controlProps}]) =>

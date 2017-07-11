@@ -55,10 +55,10 @@ export default connect(
     return (
       <div>
         <div className="d-flex justify-content-between align-items-center">
-          <h2>Exercise
+          <h2>Feladat megtekintése
             <small>{pathOr('', ['exercise', 'details', 'title'], this.props)}</small>
           </h2>
-          <NavLink exact to="/exercise">Cancel</NavLink>
+          <NavLink exact to="/exercise">Vissza a feladatlistához</NavLink>
         </div>
         <hr/>
         {
@@ -82,12 +82,10 @@ export default connect(
     return (
       this.state.details
         ? <div>
-          <button type="button" className="btn btn-sm btm-secondary" onClick={this.toggleDetails}>Hide exercise details
-          </button>
+          <Button onAction={this.toggleDetails}>Feladat leíró elrejtése</Button>
           <pre>{JSON.stringify(ex, null, 3)}</pre>
         </div>
-        : <button type="button" className="btn btn-sm btm-secondary" onClick={this.toggleDetails}>Show exercise
-          details</button>
+        : <Button onAction={this.toggleDetails}>Feladat leíró mutatása</Button>
     )
   }
 
@@ -98,12 +96,17 @@ export default connect(
       'fail': 'badge badge-danger',
       'success': 'badge badge-success'
     }[this.props.exercise.state]
+    const label = {
+      'in-progress': 'Beküldésre vár...',
+      'fail': 'A megoldás hibás',
+      'success': 'A megoldás helyes'
+    }[this.props.exercise.state]
 
     const hints = this.props.exercise.hints || []
 
     return (<form onSubmit={this.onSubmit}>
       <div className="">
-        Exercise state: <span className={cx}>{this.props.exercise.state}</span>
+        Feladat ellenőrzés állapota: <span className={cx}>{label}</span>
         <code>({JSON.stringify(this.props.exercise.validity)})</code>
       </div>
 
@@ -132,14 +135,14 @@ export default connect(
           {
             this.state.hintsLeft > 0
               ? <Button className="btn-sm btn-info" onAction={this.getNextHint}>
-                Next hint - {this.state.hintsLeft} hint(s) left
+                Következő tipp - {this.state.hintsLeft} tipp van még
               </Button>
               : ''
           }
         </div>
       </div>
 
-      <Button submit primary>Submit</Button>
+      <Button submit primary>Ellenőrzés</Button>
 
     </form>)
   }
