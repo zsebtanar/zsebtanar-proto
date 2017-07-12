@@ -11,14 +11,3 @@ function s4 () {
 export function uid () {
   return (Date.now() + Math.floor(Math.random() * 0x1000000)).toString(16).substr(1)
 }
-
-export function addUid (obj) {
-  const _obj = Object.assign(Object.create(null), obj)
-  Object.defineProperty(_obj, '__uid', {
-    enumerable: false,
-    configurable: false,
-    writable: false,
-    value: obj.__uid || uid()
-  })
-  return _obj
-}
