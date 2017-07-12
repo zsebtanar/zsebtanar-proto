@@ -1,6 +1,6 @@
 import { map, pipe, prop, values } from 'ramda'
 import axios from 'axios'
-import { reseolveSnapshot } from '../../util/firebase'
+import { resolveSnapshot } from '../../util/firebase'
 
 const DB = window.firebase.database()
 const Exercises = DB.ref('exercise')
@@ -9,20 +9,20 @@ export function getPublicExercise (uid) {
   return Exercises
     .child(uid)
     .once('value')
-    .then(pipe(reseolveSnapshot, prop('public')))
+    .then(pipe(resolveSnapshot, prop('public')))
 }
 
 export function getPrivateExercise (uid) {
   return Exercises
     .child(uid)
     .once('value')
-    .then(pipe(reseolveSnapshot, prop('private')))
+    .then(pipe(resolveSnapshot, prop('private')))
 }
 
 export function getAllPrivateExercises () {
   return Exercises
     .once('value')
-    .then(pipe(reseolveSnapshot, values, map(prop('private'))))
+    .then(pipe(resolveSnapshot, values, map(prop('private'))))
 }
 
 export function createExercise (data) {
