@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { findIndex, map, pick, propEq, update } from 'ramda'
 import { openInputModal } from '../../../store/actions/modal'
 import Button from '../../general/Button'
+import Markdown from '../../general/Markdown'
 
 export default connect(undefined, {openInputModal})(class extends React.Component {
   state = {
@@ -60,7 +61,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
 
   render () {
     const options = this.state.options
-    return (<div className="single-choice single-choice-admin">
+    return (<div className="user-control single-choice single-choice-admin">
       <Button className="btn-sm btn-secondary" onAction={this.addItem}>
         <i className="fa fa-plus"/> Válasz lehetőség hozzáadása
       </Button>
@@ -83,7 +84,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
             required={this.props.required}
             onChange={this.selectSolution}/>
           <span className="custom-control-indicator"/>
-          <span className="custom-control-description">{item.label}</span>
+          <span className="custom-control-description"><Markdown source={item.label}/></span>
         </label>
         {
           item.isLast

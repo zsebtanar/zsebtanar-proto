@@ -1,4 +1,5 @@
 import React from 'react'
+import Markdown from '../../general/Markdown'
 
 export default (class extends React.Component {
   // we need state here because: https://github.com/facebook/react/issues/10078
@@ -16,7 +17,7 @@ export default (class extends React.Component {
   }
 
   render () {
-    return (<div className="single-choice">
+    return (<div className="user-control single-choice">
       {(this.props.options || []).map(x => RadioInput(
         {...x, name: 'random', onChange: this.onChange, checked: this.state.checked === x.value}
       ))}
@@ -28,5 +29,5 @@ const RadioInput = (props) => (
   <label className="custom-control custom-radio d-block" key={props.value}>
     <input {...props} type="radio" className="custom-control-input" required={props.required}/>
     <span className="custom-control-indicator"/>
-    <span className="custom-control-description">{props.label}</span>
+    <span className="custom-control-description"><Markdown source={props.label}/></span>
   </label>)

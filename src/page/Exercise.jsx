@@ -6,6 +6,7 @@ import UserControls from '../component/userControls/UserControl'
 import { last, pathOr, propOr } from 'ramda'
 import { pairsInOrder } from '../util/fn'
 import Button from '../component/general/Button'
+import Markdown from '../component/general/Markdown'
 
 const mapStateToProps = (state) => ({
   exercise: state.exercise.active
@@ -112,7 +113,7 @@ export default connect(
 
       <hr/>
 
-      <div dangerouslySetInnerHTML={{__html: ex.htmlDescription}}/>
+      <Markdown source={ex.description} />
 
       {
         (pairsInOrder(ex.controls)).map(([key, {controlType, controlProps, order}]) =>
@@ -126,7 +127,9 @@ export default connect(
         {
           hints
             ? <ol>
-              {hints.map(item => (<li key={item.key}>{item.hint.text}</li>))}
+              {hints.map(item => (<li key={item.key}>
+                <Markdown source={item.hint.text}/>
+                </li>))}
             </ol>
             : ''
         }

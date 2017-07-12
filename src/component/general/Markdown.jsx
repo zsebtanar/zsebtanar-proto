@@ -1,8 +1,13 @@
 import React from 'react'
 import Markdown from 'markdown-it'
 import katex from 'markdown-it-katex'
+import PropTypes from 'prop-types'
 
 export default (class extends React.Component {
+  static propTypes = {
+    source: PropTypes.string
+  }
+
   initMD (options) {
     this.md = new Markdown(options).use(katex)
   }
