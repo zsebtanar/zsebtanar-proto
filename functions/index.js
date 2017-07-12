@@ -17,12 +17,13 @@ exports.checkExercise = functions.https.onRequest((req, res) => {
     const userSolutions = req.body.solutions
 
     const validate = (exercise) => {
-      return toPairs(userSolutions).map( ([key, us]) => {
-        switch (exercise.controls[key].controlType){
+      return toPairs(userSolutions).map(([key, us]) => {
+        switch (exercise.controls[key].controlType) {
           case 'single-choice':
           case 'single-number':
             return exercise.solutions[key] === us
-          default: return false;
+          default:
+            return false
         }
       })
     }
@@ -30,17 +31,16 @@ exports.checkExercise = functions.https.onRequest((req, res) => {
     admin.database()
       .ref(`/exercise/${exerciseId}/private`)
       .on('value', snapshot => {
-        try{
+        try {
           res
             .status(200)
-            .send({ valid: validate(snapshot.val()) })
-        } catch (e){
+            .send({valid: validate(snapshot.val())})
+        } catch (e) {
           res.status(500).send(e.message)
         }
       })
   })
 })
-
 
 exports.getNextHint = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
@@ -50,30 +50,30 @@ exports.getNextHint = functions.https.onRequest((req, res) => {
     admin.database()
       .ref(`/exercise/${exerciseId}/private`)
       .on('value', snapshot => {
-        try{
+        try {
           const ex = snapshot.val()
           const hints = pipe(pathOr({}, ['hints']), pairsInOrder)(ex)
           const lastHintIdx = lastHint === exerciseId
             ? -1
             : findIndex(propEq(0, lastHint), hints)
 
-          if (hints.length > (lastHintIdx + 1)){
+          if (hints.length > (lastHintIdx + 1)) {
             const [key, hint] = hints[lastHintIdx + 1]
-            res.status(200).send({ key, hint })
+            res.status(200).send({key, hint})
           } else {
-            res.status(200).send({ hint: false })
+            res.status(200).send({hint: false})
           }
-        } catch (e){
+        } catch (e) {
           res.status(500).send(e.message)
         }
       })
   })
 })
 
-const PUBLIC_PROPS = ['_key', '_created', '_updated', 'classification', 'controls']
+const PUBLIC_PROPS = ['_key', '_created', '_updated', 'classification', 'description', 'controls']
 const mapPublicData = obj => (acc, key) => {
-  if (obj[key]) acc[key] = obj[key];
-  return acc;
+  if (obj[key]) acc[key] = obj[key]
+  return acc
 }
 
 exports.finalizeExercise = functions.database.ref('/exercise/{exerciseId}/private')
@@ -93,7 +93,7 @@ exports.finalizeExercise = functions.database.ref('/exercise/{exerciseId}/privat
         .use(katex)
         .render(original.description)
     } catch (e) {
-      update.htmlDescription = `<<error - ${e.message}>>`
+      publicData.htmlDescription = `<<error - ${e.message}>>`
     }
 
     publicData.hintCount = Object.keys(pathOr({}, ['hints'], original)).length || 0
