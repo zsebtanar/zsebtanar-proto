@@ -151,7 +151,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
       const modeLabel = {
         Add: 'létrehozása',
         Update: 'módosítása',
-        Clone: 'másolása',
+        Clone: 'másolása'
       }[this.mode]
 
       return loading
@@ -162,8 +162,8 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
             </div>
             <hr/>
             <div className="row">
-              <div className="col">{this.renderForm()}</div>
-              <div className="col">{this.renderPreview()}</div>
+              <div className="col-6">{this.renderForm()}</div>
+              <div className="col-6">{this.renderPreview()}</div>
             </div>
           </div>
         )
@@ -306,8 +306,8 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     }
 
     renderHint = ([key, item]) => {
-      return (<li key={key}>
-        {item.text}
+      return (<li key={key} className="d-flex align-items-center">
+        <Markdown source={item.text}/>
         <Button className="bnt-sm btn-link" onAction={this.updateHint(key)}>
           <i className="fa fa-edit"/>
         </Button>

@@ -1,4 +1,5 @@
 import React from 'react'
+import Markdown from '../../general/Markdown'
 
 export default function (props) {
   const setSolution = (e) => {
@@ -10,9 +11,13 @@ export default function (props) {
     }
   }
 
-  return (<div className="single-number d-flex align-items-center">
-    <span className="prefix">{props.prefix}</span>
+  return (<div className="user-control single-number d-flex align-items-center">
+    <span className="prefix">
+      <Markdown source={props.prefix}/>
+    </span>
     <input name={props.name} type="number" className="form-control" onChange={setSolution}/>
-    <span className="postfix">{props.postfix}</span>
+    <span className="postfix">
+      <Markdown source={props.postfix}/>
+    </span>
   </div>)
 }

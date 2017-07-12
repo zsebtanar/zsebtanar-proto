@@ -1,56 +1,70 @@
 import React from 'react'
 import Button from '../general/Button'
+import Markdown from '../general/Markdown'
 
-export default (function InputModal (props) {
-  let valueField
+export default (class InputModal extends React.Component {
+  state = { value: '' }
 
-  const update = (e) => {
+  update = (e) => {
     if (e) e.preventDefault()
-    props.onUpdate(valueField && valueField.value)
-    props.close()
+    this.props.onUpdate(this.state.value)
+    this.props.close()
   }
 
-  const getRef = inp => {
-    if (inp) {
-      inp.value = props.value || ''
-      valueField = inp
-    }
+  componentWillMount () {
+    this.setState({value: this.props.value})
   }
 
-  return (
-    <div className="modal-dialog" role="document">
-      <form onSubmit={update}>
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">{props.title}</h5>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-              <span aria-hidden={true} onClick={props.close}>&times;</span>
-            </button>
-          </div>
+  changeInput = (e) => {
+    this.setState({value: e.currentTarget.value})
+  }
 
-          <div className="modal-body">
-            <div className="form-group">
-              <label htmlFor="id-input-modal">{props.label || 'Value'}</label>
-              <input
-                id="id-input-modal"
-                type="text"
-                className="form-control"
-                placeholder="Üres szöveg"
-                autoFocus
-                ref={getRef}/>
+  render () {
+    const props = this.props
+    return (
+      <div className="modal-dialog" role="document">
+        <form onSubmit={this.update}>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">{props.title}</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
+                <span aria-hidden={true} onClick={props.close}>&times;</span>
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="form-group">
+                <label htmlFor="id-input-modal">{props.label || 'Value'}</label>
+                <textarea
+                  autoFocus
+                  id="id-input-modal"
+                  className="form-control"
+                  placeholder="Üres szöveg"
+                  value={this.state.value}
+                  onChange={this.changeInput}
+                  rows="10"/>
+              </div>
+              <div className="form-group">
+                <label>Előnézet</label>
+                <div className="card">
+                  <div className="card-block">
+                    <Markdown source={this.state.value}/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer text-center">
+              <Button onAction={props.close}>
+                Mégsem
+              </Button>
+              <Button submit primary onAction={this.update}>
+                Kész
+              </Button>
             </div>
           </div>
-
-          <div className="modal-footer text-center">
-            <Button onAction={props.close}>
-              Mégsem
-            </Button>
-            <Button submit primary onAction={update}>
-              Kész
-            </Button>
-          </div>
-        </div>
-      </form>
-    </div>
-  )
+        </form>
+      </div>
+    )
+  }
 })

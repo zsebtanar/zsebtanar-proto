@@ -8,9 +8,6 @@ admin.initializeApp(functions.config().firebase)
 
 const cors = require('cors')({origin: true})
 
-const Markdown = require('markdown-it')
-const katex = require('markdown-it-katex')
-
 exports.checkExercise = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     const exerciseId = req.body.key
@@ -86,15 +83,8 @@ exports.finalizeExercise = functions.database.ref('/exercise/{exerciseId}/privat
     // Exit when the exercise in draft
     if (original.draft) return
 
+    // copy public properties
     const publicData = PUBLIC_PROPS.reduce(mapPublicData(original), {})
-
-    try {
-      publicData.htmlDescription = new Markdown({})
-        .use(katex)
-        .render(original.description)
-    } catch (e) {
-      publicData.htmlDescription = `<<error - ${e.message}>>`
-    }
 
     publicData.hintCount = Object.keys(pathOr({}, ['hints'], original)).length || 0
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { openInputModal } from '../../../store/actions/modal'
 import Button from '../../general/Button'
+import Markdown from '../../general/Markdown'
 
 export default connect(undefined, {openInputModal})(class extends React.Component {
   constructor (props) {
@@ -44,7 +45,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
     const {prefix, postfix, solution} = this.state
     const {editLabel, deleteLabel} = this
 
-    return (<div className="single-number single-number-admin d-flex align-items-center">
+    return (<div className="user-control single-number single-number-admin d-flex align-items-center">
       <Label {...{name: 'prefix', value: prefix, editLabel, deleteLabel}} />
       <input type="number" onChange={this.setSolution} className="form-control" value={solution}/>
       <Label {...{name: 'postfix', value: postfix, editLabel, deleteLabel}} />
@@ -55,8 +56,8 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
 const Muted = (props) => (<i className="text-muted">{props.children}</i>)
 
 const Label = (props) => (
-  <span>
-    {props.value ? props.value : <Muted>{props.name}</Muted>}
+  <span className="d-flex align-items-center">
+    {props.value ? <Markdown source={props.value}/> : <Muted>{props.name}</Muted>}
     <Button onAction={props.editLabel(props.name)} className="btn-sm btn-link">
       <i className="fa fa-edit"/>
     </Button>
