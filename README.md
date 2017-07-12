@@ -1,5 +1,7 @@
 # Zsebtanár prototype
 
+![Travis build](https://travis-ci.org/zsebtanar/zsebtanar-proto.svg?branch=master)
+
 This is a prototype project for the next version of Zsebtanár
 
 ## Project Dependencies:
