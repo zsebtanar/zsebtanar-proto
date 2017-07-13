@@ -40,7 +40,7 @@ export default connect(
             <th>Tantárgy</th>
             <th>Témakör</th>
             <th>Cím</th>
-            <th>Tag</th>
+            <th>Címkék</th>
             <th>Létrehozva</th>
             <th className="text-center"><i className="fa fa-lg fa-cog"/></th>
           </tr>

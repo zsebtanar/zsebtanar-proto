@@ -4,6 +4,11 @@ import { openInputModal } from '../../../store/actions/modal'
 import Button from '../../general/Button'
 import Markdown from '../../general/Markdown'
 
+const strings = {
+  prefix: 'Előtag',
+  postfix: 'Utótag',
+}
+
 export default connect(undefined, {openInputModal})(class extends React.Component {
   constructor (props) {
     super(props)
@@ -18,7 +23,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
   editLabel = labelName => () => {
     this.props.openInputModal({
       title: 'Felirat szerkesztő',
-      label: labelName,
+      label: strings[labelName],
       value: this.state[labelName],
       onUpdate: (label) => this.updateState({[labelName]: label})
     })
@@ -47,7 +52,12 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
 
     return (<div className="user-control single-number single-number-admin d-flex align-items-center">
       <Label {...{name: 'prefix', value: prefix, editLabel, deleteLabel}} />
-      <input type="number" onChange={this.setSolution} className="form-control" value={solution}/>
+      <input
+        type="number"
+        onChange={this.setSolution}
+        className="form-control"
+        value={solution}
+      />
       <Label {...{name: 'postfix', value: postfix, editLabel, deleteLabel}} />
     </div>)
   }
@@ -57,7 +67,7 @@ const Muted = (props) => (<i className="text-muted">{props.children}</i>)
 
 const Label = (props) => (
   <span className="d-flex align-items-center">
-    {props.value ? <Markdown source={props.value}/> : <Muted>{props.name}</Muted>}
+    {props.value ? <Markdown source={props.value}/> : <Muted>{strings[props.name]}</Muted>}
     <Button onAction={props.editLabel(props.name)} className="btn-sm btn-link">
       <i className="fa fa-edit"/>
     </Button>

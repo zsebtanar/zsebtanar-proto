@@ -40,7 +40,7 @@ export default (class InputModal extends React.Component {
                   id="id-input-modal"
                   className="form-control"
                   placeholder="Üres szöveg"
-                  value={this.state.value}
+                  value={this.state.value || ''}
                   onChange={this.changeInput}
                   rows="10"/>
               </div>
@@ -48,7 +48,7 @@ export default (class InputModal extends React.Component {
                 <label>Előnézet</label>
                 <div className="card">
                   <div className="card-block">
-                    <Markdown source={this.state.value}/>
+                    <Markdown source={this.state.value || ''}/>
                   </div>
                 </div>
               </div>

@@ -155,7 +155,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
       }[this.mode]
 
       return loading
-        ? (<Muted>Loading...</Muted>)
+        ? (<Muted>Betöltés...</Muted>)
         : (<div>
             <div className="d-flex justify-content-between align-items-center">
               <h2>Feladat {modeLabel}</h2>
@@ -178,7 +178,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         {this.renderTextInput('Tantárgy: ', ['classification', 'subject'])}
         {this.renderTextInput('Témakör: ', ['classification', 'topic'])}
         {this.renderTextInput('Cím: ', ['title'])}
-        {this.renderTextInput('Tag-ek: ', ['classification', 'tags'])}
+        {this.renderTextInput('Címkék: ', ['classification', 'tags'])}
 
         <div className="form-group">
           <label className="d-flex justify-content-between align-items-center">
@@ -188,7 +188,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
               className="btn-link"
               onAction={this.props.openMarkdownHelpModal}
             >
-              Segítség markdown-hoz
+              Útmutató szerkesztéshez
             </Button>
 
           </label>
@@ -203,7 +203,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         </div>
 
         <div className="d-flex justify-content-between align-items-center">
-          <h4>Beviteli mezők</h4>
+          <h4>Megoldások</h4>
           <Button primary title="Add user control" onAction={this.addUserControl}>
             <i className="fa fa-plus"/>
           </Button>
@@ -219,7 +219,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         </div>
 
         <div className="d-flex justify-content-between align-items-center">
-          <h4>Tippek</h4>
+          <h4>Megoldási útmutatók</h4>
           <Button primary title="Add hint" onAction={this.addHint}>
             <i className="fa fa-plus"/>
           </Button>
