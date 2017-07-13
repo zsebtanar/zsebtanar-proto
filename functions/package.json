@@ -5,8 +5,6 @@
     "cors": "^2.8.3",
     "firebase-admin": "~4.2.1",
     "firebase-functions": "^0.5.7",
-    "markdown-it": "^8.3.1",
-    "markdown-it-katex": "^2.0.3",
     "ramda": "^0.24.1"
   },
   "private": true

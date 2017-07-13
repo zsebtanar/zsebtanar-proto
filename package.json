@@ -5,7 +5,7 @@
   "dependencies": {
     "axios": "0.16.2",
     "markdown-it": "8.3.1",
-    "markdown-it-katex": "2.0.3",
+    "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.1.0",
     "prop-types": "15.5.10",
     "ramda": "0.24.1",
     "react": "15.6.1",
