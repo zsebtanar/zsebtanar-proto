@@ -8,7 +8,7 @@ import { getPrivateExercise } from '../../store/services/exercise'
 import { openInputModal, openMarkdownHelpModal } from '../../store/actions/modal'
 import UserControls from '../../component/userControls/UserControl'
 import UserControlAdmin from '../../component/userControls/UserControlAdmin'
-import { SINGLE_CHOICE, SINGLE_NUMBER } from '../../component/userControls/controlTypes'
+import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from '../../component/userControls/controlTypes'
 import { uid } from '../../util/uuid'
 import { pairsInOrder } from '../../util/fn'
 import Button from '../../component/general/Button'
@@ -277,8 +277,9 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
               value={controlType}
             >
               <option value="">-- Válasz mező típust --</option>
-              <option value={SINGLE_CHOICE}>Felelet választó</option>
+              <option value={SIMPLE_TEXT}>Egyszerű szöveg</option>
               <option value={SINGLE_NUMBER}>Szám</option>
+              <option value={SINGLE_CHOICE}>Felelet választó</option>
             </select>
             <Button
               className="btn-link text-danger mx-1"

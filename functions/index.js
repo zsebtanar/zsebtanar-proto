@@ -1,3 +1,4 @@
+const validators = require('./userControls')
 const {propEq, findIndex, pipe, toPairs, pathOr} = require('ramda')
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
@@ -15,10 +16,16 @@ exports.checkExercise = functions.https.onRequest((req, res) => {
 
     const validate = (exercise) => {
       return toPairs(userSolutions).map(([key, us]) => {
-        switch (exercise.controls[key].controlType) {
-          case 'single-choice':
+        const control = exercise.controls[key]
+        const solution = exercise.solutions[key]
+
+        switch (control.controlType) {
+          case 'simple-text':
+            return validators.simpleText(control, solution, us)
           case 'single-number':
-            return exercise.solutions[key] === us
+            return validators.singleNumber(control, solution, us)
+          case 'single-choice':
+            return validators.singleChoice(control, solution, us)
           default:
             return false
         }
