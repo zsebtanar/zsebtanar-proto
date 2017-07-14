@@ -10,6 +10,32 @@ describe('simpleText', () => {
     expect(simpleText(null, solutionObj, 'a')).toBe(true)
   })
 
+  it('should fail if the input is empty', () => {
+    const solutionObj = {
+      caseSensitive: false,
+      ignoreSpaces: false,
+      options: {1: 'a'}
+    }
+
+    const emptyInputs = ['', null, undefined]
+    emptyInputs.map(input =>
+      expect(simpleText(null, solutionObj, input)).toBe(false)
+    )
+  })
+
+  it('should fail if the input and the options list are empty', () => {
+    const solutionObj = {
+      caseSensitive: false,
+      ignoreSpaces: false,
+      options: {}
+    }
+
+    const emptyInputs = ['', null, undefined, 'a']
+    emptyInputs.map(input =>
+      expect(simpleText(null, solutionObj, input)).toBe(false)
+    )
+  })
+
   it('should pass if the solution is part of the options', () => {
     const solutionObj = {
       caseSensitive: false,
