@@ -12,6 +12,7 @@ import { all, identity } from 'ramda'
 
 export const EXERCISE_GET_ALL = 'EXERCISE_GET_ALL'
 export const EXERCISE_GET = 'EXERCISE_GET'
+export const EXERCISE_GET_ERROR = 'EXERCISE_GET_ERROR'
 export const EXERCISE_CREATED = 'EXERCISE_CREATED'
 export const EXERCISE_CHECK_SUCCESS = 'EXERCISE_CHECK_SUCCESS'
 export const EXERCISE_CHECK_FAIL = 'EXERCISE_CHECK_FAIL'
@@ -35,6 +36,7 @@ export function getExerciseAction (key) {
 export function getPublicExerciseAction (key) {
   return dispatch => getPublicExercise(key)
     .then(payload => dispatch({type: EXERCISE_GET, payload}))
+    .catch(error => dispatch({type: EXERCISE_GET_ERROR, error}))
 }
 
 export function createExerciseAction (data) {

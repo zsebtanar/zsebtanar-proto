@@ -2,7 +2,7 @@ import {
   EXERCISE_CHECK_FAIL,
   EXERCISE_CHECK_SUCCESS,
   EXERCISE_GET,
-  EXERCISE_GET_ALL,
+  EXERCISE_GET_ALL, EXERCISE_GET_ERROR,
   HINT_GET
 } from '../actions/exercise'
 
@@ -17,6 +17,8 @@ export default function exerciseWorkflow (state = INIT_STATE, action) {
       return {...state, list: action.payload}
     case EXERCISE_GET:
       return {...state, active: {details: action.payload, state: 'in-progress', validity: null}}
+    case EXERCISE_GET_ERROR:
+      return {...state, active: {error: action.error}}
     case EXERCISE_CHECK_SUCCESS:
       return {...state, active: {...state.active, state: 'success', validity: action.payload}}
     case EXERCISE_CHECK_FAIL:

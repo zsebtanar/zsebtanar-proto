@@ -19,8 +19,9 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
   class extends React.Component {
     mode = 'Add'
     state = {
+      error: null,
       loading: true,
-      exercise: {}
+      exercise: null
     }
 
     componentWillMount () {
@@ -30,6 +31,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         this.mode = 'Update'
         return getPrivateExercise(key)
           .then(this.setExercise)
+          .catch(this.errorHandler)
       }
       if (cloneKey) {
         this.mode = 'Clone'
@@ -37,8 +39,13 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
           .then(dissoc('_key'))
           .then(ex => assoc('title', `${(ex.title || '')} [másolat]`, ex))
           .then(this.setExercise)
+          .catch(this.errorHandler)
       }
       return this.setExercise({})
+    }
+
+    errorHandler = (error) => {
+      this.setState({error, loading: false})
     }
 
     setExercise = (exercise) => {
@@ -147,26 +154,31 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     }
 
     render () {
-      const loading = this.state.loading
+      const {loading, error, exercise} = this.state
       const modeLabel = {
         Add: 'létrehozása',
         Update: 'módosítása',
         Clone: 'másolása'
       }[this.mode]
 
-      return loading
-        ? (<Muted>Betöltés...</Muted>)
-        : (<div>
-            <div className="d-flex justify-content-between align-items-center">
-              <h2>Feladat {modeLabel}</h2>
-            </div>
-            <hr/>
-            <div className="row">
-              <div className="col-6">{this.renderForm()}</div>
-              <div className="col-6">{this.renderPreview()}</div>
-            </div>
+      return (<div>
+        {loading && <Muted>Betöltés...</Muted>}
+        {error && <div>
+          <div className="alert alert-danger">{error.message || error}</div>
+          <NavLink exact to="/exercise" className="btn btn-secondary">Vissza a feladatlist</NavLink>
+        </div>}
+        {!loading && !error && exercise && <div>
+          <div className="d-flex justify-content-between align-items-center">
+            <h2>Feladat {modeLabel}</h2>
           </div>
-        )
+          <hr/>
+          <div className="row">
+            <div className="col-6">{this.renderForm()}</div>
+            <div className="col-6">{this.renderPreview()}</div>
+          </div>
+        </div>}
+      </div>
+      )
     }
 
     renderForm () {

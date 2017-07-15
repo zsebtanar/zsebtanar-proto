@@ -26,7 +26,7 @@ export default connect(
   componentWillMount () {
     this.props
       .getPublicExerciseAction(this.props.match.params.key)
-      .then(ex => this.setState({hintsLeft: this.props.exercise.details.hintCount || 0}))
+      .then(ex => this.setState({hintsLeft: pathOr(0, ['props', 'xercise', 'details', 'intCount'], this)}))
   }
 
   onSubmit = (event) => {
@@ -53,6 +53,7 @@ export default connect(
   }
 
   render () {
+    const ex = this.props.exercise
     return (
       <div>
         <div className="d-flex justify-content-between align-items-center">
@@ -62,16 +63,18 @@ export default connect(
           <NavLink exact to="/exercise">Vissza a feladatlistához</NavLink>
         </div>
         <hr/>
-        {
-          !this.props.exercise
-            ? 'loading...'
-            : <div className="row">
-              <div className="col-8 offset-2">
-                {this.renderTask()}
-                <hr/>
-                {this.renderDetails()}
-              </div>
-            </div>
+        {!ex && 'Betöltés...'}
+        {ex && ex.error && <div>
+          <div className="alert alert-danger">{ex.error.message || ex.error}</div>
+          <NavLink exact to="/exercise" className="btn btn-secondary">Vissza a feladatlist</NavLink>
+        </div>}
+        {ex && !ex.error && <div className="row">
+          <div className="col-8 offset-2">
+            {this.renderTask()}
+            <hr/>
+            {this.renderDetails()}
+          </div>
+        </div>
         }
       </div>
     )
@@ -113,7 +116,7 @@ export default connect(
 
       <hr/>
 
-      <Markdown source={ex.description} />
+      <Markdown source={ex.description}/>
 
       {
         (pairsInOrder(ex.controls)).map(([key, {controlType, controlProps, order}]) =>
@@ -129,7 +132,7 @@ export default connect(
             ? <ol>
               {hints.map(item => (<li key={item.key}>
                 <Markdown source={item.hint.text}/>
-                </li>))}
+              </li>))}
             </ol>
             : ''
         }

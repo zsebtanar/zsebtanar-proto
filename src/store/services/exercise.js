@@ -1,22 +1,25 @@
-import { map, pipe, prop, values } from 'ramda'
+import { isNil, map, not, pipe, prop, values } from 'ramda'
 import axios from 'axios'
 import { resolveSnapshot } from '../../util/firebase'
+import { assert } from '../../util/fn'
 
 const DB = window.firebase.database()
 const Exercises = DB.ref('exercise')
+
+const notFound = assert(pipe(isNil, not), 'A kért feladat nem létezik.')
 
 export function getPublicExercise (uid) {
   return Exercises
     .child(uid)
     .once('value')
-    .then(pipe(resolveSnapshot, prop('public')))
+    .then(pipe(resolveSnapshot, notFound, prop('public')))
 }
 
 export function getPrivateExercise (uid) {
   return Exercises
     .child(uid)
     .once('value')
-    .then(pipe(resolveSnapshot, prop('private')))
+    .then(pipe(resolveSnapshot, notFound, prop('private')))
 }
 
 export function getAllPrivateExercises () {
