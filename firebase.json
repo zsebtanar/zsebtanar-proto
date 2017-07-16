@@ -1,5 +1,7 @@
 {
   "hosting": {
+    "cleanUrls": true,
+    "trailingSlash": false,
     "public": "public",
     "ignore": [
       "firebase.json",
@@ -27,6 +29,10 @@
       {
         "source": "/api/get-next-hint",
         "function": "getNextHint"
+      },
+      {
+        "source": "/admin/**",
+        "destination": "/admin.html"
       },
       {
         "source": "**",

@@ -1,3 +1,4 @@
+import { path } from 'ramda'
 import { createUser } from '../services/user'
 import { getUserAction } from './user'
 
@@ -16,8 +17,17 @@ export function initUser () {
 export function watchAuth (store) {
   AUTH.onAuthStateChanged(function (user) {
     if (user) {
-      store.dispatch(getUserAction(user.uid))
-      store.dispatch({type: SING_IN_SUCCESS, payload: user})
+      store.dispatch(getUserAction(user.uid)).then((data) => {
+        const state = store.getState()
+        if (
+          !state.app.session.signedIn &&
+          window.location.pathname !== '/admin' &&
+          path(['payload', 'admin'], data)
+        ) {
+          window.location.replace('/admin')
+        }
+        store.dispatch({type: SING_IN_SUCCESS, payload: user})
+      })
     } else {
       store.dispatch({type: SING_OUT_SUCCESS})
     }
@@ -55,6 +65,7 @@ export function signOut () {
   return dispatch =>
     AUTH
       .signOut()
+      .then(() => window.location.replace('/'))
       .catch(error => dispatch({
         type: SING_OUT_ERROR,
         payload: error,

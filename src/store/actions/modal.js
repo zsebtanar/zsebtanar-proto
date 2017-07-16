@@ -1,7 +1,7 @@
 import { identity } from 'ramda'
-import AlertModal from '../../component/modal/AlertModal'
-import InputModal from '../../component/modal/InputModal'
-import MarkdownHelpModal from '../../component/modal/MarkdownHelpModal'
+import AlertModal from 'shared/component/modal/AlertModal'
+import InputModal from 'shared/component/modal/InputModal'
+import MarkdownHelpModal from 'shared/component/modal/MarkdownHelpModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'

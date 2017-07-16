@@ -1,26 +1,49 @@
+const path = require('path')
 const webpack = require('webpack')
 const isProd = process.env.NODE_ENV === 'production'
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 
 module.exports = {
-  entry: './src/index.jsx',
+  entry: {
+    admin: './src/admin/admin.jsx',
+    public: './src/public/public.jsx'
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: `${__dirname}/../public`
   },
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
 
+  target: 'web',
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.js', '.jsx', '.js', '.json']
+    extensions: ['.js', '.jsx', '.js', '.json'],
+    modules: [
+      path.resolve(__dirname, '../src'),
+      path.resolve(__dirname, '../node_modules')
+    ]
   },
 
   devServer: {
+    contentBase: path.resolve(__dirname, '../public'),
+    overlay: {
+      warnings: true,
+      errors: true
+    },
+    inline: true,
     historyApiFallback: {
-      index: '/'
+      verbose: true,
+      rewrites: [
+        {from: /(.js|.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname},
+        {from: /\/admin/, to: '/admin.html'},
+        {from: /\//, to: '/index.html'}
+      ]
     }
   },
+  externals: 'firebase',
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
@@ -42,11 +65,28 @@ module.exports = {
     ]
   },
 
-  // When importing a module whose path matches one of the following, just
-  // assume a corresponding global variable exists and use that instead.
-  // This is important because it allows us to avoid bundling all of our
-  // dependencies, which allows browsers to cache those libraries between builds.
   plugins: [
+    // new webpack.NamedModulesPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../src/index.ejs'),
+      alwaysWriteToDisk: false,
+      filename: 'admin.html',
+      title: 'Zsebtanár - Tanár',
+      chunks: ['vendor', 'admin']
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../src/index.ejs'),
+      alwaysWriteToDisk: false,
+      filename: 'index.html',
+      title: 'Zsebtanár - proto',
+      chunks: ['vendor', 'public']
+    }),
+    new HtmlWebpackHarddiskPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor.bundle.min.js'
+    }),
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),

@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../../../src/component/general/Button'
+import Button from '../../../src/shared/component/general/Button'
 import renderer from 'react-test-renderer'
 
 describe('Button', () => {

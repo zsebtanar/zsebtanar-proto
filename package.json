@@ -10,7 +10,7 @@
     "ramda": "0.24.1",
     "react": "15.6.1",
     "react-dom": "15.6.1",
-    "react-redux": "5.0.4",
+    "react-redux": "^5.0.5",
     "react-router": "4.1.1",
     "react-router-dom": "4.1.1",
     "redux": "3.7.1",
@@ -34,18 +34,19 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1",
+    "html-webpack-harddisk-plugin": "^0.1.0",
+    "html-webpack-plugin": "^2.29.0",
     "jest": "^20.0.4",
-    "react-scripts": "0.9.5",
     "react-test-renderer": "^15.6.1",
     "source-map-loader": "0.2.1",
-    "webpack": "3.0.0",
-    "webpack-dev-server": "2.5.0"
+    "webpack": "^3.2.0",
+    "webpack-dev-server": "^2.5.1"
   },
   "scripts": {
     "start": "npm run dev",
     "test": "jest test",
     "build": "NODE_ENV=production webpack -p --config ./build/webpack.config.js",
-    "dev": "webpack-dev-server --progress --inline --hot --config ./build/webpack.config.js --content-base public",
+    "dev": "webpack-dev-server --progress --config ./build/webpack.config.js",
     "deploy": "npm run lint && npm run test && npm run build && firebase deploy",
     "lint": "./node_modules/.bin/eslint src"
   }
