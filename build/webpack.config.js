@@ -11,6 +11,7 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
+    publicPath: '/',
     path: `${__dirname}/../public`
   },
 
@@ -37,9 +38,10 @@ module.exports = {
     historyApiFallback: {
       verbose: true,
       rewrites: [
-        {from: /(.js|.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname},
-        {from: /\/admin/, to: '/admin.html'},
-        {from: /\//, to: '/index.html'}
+        {from: /^\/assets\/.*(|.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname},
+        {from: /^\/.*\.js$/, to: ctx => '/' + ctx.parsedUrl.pathname.split('/').pop()},
+        {from: /^\/admin/, to: '/admin.html'},
+        {from: /^\//, to: '/index.html'}
       ]
     }
   },

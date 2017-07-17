@@ -31,6 +31,10 @@
         "function": "getNextHint"
       },
       {
+          "source": "/:asset*.@(js|css|png|ico|json)",
+          "destination": "/:asset"
+      },
+      {
         "source": "/admin/**",
         "destination": "/admin.html"
       },
