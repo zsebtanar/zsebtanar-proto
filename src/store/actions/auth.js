@@ -21,7 +21,7 @@ export function watchAuth (store) {
         const state = store.getState()
         if (
           !state.app.session.signedIn &&
-          window.location.pathname !== '/admin' &&
+          !/^\/admin/.test(window.location.pathname) &&
           path(['admin'], userDetails)
         ) {
           window.location.replace('/admin')
