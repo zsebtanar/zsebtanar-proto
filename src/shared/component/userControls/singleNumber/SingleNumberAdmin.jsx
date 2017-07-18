@@ -50,33 +50,46 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
     const {prefix, postfix, solution} = this.state
     const {editLabel, deleteLabel} = this
 
-    return (<div className="user-control single-number single-number-admin d-flex align-items-center">
+    return (<div className="user-control single-number single-number-admin">
       <Label {...{name: 'prefix', value: prefix, editLabel, deleteLabel}} />
-      <input
-        type="number"
-        onChange={this.setSolution}
-        className="form-control"
-        value={solution}
-      />
       <Label {...{name: 'postfix', value: postfix, editLabel, deleteLabel}} />
+      <div className="form-group row">
+        <label className="col-3 col-form-label">Megoldás:</label>
+        <div className="col-7">
+          <input
+            type="number"
+            onChange={this.setSolution}
+            className="form-control"
+            value={solution}
+          />
+        </div>
+      </div>
     </div>)
   }
 })
 
 const Muted = (props) => (<i className="text-muted">{props.children}</i>)
 
+
 const Label = (props) => (
-  <span className="d-flex align-items-center">
-    {props.value ? <Markdown source={props.value}/> : <Muted>{strings[props.name]}</Muted>}
-    <Button onAction={props.editLabel(props.name)} className="btn-sm btn-link">
-      <i className="fa fa-edit"/>
-    </Button>
-    {
-      props.value
-        ? <Button onAction={props.deleteLabel(props.name)} className="btn-sm btn-link text-danger">
-          <i className="fa fa-trash"/>
-        </Button>
-        : ''
-    }
-  </span>
+  <div className="form-group row">
+    <label className="col-3 col-form-label">{strings[props.name]}:</label>
+    <div className="col-6">
+      <p className="form-control-static">
+        {props.value ? <Markdown source={props.value}/> : <Muted>Üres</Muted>}
+      </p>
+    </div>
+    <div className="col-3 text-right">
+      <Button onAction={props.editLabel(props.name)} className="btn-sm btn-link">
+        <i className="fa fa-edit"/>
+      </Button>
+      {
+        props.value
+          ? <Button onAction={props.deleteLabel(props.name)} className="btn-sm btn-link text-danger">
+            <i className="fa fa-trash"/>
+          </Button>
+          : ''
+      }
+    </div>
+  </div>
 )

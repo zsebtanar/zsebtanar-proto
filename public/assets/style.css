@@ -68,6 +68,9 @@ body {
 .single-number input{
     width: 100px;
 }
+.single-number-admin input{
+    width: 100%;
+}
 .user-control span > p {
     margin: 0;
 }

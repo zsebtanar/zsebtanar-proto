@@ -62,12 +62,12 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
   render () {
     const options = this.state.options
     return (<div className="user-control single-choice single-choice-admin">
-      <Button className="btn-sm btn-secondary" onAction={this.addItem}>
-        <i className="fa fa-plus"/> Válasz lehetőség hozzáadása
-      </Button>
       <ol>
         {options.map((data) => this.renderItem({...data, name: 'admin', isLast: options.length < 2}))}
       </ol>
+      <Button className="btn-sm btn-link" onAction={this.addItem}>
+        <i className="fa fa-plus"/> Válasz lehetőség hozzáadása
+      </Button>
     </div>)
   }
 

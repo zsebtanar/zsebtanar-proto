@@ -77,22 +77,22 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
     const solution = toPairs(this.state.solution.options)
 
     return (<div className="user-control simple-text simple-text-admin">
-      <div className="d-flex align-items-center">
-        <Label {...{name: 'prefix', value: prefix, editLabel, deleteLabel}} />
-        <input
-          type="text"
-          readOnly
-          className="form-control"
-        />
-        <Label {...{name: 'postfix', value: postfix, editLabel, deleteLabel}} />
+      <Label {...{name: 'prefix', value: prefix, editLabel, deleteLabel}} />
+      <Label {...{name: 'postfix', value: postfix, editLabel, deleteLabel}} />
+      <div className="form-group row">
+        <label className="col-3 col-form-label">Megoldások:</label>
+        <div className="col-9">
+          <ol className="list-unstyled">
+            {solution.map(item => this.renderItem(item, solution.length < 2))}
+          </ol>
+        </div>
       </div>
-      <div>
-        <ol>
-          {solution.map(item => this.renderItem(item, solution.length < 2))}
-        </ol>
-        <Button className="btn-sm btn-link" onAction={this.addSolution}>
-          <i className="fa fa-plus"/> Alternatív megoldás megadása
-        </Button>
+      <div className="form-group row">
+        <div className="col-9 offset-3">
+          <Button className="btn-sm btn-link" onAction={this.addSolution}>
+            <i className="fa fa-plus"/> Alternatív megoldás megadása
+          </Button>
+        </div>
       </div>
       <div>
         <label className="custom-control custom-checkbox">
@@ -148,17 +148,24 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
 const Muted = (props) => (<i className="text-muted">{props.children}</i>)
 
 const Label = (props) => (
-  <span className="d-flex align-items-center">
-    {props.value ? <Markdown source={props.value}/> : <Muted>{strings[props.name]}</Muted>}
-    <Button onAction={props.editLabel(props.name)} className="btn-sm btn-link">
-      <i className="fa fa-edit"/>
-    </Button>
-    {
-      props.value
-        ? <Button onAction={props.deleteLabel(props.name)} className="btn-sm btn-link text-danger">
-          <i className="fa fa-trash"/>
-        </Button>
-        : ''
-    }
-  </span>
+  <div className="form-group row">
+    <label className="col-3 col-form-label">{strings[props.name]}:</label>
+    <div className="col-6">
+      <p className="form-control-static">
+        {props.value ? <Markdown source={props.value}/> : <Muted>Üres</Muted>}
+      </p>
+    </div>
+    <div className="col-3 text-right">
+      <Button onAction={props.editLabel(props.name)} className="btn-sm btn-link">
+        <i className="fa fa-edit"/>
+      </Button>
+      {
+        props.value
+          ? <Button onAction={props.deleteLabel(props.name)} className="btn-sm btn-link text-danger">
+            <i className="fa fa-trash"/>
+          </Button>
+          : ''
+      }
+    </div>
+  </div>
 )

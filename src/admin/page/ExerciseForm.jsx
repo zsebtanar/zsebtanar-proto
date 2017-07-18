@@ -103,7 +103,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     addUserControl = () => {
       this.setState(evolve({
         exercise: {
-          controls: (c) => ({...c, [uid()]: {order: values(c).length}})
+          controls: (c) => ({...c, [uid()]: {order: values(c).length, controlType: SIMPLE_TEXT}})
         }
       }))
     }
@@ -216,7 +216,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
 
         <div className="d-flex justify-content-between align-items-center">
           <h4>Megoldások</h4>
-          <Button primary title="Add user control" onAction={this.addUserControl}>
+          <Button title="Add user control" onAction={this.addUserControl}>
             <i className="fa fa-plus"/>
           </Button>
         </div>
@@ -232,19 +232,19 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
 
         <div className="d-flex justify-content-between align-items-center">
           <h4>Megoldási útmutatók</h4>
-          <Button primary title="Add hint" onAction={this.addHint}>
+          <Button title="Add hint" onAction={this.addHint}>
             <i className="fa fa-plus"/>
           </Button>
         </div>
 
         <div className="my-2">
-          <ol>
+          <div className="list-group">
             {
               hints.length
                 ? hints.map(this.renderHint)
                 : <div className="alert alert-info">Megadhatsz egy vagy több tippet a feladat megoldásához</div>
             }
-          </ol>
+          </div>
         </div>
 
         <div className="col-sm-8 offset-sm-4">
@@ -288,7 +288,6 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
               required
               value={controlType}
             >
-              <option value="">-- Válasz mező típust --</option>
               <option value={SIMPLE_TEXT}>Egyszerű szöveg</option>
               <option value={SINGLE_NUMBER}>Szám</option>
               <option value={SINGLE_CHOICE}>Felelet választó</option>
@@ -300,7 +299,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
               <i className="fa fa-trash"/>
             </Button>
           </div>
-          <div className="form-group">
+          <div className="form-group col-12">
             {
               pathOr(false, ['controlType'], item)
                 ? <UserControlAdmin
@@ -318,16 +317,23 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         </li>)
     }
 
-    renderHint = ([key, item]) => {
-      return (<li key={key} className="d-flex align-items-center">
-        <Markdown source={item.text}/>
-        <Button className="bnt-sm btn-link" onAction={this.updateHint(key)}>
-          <i className="fa fa-edit"/>
-        </Button>
-        <Button className="bnt-sm btn-link text-danger" onAction={this.removeHint(key)}>
-          <i className="fa fa-trash"/>
-        </Button>
-      </li>)
+    renderHint = ([key, item], idx) => {
+      return (
+        <div key={key} className="list-group-item list-group-item-action flex-column align-items-start">
+          <div className="d-flex w-100 justify-content-between">
+            <h5 className="mb-1 text-muted">{idx + 1}.</h5>
+            <div>
+              <Button className="btn-sm btn-link" onAction={this.updateHint(key)}>
+                <i className="fa fa-edit"/>
+              </Button>
+              <Button className="btn-sm btn-link text-danger" onAction={this.removeHint(key)}>
+                <i className="fa fa-trash"/>
+              </Button>
+            </div>
+          </div>
+          <Markdown source={item.text}/>
+        </div>
+      )
     }
 
     renderPreview () {
