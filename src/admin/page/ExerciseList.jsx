@@ -12,15 +12,15 @@ export default connect(
   mapStateToProps,
   {getAllExerciseAction, removeExerciseAction}
 )(class extends React.Component {
-  componentWillMount () {
-    this.props.getAllExerciseAction()
-  }
-
   removeExercise = (key) => () => {
     if (confirm('Biztos, hogy törlöd a feladatot?')) {
       this.props.removeExerciseAction(key)
         .then(this.props.getAllExerciseAction)
     }
+  }
+
+  componentWillMount () {
+    this.props.getAllExerciseAction()
   }
 
   render () {
@@ -32,7 +32,7 @@ export default connect(
             <i className="fa fa-plus"/> Feladat létrehozása
           </NavLink>
         </div>
-        <table className="table table-hover table mt-3">
+        <table className="table table-hover table mt-3 exercise-list-table">
           <thead>
           <tr>
             <th>#</th>
@@ -41,8 +41,7 @@ export default connect(
             <th>Témakör</th>
             <th>Cím</th>
             <th>Címkék</th>
-            <th>Létrehozva</th>
-            <th className="text-center"><i className="fa fa-lg fa-cog"/></th>
+            <th className="text-center action-column"><i className="fa fa-lg fa-cog"/></th>
           </tr>
           </thead>
           <tbody>
@@ -57,18 +56,20 @@ export default connect(
     return this.props.exercises.map((ex, idx) =>
       <tr key={ex._key}>
         <td>{idx + 1}</td>
-        <td>{ex.classification.grade}</td>
+        <td className="grade-column">{ex.classification.grade}</td>
         <td>{ex.classification.subject}</td>
         <td>{ex.classification.topic}</td>
         <td>{ex.title}</td>
-        <td>{ex.classification.tags}</td>
-        <td>{new Date(ex._created).toLocaleDateString()}</td>
+        <td>{ex.classification.tags.split(/\s*,\s*/).map(tag =>
+          <span className="badge badge-default mx-1" key={tag}>{tag}</span>
+        )}</td>
         <td className="text-center">
           <NavLink exact to={`/exercise/view/${ex._key}`} className="btn btn-sm btn-secondary" title="Megtekintés">
             <i className="fa fa-eye"/>
           </NavLink>
           &nbsp;
-          <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-secondary" title="Feladat szerkesztése">
+          <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-secondary"
+                   title="Feladat szerkesztése">
             <i className="fa fa-edit"/>
           </NavLink>
           &nbsp;

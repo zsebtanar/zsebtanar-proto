@@ -71,3 +71,10 @@ body {
 .user-control span > p {
     margin: 0;
 }
+
+.exercise-list-table .action-column{
+    width: 12em;
+}
+.exercise-list-table .grade-column{
+    width: 7em;
+}
