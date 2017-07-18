@@ -22,7 +22,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
         ignoreSpaces: props.value.ignoreSpaces || false,
         caseSensitive: props.value.caseSensitive || true,
         options: false
-      },
+      }
     }
   }
 
@@ -104,7 +104,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
             onChange={this.setOption}
           />
           <span className="custom-control-indicator"/>
-          <span className="custom-control-description">Szőközök figyelmenkívűl hagyása</span>
+          <span className="custom-control-description">Szóközök figyelmen kívül hagyása</span>
         </label>
         <label className="custom-control custom-checkbox">
           <input
