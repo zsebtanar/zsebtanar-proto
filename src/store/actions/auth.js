@@ -1,5 +1,5 @@
 import { path } from 'ramda'
-import { createUser, getUser } from '../../shared/services/user'
+import { createUser, getUser, ROLE_USER } from '../../shared/services/user'
 import { GET_USER } from './user'
 
 const AUTH = firebase.auth()
@@ -22,7 +22,7 @@ export function watchAuth (store) {
         if (
           !state.app.session.signedIn &&
           !/^\/admin/.test(window.location.pathname) &&
-          path(['admin'], userDetails)
+          path(['role'], userDetails) > ROLE_USER
         ) {
           window.location.replace('/admin')
         } else {

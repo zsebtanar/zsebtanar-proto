@@ -19,8 +19,9 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header (p
     <div className="header clearfix">
       <nav>
         <ul className="nav nav-pills float-right">
+
           <li className="nav-item">
-            <NavLink activeClassName="active" className="nav-link" exact to="/">Kezdőlap</NavLink>
+            <NavLink activeClassName="active" className="nav-link" to="/user">Felhasználók</NavLink>
           </li>
 
           <li className="nav-item">
@@ -28,7 +29,7 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header (p
           </li>
 
           <li className="nav-item" key="sing-out">
-            <a href="#" className="nav-link" onClick={signOut}>Kijelentkezés</a>
+            <a href="#" className="nav-link" onClick={signOut} title="Kijelentkezés"><i className="fa fa-power-off"/></a>
           </li>
         </ul>
       </nav>

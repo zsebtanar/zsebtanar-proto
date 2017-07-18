@@ -1,8 +1,8 @@
 {
   "rules": {
     // admin can read and write everything
-    ".read": "root.child('users/'+auth.uid+'/admin').val() === true",
-    ".write": "root.child('users/'+auth.uid+'/admin').val() === true",
+    ".read": "root.child('users/'+auth.uid+'/role').val() === 1000",
+    ".write": "root.child('users/'+auth.uid+'/role').val() === 1000",
 
     "users": {
       "$uid": {
@@ -17,8 +17,8 @@
 
     "exercises": {
       "private": {
-        ".read": "root.child('users/'+auth.uid+'/admin').val() === true",
-        ".write": "root.child('users/'+auth.uid+'/admin').val() === true"
+        ".read": "root.child('users/'+auth.uid+'/role').val() > 0",
+        ".write": "root.child('users/'+auth.uid+'/role').val() > 0"
       },
       "public": {
         ".read": true
