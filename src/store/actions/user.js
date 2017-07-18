@@ -1,4 +1,4 @@
-import { getUser } from '../services/user'
+import { getUser } from '../../shared/services/user'
 
 export const GET_USER = 'GET_USER'
 

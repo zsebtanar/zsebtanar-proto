@@ -1,5 +1,5 @@
 import { path } from 'ramda'
-import { createUser, getUser } from '../services/user'
+import { createUser, getUser } from '../../shared/services/user'
 import { GET_USER } from './user'
 
 const AUTH = firebase.auth()
