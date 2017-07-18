@@ -15,17 +15,17 @@ exports.checkExercise = functions.https.onRequest((req, res) => {
     const userSolutions = req.body.solutions
 
     const validate = (exercise) => {
-      return toPairs(userSolutions).map(([key, us]) => {
+      return toPairs(exercise.solutions).map(([key, solution]) => {
         const control = exercise.controls[key]
-        const solution = exercise.solutions[key]
+        const userSolution = userSolutions[key]
 
         switch (control.controlType) {
           case 'simple-text':
-            return validators.simpleText(control, solution, us)
+            return validators.simpleText(control, solution, userSolution)
           case 'single-number':
-            return validators.singleNumber(control, solution, us)
+            return validators.singleNumber(control, solution, userSolution)
           case 'single-choice':
-            return validators.singleChoice(control, solution, us)
+            return validators.singleChoice(control, solution, userSolution)
           default:
             return false
         }
