@@ -25,6 +25,10 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header (p
           </li>
 
           <li className="nav-item">
+            <NavLink activeClassName="active" className="nav-link" to="/classification">Kategóriák</NavLink>
+          </li>
+
+          <li className="nav-item">
             <NavLink activeClassName="active" className="nav-link" to="/exercise">Feladatok</NavLink>
           </li>
 

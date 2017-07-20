@@ -1,26 +1,39 @@
+import { evolve, map, pathOr } from 'ramda'
 import React from 'react'
-import { connect } from 'react-redux'
-import { getAllExerciseAction, removeExerciseAction } from '../../store/actions/exercise'
 import { NavLink } from 'react-router-dom'
-import Button from '../../shared/component/general/Button'
+import Button from 'shared/component/general/Button'
+import { getAllClassification } from 'shared/services/classification'
+import { getAllPrivateExercises, removeExercise } from 'shared/services/exercise'
 
-const mapStateToProps = (state) => ({
-  exercises: state.exercise.list
-})
+export default class extends React.Component {
+  state = {
+    exercises: null
+  }
 
-export default connect(
-  mapStateToProps,
-  {getAllExerciseAction, removeExerciseAction}
-)(class extends React.Component {
-  removeExercise = (key) => () => {
+  deleteExercise = (key) => () => {
     if (confirm('Biztos, hogy törlöd a feladatot?')) {
-      this.props.removeExerciseAction(key)
-        .then(this.props.getAllExerciseAction)
+      removeExercise(key).then(this.loadList)
     }
   }
 
   componentWillMount () {
-    this.props.getAllExerciseAction()
+    this.loadList()
+  }
+
+  loadList = () => {
+    Promise.all([
+      getAllClassification(),
+      getAllPrivateExercises()
+    ]).then(([classifications, list]) => {
+      this.setState({ exercises: list.map(evolve({
+        classification: {
+          grade: map(key => pathOr(key, ['grade',key,'name'],classifications)),
+          subject: map(key => pathOr(key, ['subject',key,'name'],classifications)),
+          topic: map(key => pathOr(key, ['topic',key,'name'],classifications)),
+          tags: map(key => pathOr(key, ['tags',key,'name'],classifications))
+        }
+      }))})
+    })
   }
 
   render () {
@@ -28,7 +41,7 @@ export default connect(
       <div>
         <div className="btn-toolbar justify-content-between align-items-center">
           <h3>Feladatok</h3>
-          <NavLink exact to="/exercise/add" className="btn btn-secondary btn-sm">
+          <NavLink exact to="/exercise/add" className="btn btn-secondary">
             <i className="fa fa-plus"/> Feladat létrehozása
           </NavLink>
         </div>
@@ -45,7 +58,7 @@ export default connect(
           </tr>
           </thead>
           <tbody>
-          {this.props.exercises ? this.renderItem() : 'Kis türelmet...'}
+          {this.state.exercises ? this.renderItem() : 'Kis türelmet...'}
           </tbody>
         </table>
       </div>
@@ -53,14 +66,14 @@ export default connect(
   }
 
   renderItem () {
-    return this.props.exercises.map((ex, idx) =>
+    return this.state.exercises.map((ex, idx) =>
       <tr key={ex._key}>
         <td>{idx + 1}</td>
-        <td className="grade-column">{ex.classification.grade}</td>
-        <td>{ex.classification.subject}</td>
-        <td>{ex.classification.topic}</td>
+        <td className="grade-column">{ex.classification.grade.map(x => <span key={x}>{x}</span>)}</td>
+        <td>{ex.classification.subject.map(x => <span key={x}>{x}</span>)}</td>
+        <td>{ex.classification.topic.map(x => <span key={x}>{x}</span>)}</td>
         <td>{ex.title}</td>
-        <td>{ex.classification.tags.split(/\s*,\s*/).map(tag =>
+        <td>{ex.classification.tags.map(tag =>
           <span className="badge badge-default mx-1" key={tag}>{tag}</span>
         )}</td>
         <td className="text-center">
@@ -77,11 +90,11 @@ export default connect(
             <i className="fa fa-clone"/>
           </NavLink>
           &nbsp;
-          <Button title="Feladat törlése" className="btn btn-sm btn-secondary" onAction={this.removeExercise(ex._key)}>
+          <Button title="Feladat törlése" className="btn btn-sm btn-secondary" onAction={this.deleteExercise(ex._key)}>
             <span className="text-danger"><i className="fa fa-trash"/></span>
           </Button>
         </td>
       </tr>
     )
   }
-})
+}

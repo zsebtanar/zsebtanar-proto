@@ -11,6 +11,7 @@ import Exercise from './page/Exercise'
 import Page404 from 'shared/page/Page404'
 import Overlay from 'shared/component/modal/Overlay'
 import UserList from './page/user/UserList'
+import ClassificationList from './page/classification/ClassificationList'
 
 export default (props) =>
   <Router history={{}} basename="/admin/">
@@ -21,6 +22,7 @@ export default (props) =>
           <Switch>
             <Route path="/" exact component={Home}/>
             <Route path="/user" exact component={UserList}/>
+            <Route path="/classification" exact component={ClassificationList}/>
             <Route path="/exercise" exact component={ExerciseList}/>
             <Route path="/exercise/add/:clone" component={ExerciseForm}/>
             <Route path="/exercise/add/" component={ExerciseForm}/>

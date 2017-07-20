@@ -1,17 +1,19 @@
-import { __, assoc, assocPath, dissoc, evolve, identity, merge, omit, pathOr, values } from 'ramda'
+import { __, map, prop, assoc, assocPath, dissoc, evolve, identity, merge, omit, pathOr, values } from 'ramda'
+import { uid } from 'util/uuid'
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import Markdown from '../../shared/component/general/Markdown'
-import { createExerciseAction, updateExerciseAction } from '../../store/actions/exercise'
-import { getPrivateExercise } from '../../shared/services/exercise'
-import { openInputModal, openMarkdownHelpModal } from '../../store/actions/modal'
-import UserControls from '../../shared/component/userControls/UserControl'
-import UserControlAdmin from '../../shared/component/userControls/UserControlAdmin'
-import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from '../../shared/component/userControls/controlTypes'
-import { uid } from '../../util/uuid'
-import { pairsInOrder } from '../../util/fn'
-import Button from '../../shared/component/general/Button'
+import Select from 'react-select'
+import Markdown from 'shared/component/general/Markdown'
+import Button from 'shared/component/general/Button'
+import UserControls from 'shared/component/userControls/UserControl'
+import UserControlAdmin from 'shared/component/userControls/UserControlAdmin'
+import { createExerciseAction, updateExerciseAction } from 'store/actions/exercise'
+import { getPrivateExercise } from 'shared/services/exercise'
+import { openInputModal, openMarkdownHelpModal } from 'store/actions/modal'
+import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from 'shared/component/userControls/controlTypes'
+import { pairsInOrder } from 'util/fn'
+import { getAllClassification } from 'shared/services/classification'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
@@ -19,12 +21,21 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
   class extends React.Component {
     mode = 'Add'
     state = {
+      classifications: null,
       error: null,
       loading: true,
       exercise: null
     }
 
     componentWillMount () {
+      getAllClassification()
+        .then(classifications => {
+          this.setState({classifications})
+          this.loadExercise()
+        })
+    }
+
+    loadExercise () {
       const key = this.props.match.params.key
       const cloneKey = this.props.match.params.clone
       if (key) {
@@ -72,6 +83,10 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     update = (event) => {
       const {name, value} = event.currentTarget || event
       this.setState({exercise: assocPath(name.split('.'), value, this.state.exercise)})
+    }
+
+    updateClassification = path => value => {
+      this.setState({exercise: assocPath(path, map(prop('_key'), value), this.state.exercise)})
     }
 
     updateUserControlType = (event) => {
@@ -186,11 +201,11 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
       const controls = pairsInOrder(ex.controls)
       const hints = pairsInOrder(ex.hints)
       return (<form onSubmit={this.saveExercise}>
-        {this.renderTextInput('Osztály: ', ['classification', 'grade'])}
-        {this.renderTextInput('Tantárgy: ', ['classification', 'subject'])}
-        {this.renderTextInput('Témakör: ', ['classification', 'topic'])}
+        {this.renderSelect('grade', 'Osztály: ', ['classification', 'grade'])}
+        {this.renderSelect('subject', 'Tantárgy: ', ['classification', 'subject'])}
+        {this.renderSelect('topic', 'Témakör: ', ['classification', 'topic'])}
         {this.renderTextInput('Cím: ', ['title'])}
-        {this.renderTextInput('Címkék: ', ['classification', 'tags'])}
+        {this.renderSelect('tags', 'Címkék: ', ['classification', 'tags'])}
 
         <div className="form-group">
           <label className="d-flex justify-content-between align-items-center">
@@ -272,6 +287,24 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
       </div>)
     }
 
+    renderSelect (group, label, path) {
+      const classifications = this.state.classifications
+      if (!classifications) return <div/>
+      return (<div className="form-group row">
+        <label className="col-4 col-form-label">{label}</label>
+        <div className="col-8">
+          <Select
+            value={pathOr([], path, this.state.exercise)}
+            multi={true}
+            labelKey="name"
+            valueKey="_key"
+            options={values(classifications[group])}
+            onChange={this.updateClassification(path) }
+          />
+        </div>
+      </div>)
+    }
+
     renderUserControlItem = ([key, item]) => {
       const ex = this.state.exercise
       const controlType = pathOr('', ['controlType'], item)
@@ -337,10 +370,8 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     }
 
     renderPreview () {
-      const {classification, description, controls} = this.state.exercise
+      const {description, controls} = this.state.exercise
       return (<div>
-        <h4>{(classification && classification.subject) || <Muted>Tantárgy</Muted>}
-          / {(classification && classification.topic) || <Muted>Témakör</Muted>}</h4>
         {
           description
             ? <Markdown source={description}/>
@@ -357,7 +388,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         {
           __DEV__
             ? <pre>{
-              JSON.stringify(this.state, null, 3)
+              JSON.stringify(this.state.exercise, null, 3)
             }</pre>
             : ''
         }
