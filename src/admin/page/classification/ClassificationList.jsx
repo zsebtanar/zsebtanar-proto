@@ -13,6 +13,7 @@ import Button from 'shared/component/general/Button'
 export default class extends React.Component {
   state = {
     group: undefined,
+    subjects: [],
     list: undefined
   }
 
@@ -36,8 +37,11 @@ export default class extends React.Component {
   }
 
   loadGroup = (group) => {
-    getAllClassificationByGroup(group)
-      .then((list) => this.setState({list}))
+    Promise.all([
+      getAllClassificationByGroup(SUBJECT),
+      getAllClassificationByGroup(group)
+    ])
+      .then(([subjects, list]) => this.setState({subjects, list}))
   }
 
   componentWillMount () {
@@ -52,7 +56,9 @@ export default class extends React.Component {
           <select onChange={this.setGroup} value={this.state.group} className="form-control col-3">
             <option value={GRADE}>Osztály</option>
             <option value={SUBJECT}>Tantárgy</option>
-            <option value={TOPIC}>Témakör</option>
+            <optgroup label="Témakörök">
+              {this.state.subjects.map(sub => <option key={sub._key} value={`${SUBJECT}.${sub._key}.${TOPIC}`}>{sub.name}</option>)}
+            </optgroup>
             <option value={TAGS}>Címkék</option>
           </select>
         </div>
@@ -80,7 +86,14 @@ export default class extends React.Component {
             this.state.list.map((item, idx) =>
               <tr key={item._key}>
                 <td>{idx + 1}</td>
-                <td>{item.name}</td>
+                <td>
+                  {this.state.group === SUBJECT
+                    ? <span onClick={() => this.setGroup({value: `${SUBJECT}.${item._key}.${TOPIC}`})}>
+                      {item.name} <span className="badge badge-default">{Object.keys(item[TOPIC] || {}).length} témakör</span>
+                    </span>
+                    : item.name
+                  }
+                </td>
                 <td className="text-center">
                   <Button className="btn-sm btn-secondary" onAction={this.editItem(item)}>
                     <i className="fa fa-edit"/>

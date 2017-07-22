@@ -1,0 +1,2 @@
+- tantárgy törlése
+- új kategóri felvétele

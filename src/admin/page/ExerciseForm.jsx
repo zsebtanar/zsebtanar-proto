@@ -1,4 +1,7 @@
-import { __, map, prop, assoc, assocPath, dissoc, evolve, identity, merge, omit, pathOr, values } from 'ramda'
+import {
+  __, last, assoc, assocPath, dissoc, evolve, identity, map, merge, omit, pathOr, prop, values,
+  contains, union, difference, pipe, not, filter
+} from 'ramda'
 import { uid } from 'util/uuid'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -13,7 +16,7 @@ import { getPrivateExercise } from 'shared/services/exercise'
 import { openInputModal, openMarkdownHelpModal } from 'store/actions/modal'
 import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from 'shared/component/userControls/controlTypes'
 import { pairsInOrder } from 'util/fn'
-import { getAllClassification } from 'shared/services/classification'
+import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
@@ -85,8 +88,28 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
       this.setState({exercise: assocPath(name.split('.'), value, this.state.exercise)})
     }
 
-    updateClassification = path => value => {
-      this.setState({exercise: assocPath(path, map(prop('_key'), value), this.state.exercise)})
+    updateClassification = (group, path) => value => {
+      this.setState((state) => {
+        let ex = state.exercise
+        const selectedValues = map(prop('_key'), value)
+        if (last(path) === SUBJECT) {
+          // remove all topic(s) which is not connect to any selected subject(s)
+          const allNOTUsedSubjectTopics = values(omit(selectedValues, pathOr({}, [SUBJECT], state.classifications))).reduce((acc, sub) => acc.concat(Object.keys(sub.topic || {})), [])
+          ex = evolve({
+            classification: {
+              [TOPIC]: filter(pipe(contains(__, allNOTUsedSubjectTopics), not))
+            }
+          }, ex)
+        }
+        if (last(path) === TOPIC) {
+          // remove and add only the selected tooic(s) from the current subject
+          const subjectTopics = Object.keys(pathOr({}, group.split('.'), state.classifications))
+          const currentTopics = pathOr([], path, ex)
+          return {exercise: assocPath(path, union(difference(currentTopics, subjectTopics), selectedValues), ex)}
+        } else {
+          return {exercise: assocPath(path, selectedValues, ex)}
+        }
+      })
     }
 
     updateUserControlType = (event) => {
@@ -201,11 +224,14 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
       const controls = pairsInOrder(ex.controls)
       const hints = pairsInOrder(ex.hints)
       return (<form onSubmit={this.saveExercise}>
-        {this.renderSelect('grade', 'Osztály: ', ['classification', 'grade'])}
-        {this.renderSelect('subject', 'Tantárgy: ', ['classification', 'subject'])}
-        {this.renderSelect('topic', 'Témakör: ', ['classification', 'topic'])}
+        {this.renderSelect(GRADE, 'Osztály: ', ['classification', GRADE])}
+        {this.renderSelect(SUBJECT, 'Tantárgy: ', ['classification', SUBJECT])}
+        {pathOr([], ['classification', 'subject'], ex).map(sub => {
+          const label = `${this.state.classifications[SUBJECT][sub].name} témakörök`
+          return this.renderSelect(`${SUBJECT}.${sub}.${TOPIC}`, label, ['classification', TOPIC])
+        })}
         {this.renderTextInput('Cím: ', ['title'])}
-        {this.renderSelect('tags', 'Címkék: ', ['classification', 'tags'])}
+        {this.renderSelect(TAGS, 'Címkék: ', ['classification', TAGS])}
 
         <div className="form-group">
           <label className="d-flex justify-content-between align-items-center">
@@ -290,7 +316,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     renderSelect (group, label, path) {
       const classifications = this.state.classifications
       if (!classifications) return <div/>
-      return (<div className="form-group row">
+      return (<div key={group} className="form-group row">
         <label className="col-4 col-form-label">{label}</label>
         <div className="col-8">
           <Select
@@ -300,8 +326,9 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
             valueKey="_key"
             tabSelectsValue={false}
             matchProp="label"
-            options={values(classifications[group])}
-            onChange={this.updateClassification(path) }
+            placeholder="Válasszon egyet..."
+            options={values(pathOr({}, group.split('.'), classifications))}
+            onChange={this.updateClassification(group, path) }
           />
         </div>
       </div>)
