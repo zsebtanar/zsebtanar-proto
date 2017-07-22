@@ -49,6 +49,6 @@ export function createClassification (group, data) {
     .child(_key)
     .update({
       ...pick(['name'], data),
-      _key: _key,
+      _key: _key
     })
 }

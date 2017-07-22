@@ -27,10 +27,10 @@ export default class extends React.Component {
     ]).then(([classifications, list]) => {
       this.setState({ exercises: list.map(evolve({
         classification: {
-          grade: map(key => pathOr(key, ['grade',key,'name'],classifications)),
-          subject: map(key => pathOr(key, ['subject',key,'name'],classifications)),
-          topic: map(key => pathOr(key, ['topic',key,'name'],classifications)),
-          tags: map(key => pathOr(key, ['tags',key,'name'],classifications))
+          grade: map(key => pathOr(key, ['grade', key, 'name'], classifications)),
+          subject: map(key => pathOr(key, ['subject', key, 'name'], classifications)),
+          topic: map(key => pathOr(key, ['topic', key, 'name'], classifications)),
+          tags: map(key => pathOr(key, ['tags', key, 'name'], classifications))
         }
       }))})
     })

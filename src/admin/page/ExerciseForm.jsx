@@ -298,6 +298,8 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
             multi={true}
             labelKey="name"
             valueKey="_key"
+            tabSelectsValue={false}
+            matchProp="label"
             options={values(classifications[group])}
             onChange={this.updateClassification(path) }
           />
