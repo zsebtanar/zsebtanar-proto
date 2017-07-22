@@ -12,7 +12,7 @@ export const TAGS = 'tags'
 
 export function getClassification (group, uid) {
   return Classification
-    .child(group)
+    .child(group.split('.').join('/'))
     .child(uid)
     .once('value')
     .then(s => s.val())
@@ -26,26 +26,27 @@ export function getAllClassification () {
 
 export function getAllClassificationByGroup (group) {
   return Classification
-    .child(group)
+    .child(group.split('.').join('/'))
     .once('value')
     .then(pipe(resolveSnapshot, values))
 }
 
 export function updateClassification (group, uid, data) {
   return Classification
-    .child(group)
+    .child(group.split('.').join('/'))
     .child(uid)
     .update({...pick(['name', 'role', 'active'], data)})
 }
 
 export function createClassification (group, data) {
+  const path = group.split('.').join('/')
   const _key = Classification
-    .child(group)
+    .child(path)
     .push()
     .key
 
   return Classification
-    .child(group)
+    .child(path)
     .child(_key)
     .update({
       ...pick(['name'], data),
