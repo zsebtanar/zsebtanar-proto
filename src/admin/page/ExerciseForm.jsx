@@ -84,8 +84,12 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     }
 
     update = (event) => {
-      const {name, value} = event.currentTarget || event
-      this.setState({exercise: assocPath(name.split('.'), value, this.state.exercise)})
+      let {name, value} = event.currentTarget || event
+      const path = name.split('.')
+      if (last(path) === 'difficulty') {
+        value = parseInt(value, 10)
+      }
+      this.setState({exercise: assocPath(path, value, this.state.exercise)})
     }
 
     updateClassification = (group, path) => value => {
@@ -232,6 +236,23 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
         })}
         {this.renderTextInput('Cím: ', ['title'])}
         {this.renderSelect(TAGS, 'Címkék: ', ['classification', TAGS])}
+
+        <div className="form-group row">
+          <label className="col-4 col-form-label">Nehézségi szint</label>
+          <div className="col-8">
+            <select
+              className="form-control"
+              name="classification.difficulty"
+              onChange={this.update}
+              required
+              value={pathOr('', ['classification', 'difficulty'], this.state.exercise)}
+            >
+              <option value={0}>Könnyű</option>
+              <option value={5}>Közepes</option>
+              <option value={10}>Nehéz</option>
+            </select>
+          </div>
+        </div>
 
         <div className="form-group">
           <label className="d-flex justify-content-between align-items-center">
