@@ -1,8 +1,8 @@
-import { evolve, map, pathOr } from 'ramda'
+import { values, evolve, map, pathOr } from 'ramda'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import Button from 'shared/component/general/Button'
-import { getAllClassification } from 'shared/services/classification'
+import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 import { getAllPrivateExercises, removeExercise } from 'shared/services/exercise'
 
 export default class extends React.Component {
@@ -25,12 +25,13 @@ export default class extends React.Component {
       getAllClassification(),
       getAllPrivateExercises()
     ]).then(([classifications, list]) => {
+      const topics = values(classifications[SUBJECT]).reduce((acc, sub) => Object.assign(acc, sub[TOPIC]), {})
       this.setState({ exercises: list.map(evolve({
         classification: {
-          grade: map(key => pathOr(key, ['grade', key, 'name'], classifications)),
-          subject: map(key => pathOr(key, ['subject', key, 'name'], classifications)),
-          topic: map(key => pathOr(key, ['topic', key, 'name'], classifications)),
-          tags: map(key => pathOr(key, ['tags', key, 'name'], classifications))
+          grade: map(key => pathOr(key, [GRADE, key, 'name'], classifications)),
+          subject: map(key => pathOr(key, [SUBJECT, key, 'name'], classifications)),
+          topic: map(key => pathOr(key, [key, 'name'], topics)),
+          tags: map(key => pathOr(key, [TAGS, key, 'name'], classifications))
         }
       }))})
     })
@@ -70,8 +71,8 @@ export default class extends React.Component {
       <tr key={ex._key}>
         <td>{idx + 1}</td>
         <td className="grade-column">{ex.classification.grade.map(x => <span key={x}>{x}</span>)}</td>
-        <td>{ex.classification.subject.map(x => <span key={x}>{x}</span>)}</td>
-        <td>{ex.classification.topic.map(x => <span key={x}>{x}</span>)}</td>
+        <td>{ex.classification.subject.map(x => <span key={x}> {x} </span>)}</td>
+        <td>{(ex.classification.topic || []).map(x => <span key={x}> {x} </span>)}</td>
         <td>{ex.title}</td>
         <td>{ex.classification.tags.map(tag =>
           <span className="badge badge-default mx-1" key={tag}>{tag}</span>
