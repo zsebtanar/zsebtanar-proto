@@ -28,7 +28,7 @@ export function createUser (uid, data) {
   return Users
     .child(uid)
     .update({
-      ...pick(['name'], data),
+      ...pick(['name', 'email'], data),
       active: false,
       role: ROLE_USER,
       _key: uid,

@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
+import createHistory from 'history/createBrowserHistory'
 import Header from './nav/Header'
 import Home from './page/Home'
 import SignIn from './page/auth/SignIn'
@@ -8,8 +9,15 @@ import SignUp from './page/auth/SignUp'
 import Page404 from 'shared/page/Page404'
 import Overlay from 'shared/component/modal/Overlay'
 
+export const history = createHistory({
+  basename: '/',
+  forceRefresh: false,
+  getUserConfirmation: (message, callback) => callback(window.confirm(message)),
+  keyLength: 6
+})
+
 export default (props) =>
-  <Router history={{}}>
+  <Router history={history}>
     <div className="app">
       <div className="container">
         <Header/>

@@ -2,6 +2,7 @@ import { identity } from 'ramda'
 import AlertModal from 'shared/component/modal/AlertModal'
 import InputModal from 'shared/component/modal/InputModal'
 import MarkdownHelpModal from 'shared/component/modal/MarkdownHelpModal'
+import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -23,6 +24,16 @@ export function openAlertModal (params) {
 
 export function openMarkdownHelpModal (params) {
   return openModal(MarkdownHelpModal, {onClose: identity, ...params})
+}
+
+export function openProviderSignUp (params) {
+  return openModal(ProviderSignUp, {
+    onClose: identity,
+    onSave: identity,
+    data: {name: '', email: ''},
+    requestPassword: false,
+    ...params
+  })
 }
 
 export function openInputModal (params) {

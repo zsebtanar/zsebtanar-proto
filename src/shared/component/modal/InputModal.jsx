@@ -34,7 +34,7 @@ export default (class InputModal extends React.Component {
 
             <div className="modal-body">
               <div className="form-group">
-                <label htmlFor="id-input-modal">{props.label || 'Value'}</label>
+                <label htmlFor="id-input-modal">{props.label || 'Érték'}</label>
                 <textarea
                   autoFocus
                   id="id-input-modal"

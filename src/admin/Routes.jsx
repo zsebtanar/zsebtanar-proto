@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom'
+import createHistory from 'history/createBrowserHistory'
 import Header from './nav/Header'
 import Home from './page/Home'
 import SignIn from 'public/page/auth/SignIn'
@@ -13,12 +14,19 @@ import Overlay from 'shared/component/modal/Overlay'
 import UserList from './page/user/UserList'
 import ClassificationList from './page/classification/ClassificationList'
 
+export const history = createHistory({
+  basename: '/admin/',
+  forceRefresh: false,
+  getUserConfirmation: (message, callback) => callback(window.confirm(message)),
+  keyLength: 6
+})
+
 export default (props) =>
-  <Router history={{}} basename="/admin/">
+  <Router history={history}>
     <div className="app">
       <div className="container">
         <Header/>
-        <div className="content" >
+        <div className="content">
           <Switch>
             <Route path="/" exact component={Home}/>
             <Route path="/user" exact component={UserList}/>

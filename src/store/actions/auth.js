@@ -1,6 +1,7 @@
-import { path } from 'ramda'
+import { path, pathOr } from 'ramda'
 import { createUser, getUser, ROLE_USER } from '../../shared/services/user'
 import { GET_USER } from './user'
+import { openProviderSignUp } from 'store/actions/modal'
 
 const AUTH = firebase.auth()
 
@@ -17,60 +18,87 @@ export function initUser () {
 export function watchAuth (store) {
   AUTH.onAuthStateChanged(function (user) {
     if (user) {
-      getUser(user.uid).then((userDetails) => {
-        const state = store.getState()
-        if (
-          !state.app.session.signedIn &&
-          !/^\/admin/.test(window.location.pathname) &&
-          path(['role'], userDetails) > ROLE_USER
-        ) {
-          window.location.replace('/admin')
-        } else {
-          store.dispatch({type: GET_USER, payload: userDetails})
-          store.dispatch({type: SING_IN_SUCCESS, payload: user})
-        }
-      })
+      getUser(user.uid).then(userDetailsHandler(store, user))
     } else {
-      store.dispatch({type: SING_OUT_SUCCESS})
+      if (pathOr(false, ['app', 'session', 'signedIn'], store.getState())) {
+        window.location.replace('/')
+      }
     }
   })
 }
+
+const userDetailsHandler = (store, user) => (userDetails) => {
+  if (userDetails) {
+    processUser(store, user, userDetails)
+  } else {
+    store.dispatch(openProviderSignUp({
+      data: {email: user.email, name: user.displayName},
+      onSave: (data) => {
+        createUser(user.uid, data)
+          .then(() => getUser(user.uid))
+          .then((userDetails) => processUser(store, user, userDetails))
+          .catch(handleError(SING_UP_ERROR, store.dispatch))
+      }
+    }))
+  }
+}
+
+const processUser = (store, user, userDetails) => {
+  const state = store.getState()
+  if (
+    !state.app.session.signedIn &&
+    !/^\/admin/.test(window.location.pathname) &&
+    path(['role'], userDetails) > ROLE_USER
+  ) {
+    window.location.replace('/admin')
+  } else {
+    store.dispatch({type: GET_USER, payload: userDetails})
+    store.dispatch({type: SING_IN_SUCCESS, payload: user})
+    state.history.props.history.push('/')
+  }
+}
+
+const handleError = (type, dispatch) => error =>
+  dispatch({ type, payload: error, error: true })
 
 export function signUp (email, password, data) {
   return dispatch =>
     AUTH
       .createUserWithEmailAndPassword(email, password)
-      .then(user => createUser(user.uid, data))
-      .catch(error =>
-        dispatch({
-          type: SING_UP_ERROR,
-          payload: error,
-          error: true
-        })
-      )
+      .then(user => createUser(user.uid, {...data, email}))
+      .catch(handleError(SING_UP_ERROR, dispatch))
 }
 
 export function signIn (email, password) {
   return dispatch =>
     AUTH
       .signInWithEmailAndPassword(email, password)
-      .catch(error =>
-        dispatch({
-          type: SING_IN_ERROR,
-          payload: error,
-          error: true
-        })
-      )
+      .catch(handleError(SING_IN_ERROR, dispatch))
+}
+
+export function googleSignIn () {
+  return dispatch => {
+    const provider = new firebase.auth.GoogleAuthProvider()
+    provider.addScope('email')
+    return AUTH
+      .signInWithPopup(provider)
+      .catch(handleError(SING_IN_ERROR, dispatch))
+  }
+}
+
+export function facebookSignIn () {
+  return dispatch => {
+    const provider = new firebase.auth.FacebookAuthProvider()
+    provider.addScope('email')
+    return AUTH
+      .signInWithPopup(provider)
+      .catch(handleError(SING_IN_ERROR, dispatch))
+  }
 }
 
 export function signOut () {
   return dispatch =>
     AUTH
       .signOut()
-      .then(() => window.location.replace('/'))
-      .catch(error => dispatch({
-        type: SING_OUT_ERROR,
-        payload: error,
-        error: true
-      }))
+      .catch(handleError(SING_OUT_ERROR, dispatch))
 }

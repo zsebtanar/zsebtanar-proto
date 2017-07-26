@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { signIn } from 'store/actions/auth'
+import { facebookSignIn, googleSignIn, signIn } from 'store/actions/auth'
 import { withRouter } from 'react-router-dom'
 import Button from 'shared/component/general/Button'
 
 const mapStateToProps = (state) => ({
-  session: state.session
+  session: state.app.session
 })
 
-export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
+export default withRouter(connect(mapStateToProps, {signIn, googleSignIn, facebookSignIn})(function (props) {
   let emailField
   let pwField
 
@@ -19,14 +19,30 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
       .then(({error}) => error ? null : props.history.push('/'))
   }
 
-  return (<div className="col-md-6 offset-md-3 my-4">
-    <h1>Belépés</h1>
+  return (<div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2 my-5">
+    <h1 className="text-center">Belépés</h1>
     {
       props.session && props.session.error
         ? <div className="alert alert-danger" role="alert">{props.session.error.message}</div>
         : ''
     }
-    <form onSubmit={onSubmit} className="my-5">
+    <div className="offset-1 col-10 my-5">
+      <ul className="list-unstyled">
+        <li className="my-1">
+          <Button onAction={props.googleSignIn} className="btn btn-secondary btn-block">
+            <i className="fa fa-lg fa-google"/> Google bejelentkezés
+          </Button>
+        </li>
+        <li className="my-1">
+          <Button onAction={props.facebookSignIn} className="btn btn-secondary btn-block">
+            <i className="fa fa-lg fa-facebook"/> Facebook bejelentkezés
+          </Button>
+        </li>
+      </ul>
+    </div>
+    <hr/>
+    <p className="text-center text-muted">vagy haszánáld e-mail címed</p>
+    <form onSubmit={onSubmit} className="my-5 offset-1 col-10">
       <div className="form-group">
         <input
           type="email"
@@ -44,7 +60,9 @@ export default withRouter(connect(mapStateToProps, {signIn})(function (props) {
           placeholder="Jelszó"
           ref={inp => { pwField = inp }}/>
       </div>
-      <Button submit primary>Mehet</Button>
+      <div className="text-center">
+        <Button submit primary>Mehet</Button>
+      </div>
     </form>
   </div>)
 }))
