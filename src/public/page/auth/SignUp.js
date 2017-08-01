@@ -4,6 +4,7 @@ import { withRouter } from 'react-router'
 import { facebookSignIn, googleSignIn, signUp } from 'store/actions/auth'
 import Button from 'shared/component/general/Button'
 import { openProviderSignUp } from 'store/actions/modal'
+import strings from 'shared/strings'
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
@@ -30,7 +31,7 @@ export default withRouter(connect(mapStateToProps, {
     <h1 className="text-center">Regisztráció</h1>
     {
       props.session && props.session.error
-        ? <div className="alert alert-danger" role="alert">{props.session.error.message}</div>
+        ? <div className="alert alert-danger" role="alert">{strings[props.session.error.code] || 'Nem várt hiba történt a regisztráció során'}</div>
         : ''
     }
     <div>

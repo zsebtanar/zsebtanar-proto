@@ -1,0 +1,26 @@
+export default {
+  'auth/invalid-email': 'Érvénytelen E-mail cím.',
+  'auth/user-not-found': 'A megadott felhasználói fiók nem létezik.',
+  'auth/wrong-password': 'Az e-mail cím és / vagy jelszó nem megfelelő.',
+  'auth/app-deleted': 'Ez az alkalmazás nem létezik.',
+  'auth/app-not-authorized': 'Az alkamazásnak nincs jogosúltásga futni',
+  'auth/argument-error': 'Hibás paraméterek.',
+  'auth/invalid-api-key': 'Érvénytelen API kulcs',
+  'auth/invalid-user-token': 'Lejárt a felhaszánlói token, kérlek jelentkezz be újra.',
+  'auth/network-request-failed': 'Hálózati hiba történt.',
+  'auth/operation-not-allowed': 'Ez a bejelentkezési forma nincs engedéjezve',
+  'auth/requires-recent-login': 'Kérlek jelentkezz be később',
+  'auth/too-many-requests': 'Túl sok lekérés, kérlek próbáld meg kicsivel később',
+  'auth/unauthorized-domain': 'Érvénytelen domain',
+  'auth/user-disabled': 'Ezzel a felhasználóval nem tudsz belépni, kérlek lépj kapcsolatba a rendszergazdával',
+  'auth/user-token-expired': 'Token lejárt vagy törölve lett a felhasználói fiók',
+  'auth/web-storage-unsupported': 'A böngésző nem támogatja az adatok helyben tárolását',
+
+  'auth/account-exists-with-different-credential': 'Már létezik felhasználói fiók a megadott e-mail címmel. Kérlek használd a regisztrációkor is igénybevett módot (e-mail, Google, Facebook, ...).',
+  'auth/auth-domain-config-required': 'Thrown if authDomain configuration is not provided when calling firebase.initializeApp(). Check Firebase Console for instructions on determining and passing that field.',
+  'auth/cancelled-popup-request': 'Túl sok beléptető popup.',
+  'auth/operation-not-supported-in-this-environment': 'A művelet nem megengedett ebben a környezetben',
+  'auth/popup-blocked': 'A bejelentkezés popup megnyitását blokkolta a böngésző',
+  'auth/popup-closed-by-user': 'Bejelentkezés megszakadt mert a felhasználó idő előtt zárta be a popup-ot.',
+  'auth/invalid-credential': 'Helytelen vagy lejárt .'
+}

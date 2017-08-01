@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { facebookSignIn, googleSignIn, signIn } from 'store/actions/auth'
 import { withRouter } from 'react-router-dom'
 import Button from 'shared/component/general/Button'
+import strings from 'shared/strings'
 
 const mapStateToProps = (state) => ({
   session: state.app.session
@@ -23,7 +24,7 @@ export default withRouter(connect(mapStateToProps, {signIn, googleSignIn, facebo
     <h1 className="text-center">Belépés</h1>
     {
       props.session && props.session.error
-        ? <div className="alert alert-danger" role="alert">{props.session.error.message}</div>
+        ? <div className="alert alert-danger" role="alert">{strings[props.session.error.code] || 'Nem várt hiba történt a bejelentkezés során'}</div>
         : ''
     }
     <div className="offset-1 col-10 my-5">
@@ -41,7 +42,7 @@ export default withRouter(connect(mapStateToProps, {signIn, googleSignIn, facebo
       </ul>
     </div>
     <hr/>
-    <p className="text-center text-muted">vagy haszánáld e-mail címed</p>
+    <p className="text-center text-muted">vagy használd az email címed</p>
     <form onSubmit={onSubmit} className="my-5 offset-1 col-10">
       <div className="form-group">
         <input
