@@ -81,3 +81,6 @@ body {
 .exercise-list-table .grade-column{
     width: 7em;
 }
+.jumbotron{
+    background: transparent;
+}

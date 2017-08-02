@@ -17,9 +17,6 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header (p
     <div className="header clearfix">
       <nav>
         <ul className="nav nav-pills float-right">
-          <li className="nav-item">
-            <NavLink activeClassName="active" className="nav-link" exact to="/">Kezdőlap</NavLink>
-          </li>
           {
             props.session.signedIn
               ? <li className="nav-item" key="sing-out">
