@@ -1,27 +1,44 @@
 import {
-  __, last, assoc, assocPath, dissoc, evolve, identity, map, merge, omit, pathOr, prop, values,
-  contains, union, difference, pipe, not, filter
+  __,
+  assoc,
+  assocPath,
+  contains,
+  difference,
+  dissoc,
+  evolve,
+  filter,
+  identity,
+  last,
+  map,
+  merge,
+  not,
+  omit,
+  pathOr,
+  pipe,
+  prop,
+  union,
+  values
 } from 'ramda'
 import { uid } from 'util/uuid'
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import Select from 'react-select'
-import Markdown from 'shared/component/general/Markdown'
 import Button from 'shared/component/general/Button'
-import UserControls from 'shared/component/userControls/UserControl'
 import UserControlAdmin from 'shared/component/userControls/UserControlAdmin'
 import { createExerciseAction, updateExerciseAction } from 'store/actions/exercise'
 import { getPrivateExercise } from 'shared/services/exercise'
-import { openInputModal, openMarkdownHelpModal } from 'store/actions/modal'
+import { openMarkdownHelpModal } from 'store/actions/modal'
 import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from 'shared/component/userControls/controlTypes'
 import { pairsInOrder } from 'util/fn'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
+import EditHints from './EditHints.jsx'
+import ExercisePreview from './ExercisePreview'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
-export default connect(undefined, {openInputModal, openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
-  class extends React.Component {
+export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
+  class ExerciseForm extends React.Component {
     mode = 'Add'
     state = {
       classifications: null,
@@ -106,7 +123,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
           }, ex)
         }
         if (last(path) === TOPIC) {
-          // remove and add only the selected tooic(s) from the current subject
+          // remove and add only the selected topic(s) from the current subject
           const subjectTopics = Object.keys(pathOr({}, group.split('.'), state.classifications))
           const currentTopics = pathOr([], path, ex)
           return {exercise: assocPath(path, union(difference(currentTopics, subjectTopics), selectedValues), ex)}
@@ -159,41 +176,24 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
       }))
     }
 
-    addHint = () => {
-      this.props.openInputModal({
-        title: 'Tipp hozzáadása',
-        label: 'Tipp szövege',
-        value: '',
-        onUpdate: (text) => {
-          this.setState(evolve({
-            exercise: {
-              hints: (c) => ({...c, [uid()]: {order: values(c).length, text}})
-            }
-          }))
+    addHint = (text) =>
+      this.setState(evolve({
+        exercise: {
+          hints: (c) => ({...c, [uid()]: {order: values(c).length, text}})
         }
-      })
-    }
+      }))
 
-    updateHint = (key) => () => {
-      this.props.openInputModal({
-        title: 'Tipp módosítása',
-        label: 'Tipp szövege',
-        value: pathOr('', ['exercise', 'hints', key, 'text'], this.state),
-        onUpdate: (text) => {
-          this.setState(evolve({
-            exercise: {
-              hints: {[key]: merge(__, {text})}
-            }
-          }))
+    updateHint = (key, text) =>
+      this.setState(evolve({
+        exercise: {
+          hints: {[key]: merge(__, {text})}
         }
-      })
-    }
+      }))
 
-    removeHint = (key) => () => {
+    removeHint = (key) =>
       this.setState(evolve({
         exercise: {hints: dissoc(key)}
       }))
-    }
 
     render () {
       const {loading, error, exercise} = this.state
@@ -216,7 +216,9 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
           <hr/>
           <div className="row">
             <div className="col-6">{this.renderForm()}</div>
-            <div className="col-6">{this.renderPreview()}</div>
+            <div className="col-6">
+              <ExercisePreview exercise={exercise} />
+            </div>
           </div>
         </div>}
       </div>
@@ -226,7 +228,7 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
     renderForm () {
       const ex = this.state.exercise
       const controls = pairsInOrder(ex.controls)
-      const hints = pairsInOrder(ex.hints)
+
       return (<form onSubmit={this.saveExercise}>
         {this.renderSelect(GRADE, 'Osztály: ', ['classification', GRADE])}
         {this.renderSelect(SUBJECT, 'Tantárgy: ', ['classification', SUBJECT])}
@@ -292,22 +294,12 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
           </ol>
         </div>
 
-        <div className="d-flex justify-content-between align-items-center">
-          <h4>Megoldási útmutatók</h4>
-          <Button title="Add hint" onAction={this.addHint}>
-            <i className="fa fa-plus"/>
-          </Button>
-        </div>
-
-        <div className="my-2">
-          <div className="list-group">
-            {
-              hints.length
-                ? hints.map(this.renderHint)
-                : <div className="alert alert-info">Megadhatsz egy vagy több tippet a feladat megoldásához</div>
-            }
-          </div>
-        </div>
+        <EditHints
+          hints={ex.hints}
+          onAdd={this.addHint}
+          onUpdate={this.updateHint}
+          onRemove={this.removeHint}
+        />
 
         <div className="col-sm-8 offset-sm-4">
           <NavLink exact to="/exercise" className="btn btn-secondary">Mégsem</NavLink>
@@ -398,50 +390,5 @@ export default connect(undefined, {openInputModal, openMarkdownHelpModal, create
             }
           </div>
         </li>)
-    }
-
-    renderHint = ([key, item], idx) => {
-      return (
-        <div key={key} className="list-group-item list-group-item-action flex-column align-items-start">
-          <div className="d-flex w-100 justify-content-between">
-            <h5 className="mb-1 text-muted">{idx + 1}.</h5>
-            <div>
-              <Button className="btn-sm btn-link" onAction={this.updateHint(key)}>
-                <i className="fa fa-edit"/>
-              </Button>
-              <Button className="btn-sm btn-link text-danger" onAction={this.removeHint(key)}>
-                <i className="fa fa-trash"/>
-              </Button>
-            </div>
-          </div>
-          <Markdown source={item.text}/>
-        </div>
-      )
-    }
-
-    renderPreview () {
-      const {description, controls} = this.state.exercise
-      return (<div>
-        {
-          description
-            ? <Markdown source={description}/>
-            : <Muted>feladatleírás...</Muted>
-        }
-        {
-          (pairsInOrder(controls) || []).map(([key, {controlType, controlProps}]) =>
-            <div className="form-group" key={key}>
-              <UserControls {...{controlType, controlProps}}/>
-            </div>
-          )
-        }
-        <hr/>
-        {
-          __DEV__
-            ? <pre>{
-              JSON.stringify(this.state.exercise, null, 3)
-            }</pre>
-            : ''
-        }
-      </div>)
     }
   })
