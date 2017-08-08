@@ -45,17 +45,9 @@ const userDetailsHandler = (store, user) => (userDetails) => {
 
 const processUser = (store, user, userDetails) => {
   const state = store.getState()
-  if (
-    !state.app.session.signedIn &&
-    !/^\/admin/.test(window.location.pathname) &&
-    path(['role'], userDetails) > ROLE_USER
-  ) {
-    window.location.replace('/admin')
-  } else {
-    store.dispatch({type: GET_USER, payload: userDetails})
-    store.dispatch({type: SING_IN_SUCCESS, payload: user})
-    state.history.props.history.push('/')
-  }
+  store.dispatch({type: GET_USER, payload: userDetails})
+  store.dispatch({type: SING_IN_SUCCESS, payload: user})
+  state.history.props.history.push('/')
 }
 
 const handleError = (type, dispatch) => error =>

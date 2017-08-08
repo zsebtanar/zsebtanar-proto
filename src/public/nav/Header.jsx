@@ -3,6 +3,7 @@ import { NavLink, withRouter } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { signOut } from '../../store/actions/auth'
+import { ROLE_USER } from 'shared/services/user'
 
 const mapStateToProps = (state) => ({
   session: state.app.session
@@ -18,10 +19,19 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header (p
       <nav>
         <ul className="nav nav-pills float-right">
           {
-            props.session.signedIn
-              ? <li className="nav-item" key="sing-out">
-                <a href="#" className="nav-link" onClick={signOut}>Kijelentkezés</a>
+            props.session.signedIn && props.session.userDetails.role > ROLE_USER
+              ? <li className="nav-item" key="admin">
+                <a href="/admin/" className="nav-link">Admin</a>
               </li>
+              : ''
+          }
+          {
+            props.session.signedIn
+              ? [
+                <li className="nav-item" key="sing-out">
+                  <a href="#" className="nav-link" onClick={signOut}>Kijelentkezés</a>
+                </li>
+              ]
               : [
                 <li className="nav-item" key="sign-up">
                   <NavLink activeClassName="active" className="nav-link" to="/sign-up">

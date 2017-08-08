@@ -4,24 +4,20 @@ import MainClassificationSelector from 'public/component/MainClassificationSelec
 import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = (state) => ({
-  session: state.app.session,
-  classification: state.classification
+  session: state.app.session
 })
 
 export default connect(mapStateToProps)(function Home (props) {
   return (
     <div>
-      <h2 className="text-center">
-
-      </h2>
       <div className="jumbotron mb-5">
         {
           props.session.signedIn
-            ? <h1 className="display-4">`Szia ${(props.session.userDetails && props.session.userDetails.name) || props.session.user.email}`</h1>
+            ? <h1 className="display-4">Szia {(props.session.userDetails && props.session.userDetails.name) || props.session.user.email}</h1>
             : <div className="text-center">
               <p className="text-muted">Regisztrálj</p>
-              <NavLink className="btn btn-lg btn-outline-primary" to="sign-up">Diák vagyok</NavLink>&nbsp;
-              <NavLink className="btn btn-lg btn-outline-primary" to="sign-up">Tanár vagyok</NavLink>
+              <NavLink className="btn btn-lg btn-outline-primary my-1" to="sign-up">Diák vagyok</NavLink>&nbsp;
+              <NavLink className="btn btn-lg btn-outline-primary my-1" to="sign-up">Tanár vagyok</NavLink>
               <p className="text-muted my-3">--- vagy ---</p>
               <NavLink className="btn btn-link" to="sign-in">Jelentkezz be</NavLink>
             </div>

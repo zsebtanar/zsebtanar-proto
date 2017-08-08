@@ -7,7 +7,6 @@ import Markdown from 'shared/component/general/Markdown'
 import { openInputModal } from 'store/actions/modal'
 
 export default connect(undefined, {openInputModal})(class EditHints extends React.Component {
-
   addHint = () => {
     this.props.openInputModal({
       title: 'Tipp hozzáadása',

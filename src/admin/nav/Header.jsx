@@ -21,6 +21,10 @@ export default withRouter(connect(mapStateToProps, {signOut})(function Header (p
         <ul className="nav nav-pills float-right">
 
           <li className="nav-item">
+            <a className="nav-link" href="/">Publikus</a>
+          </li>
+
+          <li className="nav-item">
             <NavLink activeClassName="active" className="nav-link" to="/user">Felhasználók</NavLink>
           </li>
 
