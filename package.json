@@ -48,6 +48,7 @@
   "scripts": {
     "start": "npm run dev",
     "test": "jest test",
+    "functions": "firebase serve --only functions",
     "build": "NODE_ENV=production webpack -p --config ./build/webpack.config.js",
     "dev": "webpack-dev-server --progress --config ./build/webpack.config.js",
     "deploy": "npm run lint && npm run test && npm run build && firebase deploy",

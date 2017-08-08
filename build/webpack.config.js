@@ -92,7 +92,9 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
-      __FN_PATH__: JSON.stringify(isProd ? '/' : 'https://zsebtanar-proto-76083.firebaseio.com/')
+      __FN_PATH__: JSON.stringify(isProd
+        ? '/api'
+        : 'http://localhost:5002/zsebtanar-proto-76083/us-central1/')
     })
   ]
 }

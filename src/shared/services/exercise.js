@@ -60,10 +60,10 @@ export function removeExercise (key) {
 
 export function checkSolution (key, solutions) {
   return axios
-    .post(`${__FN_PATH__}api/check-exercise`, {key, solutions})
+    .post(`${__FN_PATH__}checkExercise`, {key, solutions})
 }
 
 export function getHint (key, hint) {
   return axios
-    .get(`${__FN_PATH__}api/get-next-hint`, {params: {key, hint}})
+    .get(`${__FN_PATH__}getNextHint`, {params: {key, hint}})
 }
