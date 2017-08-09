@@ -84,3 +84,7 @@ body {
 .jumbotron{
     background: transparent;
 }
+
+.markdown {
+    width: 100%;
+}

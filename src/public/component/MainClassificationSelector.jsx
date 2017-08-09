@@ -29,27 +29,31 @@ export default connect(mapStateToProps)(function (props) {
       </div>
     </div>
     {
-      subjectArray.map((sub, idx) =>
-        <div className="tab-content" key={sub._key}>
-          <hr/>
-          <div className="tab-pane active" id={sub._key} role="tabpanel">
-            <div className="row my-4">
-              <h4 className="col-md-3">
-                {sub.name}
-              </h4>
-              <div className="col-md-9">
-                {values(sub.topic).map((topic) =>
-                  <NavLink
-                    to={`/subject/${sub._key}/${topic._key}`}
-                    key={topic._key}
-                    className="d-inline-block col-md-4 col-sm-6">
-                    {topic.name}
-                  </NavLink>
-                )}
+      subjectArray
+        .filter(sub => sub.exercise)
+        .map((sub, idx) =>
+          <div className="tab-content" key={sub._key}>
+            <hr/>
+            <div className="tab-pane active" id={sub._key} role="tabpanel">
+              <div className="row my-4">
+                <h4 className="col-md-3">
+                  {sub.name}
+                </h4>
+                <div className="col-md-9">
+                  {values(sub.topic)
+                    .filter(topic => topic.exercise)
+                    .map((topic) =>
+                      <NavLink
+                        to={`/subject/${sub._key}/${topic._key}`}
+                        key={topic._key}
+                        className="d-inline-block col-md-4 col-sm-6">
+                        {topic.name}
+                      </NavLink>
+                    )}
+                </div>
               </div>
             </div>
-          </div>
-        </div>)
+          </div>)
     }
   </div>)
 })

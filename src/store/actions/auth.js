@@ -8,6 +8,7 @@ const AUTH = firebase.auth()
 export const SING_UP_ERROR = 'SING_UP_ERROR'
 export const SING_IN_SUCCESS = 'SING_IN_SUCCESS'
 export const SING_IN_ERROR = 'SING_IN_ERROR'
+export const SING_IN_START = 'SING_IN_START'
 export const SING_OUT_SUCCESS = 'SING_OUT_SUCCESS'
 export const SING_OUT_ERROR = 'SING_OUT_ERROR'
 
@@ -47,11 +48,13 @@ const processUser = (store, user, userDetails) => {
   const state = store.getState()
   store.dispatch({type: GET_USER, payload: userDetails})
   store.dispatch({type: SING_IN_SUCCESS, payload: user})
-  state.history.props.history.push('/')
+  if (!pathOr(true, ['app', 'session', 'autoSignIn'], state)) {
+    state.history.props.history.push('/')
+  }
 }
 
 const handleError = (type, dispatch) => error =>
-  dispatch({ type, payload: error, error: true })
+  dispatch({type, payload: error, error: true})
 
 export function signUp (email, password, data) {
   return dispatch =>
@@ -62,14 +65,17 @@ export function signUp (email, password, data) {
 }
 
 export function signIn (email, password) {
-  return dispatch =>
+  return dispatch => {
+    dispatch({type: SING_IN_START})
     AUTH
       .signInWithEmailAndPassword(email, password)
       .catch(handleError(SING_IN_ERROR, dispatch))
+  }
 }
 
 export function googleSignIn () {
   return dispatch => {
+    dispatch({type: SING_IN_START})
     const provider = new firebase.auth.GoogleAuthProvider()
     provider.addScope('email')
     return AUTH
@@ -80,6 +86,7 @@ export function googleSignIn () {
 
 export function facebookSignIn () {
   return dispatch => {
+    dispatch({type: SING_IN_START})
     const provider = new firebase.auth.FacebookAuthProvider()
     provider.addScope('email')
     return AUTH

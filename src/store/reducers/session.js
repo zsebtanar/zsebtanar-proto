@@ -5,16 +5,19 @@ import {
   SING_IN_SUCCESS,
   SING_OUT_ERROR,
   SING_OUT_SUCCESS,
-  SING_UP_ERROR
+  SING_UP_ERROR,
+  SING_IN_START
 } from '../actions/auth'
 
 const user = initUser()
-const INIT_STATE = {signedIn: !!user, user, error: null}
+const INIT_STATE = {signedIn: !!user, user, error: null, autoSignIn: true}
 
 export default function sessionWorkflow (state = INIT_STATE, action) {
   switch (action.type) {
     case GET_USER:
       return {...state, userDetails: action.payload}
+    case SING_IN_START:
+      return {...state, autoSignIn: false}
     case SING_IN_SUCCESS:
       return {...state, signedIn: true, user: action.payload, error: null}
     case SING_IN_ERROR:

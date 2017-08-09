@@ -28,6 +28,16 @@ export function getAllPrivateExercises () {
     .then(pipe(resolveSnapshot, values, map(prop('private'))))
 }
 
+export function selectPublicExercisesById (ids) {
+  return Promise.all(ids
+    .map(id => Exercises
+      .child(`${id}/public`)
+      .once('value')
+      .then(pipe(resolveSnapshot, notFound))
+    )
+  )
+}
+
 export function createExercise (data) {
   const _key = Exercises.push().key
   const now = new Date()

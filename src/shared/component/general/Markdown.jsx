@@ -13,7 +13,7 @@ export default (class extends React.Component {
   }
 
   render () {
-    return <div>
+    return <div className="markdown">
       {
         this.props.source
           ? <span dangerouslySetInnerHTML={{__html: this.renderMarkdown(this.props.source)}}/>
