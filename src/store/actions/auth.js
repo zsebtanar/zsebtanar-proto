@@ -1,5 +1,5 @@
-import { path, pathOr } from 'ramda'
-import { createUser, getUser, ROLE_USER } from '../../shared/services/user'
+import { pathOr } from 'ramda'
+import { createUser, getUser } from '../../shared/services/user'
 import { GET_USER } from './user'
 import { openProviderSignUp } from 'store/actions/modal'
 
