@@ -1,10 +1,11 @@
-import { pathOr, pipe, values } from 'ramda'
+import { pathOr, pipe } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { selectPublicExercisesById } from 'shared/services/exercise'
 import { getAllClassification, TAGS } from 'shared/services/classification'
 import Markdown from 'shared/component/general/Markdown'
+import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = (state) => ({
   classification: state.classification
@@ -43,9 +44,9 @@ export default pipe(
           : <div className="list-group col-10 offset-1">
             {
               this.state.exercises.map(ex =>
-                <a
+                <NavLink
                   key={ex._key}
-                  href="#"
+                  to={`/exercise/${ex._key}`}
                   className="list-group-item list-group-item-action d-flex flex-column align-items-start"
                 >
                   <div className="mb-1 d-flex w-100 ">
@@ -55,7 +56,7 @@ export default pipe(
                     ex.classification.tags.map(tag =>
                       <span className="badge badge-default mx-1" key={tag}>{this.state.classification[TAGS][tag].name}</span>
                     )}</div>
-                </a>
+                </NavLink>
               )
             }
           </div>
