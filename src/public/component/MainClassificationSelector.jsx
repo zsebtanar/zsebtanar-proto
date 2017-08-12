@@ -18,14 +18,16 @@ export default connect(mapStateToProps)(function (props) {
     <div className="row my-4">
       <h4 className="col-md-3">Osztályok</h4>
       <div className="col-md-9">
-        {values(grade).map((g) =>
-          <NavLink
-            to={`/grade/${g._key}`}
-            key={g._key}
-            className="d-inline-block col-md-4 col-sm-6">
-            {g.name}
-          </NavLink>
-        )}
+        {values(grade)
+          .filter(grade => grade.exercise)
+          .map((g) =>
+            <NavLink
+              to={`/grade/${g._key}`}
+              key={g._key}
+              className="d-inline-block col-md-4 col-sm-6">
+              {g.name}
+            </NavLink>
+          )}
       </div>
     </div>
     {

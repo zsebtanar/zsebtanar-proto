@@ -10,6 +10,7 @@ import Page404 from 'shared/page/Page404'
 import Overlay from 'shared/component/modal/Overlay'
 import ExercisesByTopic from 'public/page/ExercisesByTopic'
 import Exercise from 'public/page/Exercise'
+import ExercisesByGrade from 'public/page/ExercisesByGrade'
 
 export const history = createHistory({
   basename: '/',
@@ -29,7 +30,7 @@ export default (props) =>
             <Route path="/sign-up" component={SignUp}/>
             <Route path="/sign-in" component={SignIn}/>
             <Route path="/subject/:subject/:topic" component={ExercisesByTopic}/>
-            <Route path="/grade/:subject/:grade" component={ExercisesByTopic}/>
+            <Route path="/grade/:grade" component={ExercisesByGrade}/>
             <Route path="/exercise/:key" component={Exercise}/>
             <Route component={Page404}/>
           </Switch>
