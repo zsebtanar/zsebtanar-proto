@@ -15,13 +15,15 @@
       ".read": true
     },
 
-    "exercises": {
-      "private": {
-        ".read": "root.child('users/'+auth.uid+'/role').val() > 0",
-        ".write": "root.child('users/'+auth.uid+'/role').val() > 0"
-      },
-      "public": {
-        ".read": true
+    "exercise": {
+      "$exerciseId": {
+        "private": {
+          ".read": "root.child('users/'+auth.uid+'/role').val() > 0",
+          ".write": "root.child('users/'+auth.uid+'/role').val() > 0"
+        },
+        "public": {
+          ".read": true
+        }
       }
     }
   }

@@ -10,16 +10,17 @@ const notFound = assert(pipe(isNil, not), 'A kért feladat nem létezik.')
 
 export function getPublicExercise (uid) {
   return Exercises
-    .child(uid)
+    .child(`${uid}/public`)
     .once('value')
-    .then(pipe(resolveSnapshot, notFound, prop('public')))
+    .then(pipe(resolveSnapshot, notFound))
 }
 
 export function getPrivateExercise (uid) {
   return Exercises
     .child(uid)
+    .child(`${uid}/private`)
     .once('value')
-    .then(pipe(resolveSnapshot, notFound, prop('private')))
+    .then(pipe(resolveSnapshot, notFound))
 }
 
 export function getAllPrivateExercises () {
@@ -70,10 +71,10 @@ export function removeExercise (key) {
 
 export function checkSolution (key, solutions) {
   return axios
-    .post(`${__FN_PATH__}checkExercise`, {key, solutions})
+    .post(`${__FN_PATH__}check-exercise`, {key, solutions})
 }
 
 export function getHint (key, hint) {
   return axios
-    .get(`${__FN_PATH__}getNextHint`, {params: {key, hint}})
+    .get(`${__FN_PATH__}get-next-hint`, {params: {key, hint}})
 }
