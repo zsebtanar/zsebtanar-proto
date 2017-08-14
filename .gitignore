@@ -24,3 +24,5 @@ yarn-error.log*
 
 *.log
 todo.md
+
+service-account-credentials.json
