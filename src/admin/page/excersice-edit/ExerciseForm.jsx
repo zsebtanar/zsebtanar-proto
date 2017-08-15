@@ -319,7 +319,7 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
           onRemove={this.removeHint}
         />
 
-        <div className="col-sm-8 offset-sm-4">
+        <div className="col-sm-8 mx-auto">
           <NavLink exact to="/exercise" className="btn btn-secondary">Mégsem</NavLink>
           &nbsp;
           <Button submit primary>Mentés</Button>

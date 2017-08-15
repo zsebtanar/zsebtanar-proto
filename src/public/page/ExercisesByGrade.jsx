@@ -39,7 +39,7 @@ export default pipe(
       {
         !this.state.exercises
           ? <div>Kis türelmet...</div>
-          : <div className="list-group col-10 offset-1">
+          : <div className="list-group col-10 mx-auto">
             {
               this.state.exercises.map(ex =>
                 <NavLink
@@ -52,7 +52,7 @@ export default pipe(
                   </div>
                   <div>{
                     ex.classification.tags.map(tag =>
-                      <span className="badge badge-default mx-1" key={tag}>{this.state.classification[TAGS][tag].name}</span>
+                      <span className="badge badge-secondary mx-1" key={tag}>{this.state.classification[TAGS][tag].name}</span>
                     )}</div>
                 </NavLink>
               )

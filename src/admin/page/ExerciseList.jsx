@@ -42,7 +42,7 @@ export default class extends React.Component {
       <div>
         <div className="btn-toolbar justify-content-between align-items-center">
           <h3>Feladatok</h3>
-          <NavLink exact to="/exercise/add" className="btn btn-secondary">
+          <NavLink exact to="/exercise/add" className="btn btn-outline-secondary">
             <i className="fa fa-plus"/> Feladat létrehozása
           </NavLink>
         </div>

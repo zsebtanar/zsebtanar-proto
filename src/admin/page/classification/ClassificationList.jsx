@@ -71,7 +71,7 @@ export default class extends React.Component {
     return (
       <div className="mt-3">
         <div className="d-flex justify-content-end">
-          <Button onAction={this.addItem}><i className="fa fa-plus"/> Új elem felvétele</Button>
+          <Button className="btn btn-outline-secondary" onAction={this.addItem}><i className="fa fa-plus"/> Új elem felvétele</Button>
         </div>
         <table className="table table-hover table mt-3">
           <thead>
@@ -95,7 +95,7 @@ export default class extends React.Component {
                   }
                 </td>
                 <td className="text-center">
-                  <Button className="btn-sm btn-secondary" onAction={this.editItem(item)}>
+                  <Button className="btn-sm btn-light" onAction={this.editItem(item)}>
                     <i className="fa fa-edit"/>
                   </Button>
                 </td>

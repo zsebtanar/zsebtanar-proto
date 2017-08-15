@@ -90,7 +90,7 @@ body {
 }
 
 .msg-block{
-    min-height: 20em;
+    min-height: 20rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -103,6 +103,9 @@ body {
     margin: auto;
 }
 
+.file-manager .modal-body{
+    min-height: 20rem;
+}
 .file-manager figure{
     margin: 0;
 }

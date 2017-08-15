@@ -20,30 +20,30 @@ export default withRouter(connect(mapStateToProps, {signIn, googleSignIn, facebo
       .then(({error}) => error ? null : props.history.push('/'))
   }
 
-  return (<div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2 my-5">
+  return (<div className="col-lg-6 col-md-8 mx-auto my-5">
     <h1 className="text-center">Belépés</h1>
     {
       props.session && props.session.error
         ? <div className="alert alert-danger" role="alert">{strings[props.session.error.code] || 'Nem várt hiba történt a bejelentkezés során'}</div>
         : ''
     }
-    <div className="offset-1 col-10 my-5">
+    <div className="col-10 mx-auto my-5">
       <ul className="list-unstyled">
         <li className="my-1">
-          <Button onAction={props.googleSignIn} className="btn btn-secondary btn-block">
-            <i className="fa fa-lg fa-google"/> Google bejelentkezés
+          <Button onAction={props.googleSignIn} className="btn btn-outline-primary btn-block">
+            <i className="fa fa-lg fa-google"/> Google fiókkal
           </Button>
         </li>
         <li className="my-1">
-          <Button onAction={props.facebookSignIn} className="btn btn-secondary btn-block">
-            <i className="fa fa-lg fa-facebook"/> Facebook bejelentkezés
+          <Button onAction={props.facebookSignIn} className="btn btn-outline-primary btn-block">
+            <i className="fa fa-lg fa-facebook"/> Facebook fiókkal
           </Button>
         </li>
       </ul>
     </div>
     <hr/>
     <p className="text-center text-muted">vagy használd az email címed</p>
-    <form onSubmit={onSubmit} className="my-5 offset-1 col-10">
+    <form onSubmit={onSubmit} className="my-5 col-12">
       <div className="form-group">
         <input
           type="email"

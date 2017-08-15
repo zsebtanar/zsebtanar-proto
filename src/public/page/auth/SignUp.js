@@ -17,17 +17,33 @@ export default withRouter(connect(mapStateToProps, {
   facebookSignIn,
   openProviderSignUp
 })(function (props) {
+  const success = ({error}) => error ? null : props.history.push('/')
+
   const emailSingUp = () => {
     props.openProviderSignUp({
       data: {},
       requestPassword: true,
       onSave: (data, {email, password}) => {
-        props.signUp(email, password, data)
+        props
+          .signUp(email, password, data)
+          .then(success)
       }
     })
   }
 
-  return (<div className="col-md-6 offset-md-3 my-5">
+  const googleSignUp = () => {
+    props
+      .googleSignIn()
+      .then(success)
+  }
+
+  const facebookSignUp = () => {
+    props
+      .facebookSignIn()
+      .then(success)
+  }
+
+  return (<div className="col-md-6 mx-auto my-5">
     <h1 className="text-center">Regisztráció</h1>
     {
       props.session && props.session.error
@@ -35,21 +51,21 @@ export default withRouter(connect(mapStateToProps, {
         : ''
     }
     <div>
-      <div className="offset-1 col-10 my-5">
+      <div className="col-12 my-5">
         <ul className="list-unstyled">
           <li className="my-1">
-            <Button onAction={props.googleSignIn} className="btn btn-secondary btn-block">
-              <i className="fa fa-lg fa-google"/> Google bejelentkezés
+            <Button onAction={googleSignUp} className="btn btn-outline-primary btn-block">
+              <i className="fa fa-lg fa-google"/> Google fiókkal
             </Button>
           </li>
           <li className="my-1">
-            <Button onAction={props.facebookSignIn} className="btn btn-secondary btn-block">
-              <i className="fa fa-lg fa-facebook"/> Facebook bejelentkezés
+            <Button onAction={facebookSignUp} className="btn btn-outline-primary btn-block">
+              <i className="fa fa-lg fa-facebook"/> Facebook fiókkal
             </Button>
           </li>
           <li className="my-1">
-            <Button onAction={emailSingUp} className="btn btn-secondary btn-block">
-              <i className="fa fa-lg fa-envelope"/> E-mail bejelentkezés
+            <Button onAction={emailSingUp} className="btn btn-outline-primary btn-block">
+              <i className="fa fa-lg fa-envelope"/> E-mail címmel
             </Button>
           </li>
         </ul>

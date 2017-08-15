@@ -46,8 +46,7 @@ const userDetailsHandler = (store, user) => (userDetails) => {
 
 const processUser = (store, user, userDetails) => {
   const state = store.getState()
-  store.dispatch({type: GET_USER, payload: userDetails})
-  store.dispatch({type: SING_IN_SUCCESS, payload: user})
+  store.dispatch({type: SING_IN_SUCCESS, payload: {user, userDetails}})
   if (!pathOr(true, ['app', 'session', 'autoSignIn'], state)) {
     state.history.props.history.push('/')
   }
@@ -67,7 +66,7 @@ export function signUp (email, password, data) {
 export function signIn (email, password) {
   return dispatch => {
     dispatch({type: SING_IN_START})
-    AUTH
+    return AUTH
       .signInWithEmailAndPassword(email, password)
       .catch(handleError(SING_IN_ERROR, dispatch))
   }

@@ -69,7 +69,7 @@ export default connect(
           <NavLink exact to="/exercise" className="btn btn-secondary">Vissza a feladatlist</NavLink>
         </div>}
         {ex && !ex.error && <div className="row">
-          <div className="col-8 offset-2">
+          <div className="col-8 mx-auto">
             {this.renderTask()}
             <hr/>
             {this.renderDetails()}

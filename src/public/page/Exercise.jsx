@@ -72,7 +72,7 @@ export default connect(
           <div className="alert alert-danger">{ex.error.message || ex.error}</div>
         </div>}
         {ex && !ex.error && <div className="row">
-          <div className="col-8 offset-2">
+          <div className="col-8 mx-auto">
             {this.renderTask()}
             {this.renderDetails()}
           </div>
@@ -92,10 +92,10 @@ export default connect(
       <hr/>{
       this.state.details
         ? <div>
-          <Button onAction={this.toggleDetails}>Feladat leíró elrejtése</Button>
+          <Button className="btn btn-link" onAction={this.toggleDetails}>Debug</Button>
           <pre>{JSON.stringify(ex, null, 3)}</pre>
         </div>
-        : <Button onAction={this.toggleDetails}>Feladat leíró mutatása</Button>
+        : <Button className="btn btn-link" onAction={this.toggleDetails}>Debug</Button>
     }</div>
     )
   }

@@ -88,7 +88,7 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
         </div>
       </div>
       <div className="form-group row">
-        <div className="col-9 offset-3">
+        <div className="col-9 mx-auto">
           <Button className="btn-sm btn-link" onAction={this.addSolution}>
             <i className="fa fa-plus"/> Alternatív megoldás megadása
           </Button>
