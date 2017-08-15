@@ -3,6 +3,8 @@ import * as React from 'react'
 import UserControls from 'shared/component/userControls/UserControl'
 import Markdown from 'shared/component/general/Markdown'
 
+const Muted = (props) => (<span className="text-muted">{props.children}</span>)
+
 export default function ExercisePreview (props) {
   const {description, controls} = props.exercise
   return (<div>

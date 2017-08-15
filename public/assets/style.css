@@ -88,3 +88,24 @@ body {
 .markdown {
     width: 100%;
 }
+
+.msg-block{
+    min-height: 20em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    resize: vertical;
+    overflow: auto;
+    text-align: center;
+}
+
+.msg-block .block-item{
+    margin: auto;
+}
+
+.file-manager figure{
+    margin: 0;
+}
+.file-manager figure img{
+    height: 100px
+}

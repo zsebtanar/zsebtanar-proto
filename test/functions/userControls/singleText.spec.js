@@ -1,4 +1,4 @@
-import simpleText from '../../../functions/userControls/simpleText'
+import simpleText from '../../../functions/src/userControls/simpleText'
 
 describe('simpleText', () => {
   it('should pass in the simplest case', () => {

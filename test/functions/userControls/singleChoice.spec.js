@@ -1,4 +1,4 @@
-import singleChoice from '../../../functions/userControls/singleChoice'
+import singleChoice from '../../../functions/src/userControls/singleChoice'
 
 describe('singleChoice', () => {
   it('should pass in the simplest case', () => {

@@ -1,6 +1,7 @@
 import React from 'react'
 import Markdown from 'markdown-it'
 import katex from 'markdown-it-katex'
+import imsize from 'markdown-it-imsize/dist/markdown-it-imsize'
 import PropTypes from 'prop-types'
 
 export default (class extends React.Component {
@@ -9,7 +10,9 @@ export default (class extends React.Component {
   }
 
   initMD (options) {
-    this.md = new Markdown(options).use(katex)
+    this.md = new Markdown(options)
+      .use(katex)
+      .use(imsize)
   }
 
   render () {

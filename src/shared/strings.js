@@ -22,5 +22,22 @@ export default {
   'auth/operation-not-supported-in-this-environment': 'A művelet nem megengedett ebben a környezetben',
   'auth/popup-blocked': 'A bejelentkezés popup megnyitását blokkolta a böngésző',
   'auth/popup-closed-by-user': 'Bejelentkezés megszakadt mert a felhasználó idő előtt zárta be a popup-ot.',
-  'auth/invalid-credential': 'Helytelen vagy lejárt .'
+  'auth/invalid-credential': 'Helytelen vagy lejárt .',
+
+  'storage/unknown': 'Ismeretlen hiba történt.',
+  'storage/object_not_found': 'Fájl nem található.',
+  'storage/bucket_not_found': 'A megadott tároló nem található',
+  'storage/project_not_found': 'Projekt nem található',
+  'storage/quota_exceeded': 'Tároló betelt',
+  'storage/unauthenticated': 'Jelentkezzen be és próbálja újra.',
+  'storage/unauthorized': 'Művelet nem egedéjezett a jelnelegi felhasználónak.',
+  'storage/retry_limit_exceeded': 'Időtúllépés a művelet során, próbálja újra később.',
+  'storage/invalid_checksum': 'Fájl egyezési probléma, próbálja újra a feltöltést',
+  'storage/canceled': 'Művelet megszakítása.',
+  'storage/invalid_event_name': 'Helytelen esemény név',
+  'storage/invalid_url': 'Rossz url',
+  'storage/invalid-argument': 'Helytelen feltöltési formátum',
+  'storage/no_default_bucket': 'Nincs megadva alapértelemzett tárololó.',
+  'storage/cannot_slice_blob': 'A fájl megváltozott feltöltés közben, zárjon be minden programot ami módosíthatja a fájlt és próbálja újra',
+  'storage/server_wrong_file_size': 'Fájl méret ellenőrzés probléma, próbálja újra a feltöltést'
 }

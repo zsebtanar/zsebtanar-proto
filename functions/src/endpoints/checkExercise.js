@@ -1,5 +1,5 @@
 const {toPairs} = require('ramda')
-const validators = require('../userControls')
+const validators = require('../userControls/index')
 const cors = require('cors')({origin: true})
 
 module.exports = admin => (req, res) => {

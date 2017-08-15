@@ -6,6 +6,7 @@
     "axios": "0.16.2",
     "history": "^4.6.3",
     "markdown-it": "8.3.1",
+    "markdown-it-imsize": "^2.0.1",
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.1.0",
     "prop-types": "15.5.10",
     "ramda": "0.24.1",

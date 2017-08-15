@@ -28,7 +28,7 @@ import Button from 'shared/component/general/Button'
 import UserControlAdmin from 'shared/component/userControls/UserControlAdmin'
 import { createExerciseAction, updateExerciseAction } from 'store/actions/exercise'
 import { getPrivateExercise } from 'shared/services/exercise'
-import { openMarkdownHelpModal } from 'store/actions/modal'
+import { openFileManager, openMarkdownHelpModal } from 'store/actions/modal'
 import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from 'shared/component/userControls/controlTypes'
 import { pairsInOrder } from 'util/fn'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
@@ -37,7 +37,7 @@ import ExercisePreview from './ExercisePreview'
 
 const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 
-export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
+export default connect(undefined, {openFileManager, openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
   class ExerciseForm extends React.Component {
     mode = 'Add'
     state = {
@@ -195,6 +195,15 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
         exercise: {hints: dissoc(key)}
       }))
 
+    insertFile = () => {
+      this.props.openFileManager({
+        onSelect: ({url, file}) => {
+          this.descriptionFiled.value += `![${file.name}](${url} "${file.name}" =100x)`
+          this.update({currentTarget: this.descriptionFiled})
+        }
+      })
+    }
+
     render () {
       const {loading, error, exercise} = this.state
       const modeLabel = {
@@ -267,6 +276,14 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
               Útmutató szerkesztéshez
             </Button>
 
+            <Button
+              tabIndex="-2"
+              className="btn-link"
+              onAction={this.insertFile}
+            >
+              Kép beszúrása
+            </Button>
+
           </label>
           <textarea
             className="form-control"
@@ -274,6 +291,7 @@ export default connect(undefined, {openMarkdownHelpModal, createExerciseAction, 
             rows="10"
             required
             onChange={this.update}
+            ref={inp => { this.descriptionFiled = inp }}
             value={pathOr('', ['description'], ex)}
           />
         </div>

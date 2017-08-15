@@ -75,23 +75,23 @@ export default class extends React.Component {
         <td>{(ex.classification.topic || []).map(x => <span key={x}> {x} </span>)}</td>
         <td>{ex.title}</td>
         <td>{ex.classification.tags.map(tag =>
-          <span className="badge badge-default mx-1" key={tag}>{tag}</span>
+          <span className="badge badge-secondary mx-1" key={tag}>{tag}</span>
         )}</td>
         <td className="text-center">
-          <NavLink exact to={`/exercise/view/${ex._key}`} className="btn btn-sm btn-secondary" title="Megtekintés">
+          <NavLink exact to={`/exercise/view/${ex._key}`} className="btn btn-sm btn-light" title="Megtekintés">
             <i className="fa fa-eye"/>
           </NavLink>
           &nbsp;
-          <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-secondary"
+          <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-light"
                    title="Feladat szerkesztése">
             <i className="fa fa-edit"/>
           </NavLink>
           &nbsp;
-          <NavLink exact to={`/exercise/add/${ex._key}`} className="btn btn-sm btn-secondary" title="Feladat másolása">
+          <NavLink exact to={`/exercise/add/${ex._key}`} className="btn btn-sm btn-light" title="Feladat másolása">
             <i className="fa fa-clone"/>
           </NavLink>
           &nbsp;
-          <Button title="Feladat törlése" className="btn btn-sm btn-secondary" onAction={this.deleteExercise(ex._key)}>
+          <Button title="Feladat törlése" className="btn btn-sm btn-light" onAction={this.deleteExercise(ex._key)}>
             <span className="text-danger"><i className="fa fa-trash"/></span>
           </Button>
         </td>

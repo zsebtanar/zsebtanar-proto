@@ -17,7 +17,6 @@ export function getPublicExercise (uid) {
 
 export function getPrivateExercise (uid) {
   return Exercises
-    .child(uid)
     .child(`${uid}/private`)
     .once('value')
     .then(pipe(resolveSnapshot, notFound))

@@ -1,4 +1,4 @@
-import singleNumber from '../../../functions/userControls/singleNumber'
+import singleNumber from '../../../functions/src/userControls/singleNumber'
 
 describe('singleNumber', () => {
   it('should pass in the simplest case', () => {
