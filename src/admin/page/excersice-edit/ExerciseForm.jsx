@@ -268,6 +268,8 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
         <div className="form-group">
           <label className="d-flex justify-content-between align-items-center">
             <div>Feladatleírás:</div>
+          </label>
+          <div>
             <Button
               tabIndex="-1"
               className="btn-link"
@@ -283,8 +285,7 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
             >
               Kép beszúrása
             </Button>
-
-          </label>
+          </div>
           <textarea
             className="form-control"
             name="description"

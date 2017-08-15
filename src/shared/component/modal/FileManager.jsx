@@ -1,7 +1,13 @@
-import { map, values } from 'ramda'
+import { __, all, contains, lte, map, pipe, prop, values } from 'ramda'
 import React from 'react'
 import { getFiles, getFileUrl, imageUpload } from 'shared/services/images'
 import Button from 'shared/component/general/Button'
+
+const validFileTypes = [
+  'image/gif', 'image/png', 'image/jpeg', 'image/webp'
+]
+
+const maxFileSize = 1024 * 1024 * 3 // 3Mb
 
 export default (class FileManager extends React.Component {
   state = {
@@ -10,6 +16,7 @@ export default (class FileManager extends React.Component {
     fsError: undefined,
     uploadState: 'select',
     uploadFiles: undefined,
+    uploadError: undefined,
     activeTab: 0
   }
 
@@ -19,6 +26,14 @@ export default (class FileManager extends React.Component {
   }
 
   fileSelect = event => {
+    const files = event.currentTarget.files
+    if (!all(pipe(prop('type'), contains(__, validFileTypes)), files)) {
+      return this.setState({uploadState: 'error', uploadError: 'Érvénytelen fájlformátum'})
+    }
+    if (!all(pipe(prop('size'), lte(__, maxFileSize)), files)) {
+      return this.setState({uploadState: 'error', uploadError: 'Túl nagy fájl'})
+    }
+
     this.setState({uploadState: 'list', uploadFiles: event.currentTarget.files})
   }
 
@@ -51,6 +66,10 @@ export default (class FileManager extends React.Component {
       getFiles()
         .then(fs => this.setState({fs, fsLoading: false}))
     }
+  }
+
+  resetUpload = () => {
+    this.setState({uploadState: 'select', uploadError: undefined, uploadFiles: undefined})
   }
 
   render () {
@@ -100,11 +119,12 @@ export default (class FileManager extends React.Component {
                 <a href=""
                    key={file._key}
                    className="m-1 float-left btn btn-light"
+                   title={file.name}
                    onClick={this.selectImage(file)}
                 >
                   <figure className="figure">
-                    <img src={file.thumbnail} className="figure-img img-fluid rounded" alt=""/>
-                    <figcaption className="figure-caption text-center">{file.name}</figcaption>
+                    <div className="img" style={{backgroundImage: `url(${file.thumbnail})`}}/>
+                    <figcaption className="figure-caption text-center text-truncate">{file.name}</figcaption>
                   </figure>
                 </a>
               )}
@@ -120,7 +140,13 @@ export default (class FileManager extends React.Component {
       <div className="block-item">
         {
           state === 'select' ?
-            <input type="file" onChange={this.fileSelect}/>
+            <div>
+            <input
+              type="file" onChange={this.fileSelect}
+              accept="image/png, image/jpeg"
+            />
+              <div className="text-muted my-3">csak <code>jpg</code> <code>png</code> <code>gif</code> és <code>webp</code> tölthető fel,<br/>a maximális képmáret 3Mb</div>
+            </div>
           : state === 'list' ?
             <div>
               <h4>Kiválasztott fájlok:</h4>
@@ -134,9 +160,15 @@ export default (class FileManager extends React.Component {
           : state === 'upload' ?
             'Feltöltés...'
           : state === 'done' ?
-            'Kész'
+              <div>
+                <div className="alert alert-success" role="alert">A feltöltés siekresen befejeződött</div>
+                <Button onAction={this.resetUpload}>Új feltöltés</Button>
+              </div>
           : state === 'error' ?
-            'Hiba'
+              <div>
+                <div className="alert alert-danger" role="alert">{this.state.uploadError}</div>
+                <Button onAction={this.resetUpload}>Újra</Button>
+              </div>
           : undefined
         }
       </div>

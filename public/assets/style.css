@@ -108,7 +108,13 @@ body {
 }
 .file-manager figure{
     margin: 0;
+    width: 100px;
 }
-.file-manager figure img{
-    height: 100px
+.file-manager figure .img{
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
+
