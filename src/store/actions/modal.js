@@ -15,8 +15,8 @@ export function openModal (modal, parameters) {
   }
 }
 
-export function closeModal () {
-  return {type: CLOSE_MODAL}
+export function closeModal (payload) {
+  return {type: CLOSE_MODAL, payload}
 }
 
 export function openAlertModal (params) {

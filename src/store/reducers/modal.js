@@ -1,17 +1,29 @@
-import { pick } from 'ramda'
+import { curry, not, pick, pipe, propEq } from 'ramda'
 import { CLOSE_MODAL, OPEN_MODAL } from '../actions/modal'
+import { uid } from 'util/uuid'
 
 const initialState = {
-  modal: null,
-  parameters: {}
+  modals: []
 }
+
+const getModal = pick(['modal', 'parameters'])
+const idNotEq = curry(pipe(propEq('id'), not))
 
 export default function modal (state = initialState, action) {
   switch (action.type) {
     case OPEN_MODAL:
-      return pick(['modal', 'parameters'], action.payload)
+      return {
+        modals: [
+          ...state.modals,
+          {
+            id: uid(),
+            ...getModal(action.payload)
+          }
+        ]
+      }
     case CLOSE_MODAL:
-      return initialState
+      console.log(action)
+      return {modals: state.modals.filter(idNotEq(action.payload))}
     default:
       return state
   }

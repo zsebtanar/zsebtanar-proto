@@ -147,3 +147,12 @@ body {
 .upload-thumbnail{
     max-width: 100px;
 }
+
+.modal.fade {
+    pointer-events: none;
+    filter: contrast(30%)
+}
+.modal.fade.active-modal {
+    pointer-events: auto;
+    filter: none;
+}
