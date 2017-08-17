@@ -40,6 +40,7 @@ const Muted = (props) => (<span className="text-muted">{props.children}</span>)
 export default connect(undefined, {openFileManager, openMarkdownHelpModal, createExerciseAction, updateExerciseAction})(
   class ExerciseForm extends React.Component {
     mode = 'Add'
+
     state = {
       classifications: null,
       error: null,
@@ -47,32 +48,10 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
       exercise: null
     }
 
-    componentWillMount () {
-      getAllClassification()
-        .then(classifications => {
-          this.setState({classifications})
-          this.loadExercise()
-        })
-    }
-
-    loadExercise () {
-      const key = this.props.match.params.key
-      const cloneKey = this.props.match.params.clone
-      if (key) {
-        this.mode = 'Update'
-        return getPrivateExercise(key)
-          .then(this.setExercise)
-          .catch(this.errorHandler)
+    shiftEnter = (event) => {
+      if (event.keyCode === 13 && event.shiftKey && !/(input|textarea|select)/ig.test(event.target.tagName)) {
+        this.saveExercise(event)
       }
-      if (cloneKey) {
-        this.mode = 'Clone'
-        return getPrivateExercise(cloneKey)
-          .then(dissoc('_key'))
-          .then(ex => assoc('title', `${(ex.title || '')} [másolat]`, ex))
-          .then(this.setExercise)
-          .catch(this.errorHandler)
-      }
-      return this.setExercise({})
     }
 
     errorHandler = (error) => {
@@ -204,6 +183,85 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
       })
     }
 
+    renderUserControlItem = ([key, item]) => {
+      const ex = this.state.exercise
+      const controlType = pathOr('', ['controlType'], item)
+      const controlProps = pathOr('', ['controlProps'], item)
+      const solution = pathOr('', ['solutions', key], ex)
+
+      return (
+        <li key={key}>
+          <div className="form-group d-flex justify-content-between align-items-center">
+            <select
+              name={key}
+              className="form-control"
+              onChange={this.updateUserControlType}
+              required
+              value={controlType}
+            >
+              <option value={SIMPLE_TEXT}>Egyszerű szöveg</option>
+              <option value={SINGLE_NUMBER}>Szám</option>
+              <option value={SINGLE_CHOICE}>Felelet választó</option>
+            </select>
+            <Button
+              className="btn-link text-danger mx-1"
+              onAction={this.removeUserControl(key)}
+            >
+              F <i className="fa fa-trash"/>
+            </Button>
+          </div>
+          <div className="form-group col-12">
+            {
+              pathOr(false, ['controlType'], item)
+                ? <UserControlAdmin
+                controlType={controlType}
+                controlProps={{
+                  name: key,
+                  value: {...controlProps, solution},
+                  onChange: this.updateSolution,
+                  required: true
+                }}
+              />
+                : null
+            }
+          </div>
+        </li>)
+    }
+
+    loadExercise = () => {
+      const key = this.props.match.params.key
+      const cloneKey = this.props.match.params.clone
+      if (key) {
+        this.mode = 'Update'
+        return getPrivateExercise(key)
+          .then(this.setExercise)
+          .catch(this.errorHandler)
+      }
+      if (cloneKey) {
+        this.mode = 'Clone'
+        return getPrivateExercise(cloneKey)
+          .then(dissoc('_key'))
+          .then(ex => assoc('title', `${(ex.title || '')} [másolat]`, ex))
+          .then(this.setExercise)
+          .catch(this.errorHandler)
+      }
+      return this.setExercise({})
+    }
+
+    componentWillMount () {
+      getAllClassification()
+        .then(classifications => {
+          this.setState({classifications})
+          this.loadExercise()
+        })
+
+      document.addEventListener('keyup', this.shiftEnter)
+    }
+
+    componentWillUnmount () {
+      document.removeEventListener('keyup', this.shiftEnter)
+    }
+
     render () {
       const {loading, error, exercise} = this.state
       const modeLabel = {
@@ -213,24 +271,24 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
       }[this.mode]
 
       return (<div>
-        {loading && <Muted>Betöltés...</Muted>}
-        {error && <div>
-          <div className="alert alert-danger">{error.message || error}</div>
-          <NavLink exact to="/exercise" className="btn btn-secondary">Vissza a feladatlist</NavLink>
-        </div>}
-        {!loading && !error && exercise && <div>
-          <div className="d-flex justify-content-between align-items-center">
-            <h2>Feladat {modeLabel}</h2>
-          </div>
-          <hr/>
-          <div className="row">
-            <div className="col-6">{this.renderForm()}</div>
-            <div className="col-6">
-              <ExercisePreview exercise={exercise} />
+          {loading && <Muted>Betöltés...</Muted>}
+          {error && <div>
+            <div className="alert alert-danger">{error.message || error}</div>
+            <NavLink exact to="/exercise" className="btn btn-secondary">Vissza a feladatlist</NavLink>
+          </div>}
+          {!loading && !error && exercise && <div>
+            <div className="d-flex justify-content-between align-items-center">
+              <h2>Feladat {modeLabel}</h2>
             </div>
-          </div>
-        </div>}
-      </div>
+            <hr/>
+            <div className="row">
+              <div className="col-6">{this.renderForm()}</div>
+              <div className="col-6">
+                <ExercisePreview exercise={exercise}/>
+              </div>
+            </div>
+          </div>}
+        </div>
       )
     }
 
@@ -360,54 +418,9 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
             matchProp="label"
             placeholder="Válasszon egyet..."
             options={values(pathOr({}, group.split('.'), classifications))}
-            onChange={this.updateClassification(group, path) }
+            onChange={this.updateClassification(group, path)}
           />
         </div>
       </div>)
-    }
-
-    renderUserControlItem = ([key, item]) => {
-      const ex = this.state.exercise
-      const controlType = pathOr('', ['controlType'], item)
-      const controlProps = pathOr('', ['controlProps'], item)
-      const solution = pathOr('', ['solutions', key], ex)
-
-      return (
-        <li key={key}>
-          <div className="form-group d-flex justify-content-between align-items-center">
-            <select
-              name={key}
-              className="form-control"
-              onChange={this.updateUserControlType}
-              required
-              value={controlType}
-            >
-              <option value={SIMPLE_TEXT}>Egyszerű szöveg</option>
-              <option value={SINGLE_NUMBER}>Szám</option>
-              <option value={SINGLE_CHOICE}>Felelet választó</option>
-            </select>
-            <Button
-              className="btn-link text-danger mx-1"
-              onAction={this.removeUserControl(key)}
-            >
-              <i className="fa fa-trash"/>
-            </Button>
-          </div>
-          <div className="form-group col-12">
-            {
-              pathOr(false, ['controlType'], item)
-                ? <UserControlAdmin
-                  controlType={controlType}
-                  controlProps={{
-                    name: key,
-                    value: {...controlProps, solution},
-                    onChange: this.updateSolution,
-                    required: true
-                  }}
-                />
-                : null
-            }
-          </div>
-        </li>)
     }
   })
