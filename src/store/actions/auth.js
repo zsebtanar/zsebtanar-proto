@@ -1,6 +1,5 @@
 import { pathOr } from 'ramda'
 import { createUser, getUser } from '../../shared/services/user'
-import { GET_USER } from './user'
 import { openProviderSignUp } from 'store/actions/modal'
 
 const AUTH = firebase.auth()

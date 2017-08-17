@@ -118,3 +118,32 @@ body {
     background-repeat: no-repeat;
 }
 
+.dnd-overlay{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(221, 221, 221, 0.5);
+    border: .5rem dashed #007bff;
+    border-radius: 0.5em;
+    z-index: 10000;
+}
+
+.dnd-overlay .msg-block{
+    background: white;
+    width: 50%;
+    margin: auto;
+    border-radius: 2rem;
+    min-width: 25rem;
+    max-width: 100%;
+}
+
+.is-dragover .dnd-overlay{
+    display: flex;
+}
+
+.upload-thumbnail{
+    max-width: 100px;
+}
