@@ -183,7 +183,7 @@ export default (class FileManager extends React.Component {
             </div>
             : state === 'upload' ? 'Feltöltés...'
             : state === 'done' ? <div>
-                <div className="alert alert-success" role="alert">A feltöltés siekresen befejeződött</div>
+                <div className="alert alert-success" role="alert">A feltöltés sikeresen befejeződött</div>
                 <Button onAction={this.resetUpload}>Új feltöltés</Button>
               </div>
             : state === 'error' ? <div>
