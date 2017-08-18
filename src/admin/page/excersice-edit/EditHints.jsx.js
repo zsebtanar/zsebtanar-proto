@@ -21,7 +21,7 @@ export default connect(undefined, {openInputModal})(class EditHints extends Reac
       title: 'Tipp módosítása',
       label: 'Tipp szövege',
       value: pathOr('', ['hints', key, 'text'], this.props),
-      onUpdate: this.props.onUpdate
+      onUpdate: text => this.props.onUpdate(key, text)
     })
   }
 
