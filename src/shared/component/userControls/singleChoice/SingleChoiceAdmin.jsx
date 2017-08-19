@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { findIndex, map, pick, propEq, update } from 'ramda'
-import { openInputModal } from 'store/actions/modal'
+import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
 import Markdown from 'shared/component/general/Markdown'
 

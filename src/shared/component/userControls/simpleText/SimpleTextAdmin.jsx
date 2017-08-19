@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { assocPath, dissocPath, toPairs } from 'ramda'
-import { uid } from 'util/uuid'
-import { openInputModal } from 'store/actions/modal'
+import { uid } from 'shared/util/uuid'
+import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
 import Markdown from 'shared/component/general/Markdown'
 

@@ -1,4 +1,4 @@
-import { pairsInOrder } from 'util/fn'
+import { pairsInOrder } from 'shared/util/fn'
 import * as React from 'react'
 import UserControls from 'shared/component/userControls/UserControl'
 import Markdown from 'shared/component/general/Markdown'

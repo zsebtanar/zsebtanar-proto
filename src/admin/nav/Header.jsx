@@ -2,8 +2,8 @@ import React from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import { signOut } from '../../store/actions/auth'
-import { openFileManager } from 'store/actions/modal'
+import { signOut } from '../../shared/store/actions/auth'
+import { openFileManager } from 'shared/store/actions/modal'
 
 const mapStateToProps = (state) => ({
   session: state.app.session

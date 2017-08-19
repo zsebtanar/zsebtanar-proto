@@ -1,4 +1,4 @@
-import { resolveSnapshot } from '../../src/util/firebase'
+import { resolveSnapshot } from '../../src/shared/util/firebase'
 
 test('resolveSnapshot should call "val" method', () => {
   const x = {}

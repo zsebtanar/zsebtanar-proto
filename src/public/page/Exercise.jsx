@@ -1,7 +1,7 @@
 import { all, last, pathOr, propOr, identity } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
-import { pairsInOrder } from 'util/fn'
+import { pairsInOrder } from 'shared/util/fn'
 import UserControls from 'shared/component/userControls/UserControl'
 import Button from 'shared/component/general/Button'
 import Markdown from 'shared/component/general/Markdown'

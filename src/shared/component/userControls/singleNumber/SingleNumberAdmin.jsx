@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { openInputModal } from 'store/actions/modal'
+import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
 import Markdown from 'shared/component/general/Markdown'
 
 const strings = {
   prefix: 'Előtag',
-  postfix: 'Utótag',
+  postfix: 'Utótag'
 }
 
 export default connect(undefined, {openInputModal})(class extends React.Component {
@@ -69,7 +69,6 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
 })
 
 const Muted = (props) => (<i className="text-muted">{props.children}</i>)
-
 
 const Label = (props) => (
   <div className="form-group row">

@@ -7,7 +7,7 @@ import {
   getPublicExercise,
   removeExercise,
   updateExercise
-} from '../../shared/services/exercise'
+} from '../../services/exercise'
 import { all, identity } from 'ramda'
 
 export const EXERCISE_GET_ALL = 'EXERCISE_GET_ALL'

@@ -1,5 +1,5 @@
 import { identity, is } from 'ramda'
-import { resolveSnapshot } from 'util/firebase'
+import { resolveSnapshot } from 'shared/util/firebase'
 
 const firebase = window.firebase
 const storageRef = firebase.storage().ref()

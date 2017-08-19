@@ -1,10 +1,10 @@
 import { pathOr } from 'ramda'
-import { pairsInOrder } from 'util/fn'
+import { pairsInOrder } from 'shared/util/fn'
 import React from 'react'
 import { connect } from 'react-redux'
 import Button from 'shared/component/general/Button'
 import Markdown from 'shared/component/general/Markdown'
-import { openInputModal } from 'store/actions/modal'
+import { openInputModal } from 'shared/store/actions/modal'
 
 export default connect(undefined, {openInputModal})(class EditHints extends React.Component {
   addHint = () => {

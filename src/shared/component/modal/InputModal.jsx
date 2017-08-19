@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Button from '../general/Button'
 import Markdown from '../general/Markdown'
-import { openFileManager, openMarkdownHelpModal } from 'store/actions/modal'
+import { openFileManager, openMarkdownHelpModal } from 'shared/store/actions/modal'
 
 export default connect(undefined, {openFileManager, openMarkdownHelpModal})(
   class InputModal extends React.Component {

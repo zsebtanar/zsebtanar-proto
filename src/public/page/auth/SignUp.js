@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import { facebookSignIn, googleSignIn, signUp } from 'store/actions/auth'
+import { facebookSignIn, googleSignIn, signUp } from 'shared/store/actions/auth'
 import Button from 'shared/component/general/Button'
-import { openProviderSignUp } from 'store/actions/modal'
+import { openProviderSignUp } from 'shared/store/actions/modal'
 import strings from 'shared/strings'
 
 const mapStateToProps = (state) => ({

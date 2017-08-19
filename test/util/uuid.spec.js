@@ -1,4 +1,4 @@
-import { guid, uid } from '../../src/util/uuid'
+import { guid, uid } from '../../src/shared/util/uuid'
 
 describe('guid', () => {
   it('generate the right format', () => {

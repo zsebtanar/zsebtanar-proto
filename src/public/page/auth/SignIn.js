@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { facebookSignIn, googleSignIn, signIn } from 'store/actions/auth'
+import { facebookSignIn, googleSignIn, signIn } from 'shared/store/actions/auth'
 import { withRouter } from 'react-router-dom'
 import Button from 'shared/component/general/Button'
 import strings from 'shared/strings'

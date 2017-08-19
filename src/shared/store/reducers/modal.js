@@ -1,6 +1,6 @@
 import { curry, not, pick, pipe, propEq } from 'ramda'
 import { CLOSE_MODAL, OPEN_MODAL } from '../actions/modal'
-import { uid } from 'util/uuid'
+import { uid } from '../../util/uuid'
 
 const initialState = {
   modals: []

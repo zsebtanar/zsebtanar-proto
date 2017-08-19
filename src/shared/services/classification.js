@@ -1,5 +1,5 @@
 import { pick, pipe, values } from 'ramda'
-import { resolveSnapshot } from '../../util/firebase'
+import { resolveSnapshot } from '../util/firebase'
 
 const DB = window.firebase.database()
 

@@ -2,7 +2,7 @@ import { __, all, contains, filter, invoker, lte, map, pipe, prop, propEq, value
 import React from 'react'
 import { getFiles, getFileUrl, imageUpload } from 'shared/services/images'
 import Button from 'shared/component/general/Button'
-import { isAdvancedUpload } from 'util/check'
+import { isAdvancedUpload } from 'shared/util/check'
 import DnDOverlay from 'shared/component/modal/fileManager/DnDOverlay'
 import Loading from 'shared/component/general/Loading'
 

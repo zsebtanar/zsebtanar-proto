@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { checkSolutionAction, getHintAction, getPublicExerciseAction } from '../../store/actions/exercise'
+import { checkSolutionAction, getHintAction, getPublicExerciseAction } from '../../shared/store/actions/exercise'
 import { NavLink } from 'react-router-dom'
 import UserControls from '../../shared/component/userControls/UserControl'
 import { last, pathOr, propOr } from 'ramda'
-import { pairsInOrder } from '../../util/fn'
+import { pairsInOrder } from '../../shared/util/fn'
 import Button from '../../shared/component/general/Button'
 import Markdown from '../../shared/component/general/Markdown'
 

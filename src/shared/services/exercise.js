@@ -1,7 +1,7 @@
 import { isNil, map, not, pipe, prop, values } from 'ramda'
 import axios from 'axios'
-import { resolveSnapshot } from '../../util/firebase'
-import { assert } from '../../util/fn'
+import { resolveSnapshot } from '../util/firebase'
+import { assert } from '../util/fn'
 
 const DB = window.firebase.database()
 const Exercises = DB.ref('exercise')

@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import { signOut } from '../../store/actions/auth'
+import { signOut } from '../../shared/store/actions/auth'
 import { ROLE_USER } from 'shared/services/user'
 
 const mapStateToProps = (state) => ({

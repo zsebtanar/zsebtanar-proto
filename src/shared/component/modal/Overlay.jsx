@@ -1,7 +1,7 @@
 import { pipe } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
-import { closeModal } from 'store/actions/modal'
+import { closeModal } from 'shared/store/actions/modal'
 
 const mapStateToProps = (state) => state.app.modal
 const body = window.document.body
