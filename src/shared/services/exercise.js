@@ -65,6 +65,7 @@ export function updateExercise (key, data) {
 export function removeExercise (key) {
   return Exercises
     .child(key)
+    .child('private')
     .remove()
 }
 

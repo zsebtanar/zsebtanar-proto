@@ -1,4 +1,4 @@
-import { values, evolve, map, pathOr } from 'ramda'
+import { evolve, map, pathOr, values } from 'ramda'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import Button from 'shared/component/general/Button'
@@ -16,25 +16,27 @@ export default class extends React.Component {
     }
   }
 
-  componentWillMount () {
-    this.loadList()
-  }
-
   loadList = () => {
     Promise.all([
       getAllClassification(),
       getAllPrivateExercises()
     ]).then(([classifications, list]) => {
       const topics = values(classifications[SUBJECT]).reduce((acc, sub) => Object.assign(acc, sub[TOPIC]), {})
-      this.setState({ exercises: list.map(evolve({
-        classification: {
-          grade: map(key => pathOr(key, [GRADE, key, 'name'], classifications)),
-          subject: map(key => pathOr(key, [SUBJECT, key, 'name'], classifications)),
-          topic: map(key => pathOr(key, [key, 'name'], topics)),
-          tags: map(key => pathOr(key, [TAGS, key, 'name'], classifications))
-        }
-      }))})
+      this.setState({
+        exercises: list.map(evolve({
+          classification: {
+            grade: map(key => pathOr(key, [GRADE, key, 'name'], classifications)),
+            subject: map(key => pathOr(key, [SUBJECT, key, 'name'], classifications)),
+            topic: map(key => pathOr(key, [key, 'name'], topics)),
+            tags: map(key => pathOr(key, [TAGS, key, 'name'], classifications))
+          }
+        }))
+      })
     })
+  }
+
+  componentWillMount () {
+    this.loadList()
   }
 
   render () {
@@ -46,22 +48,24 @@ export default class extends React.Component {
             <i className="fa fa-plus"/> Feladat létrehozása
           </NavLink>
         </div>
-        <table className="table table-hover table mt-3 exercise-list-table">
-          <thead>
-          <tr>
-            <th>#</th>
-            <th>Osztály</th>
-            <th>Tantárgy</th>
-            <th>Témakör</th>
-            <th>Cím</th>
-            <th>Címkék</th>
-            <th className="text-center action-column"><i className="fa fa-lg fa-cog"/></th>
-          </tr>
-          </thead>
-          <tbody>
-          {this.state.exercises ? this.renderItem() : 'Kis türelmet...'}
-          </tbody>
-        </table>
+        {this.state.exercises
+          ? <table className="table table-hover table mt-3 exercise-list-table">
+           <thead>
+           <tr>
+             <th>#</th>
+             <th>Osztály</th>
+             <th>Tantárgy</th>
+             <th>Témakör</th>
+             <th>Cím</th>
+             <th>Címkék</th>
+             <th className="text-center action-column"><i className="fa fa-lg fa-cog"/></th>
+           </tr>
+           </thead>
+           <tbody>
+           {this.renderItem()}
+           </tbody>
+         </table>
+          : 'Kis türelmet...'}
       </div>
     )
   }
@@ -70,11 +74,12 @@ export default class extends React.Component {
     return this.state.exercises.map((ex, idx) =>
       <tr key={ex._key}>
         <td>{idx + 1}</td>
-        <td className="grade-column">{ex.classification.grade.map(x => <span key={x}>{x}</span>)}</td>
-        <td>{ex.classification.subject.map(x => <span key={x}> {x} </span>)}</td>
-        <td>{(ex.classification.topic || []).map(x => <span key={x}> {x} </span>)}</td>
+        <td className="grade-column">{pathOr([], ['classification', 'grade'], ex).map(x => <span
+          key={x}>{x}</span>)}</td>
+        <td>{pathOr([], ['classification', 'subject'], ex).map(x => <span key={x}> {x} </span>)}</td>
+        <td>{(pathOr([], ['classification', 'topic '], ex)).map(x => <span key={x}> {x} </span>)}</td>
         <td>{ex.title}</td>
-        <td>{ex.classification.tags.map(tag =>
+        <td>{pathOr([], ['classification', 'tags'], ex).map(tag =>
           <span className="badge badge-secondary mx-1" key={tag}>{tag}</span>
         )}</td>
         <td className="text-center">

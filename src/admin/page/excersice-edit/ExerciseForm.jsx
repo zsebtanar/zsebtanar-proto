@@ -207,7 +207,7 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
               className="btn-link text-danger mx-1"
               onAction={this.removeUserControl(key)}
             >
-              F <i className="fa fa-trash"/>
+              <i className="fa fa-trash"/>
             </Button>
           </div>
           <div className="form-group col-12">
