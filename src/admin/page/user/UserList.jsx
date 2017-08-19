@@ -1,5 +1,6 @@
 import React from 'react'
 import { getAllUser, ROLE_ADMIN, ROLE_TEACHER, ROLE_USER, updateUser } from 'shared/services/user'
+import Loading from 'shared/component/general/Loading'
 
 export default class extends React.Component {
   state = {
@@ -11,7 +12,7 @@ export default class extends React.Component {
   }
 
   setRole = key => e => {
-    updateUser(key, {role: parseInt(e.currentTarget.value, 10) })
+    updateUser(key, {role: parseInt(e.currentTarget.value, 10)})
       .then(this.loadList)
   }
 
@@ -25,7 +26,7 @@ export default class extends React.Component {
         <div className="btn-toolbar justify-content-between align-items-center">
           <h3>Felhasználók</h3>
         </div>
-        {this.state.userList ? this.renderTable() : 'Kis türelmet...'}
+        {this.state.userList ? this.renderTable() : <Loading/>}
       </div>
     )
   }

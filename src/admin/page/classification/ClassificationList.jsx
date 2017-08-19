@@ -9,6 +9,7 @@ import {
   TOPIC
 } from 'shared/services/classification'
 import Button from 'shared/component/general/Button'
+import Loading from 'shared/component/general/Loading'
 
 export default class extends React.Component {
   state = {
@@ -62,7 +63,7 @@ export default class extends React.Component {
             <option value={TAGS}>Címkék</option>
           </select>
         </div>
-        {this.state.list ? this.renderTable() : 'Kis türelmet...'}
+        {this.state.list ? this.renderTable() : <Loading/>}
       </div>
     )
   }

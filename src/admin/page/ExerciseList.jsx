@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 import Button from 'shared/component/general/Button'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 import { getAllPrivateExercises, removeExercise } from 'shared/services/exercise'
+import Loading from 'shared/component/general/Loading'
 
 export default class extends React.Component {
   state = {
@@ -65,7 +66,7 @@ export default class extends React.Component {
            {this.renderItem()}
            </tbody>
          </table>
-          : 'Kis türelmet...'}
+          : <Loading/>}
       </div>
     )
   }

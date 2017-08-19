@@ -6,6 +6,7 @@ import { selectPublicExercisesById } from 'shared/services/exercise'
 import { getAllClassification, TAGS } from 'shared/services/classification'
 import Markdown from 'shared/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
+import Loading from 'shared/component/general/Loading'
 
 const mapStateToProps = (state) => ({
   classification: state.classification
@@ -40,7 +41,7 @@ export default pipe(
 
       {
         !this.state.exercises
-          ? <div>Kis türelmet...</div>
+          ? <Loading/>
           : <div className="list-group col-10 mx-auto">
             {
               this.state.exercises.map(ex =>

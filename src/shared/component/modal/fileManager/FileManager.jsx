@@ -4,6 +4,7 @@ import { getFiles, getFileUrl, imageUpload } from 'shared/services/images'
 import Button from 'shared/component/general/Button'
 import { isAdvancedUpload } from 'util/check'
 import DnDOverlay from 'shared/component/modal/fileManager/DnDOverlay'
+import Loading from 'shared/component/general/Loading'
 
 const validFileTypes = [
   'image/gif', 'image/png', 'image/jpeg', 'image/webp'
@@ -131,7 +132,7 @@ export default (class FileManager extends React.Component {
   renderBrowser () {
     return <div>
       {
-        this.state.fsLoading ? <div className="msg-block">Kist türelmet...</div>
+        this.state.fsLoading ? <div className="msg-block"><Loading/></div>
           : this.state.fsError ? <div className="msg-block">{this.state.fsError.code}</div>
           : !this.state.fs ? <div className="msg-block">Nincs feltöltött fájl.</div>
             : <div>
