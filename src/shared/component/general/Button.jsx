@@ -1,4 +1,7 @@
 import * as React from 'react'
+import { pickBy, startsWith } from 'ramda'
+
+const pickArea = pickBy((v, k) => startsWith('area-', k))
 
 export default function Button (props) {
   const onClick = (event) => {
@@ -14,6 +17,7 @@ export default function Button (props) {
     onClick={onClick}
     tabIndex={props.tabIndex}
     title={props.title}
+    {...pickArea(props)}
   >
     {props.children}
   </button>)

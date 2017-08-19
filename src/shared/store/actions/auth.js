@@ -94,8 +94,9 @@ export function facebookSignIn () {
 }
 
 export function signOut () {
-  return dispatch =>
+  return (dispatch, getState) =>
     AUTH
       .signOut()
+      .then(() => getState().history.push('/'))
       .catch(handleError(SING_OUT_ERROR, dispatch))
 }

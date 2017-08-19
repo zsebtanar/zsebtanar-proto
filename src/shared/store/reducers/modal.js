@@ -22,7 +22,6 @@ export default function modal (state = initialState, action) {
         ]
       }
     case CLOSE_MODAL:
-      console.log(action)
       return {modals: state.modals.filter(idNotEq(action.payload))}
     default:
       return state

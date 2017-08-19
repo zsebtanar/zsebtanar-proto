@@ -58,10 +58,10 @@ body {
         padding-right: 0;
         padding-left: 0;
     }
-    /* Space out the masthead */
-    .header {
-        margin-bottom: 2rem;
-    }
+}
+/* Space out the masthead */
+.header {
+    margin-bottom: 2rem;
 }
 
 
@@ -155,4 +155,47 @@ body {
 .modal.fade.active-modal {
     pointer-events: auto;
     filter: none;
+}
+
+.header .desktop-header{
+    display: none;
+}
+.mobile-header{
+    position: relative;
+    margin: 0 -1rem;
+}
+.mobile-header .logo{
+    height: 2rem;
+    padding-left: 2rem;
+}
+
+@media (min-width: 768px) {
+    .header .desktop-header{
+        display: block;
+    }
+    .header .mobile-header{
+        display: none;
+    }
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 10;
+}
+.sidebar .sidebar-content{
+    z-index: 10;
+    background: white;
+    width: 90%;
+    max-width: 20rem;
+    height: 100%;
+}
+
+.mn-left-side{
+    position: absolute;
+    left: 0;
 }

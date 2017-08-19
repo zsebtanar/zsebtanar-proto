@@ -3,6 +3,7 @@ import React from 'react'
 import { Route, Router, Switch } from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory'
 import Header from './nav/Header'
+import SideNav from './nav/SideNav'
 import Home from './page/Home'
 import SignIn from 'public/page/auth/SignIn'
 import SignUp from 'public/page/auth/SignUp'
@@ -26,6 +27,7 @@ export default (props) =>
     <div className="app">
       <div className="container">
         <Header/>
+        <SideNav/>
         <div className="content">
           <Switch>
             <Route path="/" exact component={Home}/>

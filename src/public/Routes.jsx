@@ -11,6 +11,7 @@ import Overlay from 'shared/component/modal/Overlay'
 import ExercisesByTopic from 'public/page/ExercisesByTopic'
 import Exercise from 'public/page/Exercise'
 import ExercisesByGrade from 'public/page/ExercisesByGrade'
+import SideNav from './nav/SideNav'
 
 export const history = createHistory({
   basename: '/',
@@ -24,6 +25,7 @@ export default (props) =>
     <div className="app">
       <div className="container">
         <Header/>
+        <SideNav/>
         <div className="content">
           <Switch>
             <Route path="/" exact component={Home}/>

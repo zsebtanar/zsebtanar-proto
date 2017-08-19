@@ -1,4 +1,4 @@
-import { GET_USER } from '../actions/user'
+import { getUser } from '../../services/user'
 import {
   initUser,
   SING_IN_ERROR,
@@ -8,6 +8,14 @@ import {
   SING_OUT_SUCCESS,
   SING_UP_ERROR
 } from '../actions/auth'
+
+export const GET_USER = 'GET_USER'
+
+export function getUserAction (uid) {
+  return dispatch => getUser(uid).then(payload =>
+    dispatch({type: GET_USER, payload})
+  )
+}
 
 const user = initUser()
 const INIT_STATE = {signedIn: !!user, user, error: null, autoSignIn: true}

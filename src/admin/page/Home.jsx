@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(function Home (props) {
   return (
-    <div>
+    <div className="msg-block">
       <h2 className="text-center">
         {props.session.signedIn ? `Szia ${(props.session.userDetails && props.session.userDetails.name) || props.session.user.email}` : ''}
       </h2>
