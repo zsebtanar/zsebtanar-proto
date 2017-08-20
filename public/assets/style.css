@@ -173,7 +173,8 @@ body {
     .header .desktop-header{
         display: block;
     }
-    .header .mobile-header{
+    .header .mobile-header,
+    .sidebar{
         display: none;
     }
 }

@@ -35,6 +35,10 @@ export default withRouter(connect(mapStateToProps, {signOut, openFileManager, op
             </li>
 
             <li className="nav-item">
+              <NavLink activeClassName="active" className="nav-link" to="/feedback">Visszajelzések</NavLink>
+            </li>
+
+            <li className="nav-item">
               <NavLink activeClassName="active" className="nav-link" to="/classification">Kategóriák</NavLink>
             </li>
 

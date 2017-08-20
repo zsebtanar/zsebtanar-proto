@@ -36,12 +36,13 @@ export default withRouter(connect(mapStateToProps, {signOut, openFileManager, cl
         </div>
         <nav className="mobile-nav">
           <ul className="nav nav-pills flex-column">
-            <li className="nav-item">
-              <a className="nav-link" href="/">Publikus</a>
-            </li>
 
             <li className="nav-item">
               <SideNavLink activeClassName="active" className="nav-link" to="/user">Felhasználók</SideNavLink>
+            </li>
+
+            <li className="nav-item">
+              <SideNavLink activeClassName="active" className="nav-link" to="/feedback">Visszajelzés</SideNavLink>
             </li>
 
             <li className="nav-item">
@@ -59,6 +60,10 @@ export default withRouter(connect(mapStateToProps, {signOut, openFileManager, cl
               <hr/>
             </li>
             <li className="nav-item" key="sing-out">
+              <li className="nav-item">
+                <a className="nav-link" href="/">Publikus</a>
+              </li>
+
               <a href="" className="nav-link" onClick={props.signOut} title="Kijelentkezés">
                 Kijelentkezés
               </a>

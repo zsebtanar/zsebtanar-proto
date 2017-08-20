@@ -1,6 +1,6 @@
 import React from 'react'
+import { Route, Router, Switch } from 'react-router-dom'
 
-import { Router, Route, Switch } from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory'
 import Header from './nav/Header'
 import Home from './page/Home'
@@ -12,6 +12,7 @@ import ExercisesByTopic from 'public/page/ExercisesByTopic'
 import Exercise from 'public/page/Exercise'
 import ExercisesByGrade from 'public/page/ExercisesByGrade'
 import SideNav from './nav/SideNav'
+import Footer from 'public/nav/Footer'
 
 export const history = createHistory({
   basename: '/',
@@ -37,11 +38,7 @@ export default (props) =>
             <Route component={Page404}/>
           </Switch>
         </div>
-
-        <footer className="footer">
-          <p>&copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}</p>
-        </footer>
-
+        <Footer/>
       </div>
       <Overlay/>
     </div>

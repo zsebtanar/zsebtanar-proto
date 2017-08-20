@@ -25,6 +25,18 @@
           ".read": true
         }
       }
+    },
+    "feedback": {
+      ".write": "!data.exists() || root.child('users/'+auth.uid+'/role').val() === 1000",
+      "$feedbackId": {
+        "description": {
+          ".validate": "newData.isString() && newData.val().length < 1024"
+        }
+      }
+    },
+    "storage": {
+      ".write": "!data.exists() || root.child('users/'+auth.uid+'/role').val() === 1000",
+      ".read": true
     }
   }
 }

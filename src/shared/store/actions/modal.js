@@ -4,6 +4,7 @@ import InputModal from 'shared/component/modal/InputModal'
 import MarkdownHelpModal from 'shared/component/modal/MarkdownHelpModal'
 import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
 import FileManager from 'shared/component/modal/fileManager/FileManager'
+import FeedbackModal from 'shared/component/modal/FeedbackModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -52,6 +53,13 @@ export function openFileManager (params) {
   return openModal(FileManager, {
     onClose: identity,
     onSelect: identity,
+    ...params
+  })
+}
+
+export function openFeedbackModal (params) {
+  return openModal(FeedbackModal, {
+    onClose: identity,
     ...params
   })
 }

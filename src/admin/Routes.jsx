@@ -14,6 +14,7 @@ import Page404 from 'shared/page/Page404'
 import Overlay from 'shared/component/modal/Overlay'
 import UserList from './page/user/UserList'
 import ClassificationList from './page/classification/ClassificationList'
+import FeedbackList from 'admin/page/FeedbackList'
 
 export const history = createHistory({
   basename: '/admin/',
@@ -38,6 +39,7 @@ export default (props) =>
             <Route path="/exercise/add/" component={ExerciseForm}/>
             <Route path="/exercise/view/:key" component={Exercise}/>
             <Route path="/exercise/edit/:key" component={ExerciseForm}/>
+            <Route path="/feedback" component={FeedbackList}/>
             <Route path="/sign-up" component={SignUp}/>
             <Route path="/sign-in" component={SignIn}/>
             <Route component={Page404}/>
