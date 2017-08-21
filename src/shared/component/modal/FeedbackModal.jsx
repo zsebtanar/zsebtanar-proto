@@ -63,7 +63,7 @@ export default connect(mapStateToProps)(class FeedbackModal extends React.Compon
       case 'loading':
         return <div className="msg-block"><Loading/></div>
       case 'finished':
-        return <div className="msg-block">Köszönjük a visszajelzész.</div>
+        return <div className="msg-block">Köszönjük a visszajelzést.</div>
     }
   }
 
