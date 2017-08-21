@@ -22,6 +22,7 @@ module.exports = {
     "alert": true,
     "confirm": true,
     "__DEV__": true,
-    "__FN_PATH__": true
+    "__FN_PATH__": true,
+    "Raven": true
   }
 }

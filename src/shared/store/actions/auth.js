@@ -18,8 +18,10 @@ export function initUser () {
 export function watchAuth (store) {
   AUTH.onAuthStateChanged(function (user) {
     if (user) {
+      if (typeof Raven !== 'undefined') Raven.setUserContext({id: user.uid})
       getUser(user.uid).then(userDetailsHandler(store, user))
     } else {
+      if (typeof Raven !== 'undefined') Raven.setUserContext()
       if (pathOr(false, ['app', 'session', 'signedIn'], store.getState())) {
         window.location.replace('/')
       }

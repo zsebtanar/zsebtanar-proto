@@ -74,12 +74,16 @@ module.exports = {
       alwaysWriteToDisk: false,
       filename: 'admin.html',
       title: 'Zsebtanár - Tanár',
+      isDev: !isProd,
+      site: 'admin',
       chunks: ['vendor', 'admin']
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/index.ejs'),
       alwaysWriteToDisk: false,
       filename: 'index.html',
+      isDev: !isProd,
+      site: 'public',
       title: 'Zsebtanár - proto',
       chunks: ['vendor', 'public']
     }),

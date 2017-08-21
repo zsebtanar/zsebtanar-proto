@@ -43,6 +43,7 @@ export default class FeedbackList extends React.Component {
            <thead>
            <tr>
              <th>#</th>
+             <th>Oldal</th>
              <th>Típus</th>
              <th>Állapot</th>
              <th>E-mail</th>
@@ -64,6 +65,7 @@ export default class FeedbackList extends React.Component {
     return this.state.feedbackList.map((fb, idx) =>
       <tr key={fb._key}>
         <td>{idx + 1}</td>
+        <td>{fb.site}</td>
         <td><span className={feedbackTypeClasses[fb.type]}>{feedbackTypes[fb.type]}</span></td>
         <td><span className="badge badge-secondary">{feedbackStates[fb.state || 'new']}</span></td>
         <td>

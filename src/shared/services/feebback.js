@@ -16,7 +16,7 @@ export function createFeedback (data) {
   return Feedback
     .child(_key)
     .update({
-      ...pick(['type', 'email', 'description'], data),
+      ...pick(['type', 'email', 'description', 'site'], data),
       state: 'new',
       _key,
       _created: new Date()
