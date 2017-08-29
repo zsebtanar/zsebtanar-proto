@@ -1,14 +1,16 @@
+import { keys } from 'ramda'
 import React from 'react'
 import Markdown from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
 import Checkbox from 'shared/component/input/Checkbox'
 
 export default (class extends React.Component {
-    constructor (props) {
+  constructor (props) {
     super(props)
     const opt = pairsInOrder(props.options)
     this.state = {
-      options: this.props.randomOrder ? shuffle(opt) : opt
+      options: this.props.randomOrder ? shuffle(opt) : opt,
+      solutions: keys(props.options).reduce((acc, id) => ({...acc, [id]: false}), {})
     }
   }
 
