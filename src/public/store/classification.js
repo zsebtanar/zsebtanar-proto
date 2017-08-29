@@ -17,7 +17,6 @@ const INIT_STATE = null
 export default function classificationReducer (state = INIT_STATE, action) {
   switch (action.type) {
     case GET_CLASSIFICATIONS:
-      console.log(action)
       return action.payload
     default:
       return state

@@ -3,7 +3,8 @@ const types = {
   'simple-text': require('./simpleText'),
   'single-number': require('./singleNumber'),
   'single-choice': require('./singleChoice'),
-  'binary-choice': require('./binaryChoice')
+  'binary-choice': require('./binaryChoice'),
+  'multi-choice': require('./multiChoice')
 }
 
 module.exports = (userSolutions, exercise) => {

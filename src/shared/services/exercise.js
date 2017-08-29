@@ -70,7 +70,6 @@ export function removeExercise (key) {
 }
 
 export function checkSolution (key, solutions) {
-  console.log(solutions)
   return axios
     .post(`${__FN_PATH__}check-exercise`, {key, solutions})
 }
