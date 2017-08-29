@@ -5,6 +5,8 @@ import { uid } from 'shared/util/uuid'
 import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
 import Markdown from 'shared/component/general/Markdown'
+import Checkbox from 'shared/component/input/Checkbox'
+import Muted from 'shared/component/general/Muted'
 
 const strings = {
   prefix: 'Előtag',
@@ -95,28 +97,20 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
         </div>
       </div>
       <div>
-        <label className="custom-control custom-checkbox">
-          <input
-            type="checkbox"
-            className="custom-control-input"
-            name="ignoreSpaces"
-            checked={this.state.solution.ignoreSpaces}
-            onChange={this.setOption}
-          />
-          <span className="custom-control-indicator"/>
-          <span className="custom-control-description">Szóközök figyelmen kívül hagyása</span>
-        </label>
-        <label className="custom-control custom-checkbox">
-          <input
-            type="checkbox"
-            className="custom-control-input"
-            name="caseSensitive"
-            checked={this.state.solution.caseSensitive}
-            onChange={this.setOption}
-          />
-          <span className="custom-control-indicator"/>
-          <span className="custom-control-description">Kis- és nagybetűk megkülönböztetése</span>
-        </label>
+        <Checkbox
+          name="ignoreSpaces"
+          checked={this.state.solution.ignoreSpaces}
+          onChange={this.setOption}
+        >
+          Szóközök figyelmen kívül hagyása
+        </Checkbox>
+        <Checkbox
+          name="caseSensitive"
+          checked={this.state.solution.caseSensitive}
+          onChange={this.setOption}
+        >
+          Kis- és nagybetűk megkülönböztetése
+        </Checkbox>
       </div>
     </div>)
   }
@@ -144,8 +138,6 @@ export default connect(undefined, {openInputModal})(class extends React.Componen
     )
   }
 })
-
-const Muted = (props) => (<i className="text-muted">{props.children}</i>)
 
 const Label = (props) => (
   <div className="form-group row">

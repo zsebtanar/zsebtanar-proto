@@ -1,8 +1,9 @@
 import React from 'react'
-import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from './controlTypes'
+import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER, BINARY_CHOICE } from './controlTypes'
 import SingleChoice from './singleChoice/SingleChoice'
 import SingleNumber from './singleNumber/SingleNumber'
 import SimpleText from './simpleText/SimpleText'
+import BinaryChoice from 'shared/component/userControls/binaryChoice/BinaryChoice'
 
 export default function UserControls ({controlType, controlProps}) {
   switch (controlType) {
@@ -12,6 +13,8 @@ export default function UserControls ({controlType, controlProps}) {
       return <SingleNumber {...controlProps}/>
     case SINGLE_CHOICE:
       return <SingleChoice {...controlProps}/>
+    case BINARY_CHOICE:
+      return <BinaryChoice {...controlProps}/>
     default:
       return <div className="alert alert-danger">Not implemented control type "{controlType}"</div>
   }

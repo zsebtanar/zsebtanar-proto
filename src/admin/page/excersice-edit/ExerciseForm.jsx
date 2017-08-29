@@ -30,7 +30,7 @@ import UserControlAdmin from 'shared/component/userControls/UserControlAdmin'
 import { createExerciseAction, updateExerciseAction } from 'shared/store/actions/exercise'
 import { getPrivateExercise } from 'shared/services/exercise'
 import { openFileManager, openMarkdownHelpModal } from 'shared/store/actions/modal'
-import { SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from 'shared/component/userControls/controlTypes'
+import { BINARY_CHOICE, SIMPLE_TEXT, SINGLE_CHOICE, SINGLE_NUMBER } from 'shared/component/userControls/controlTypes'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 import EditHints from './EditHints.jsx'
 import ExercisePreview from './ExercisePreview'
@@ -202,6 +202,7 @@ export default connect(undefined, {openFileManager, openMarkdownHelpModal, creat
               <option value={SIMPLE_TEXT}>Egyszerű szöveg</option>
               <option value={SINGLE_NUMBER}>Szám</option>
               <option value={SINGLE_CHOICE}>Felelet választó</option>
+              <option value={BINARY_CHOICE}>Igaz-hamis</option>
             </select>
             <Button
               className="btn-link text-danger mx-1"
