@@ -16,6 +16,7 @@ module.exports = {
     "strict": 0,
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
+    "space-before-function-paren": "off"
   },
   "globals": {
     "firebase": true,

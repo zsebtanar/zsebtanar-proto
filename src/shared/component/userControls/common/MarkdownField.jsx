@@ -29,10 +29,10 @@ export default connect(undefined, {openInputModal})((props) => {
         </div>
       </div>
       <div className="col-3 text-right">
-        <EditButton onAction={onEdit}/>
         {
           value && cleanable === true ? <TrashButton onAction={onClean}/> : ''
         }
+        <EditButton onAction={onEdit}/>
       </div>
     </div>
   )

@@ -4,160 +4,126 @@ import { assocPath, dissocPath, toPairs } from 'ramda'
 import { uid } from 'shared/util/uuid'
 import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
-import Markdown from 'shared/component/general/Markdown'
 import Checkbox from 'shared/component/input/Checkbox'
-import Muted from 'shared/component/general/Muted'
+import TrashButton from 'shared/component/userControls/common/TrashButton'
+import MarkdownField from 'shared/component/userControls/common/MarkdownField'
 
-const strings = {
-  prefix: 'Előtag',
-  postfix: 'Utótag'
-}
+export default connect(undefined, { openInputModal })(
+  class extends React.Component {
+    constructor(props) {
+      super(props)
 
-export default connect(undefined, {openInputModal})(class extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      prefix: props.value.prefix || null,
-      postfix: props.value.postfix || null,
-      solution: props.value.solution || {
-        ignoreSpaces: props.value.ignoreSpaces || false,
-        caseSensitive: props.value.caseSensitive || true,
-        options: false
+      this.state = {
+        prefix: props.value.prefix || null,
+        postfix: props.value.postfix || null,
+        solution: props.value.solution || {
+          ignoreSpaces: props.value.ignoreSpaces || false,
+          caseSensitive: props.value.caseSensitive || true,
+          options: false
+        }
       }
     }
-  }
 
-  componentWillMount () {
-    if (!this.state.solution.options) {
-      this.addSolution()
+    componentWillMount() {
+      if (!this.state.solution.options) {
+        this.addSolution()
+      }
     }
-  }
 
-  editLabel = labelName => () => {
-    this.props.openInputModal({
-      title: 'Felirat szerkesztő',
-      label: strings[labelName],
-      value: this.state[labelName],
-      onUpdate: (label) => this.updateState({[labelName]: label})
-    })
-  }
+    editLabel = ({ name, value }) => this.updateState({ [name]: value })
 
-  deleteLabel = labelName => () => {
-    this.updateState({[labelName]: undefined})
-  }
-
-  addSolution = () => {
-    this.updateState(assocPath(['solution', 'options', uid()], 'Megoldás', this.state))
-  }
-
-  setSolution = (e) => {
-    const {name, value} = e.currentTarget
-    this.updateState(assocPath(['solution', 'options', name], value, this.state))
-  }
-
-  delSolution = (key) => () => {
-    this.updateState(dissocPath(['solution', 'options', key], this.state))
-  }
-
-  setOption = (e) => {
-    const {name, checked} = e.currentTarget
-    this.updateState(assocPath(['solution', name], checked, this.state))
-  }
-
-  updateState = (data) => {
-    const state = {...this.state, ...data}
-    this.setState(state)
-    if (this.props.onChange) {
-      this.props.onChange({value: state, name: this.props.name})
+    addSolution = () => {
+      this.updateState(assocPath(['solution', 'options', uid()], 'Megoldás', this.state))
     }
-  }
 
-  render () {
-    const {prefix, postfix} = this.state
-    const {editLabel, deleteLabel} = this
-    const solution = toPairs(this.state.solution.options)
+    setSolution = e => {
+      const { name, value } = e.currentTarget
+      this.updateState(assocPath(['solution', 'options', name], value, this.state))
+    }
 
-    return (<div className="user-control simple-text simple-text-admin">
-      <Label {...{name: 'prefix', value: prefix, editLabel, deleteLabel}} />
-      <Label {...{name: 'postfix', value: postfix, editLabel, deleteLabel}} />
-      <div className="form-group row">
-        <label className="col-3 col-form-label">Megoldások:</label>
-        <div className="col-9">
-          <ol className="list-unstyled">
-            {solution.map(item => this.renderItem(item, solution.length < 2))}
-          </ol>
-        </div>
-      </div>
-      <div className="form-group row">
-        <div className="col-9 mx-auto">
-          <Button className="btn-sm btn-link" onAction={this.addSolution}>
-            <i className="fa fa-plus"/> Alternatív megoldás megadása
-          </Button>
-        </div>
-      </div>
-      <div>
-        <Checkbox
-          name="ignoreSpaces"
-          checked={this.state.solution.ignoreSpaces}
-          onChange={this.setOption}
-        >
-          Szóközök figyelmen kívül hagyása
-        </Checkbox>
-        <Checkbox
-          name="caseSensitive"
-          checked={this.state.solution.caseSensitive}
-          onChange={this.setOption}
-        >
-          Kis- és nagybetűk megkülönböztetése
-        </Checkbox>
-      </div>
-    </div>)
-  }
+    delSolution = key => () => {
+      this.updateState(dissocPath(['solution', 'options', key], this.state))
+    }
 
-  renderItem = ([key, text], isLast) => {
-    return (
-      <li key={key}>
-        <div className="d-flex">
-          <input
-            type="text"
-            className="form-control"
-            value={text}
-            name={key}
-            required
-            onChange={this.setSolution}/>
-          {
-            isLast
-              ? ''
-              : <Button className="btn-sm btn-link" onAction={this.delSolution(key)}>
-                <span className="text-danger"><i className="fa fa-trash"/></span>
+    setOption = e => {
+      const { name, checked } = e.currentTarget
+      this.updateState(assocPath(['solution', name], checked, this.state))
+    }
+
+    updateState = data => {
+      const state = { ...this.state, ...data }
+      this.setState(state)
+      if (this.props.onChange) {
+        this.props.onChange({ value: state, name: this.props.name })
+      }
+    }
+
+    render() {
+      const { prefix, postfix } = this.state
+      const solution = toPairs(this.state.solution.options)
+
+      return (
+        <div className="user-control simple-text simple-text-admin">
+          <div>
+            <Checkbox name="ignoreSpaces" checked={this.state.solution.ignoreSpaces} onChange={this.setOption}>
+              Szóközök figyelmen kívül hagyása
+            </Checkbox>
+          </div>
+          <div className="my-2">
+            <Checkbox name="caseSensitive" checked={this.state.solution.caseSensitive} onChange={this.setOption}>
+              Kis- és nagybetűk megkülönböztetése
+            </Checkbox>
+          </div>
+
+          <MarkdownField
+            label="Előtag"
+            name="prefix"
+            value={prefix}
+            placeholder="Üres"
+            onChange={this.editLabel}
+            cleanable
+          />
+          <MarkdownField
+            label="Utótag"
+            name="postfix"
+            value={postfix}
+            placeholder="Üres"
+            onChange={this.editLabel}
+            cleanable
+          />
+          <div className="form-group row">
+            <label className="col-3 col-form-label">Megoldások:</label>
+            <div className="col-9">
+              <ol className="list-unstyled">{solution.map(item => this.renderItem(item, solution.length < 2))}</ol>
+            </div>
+          </div>
+          <div className="form-group row">
+            <div className="col-9 ml-auto">
+              <Button className="btn-sm btn-outline-primary d-block mx-auto" onAction={this.addSolution}>
+                <i className="fa fa-plus" /> Alternatív megoldás megadása
               </Button>
-          }
+            </div>
+          </div>
         </div>
-      </li>
-    )
-  }
-})
+      )
+    }
 
-const Label = (props) => (
-  <div className="form-group row">
-    <label className="col-3 col-form-label">{strings[props.name]}:</label>
-    <div className="col-6">
-      <p className="form-control-static">
-        {props.value ? <Markdown source={props.value}/> : <Muted>Üres</Muted>}
-      </p>
-    </div>
-    <div className="col-3 text-right">
-      <Button onAction={props.editLabel(props.name)} className="btn-sm btn-link">
-        <i className="fa fa-edit"/>
-      </Button>
-      {
-        props.value
-          ? <Button onAction={props.deleteLabel(props.name)} className="btn-sm btn-link text-danger">
-            <i className="fa fa-trash"/>
-          </Button>
-          : ''
-      }
-    </div>
-  </div>
+    renderItem = ([key, text], isLast) => {
+      return (
+        <li key={key}>
+          <div className="d-flex">
+            <input
+              type="text"
+              className="form-control mt-1"
+              value={text}
+              name={key}
+              required
+              onChange={this.setSolution}
+            />
+            {isLast ? '' : <TrashButton onAction={this.delSolution(key)} />}
+          </div>
+        </li>
+      )
+    }
+  }
 )

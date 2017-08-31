@@ -1,3 +1,4 @@
+import {keys} from 'ramda'
 import React from 'react'
 import Markdown from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
@@ -7,7 +8,14 @@ export const DEFAULT_FALSE_LABEL = 'Hamis'
 
 export default (class extends React.Component {
   // we need state here because: https://github.com/facebook/react/issues/10078
-  state = {}
+  constructor (props) {
+    super(props)
+    const opt = pairsInOrder(props.options)
+    this.state = {
+      options: this.props.randomOrder ? shuffle(opt) : opt,
+      solutions: keys(props.options).reduce((acc, id) => ({...acc, [id]: false}), {})
+    }
+  }
 
   onChange = (e) => {
     const {name, value} = e.currentTarget
@@ -23,8 +31,7 @@ export default (class extends React.Component {
   }
 
   render () {
-    const opt = pairsInOrder(this.props.options)
-    const options = this.props.randomOrder ? shuffle(opt) : opt
+    const options = this.state.options
 
     return (<div className="user-control single-choice">
       {

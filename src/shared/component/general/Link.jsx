@@ -17,6 +17,7 @@ export default function Link (props) {
     onClick={onClick}
     tabIndex={props.tabIndex}
     title={props.title}
+    role={props.role}
     {...pickArea(props)}
   >
     {props.children}

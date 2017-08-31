@@ -5,6 +5,7 @@ import MarkdownHelpModal from 'shared/component/modal/MarkdownHelpModal'
 import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
 import FileManager from 'shared/component/modal/fileManager/FileManager'
 import FeedbackModal from 'shared/component/modal/FeedbackModal'
+import UserControlSelectorModal from 'shared/component/modal/UserControlSelectorModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -60,6 +61,14 @@ export function openFileManager (params) {
 export function openFeedbackModal (params) {
   return openModal(FeedbackModal, {
     onClose: identity,
+    ...params
+  })
+}
+
+export function openUserControlSelectorModal (params) {
+  return openModal(UserControlSelectorModal, {
+    onClose: identity,
+    onUpdate: identity,
     ...params
   })
 }
