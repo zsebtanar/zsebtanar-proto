@@ -59,11 +59,10 @@ export default withRouter(connect(mapStateToProps, {signOut, openFileManager, cl
             <li>
               <hr/>
             </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/">Publikus</a>
+            </li>
             <li className="nav-item" key="sing-out">
-              <li className="nav-item">
-                <a className="nav-link" href="/">Publikus</a>
-              </li>
-
               <a href="" className="nav-link" onClick={props.signOut} title="Kijelentkezés">
                 Kijelentkezés
               </a>
