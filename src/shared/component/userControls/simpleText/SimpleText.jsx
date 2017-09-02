@@ -15,7 +15,7 @@ export default function (props) {
     <span className="prefix">
       <Markdown source={props.prefix}/>
     </span>
-    <input name={props.name} type="text" className="form-control" onChange={setSolution}/>
+    <input name={props.name} type="text" className="form-control col-4 mx-1" onChange={setSolution}/>
     <span className="postfix">
       <Markdown source={props.postfix}/>
     </span>

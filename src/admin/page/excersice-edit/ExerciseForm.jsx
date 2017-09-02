@@ -32,7 +32,8 @@ import EditUserControls from './EditUserControls'
 import EditHints from './EditHints'
 import ExercisePreview from './ExercisePreview'
 import Loading from 'shared/component/general/Loading'
-import Link from 'shared/component/general/Link'
+import { Tab, TabNav } from 'shared/component/general/TabNav'
+import TextEditor from 'shared/component/general/TextEditor'
 
 const modeLabel = {
   Add: 'létrehozása',
@@ -51,7 +52,6 @@ export default connect(undefined, {
     mode = 'Add'
 
     state = {
-      activeTab: 0,
       classifications: null,
       error: null,
       loading: true,
@@ -202,17 +202,6 @@ export default connect(undefined, {
         })
       )
 
-    insertFile = () => {
-      this.props.openFileManager({
-        onSelect: ({ url, file }) => {
-          this.descriptionFiled.value += `![${file.name}](${url} "${file.name}" =100x)`
-          this.update({ currentTarget: this.descriptionFiled })
-        }
-      })
-    }
-
-    selectTab = activeTab => () => this.setState({ activeTab })
-
     loadExercise = () => {
       const key = this.props.match.params.key
       const cloneKey = this.props.match.params.clone
@@ -261,23 +250,22 @@ export default connect(undefined, {
 
     renderContent() {
       const { loading, error, exercise } = this.state
-      if (!loading && !error && exercise) {
-        return (
-          <div>
-            {this.renderHeader()}
+      if (loading || error || !exercise) return
+      return (
+        <div>
+          {this.renderHeader()}
 
-            <div>
-              {this.renderTabs()}
-
-              <form onSubmit={this.saveExercise} className="tab-content w-100">
-                <div className="tab-pane active" role="tabpanel">
-                  {this.renderActiveTabContent()}
-                </div>
-              </form>
-            </div>
-          </div>
-        )
-      }
+          <form onSubmit={this.saveExercise} className="tab-content w-100">
+            <TabNav navClassName="nav-tabs nav-fill w-100 my-4">
+              {tabs.map((item, idx) => (
+                <Tab key={item} label={item}>
+                  {this.renderActiveTabContent(idx)}
+                </Tab>
+              ))}
+            </TabNav>
+          </form>
+        </div>
+      )
     }
 
     renderHeader() {
@@ -297,23 +285,8 @@ export default connect(undefined, {
       )
     }
 
-    renderTabs() {
-      const at = this.state.activeTab
-      return (
-        <ul className="nav nav-tabs nav-fill w-100 my-4">
-          {tabs.map((item, idx) => (
-            <li key={item} className="nav-item">
-              <Link className={`nav-link ${idx === at ? 'active' : ''}`} onAction={this.selectTab(idx)}>
-                {item}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )
-    }
-
-    renderActiveTabContent() {
-      switch (this.state.activeTab) {
+    renderActiveTabContent(idx) {
+      switch (idx) {
         case 0:
           return this.renderCategories()
         case 1:
@@ -363,28 +336,14 @@ export default connect(undefined, {
       const ex = this.state.exercise
       return (
         <div className="col-11 mx-auto">
-          <div className="form-group">
-            <div>
-              <Button tabIndex="-1" className="btn-link" onAction={this.props.openMarkdownHelpModal}>
-                Útmutató szerkesztéshez
-              </Button>
-
-              <Button tabIndex="-2" className="btn-link" onAction={this.insertFile}>
-                Kép beszúrása
-              </Button>
-            </div>
-            <textarea
-              className="form-control"
-              name="description"
-              rows="10"
-              required
-              onChange={this.update}
-              ref={inp => {
-                this.descriptionFiled = inp
-              }}
-              value={pathOr('', ['description'], ex)}
-            />
-          </div>
+          <TextEditor
+            className="form-group"
+            name="description"
+            rows="10"
+            required
+            onChange={this.update}
+            value={pathOr('', ['description'], ex)}
+          />
         </div>
       )
     }
@@ -394,8 +353,7 @@ export default connect(undefined, {
         <EditUserControls
           controls={this.state.exercise.controls}
           onAdd={this.addUserControl}
-          onUpdateType={this.updateUserControlType}
-          onUpdate={this.updateUserControlType}
+          onUpdate={this.updateSolution}
           onRemove={this.removeUserControl}
         />
       )

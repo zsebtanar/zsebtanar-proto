@@ -23,7 +23,7 @@ export default connect(undefined, { openUserControlSelectorModal })(
       const controls = pairsInOrder(props.controls)
       this.state = {
         controls,
-        activeItem: controls.length && controls[0]
+        activeItem: (this.state && this.state.activeItem) || (controls.length && controls[0])
       }
     }
 
