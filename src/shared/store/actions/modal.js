@@ -6,6 +6,8 @@ import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
 import FileManager from 'shared/component/modal/fileManager/FileManager'
 import FeedbackModal from 'shared/component/modal/FeedbackModal'
 import UserControlSelectorModal from 'shared/component/modal/UserControlSelectorModal'
+import SignInModal from 'shared/component/modal/SignInModal'
+import SignUpModal from 'shared/component/modal/SignUpModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -19,6 +21,19 @@ export function openModal (modal, parameters) {
 
 export function closeModal (payload) {
   return {type: CLOSE_MODAL, payload}
+}
+
+export function openSignInModal (params) {
+  return openModal(SignInModal, {
+    onClose: identity,
+    ...params
+  })
+}
+export function openSignUpModal (params) {
+  return openModal(SignUpModal, {
+    onClose: identity,
+    ...params
+  })
 }
 
 export function openAlertModal (params) {

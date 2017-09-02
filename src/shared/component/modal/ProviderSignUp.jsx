@@ -31,7 +31,7 @@ export default (class ProviderSignUp extends React.Component {
               <div className="form-group">
                 <input
                   type="email"
-                  autoFocus
+                  autoFocus={!this.props.data.email}
                   id="id-sign-up-name"
                   className="form-control"
                   placeholder="Email"
@@ -43,7 +43,7 @@ export default (class ProviderSignUp extends React.Component {
               <div className="form-group">
                 <input
                   type="text"
-                  autoFocus
+                  autoFocus={!!this.props.data.email}
                   id="id-sign-up-name"
                   className="form-control"
                   placeholder="Felhasználói név"

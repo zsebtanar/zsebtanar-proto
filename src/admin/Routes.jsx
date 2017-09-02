@@ -5,8 +5,6 @@ import createHistory from 'history/createBrowserHistory'
 import Header from './nav/Header'
 import SideNav from './nav/SideNav'
 import Home from './page/Home'
-import SignIn from 'public/page/auth/SignIn'
-import SignUp from 'public/page/auth/SignUp'
 import ExerciseList from './page/ExerciseList'
 import ExerciseForm from './page/excersice-edit/ExerciseForm'
 import Exercise from './page/Exercise'
@@ -40,8 +38,6 @@ export default (props) =>
             <Route path="/exercise/view/:key" component={Exercise}/>
             <Route path="/exercise/edit/:key" component={ExerciseForm}/>
             <Route path="/feedback" component={FeedbackList}/>
-            <Route path="/sign-up" component={SignUp}/>
-            <Route path="/sign-in" component={SignIn}/>
             <Route component={Page404}/>
           </Switch>
         </div>

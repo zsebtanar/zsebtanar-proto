@@ -8,6 +8,7 @@ import {
   SING_OUT_SUCCESS,
   SING_UP_ERROR
 } from '../actions/auth'
+import { CLOSE_MODAL } from 'shared/store/actions/modal'
 
 export const GET_USER = 'GET_USER'
 
@@ -41,6 +42,8 @@ export default function sessionWorkflow (state = INIT_STATE, action) {
       return {signedIn: false, user: null, userDetails: null, error: null}
     case SING_OUT_ERROR:
       return {...state, error: action.payload}
+    case CLOSE_MODAL:
+      return {...state, error: null}
     default:
       return state
   }

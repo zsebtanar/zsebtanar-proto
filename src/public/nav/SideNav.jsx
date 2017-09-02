@@ -42,7 +42,7 @@ export default withRouter(connect(mapStateToProps, {signOut, openFileManager, cl
               props.session.signedIn
                 ? [
                   <li className="nav-item" key="sing-out">
-                    <a href="#" className="nav-link" onClick={signOut}>Kijelentkezés</a>
+                    <a href="#" className="nav-link" onClick={props.signOut}>Kijelentkezés</a>
                   </li>
                 ]
                 : [

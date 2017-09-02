@@ -4,8 +4,6 @@ import { Route, Router, Switch } from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory'
 import Header from './nav/Header'
 import Home from './page/Home'
-import SignIn from './page/auth/SignIn'
-import SignUp from './page/auth/SignUp'
 import Page404 from 'shared/page/Page404'
 import Overlay from 'shared/component/modal/Overlay'
 import ExercisesByTopic from 'public/page/ExercisesByTopic'
@@ -30,8 +28,6 @@ export default (props) =>
         <div className="content">
           <Switch>
             <Route path="/" exact component={Home}/>
-            <Route path="/sign-up" component={SignUp}/>
-            <Route path="/sign-in" component={SignIn}/>
             <Route path="/subject/:subject/:topic" component={ExercisesByTopic}/>
             <Route path="/grade/:grade" component={ExercisesByGrade}/>
             <Route path="/exercise/:key" component={Exercise}/>
