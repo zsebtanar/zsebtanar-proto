@@ -56,12 +56,9 @@ export default connect(
     const ex = this.props.exercise
     return (
       <div>
-        <div className="d-flex justify-content-between align-items-center">
-          <h2>Feladat megtekintése
-            <small>{pathOr('', ['exercise', 'details', 'title'], this.props)}</small>
-          </h2>
-          <NavLink exact to="/exercise">Vissza a feladatlistához</NavLink>
-        </div>
+        <h2>Feladat megtekintése
+          <small>{pathOr('', ['exercise', 'details', 'title'], this.props)}</small>
+        </h2>
         <hr/>
         {!ex && 'Betöltés...'}
         {ex && ex.error && <div>
