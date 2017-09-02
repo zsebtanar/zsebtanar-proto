@@ -7,6 +7,7 @@ import { last, pathOr, propOr } from 'ramda'
 import { pairsInOrder } from '../../shared/util/fn'
 import Button from '../../shared/component/general/Button'
 import Markdown from '../../shared/component/general/Markdown'
+import Loading from 'shared/component/general/Loading'
 
 const mapStateToProps = (state) => ({
   exercise: state.exercise.active
@@ -60,7 +61,7 @@ export default connect(
           <small>{pathOr('', ['exercise', 'details', 'title'], this.props)}</small>
         </h2>
         <hr/>
-        {!ex && 'Betöltés...'}
+        {!ex && <Loading />}
         {ex && ex.error && <div>
           <div className="alert alert-danger">{ex.error.message || ex.error}</div>
           <NavLink exact to="/exercise" className="btn btn-secondary">Vissza a feladatlist</NavLink>

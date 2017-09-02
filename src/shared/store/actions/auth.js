@@ -49,7 +49,7 @@ const processUser = (store, user, userDetails) => {
   const state = store.getState()
   store.dispatch({type: SING_IN_SUCCESS, payload: {user, userDetails}})
   if (!pathOr(true, ['app', 'session', 'autoSignIn'], state)) {
-    state.history.props.history.push('/')
+    // state.history.props.history.push('/')
   }
 }
 

@@ -18,7 +18,9 @@ export default withRouter(
       e.preventDefault()
       props.signIn(emailField.value, pwField.value).then(({ error }) => {
         if (!error) {
-          props.history.push('/')
+          if (props.returnPath && props.returnPath !== props.location.pathname){
+            props.history.push(props.returnPath)
+          }
           props.close()
         }
       })
@@ -36,6 +38,11 @@ export default withRouter(
             </button>
           </div>
           <div className="modal-body">
+            {props.message && (
+              <div className="alert alert-info" role="alert">
+                {props.message}
+              </div>
+            )}
             {props.session && props.session.error ? (
               <div className="alert alert-danger" role="alert">
                 {strings[props.session.error.code] || 'Nem várt hiba történt a bejelentkezés során'}

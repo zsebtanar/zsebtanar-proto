@@ -25,6 +25,8 @@ export function closeModal (payload) {
 
 export function openSignInModal (params) {
   return openModal(SignInModal, {
+    returnPath: undefined,
+    message: undefined,
     onClose: identity,
     ...params
   })
