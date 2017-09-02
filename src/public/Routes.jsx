@@ -11,6 +11,7 @@ import Exercise from 'public/page/Exercise'
 import ExercisesByGrade from 'public/page/ExercisesByGrade'
 import SideNav from './nav/SideNav'
 import Footer from 'public/nav/Footer'
+import About from 'shared/page/About'
 
 export const history = createHistory({
   basename: '/',
@@ -19,23 +20,25 @@ export const history = createHistory({
   keyLength: 6
 })
 
-export default (props) =>
+export default props => (
   <Router history={history}>
     <div className="app">
       <div className="container">
-        <Header/>
-        <SideNav/>
+        <Header />
+        <SideNav />
         <div className="content">
           <Switch>
-            <Route path="/" exact component={Home}/>
-            <Route path="/subject/:subject/:topic" component={ExercisesByTopic}/>
-            <Route path="/grade/:grade" component={ExercisesByGrade}/>
-            <Route path="/exercise/:key" component={Exercise}/>
-            <Route component={Page404}/>
+            <Route path="/" exact component={Home} />
+            <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
+            <Route path="/grade/:grade" component={ExercisesByGrade} />
+            <Route path="/exercise/:key" component={Exercise} />
+            <Route path="/about" component={About} />
+            <Route component={Page404} />
           </Switch>
         </div>
-        <Footer/>
+        <Footer />
       </div>
-      <Overlay/>
+      <Overlay />
     </div>
   </Router>
+)

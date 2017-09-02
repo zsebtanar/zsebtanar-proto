@@ -13,6 +13,8 @@ import Overlay from 'shared/component/modal/Overlay'
 import UserList from './page/user/UserList'
 import ClassificationList from './page/classification/ClassificationList'
 import FeedbackList from 'admin/page/FeedbackList'
+import About from 'shared/page/About'
+import Footer from 'admin/nav/Footer'
 
 export const history = createHistory({
   basename: '/admin/',
@@ -21,32 +23,31 @@ export const history = createHistory({
   keyLength: 6
 })
 
-export default (props) =>
+export default props => (
   <Router history={history}>
     <div className="app">
       <div className="container">
-        <Header/>
-        <SideNav/>
+        <Header />
+        <SideNav />
         <div className="content">
           <Switch>
-            <Route path="/" exact component={Home}/>
-            <Route path="/user" exact component={UserList}/>
-            <Route path="/classification" exact component={ClassificationList}/>
-            <Route path="/exercise" exact component={ExerciseList}/>
-            <Route path="/exercise/add/:clone" component={ExerciseForm}/>
-            <Route path="/exercise/add/" component={ExerciseForm}/>
-            <Route path="/exercise/view/:key" component={Exercise}/>
-            <Route path="/exercise/edit/:key" component={ExerciseForm}/>
-            <Route path="/feedback" component={FeedbackList}/>
-            <Route component={Page404}/>
+            <Route path="/" exact component={Home} />
+            <Route path="/user" exact component={UserList} />
+            <Route path="/classification" exact component={ClassificationList} />
+            <Route path="/exercise" exact component={ExerciseList} />
+            <Route path="/exercise/add/:clone" component={ExerciseForm} />
+            <Route path="/exercise/add/" component={ExerciseForm} />
+            <Route path="/exercise/view/:key" component={Exercise} />
+            <Route path="/exercise/edit/:key" component={ExerciseForm} />
+            <Route path="/feedback" component={FeedbackList} />
+            <Route path="/about" component={About} />
+            <Route component={Page404} />
           </Switch>
         </div>
 
-        <footer className="footer">
-          <p>&copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}</p>
-        </footer>
-
+        <Footer />
       </div>
-      <Overlay/>
+      <Overlay />
     </div>
   </Router>
+)
