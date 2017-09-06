@@ -21,7 +21,7 @@ body {
     padding-bottom: 1.5rem;
 }
 
-.header .logo{
+.logo{
     background: url(./logo.png) no-repeat left center;
     background-size: contain;
     padding-left: 2.5em;

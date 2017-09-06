@@ -1,7 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Route, Router, Switch } from 'react-router-dom'
+import Loading from 'shared/component/general/Loading'
 
-import createHistory from 'history/createBrowserHistory'
 import Header from './nav/Header'
 import Home from './page/Home'
 import Page404 from 'shared/page/Page404'
@@ -13,32 +14,37 @@ import SideNav from './nav/SideNav'
 import Footer from 'public/nav/Footer'
 import About from 'shared/page/About'
 
-export const history = createHistory({
-  basename: '/',
-  forceRefresh: false,
-  getUserConfirmation: (message, callback) => callback(window.confirm(message)),
-  keyLength: 6
+const mapStateToProps = state => ({
+  session: state.app.session
 })
 
-export default props => (
-  <Router history={history}>
-    <div className="app">
-      <div className="container">
-        <Header />
-        <SideNav />
-        <div className="content">
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
-            <Route path="/grade/:grade" component={ExercisesByGrade} />
-            <Route path="/exercise/:key" component={Exercise} />
-            <Route path="/about" component={About} />
-            <Route component={Page404} />
-          </Switch>
-        </div>
-        <Footer />
+export default connect(mapStateToProps)(function(props) {
+  return (
+    <Router history={props.history}>
+      <div className="app">
+        {props.session.waitingForUser ? (
+          <div>
+            <Loading />
+          </div>
+        ) : (
+          <div className="container">
+            <Header />
+            <SideNav />
+            <div className="content">
+              <Switch>
+                <Route path="/" exact component={Home} />
+                <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
+                <Route path="/grade/:grade" component={ExercisesByGrade} />
+                <Route path="/exercise/:key" component={Exercise} />
+                <Route path="/about" component={About} />
+                <Route component={Page404} />
+              </Switch>
+            </div>
+            <Footer />
+          </div>
+        )}
+        <Overlay />
       </div>
-      <Overlay />
-    </div>
-  </Router>
-)
+    </Router>
+  )
+})
