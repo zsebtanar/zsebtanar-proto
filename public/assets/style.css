@@ -200,3 +200,15 @@ body {
     position: absolute;
     left: 0;
 }
+
+.desktop-header .user-menu .dropdown-menu {
+    position: absolute;
+    transform: translate3d(-98px, 44px, 0px);
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+.desktop-header .dropdown-menu{
+    top: 85%;
+}
