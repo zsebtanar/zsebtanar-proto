@@ -11,9 +11,7 @@
 /coverage
 
 # production
-/public/*.js
-/public/*.map
-/public/*.html
+/bin/*
 
 # misc
 .DS_Store

@@ -1,8 +1,22 @@
 const path = require('path')
 const webpack = require('webpack')
-const isProd = process.env.NODE_ENV === 'production'
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+const isDev = process.env.NODE_ENV === 'development'
+const isProd = process.env.NODE_ENV === 'production'
+
+const sassExtract = new ExtractTextPlugin({
+  filename: '[name].css',
+  allChunks: true,
+  disable: isDev
+})
+const cssExtract = new ExtractTextPlugin({
+  filename: '[name].css',
+  allChunks: true,
+  disable: isDev
+})
 
 module.exports = {
   entry: {
@@ -10,26 +24,23 @@ module.exports = {
     public: './src/public/public.jsx'
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].js',
     publicPath: '/',
-    path: `${__dirname}/../public`
+    path: `${__dirname}/../bin`
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: 'source-map',
+  devtool: isDev && 'source-map',
 
   target: 'web',
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.js', '.jsx', '.js', '.json'],
-    modules: [
-      path.resolve(__dirname, '../src'),
-      path.resolve(__dirname, '../node_modules')
-    ]
+    modules: [path.resolve(__dirname, '../src'), path.resolve(__dirname, '../node_modules')]
   },
 
   devServer: {
-    contentBase: path.resolve(__dirname, '../public'),
+    contentBase: path.resolve(__dirname, '../src/resources'),
     overlay: {
       warnings: true,
       errors: true
@@ -38,10 +49,10 @@ module.exports = {
     historyApiFallback: {
       verbose: true,
       rewrites: [
-        {from: /^\/assets\/.*(|.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname},
-        {from: /^\/.*\.js$/, to: ctx => '/' + ctx.parsedUrl.pathname.split('/').pop()},
-        {from: /^\/admin/, to: '/admin.html'},
-        {from: /^\//, to: '/index.html'}
+        { from: /^\/assets\/.*(|.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname },
+        { from: /^\/.*\.js$/, to: ctx => '/' + ctx.parsedUrl.pathname.split('/').pop() },
+        { from: /^\/admin/, to: '/admin.html' },
+        { from: /^\//, to: '/index.html' }
       ]
     }
   },
@@ -54,20 +65,31 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /(node_modules|bower_components)/,
         options: {
+          cacheDirectory: true,
           presets: ['env', 'react'],
           plugins: [
+            require('babel-plugin-ramda').default,
             require('babel-plugin-transform-object-rest-spread'),
             require('babel-plugin-transform-class-properties')
           ]
         }
       },
+      {
+        test: /\.css$/,
+        use: cssExtract.extract(['css-loader'])
+      },
+      {
+        test: /\.scss$/,
+        use: sassExtract.extract(['css-loader', 'sass-loader'])
+      },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      {enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'}
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' }
     ]
   },
 
   plugins: [
+    sassExtract,
     // new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/index.ejs'),
@@ -96,9 +118,28 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
-      __FN_PATH__: JSON.stringify(isProd
-        ? '/api/'
-        : 'http://localhost:5002/zsebtanar-proto-76083/us-central1/')
-    })
+      __FN_PATH__: JSON.stringify(
+        isProd ? '/api/' : 'http://localhost:5002/zsebtanar-proto-76083/us-central1/'
+      )
+    }),
+    ...(isProd
+      ? [
+          new webpack.optimize.DedupePlugin(),
+          new webpack.optimize.UglifyJsPlugin({
+            mangle: true,
+            compress: {
+              warnings: false, // Suppress uglification warnings
+              pure_getters: true,
+              unsafe: true,
+              unsafe_comps: true,
+              screw_ie8: true
+            },
+            output: {
+              comments: false
+            },
+            exclude: [/\.min\.js$/gi] // skip pre-minified libs
+          })
+        ]
+      : [])
   ]
 }
