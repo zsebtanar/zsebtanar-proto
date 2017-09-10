@@ -1,5 +1,5 @@
 import React from 'react'
-import Markdown from 'markdown-it'
+import Markdown from 'markdown-it/lib/index'
 import katex from 'markdown-it-katex'
 import imsize from 'markdown-it-imsize/dist/markdown-it-imsize'
 import PropTypes from 'prop-types'

@@ -59,19 +59,23 @@ module.exports = {
   externals: 'firebase',
   module: {
     rules: [
-      // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /(node_modules|bower_components)/,
-        options: {
-          cacheDirectory: true,
-          presets: ['env', 'react'],
-          plugins: [
-            require('babel-plugin-ramda').default,
-            require('babel-plugin-transform-object-rest-spread'),
-            require('babel-plugin-transform-class-properties')
-          ]
+        test: /\.(js|jsx)$/,
+        exclude: isDev ? /(node_modules|bower_components)/ : undefined,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              'es2015',
+              'react'
+            ],
+            plugins: [
+              require('babel-plugin-ramda').default,
+              require('babel-plugin-transform-object-rest-spread'),
+              require('babel-plugin-transform-class-properties')
+            ],
+            cacheDirectory: true
+          }
         }
       },
       {
@@ -121,25 +125,6 @@ module.exports = {
       __FN_PATH__: JSON.stringify(
         isProd ? '/api/' : 'http://localhost:5002/zsebtanar-proto-76083/us-central1/'
       )
-    }),
-    ...(isProd
-      ? [
-          new webpack.optimize.DedupePlugin(),
-          new webpack.optimize.UglifyJsPlugin({
-            mangle: true,
-            compress: {
-              warnings: false, // Suppress uglification warnings
-              pure_getters: true,
-              unsafe: true,
-              unsafe_comps: true,
-              screw_ie8: true
-            },
-            output: {
-              comments: false
-            },
-            exclude: [/\.min\.js$/gi] // skip pre-minified libs
-          })
-        ]
-      : [])
+    })
   ]
 }
