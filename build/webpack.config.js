@@ -30,7 +30,7 @@ module.exports = {
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: isDev && 'source-map',
+  devtool: !isProd && 'source-map',
 
   target: 'web',
   resolve: {

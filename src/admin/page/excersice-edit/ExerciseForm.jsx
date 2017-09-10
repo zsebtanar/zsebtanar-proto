@@ -167,7 +167,7 @@ export default connect(undefined, {
         })
       )
 
-    removeUserControl = key => () =>
+    removeUserControl = key =>
       this.setState(
         evolve({
           exercise: {

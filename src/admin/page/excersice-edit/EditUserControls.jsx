@@ -23,7 +23,7 @@ export default connect(undefined, { openUserControlSelectorModal })(
       const controls = pairsInOrder(props.controls)
       this.state = {
         controls,
-        activeItem: (this.state && this.state.activeItem) || (controls.length && controls[0])
+        activeItem: (controls.length && controls[controls.length-1])
       }
     }
 
@@ -35,7 +35,7 @@ export default connect(undefined, { openUserControlSelectorModal })(
 
     render() {
       const { controls, activeItem } = this.state
-      const [activeKey] = activeItem
+      const [activeKey] = (activeItem || [])
       return (
         <div className="row">
           <div className="col-3">
