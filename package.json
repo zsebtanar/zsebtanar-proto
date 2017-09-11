@@ -45,6 +45,7 @@
     "eslint-plugin-react": "^7.3.0",
     "eslint-plugin-standard": "^3.0.1",
     "extract-text-webpack-plugin": "^3.0.0",
+    "firebase-tools": "^3.10.1",
     "html-webpack-harddisk-plugin": "^0.1.0",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^21.0.2",
@@ -61,7 +62,7 @@
   "scripts": {
     "prestart": "npm run prebuild",
     "start": "npm run dev",
-    "test": "jest test",
+    "test": "npm run lint && jest test",
     "functions": "firebase serve --only functions",
     "prebuild": "node build/pre-build",
     "build": "NODE_ENV=production webpack -p --config ./build/webpack.config.js",
