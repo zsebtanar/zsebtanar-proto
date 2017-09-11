@@ -31,7 +31,7 @@ jobs:
       # run tests!
       - run: npm test
 
-      - run: cd functions && npm install
+      - run: cd functions && yarn install
 
       - run: npm run build
 
