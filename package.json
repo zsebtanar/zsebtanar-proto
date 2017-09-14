@@ -70,6 +70,7 @@
     "build-app": "webpack -p --config ./build/webpack.config.js",
     "prebuild": "node build/pre-build",
     "build": "NODE_ENV=production npm run build-app && npm run build-functions",
+    "postbuild": "node build/post-build",
     "predeploy": "npm run lint && npm run test",
     "serv-functions": "npm run build-functions && firebase serve --only functions",
     "deploy": "npm run build && firebase deploy"
