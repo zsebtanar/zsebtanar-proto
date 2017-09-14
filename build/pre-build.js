@@ -17,7 +17,7 @@ shell.cp('-R', resources, app)
 
 // create service-account-credentials.json
 fs.writeFileSync(
-  path.join(functions, 'service-account-credentials.json'),
+  path.join(functions, 'src/storage/service-account-credentials.json'),
   JSON.stringify(JSON.parse((process.env.SERVICE_ACCOUNT_CREDENTIALS || '{}').replace(/\\n/g, '\\\\n')), null, 3),
   'utf8'
 )

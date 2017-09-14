@@ -8,10 +8,14 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.5
-      environment:
-        NODE_ENV: production
+    environment:
+      NODE_ENV: production
 
     working_directory: ~/repo
+
+    branches:
+      only:
+        - master
 
     steps:
       - checkout
