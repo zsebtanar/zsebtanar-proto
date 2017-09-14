@@ -44,7 +44,7 @@ module.exports = admin => event => {
   const tempLocalFile = path.join(os.tmpdir(), filePath)
   const tempLocalDir = path.dirname(tempLocalFile)
   const tempLocalThumbFile = path.join(os.tmpdir(), thumbFilePath)
-  const gcs = gcsInit({keyFilename: 'service-account-credentials.json'})
+  const gcs = gcsInit({keyFilename: path.join(__dirname, 'service-account-credentials.json')})
 
   // Exit if this is triggered on a file that is not an image.
   if (!event.data.contentType.startsWith('image/')) {
