@@ -17,7 +17,7 @@
 
 const mkdirp = require('mkdirp-promise')
 // Include a Service Account Key to use a Signed URL
-const gcs = require('@google-cloud/storage')({keyFilename: 'service-account-credentials.json'})
+const gcsInit = require('@google-cloud/storage')
 const spawn = require('child-process-promise').spawn
 const path = require('path')
 const os = require('os')
@@ -44,6 +44,7 @@ module.exports = admin => event => {
   const tempLocalFile = path.join(os.tmpdir(), filePath)
   const tempLocalDir = path.dirname(tempLocalFile)
   const tempLocalThumbFile = path.join(os.tmpdir(), thumbFilePath)
+  const gcs = gcsInit({keyFilename: 'service-account-credentials.json'})
 
   // Exit if this is triggered on a file that is not an image.
   if (!event.data.contentType.startsWith('image/')) {

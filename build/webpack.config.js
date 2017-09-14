@@ -26,7 +26,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     publicPath: '/',
-    path: `${__dirname}/../bin`
+    path: `${__dirname}/../bin/app`
   },
 
   // Enable sourcemaps for debugging webpack's output.
@@ -49,7 +49,7 @@ module.exports = {
     historyApiFallback: {
       verbose: true,
       rewrites: [
-        { from: /^\/assets\/.*(|.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname },
+        { from: /^\/assets\/.*(.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname },
         { from: /^\/.*\.js$/, to: ctx => '/' + ctx.parsedUrl.pathname.split('/').pop() },
         { from: /^\/admin/, to: '/admin.html' },
         { from: /^\//, to: '/index.html' }

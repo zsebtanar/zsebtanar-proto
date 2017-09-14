@@ -2,7 +2,7 @@
   "hosting": {
     "cleanUrls": true,
     "trailingSlash": false,
-    "public": "bin",
+    "public": "bin/app",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -43,6 +43,9 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "functions": {
+    "source": "bin/functions"
   },
   "database": {
     "rules": "database.rules.json"

@@ -7,7 +7,9 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:8.5
+      environment:
+        NODE_ENV: production
 
     working_directory: ~/repo
 
@@ -17,23 +19,21 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: yarn install
+      - run: npm install
+
+      - run: npm test
+
+      - run: npm run build
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: npm test
-
-      - run: cd functions && yarn install
-
-      - run: npm run build
+            - bin/function/node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
 
       - deploy:
           name: Deploy Master to Firebase

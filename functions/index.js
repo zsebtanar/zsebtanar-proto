@@ -1,9 +1,9 @@
-const functions = require('firebase-functions')
-const admin = require('firebase-admin')
-const checkExercise = require('./src/endpoints/checkExercise')
-const getNextHint = require('./src/endpoints/getNextHint')
-const {onWritePrivateExercise} = require('./src/database/exercise')
-const createThumbnail = require('./src/storage/createThumbnail')
+import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin'
+import checkExercise from './src/endpoints/checkExercise'
+import createThumbnail from './src/storage/createThumbnail'
+import { onWritePrivateExercise } from './src/database/exercise'
+import getNextHint from './src/endpoints/getNextHint'
 
 admin.initializeApp(functions.config().firebase)
 

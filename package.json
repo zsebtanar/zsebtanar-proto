@@ -60,14 +60,18 @@
     "webpack-dev-server": "^2.7.1"
   },
   "scripts": {
-    "prestart": "npm run prebuild",
-    "start": "npm run dev",
     "test": "npm run lint && jest test",
-    "functions": "firebase serve --only functions",
-    "prebuild": "node build/pre-build",
-    "build": "NODE_ENV=production webpack -p --config ./build/webpack.config.js",
+    "lint": "./node_modules/.bin/eslint src",
+    "devstart": "npm run prebuild",
     "dev": "webpack-dev-server --progress --config ./build/webpack.config.js",
-    "deploy": "npm run lint && npm run test && npm run build && firebase deploy",
-    "lint": "./node_modules/.bin/eslint src"
+    "start": "npm run dev",
+    "build-functions": "babel 'functions' --out-dir 'bin/functions' --presets=es2015 --copy-files --ignore 'node_modules'",
+    "postbuild-functions": "cd bin/functions && npm install",
+    "build-app": "webpack -p --config ./build/webpack.config.js",
+    "prebuild": "node build/pre-build",
+    "build": "NODE_ENV=production npm run build-app && npm run build-functions",
+    "predeploy": "npm run lint && npm run test",
+    "serv-functions": "npm run build-functions && firebase serve --only functions",
+    "deploy": "npm run build && firebase deploy"
   }
 }
