@@ -65,7 +65,7 @@
     "dev": "webpack-dev-server --progress --config ./build/webpack.config.js",
     "start": "npm run dev",
     "build-functions": "babel 'functions' --out-dir 'bin/functions' --presets=es2015 --copy-files --ignore 'node_modules'",
-    "postbuild-functions": "cd bin/functions && npm install",
+    "postbuild-functions": "cd bin/functions && npm --production=false install",
     "build-app": "webpack -p --config ./build/webpack.config.js",
     "prebuild": "node build/pre-build",
     "build": "NODE_ENV=production npm run build-app && npm run build-functions",
