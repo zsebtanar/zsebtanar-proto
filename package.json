@@ -19,8 +19,7 @@
     "react-select": "^1.0.0-rc.5",
     "redux": "3.7.2",
     "redux-logger": "3.0.6",
-    "redux-thunk": "2.2.0",
-    "webpack-bundle-analyzer": "^2.9.0"
+    "redux-thunk": "2.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
