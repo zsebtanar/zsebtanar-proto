@@ -35,20 +35,15 @@
     "babel-preset-stage-0": "^6.24.1",
     "bootstrap": "^4.0.0-beta",
     "css-loader": "^0.28.7",
-    "eslint": "^4.6.1",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jest": "^21.0.2",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-react": "^7.3.0",
-    "eslint-plugin-standard": "^3.0.1",
     "extract-text-webpack-plugin": "^3.0.0",
     "firebase-tools": "^3.12.0",
     "html-webpack-harddisk-plugin": "^0.1.0",
     "html-webpack-plugin": "^2.30.1",
+    "husky": "^0.14.3",
     "jest": "^21.0.2",
+    "lint-staged": "^4.2.2",
     "node-sass": "^4.5.3",
+    "prettier": "^1.7.0",
     "react-test-renderer": "^15.6.1",
     "sass-loader": "^6.0.6",
     "shelljs": "^0.7.8",
@@ -59,19 +54,24 @@
     "webpack-dev-server": "^2.7.1"
   },
   "scripts": {
-    "test": "npm run lint && jest test",
-    "lint": "./node_modules/.bin/eslint src",
+    "test": "jest test",
     "devstart": "npm run prebuild",
     "dev": "webpack-dev-server --progress --config ./build/webpack.config.js",
     "start": "npm run dev",
-    "build-functions": "babel 'functions' --out-dir 'bin/functions' --presets=es2015 --copy-files --ignore 'node_modules'",
+    "build-functions":
+      "babel 'functions' --out-dir 'bin/functions' --presets=es2015 --copy-files --ignore 'node_modules'",
     "postbuild-functions": "cd bin/functions && npm --production=false install",
     "build-app": "webpack -p --config ./build/webpack.config.js",
     "prebuild": "node build/pre-build",
     "build": "NODE_ENV=production npm run build-app && npm run build-functions",
     "postbuild": "node build/post-build",
-    "predeploy": "npm run lint && npm run test",
+    "predeploy": "npm run test",
     "serv-functions": "npm run build-functions && firebase serve --only functions",
-    "deploy": "npm run build && firebase deploy"
+    "deploy": "npm run build && firebase deploy",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js}": ["c --write --single-quote --trailing-comma=none --no-semi false --print-width 100", "git add"],
+    "*.{json,css}": ["prettier --write --print-width 120", "git add"]
   }
 }
