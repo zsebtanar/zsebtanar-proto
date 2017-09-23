@@ -116,14 +116,7 @@ export default withRouter(
         const hints = this.state.hints || []
 
         return (
-          <form onSubmit={this.onSubmit}>
-            <div className="">
-              Feladat ellenőrzés állapota: <span className={cx}>{label}</span>
-              <code>({JSON.stringify(this.state.validity)})</code>
-            </div>
-
-            <hr />
-
+          <form onSubmit={this.onSubmit} className="my-5">
             <Markdown source={ex.description} />
 
             {pairsInOrder(ex.controls).map(([key, { controlType, controlProps, order }]) => (
