@@ -53,7 +53,7 @@ export default withRouter(
             const { hints, exercise } = this.state
             return this.setState({
               hints: hints.concat(hint),
-              hintsLeft: (exercise.details.hintCount || 0) - (exercise.hints || []).length
+              hintsLeft: (exercise.hintCount || 0) - (exercise.hints || []).length
             })
           })
         } else {
@@ -74,7 +74,7 @@ export default withRouter(
         const ex = this.state.exercise
         return (
           <div>
-            {!ex && <Loading/>}
+            {!ex && <Loading />}
             {ex &&
             ex.error && (
               <div>
