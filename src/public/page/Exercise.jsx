@@ -53,7 +53,7 @@ export default withRouter(
             const { hints, exercise } = this.state
             return this.setState({
               hints: hints.concat(hint),
-              hintsLeft: (exercise.hintCount || 0) - (exercise.hints || []).length
+              hintsLeft: (exercise.hintCount || 0) - (hints || []).length - 1
             })
           })
         } else {
