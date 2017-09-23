@@ -16,12 +16,14 @@
     },
 
     "exercise": {
-      "$exerciseId": {
-        "private": {
+      "private": {
+        "$exerciseId": {
           ".read": "root.child('users/'+auth.uid+'/role').val() > 0",
           ".write": "root.child('users/'+auth.uid+'/role').val() > 0"
-        },
-        "public": {
+        }
+      },
+      "public": {
+        "$exerciseId": {
           ".read": true
         }
       }

@@ -11,26 +11,18 @@ admin.initializeApp(functions.config().firebase)
  * HTTP endpoints
  */
 
-exports.checkExercise = functions
-  .https
-  .onRequest(checkExercise(admin))
+exports.checkExercise = functions.https.onRequest(checkExercise(admin))
 
-exports.getNextHint = functions
-  .https
-  .onRequest(getNextHint(admin))
+exports.getNextHint = functions.https.onRequest(getNextHint(admin))
 
 /**
  * Database functions
  */
-exports.finalizeExercise = functions
-  .database
-  .ref('/exercise/{exerciseId}/private')
+exports.finalizeExercise = functions.database
+  .ref('/exercise/private/{exerciseId}')
   .onWrite(onWritePrivateExercise(admin))
 
 /**
  * Storage functions
  */
-exports.generateThumbnail = functions
-  .storage
-  .object()
-  .onChange(createThumbnail(admin))
+exports.generateThumbnail = functions.storage.object().onChange(createThumbnail(admin))
