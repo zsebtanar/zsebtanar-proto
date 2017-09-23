@@ -6,8 +6,7 @@ import UserControls from 'shared/component/userControls/UserControl'
 import Button from 'shared/component/general/Button'
 import Markdown from 'shared/component/general/Markdown'
 import { checkSolution, getHint, getPublicExercise } from 'shared/services/exercise'
-import { ROLE_ADMIN } from 'shared/services/user'
-import { openSignInModal } from 'shared/store/actions/modal'
+import { openExerciseResultModal, openSignInModal } from 'shared/store/actions/modal'
 import { withRouter } from 'react-router-dom'
 import Loading from 'shared/component/general/Loading'
 
@@ -16,33 +15,47 @@ const mapStateToProps = state => ({
 })
 
 export default withRouter(
-  connect(mapStateToProps, { openSignInModal })(
+  connect(mapStateToProps, { openSignInModal, openExerciseResultModal })(
     class extends React.Component {
       state = {
         solutions: [],
         hints: [],
         hintsLeft: 0,
-        details: false,
         exerciseState: 'unchecked'
+      }
+
+      componentWillMount() {
+        getPublicExercise(this.props.match.params.key).then(exercise =>
+          this.setState({ exercise, hintsLeft: pathOr(0, ['hintCount'], exercise) })
+        )
       }
 
       onSubmit = event => {
         event.preventDefault()
+        if (this.state.exerciseState === 'in-progress') return
+
         this.setState({ exerciseState: 'in-progress', validity: {} })
         checkSolution(this.state.exercise._key, this.state.solutions).then(res => {
+          const success = all(identity, res.data.valid)
           this.setState({
-            exerciseState: all(identity, res.data.valid) ? 'success' : 'fail',
+            exerciseState: success ? 'success' : 'fail',
             validity: res.data
           })
+          this.props.openExerciseResultModal({ onClose: this.closeReusultModal, success })
         })
+      }
+
+      closeReusultModal = res => {
+        switch (res) {
+          case 'back':
+            return this.props.history.goBack()
+          case 'retry':
+            return
+        }
       }
 
       onChange = ({ name, value }) => {
         this.setState({ solutions: { ...this.state.solutions, [name]: value } })
-      }
-
-      toggleDetails = () => {
-        this.setState({ details: !this.state.details })
       }
 
       getNextHint = () => {
@@ -64,12 +77,6 @@ export default withRouter(
         }
       }
 
-      componentWillMount() {
-        getPublicExercise(this.props.match.params.key).then(exercise =>
-          this.setState({ exercise, hintsLeft: pathOr(0, ['hintCount'], exercise) })
-        )
-      }
-
       render() {
         const ex = this.state.exercise
         return (
@@ -84,36 +91,8 @@ export default withRouter(
             {ex &&
             !ex.error && (
               <div className="row">
-                <div className="col-8 mx-auto">
-                  {this.renderTask()}
-                  {this.renderDetails()}
-                </div>
+                <div className="col-8 mx-auto">{this.renderTask()}</div>
               </div>
-            )}
-          </div>
-        )
-      }
-
-      renderDetails() {
-        const session = this.props.session
-        if (!session.signedIn || (session.signedIn && session.userDetails.role < ROLE_ADMIN)) return
-
-        const ex = this.state.exercise
-
-        return (
-          <div>
-            <hr />
-            {this.state.details ? (
-              <div>
-                <Button className="btn btn-link" onAction={this.toggleDetails}>
-                  Debug
-                </Button>
-                <pre>{JSON.stringify(ex, null, 3)}</pre>
-              </div>
-            ) : (
-              <Button className="btn btn-link" onAction={this.toggleDetails}>
-                Debug
-              </Button>
             )}
           </div>
         )

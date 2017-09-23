@@ -20,7 +20,7 @@ export default connect(mapStateToProps, { closeModal })(
         <div>
           <div className="modal-backdrop fade show" />
           {modals.map(({ modal: Modal, id, parameters }, idx) => {
-            const close = pipe(() => closeModal(id), parameters.onClose)
+            const close = pipe(parameters.onClose, () => closeModal(id))
             return (
               <div
                 key={id}
