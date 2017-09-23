@@ -1,4 +1,4 @@
-import { isNil, not, pipe, values } from 'ramda'
+import { isNil, not, pipe, prop, values } from 'ramda'
 import axios from 'axios'
 import { resolveSnapshot } from '../util/firebase'
 import { assert } from '../util/fn'
@@ -63,5 +63,5 @@ export function checkSolution(key, solutions) {
 }
 
 export function getHint(key, hint) {
-  return axios.get(`${__FN_PATH__}get-next-hint`, { params: { key, hint } })
+  return axios.get(`${__FN_PATH__}get-next-hint`, { params: { key, hint } }).then(prop('data'))
 }
