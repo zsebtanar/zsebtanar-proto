@@ -3,6 +3,9 @@
   "description": "Cloud Functions for Firebase",
   "dependencies": {
     "@google-cloud/storage": "^0.4.0",
+    "algoliasearch": "^3.24.4",
+    "markdown-it": "8.4.0",
+    "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.1.0",
     "child-process-promise": "^2.2.1",
     "cors": "^2.8.4",
     "firebase-admin": "~4.2.1",

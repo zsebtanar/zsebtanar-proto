@@ -12,6 +12,7 @@ import Exercise from 'public/page/Exercise'
 import ExercisesByGrade from 'public/page/ExercisesByGrade'
 import SideNav from './nav/SideNav'
 import Footer from 'public/nav/Footer'
+import Search from 'public/page/Search'
 import About from 'shared/page/About'
 
 const mapStateToProps = state => ({
@@ -36,6 +37,7 @@ export default connect(mapStateToProps)(function(props) {
                 <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
                 <Route path="/grade/:grade" component={ExercisesByGrade} />
                 <Route path="/exercise/:key" component={Exercise} />
+                <Route path="/search" component={Search} />
                 <Route path="/about" component={About} />
                 <Route component={Page404} />
               </Switch>

@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "algoliasearch": "^3.24.4",
     "axios": "0.16.2",
     "history": "^4.7.2",
     "markdown-it": "8.4.0",
-    "markdown-it-imsize": "^2.0.1",
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.1.0",
     "prop-types": "15.5.10",
     "ramda": "0.24.1",
@@ -59,15 +59,17 @@
     "dev": "webpack-dev-server --progress --config ./build/webpack.config.js",
     "start": "npm run dev",
     "build-functions":
-      "babel 'functions' --out-dir 'bin/functions' --presets=es2015 --copy-files --ignore 'node_modules'",
-    "postbuild-functions": "cd bin/functions && npm --production=false install",
+      "babel --presets=es2015 --plugins=babel-plugin-transform-object-rest-spread 'functions' --out-dir 'bin/functions' --presets=es2015 --copy-files --ignore 'node_modules'",
+    "install-functions-deps": "cd bin/functions && npm --production=false install",
     "build-app": "webpack -p --config ./build/webpack.config.js",
     "prebuild": "node build/pre-build",
     "build": "NODE_ENV=production npm run build-app && npm run build-functions",
-    "postbuild": "node build/post-build",
+    "postbuild": "node build/post-build && npm run install-functions-deps",
     "predeploy": "npm run test",
     "serv-functions": "npm run build-functions && firebase serve --only functions",
     "deploy": "npm run build && firebase deploy",
+    "deploy-functions":
+      "npm run build-functions && npm run install-functions-deps && ./node_modules/.bin/firebase deploy --only functions",
     "precommit": "lint-staged"
   },
   "lint-staged": {

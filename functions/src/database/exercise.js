@@ -1,41 +1,56 @@
-const {
+import {
+  __,
+  curry,
+  defaultTo,
+  difference,
+  evolve,
+  juxt,
+  lensProp,
+  mapObjIndexed,
+  mergeAll,
+  omit,
+  over,
   pathOr,
   pick,
-  omit,
-  lensProp,
-  defaultTo,
-  mergeAll,
-  mapObjIndexed,
   pipe,
-  difference,
-  __,
-  over,
+  prop,
   union,
-  curry,
-  juxt,
-  evolve
-} = require('ramda')
+  values,
+  map
+} from 'ramda'
+import { removeExerciseIndex, saveExercise } from '../search/exercise'
+import Markdown from 'markdown-it/lib/index'
+import katex from 'markdown-it-katex'
 
 const PUBLIC_PROPS = ['_key', '_created', '_updated', 'classification', 'description', 'controls']
 
 /**
  * onWrite /exercise/private/{exerciseId}
  */
-module.exports.onWritePrivateExercise = admin => event => {
+export const onWritePrivateExercise = admin => event => {
   const key = event.params.exerciseId
+  const classRef = admin.database().ref(`/classifications`)
 
-  // skip remove
-  if (!event.data.exists()) {
-    return Promise.all([removeExercise(event), updateAllClassification(admin, key, {})])
-  }
+  return classRef.once('value').then(snapshot => {
+    const classifications = snapshot.val()
+    // skip remove
+    if (!event.data.exists()) {
+      return Promise.all([
+        removeExerciseIndex(key),
+        removeExercise(event),
+        updateAllClassification(classRef, classifications, key, {})
+      ])
+    }
 
-  // create / update
-  const original = event.data.val()
+    // create / update
+    const original = event.data.val()
 
-  return Promise.all([
-    updateExercise(event, key, original),
-    updateAllClassification(admin, key, original)
-  ])
+    return Promise.all([
+      saveExercise(key, prepareIndex(original, classifications)),
+      updateExercise(event, key, original),
+      updateAllClassification(classRef, classifications, key, original)
+    ])
+  })
 }
 
 function updateExercise(event, key, original) {
@@ -51,29 +66,25 @@ function removeExercise(event) {
   return event.data.ref.parent.remove()
 }
 
-const updateAllClassification = (admin, key, original) => {
-  const classRef = admin.database().ref(`/classifications`)
-  return classRef.once('value').then(snapshot => {
-    const classifications = snapshot.val()
-    const grades = pathOr([], ['classification', 'grade'], original)
-    const subjects = pathOr([], ['classification', 'subject'], original)
-    const topics = pathOr([], ['classification', 'topic'], original)
-    const tags = pathOr([], ['classification', 'tags'], original)
+const updateAllClassification = (classRef, classifications, key, original) => {
+  const grades = pathOr([], ['classification', 'grade'], original)
+  const subjects = pathOr([], ['classification', 'subject'], original)
+  const topics = pathOr([], ['classification', 'topic'], original)
+  const tags = pathOr([], ['classification', 'tags'], original)
 
-    return classRef.update(
-      evolve(
-        {
-          grade: updateClassification(key, grades),
-          subject: pipe(
-            updateClassification(key, subjects),
-            mapObjIndexed(evolve({ topic: updateClassification(key, topics) }))
-          ),
-          tags: updateClassification(key, tags)
-        },
-        classifications
-      )
+  return classRef.update(
+    evolve(
+      {
+        grade: updateClassification(key, grades),
+        subject: pipe(
+          updateClassification(key, subjects),
+          mapObjIndexed(evolve({ topic: updateClassification(key, topics) }))
+        ),
+        tags: updateClassification(key, tags)
+      },
+      classifications
     )
-  })
+  )
 }
 
 const exerciseL = lensProp('exercise')
@@ -91,3 +102,35 @@ const updateClassification = curry((exKey, selectedItems, object) =>
     mergeAll
   )(object)
 )
+
+const prepareIndex = (exercise, classifications) => {
+  const grades = pathOr([], ['classification', 'grade'], exercise)
+  const subjects = pathOr([], ['classification', 'subject'], exercise)
+  const topics = pathOr([], ['classification', 'topic'], exercise)
+  const tags = pathOr([], ['classification', 'tags'], exercise)
+
+  const classTopics = pipe(prop('subject'), values, map(prop('topic')), mergeAll)(classifications)
+
+  const gradeList = pipe(prop('grade'), pick(grades), values)(classifications)
+  return {
+    grade: map(prop('name'), gradeList),
+    subject: pipe(prop('subject'), pick(subjects), values, map(prop('name')))(classifications),
+    topic: pipe(pick(topics), values, map(prop('name')))(classTopics),
+    tags: pipe(prop('tags'), pick(tags), values, map(prop('name')))(classifications),
+    difficulty: exercise.difficulty,
+    description: exercise.description,
+    searchableDescription: extractDescription(exercise.description)
+  }
+}
+
+const extractDescription = description =>
+  reduceTokenList(new Markdown({}).use(katex).parse(description))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+
+const reduceTokenList = tokenList =>
+  tokenList.reduce((acc, i) => {
+    if (i.type === 'text') return acc.concat(i.content)
+    if (i.type === 'inline') return acc.concat(reduceTokenList(i.children))
+    return acc
+  }, [])

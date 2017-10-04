@@ -215,3 +215,18 @@ body {
 .desktop-header .dropdown-menu{
   top: 85%;
 }
+
+.search-input-group{
+  position: relative;
+  .search-label{
+    position: absolute;
+    top: .5em;
+    left: 0.75em;
+  }
+  input {
+    padding-left: 2.5em;
+  }
+}
+.algolia-logo{
+  height: 1.5em;
+}
