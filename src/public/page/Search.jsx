@@ -5,6 +5,7 @@ import Markdown from 'shared/component/general/Markdown'
 import Loading from 'shared/component/general/Loading'
 import Icon from 'shared/component/general/Icon'
 import { parseQueryParams } from 'shared/util/url'
+import { search } from 'shared/services/search'
 
 const mapStateToProps = state => ({
   session: state.app.session
@@ -18,13 +19,13 @@ export default connect(mapStateToProps, {})(
       const searchTerm = parseQueryParams(this.props.history.location.search, 'q')
       if (searchTerm) {
         this.searchInput.value = searchTerm
-        this.search(searchTerm)
+        this.searchTerm(searchTerm)
       }
     }
 
-    onSearch = (event) => this.search(event.currentTarget.value)
+    onSearch = (event) => this.searchTerm(event.currentTarget.value)
 
-    search = term => {
+    searchTerm = term => {
       if (term.length >= 2) {
         this.setState({ loading: true, list: undefined })
         this.props.history.push({search: `q=${term}`})
