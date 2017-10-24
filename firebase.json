@@ -3,13 +3,7 @@
     "cleanUrls": true,
     "trailingSlash": false,
     "public": "bin/app",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**",
-      "**/package-lock.json",
-      "**/yarn.lock"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/package-lock.json", "**/yarn.lock"],
     "headers": [
       {
         "source": "manifest.json",
@@ -23,16 +17,12 @@
     ],
     "rewrites": [
       {
-        "source": "/api/check-exercise",
-        "function": "checkExercise"
+        "source": "/api/**",
+        "function": "api"
       },
       {
-        "source": "/api/get-next-hint",
-        "function": "getNextHint"
-      },
-      {
-          "source": "/:asset*.@(js|css|png|ico|json)",
-          "destination": "/:asset"
+        "source": "/:asset*.@(js|css|png|ico|json)",
+        "destination": "/:asset"
       },
       {
         "source": "/admin/**",

@@ -1,7 +1,7 @@
 import { isNil, not, pipe, prop, values } from 'ramda'
-import axios from 'axios'
 import { resolveSnapshot } from '../util/firebase'
 import { assert } from '../util/fn'
+import { cloudFnDelete, cloudFnGet, cloudFnPost } from 'shared/util/firebase'
 
 const DB = window.firebase.database()
 const Exercises = DB.ref('exercise')
@@ -31,37 +31,21 @@ export function selectPublicExercisesById(ids) {
 }
 
 export function createExercise(data) {
-  const _key = Exercises.push().key
-  const now = new Date()
-  return Exercises.child('private')
-    .child(_key)
-    .update({
-      ...data,
-      _key,
-      _created: now,
-      _updated: now
-    })
+  return cloudFnPost(`exercise`, data)
 }
 
 export function updateExercise(key, data) {
-  return Exercises.child('private')
-    .child(key)
-    .update({
-      ...data,
-      _updated: new Date()
-    })
+  return cloudFnPost(`exercise/${key}`, data)
 }
 
 export function removeExercise(key) {
-  return Exercises.child('private')
-    .child(key)
-    .remove()
+  return cloudFnDelete(`exercise/${key}`)
 }
 
 export function checkSolution(key, solutions) {
-  return axios.post(`${__FN_PATH__}check-exercise`, { key, solutions })
+  return cloudFnPost('exercise/check', { key, solutions })
 }
 
 export function getHint(key, hint) {
-  return axios.get(`${__FN_PATH__}get-next-hint`, { params: { key, hint } }).then(prop('data'))
+  return cloudFnGet('exercise/getNextHint', { key, hint }).then(prop('data'))
 }

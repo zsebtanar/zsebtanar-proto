@@ -65,10 +65,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              'es2015',
-              'react'
-            ],
+            presets: ['es2015', 'react'],
             plugins: [
               require('babel-plugin-ramda').default,
               require('babel-plugin-transform-object-rest-spread'),
@@ -123,7 +120,7 @@ module.exports = {
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
       __FN_PATH__: JSON.stringify(
-        isProd ? '/api/' : 'http://localhost:5002/zsebtanar-proto-76083/us-central1/'
+        isProd ? '/api' : 'http://localhost:5002/zsebtanar-proto-76083/us-central1/'
       )
     })
   ]
