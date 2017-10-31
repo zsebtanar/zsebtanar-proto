@@ -1,4 +1,4 @@
-import { singleNumber } from '../../../../functions/src/exercise/userControls/singleNumber'
+import { singleNumber } from '../../../../functions/src/exercise/validate/userControls/singleNumber'
 
 describe('singleNumber', () => {
   it('should pass in the simplest case', () => {

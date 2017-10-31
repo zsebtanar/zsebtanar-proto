@@ -1,4 +1,4 @@
-import validator from '../../../../functions/src/exercise/userControls/validator'
+import validator from '../../../../functions/src/exercise/validate/validator'
 
 describe('validator', () => {
   it('should return empty array if no user input in the exercise', () => {

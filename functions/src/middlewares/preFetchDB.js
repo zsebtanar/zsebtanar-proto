@@ -1,4 +1,4 @@
-import { admin } from '../common/fb-utils'
+import { admin } from '../utils/fb-utils'
 
 /**
  * Pre-fetch and store Firebase DB values in request object this format:

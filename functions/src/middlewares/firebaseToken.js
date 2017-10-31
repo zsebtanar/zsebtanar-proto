@@ -1,4 +1,4 @@
-import { admin } from '../common/fb-utils'
+import { admin } from '../utils/fb-utils'
 
 /**
  Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -36,9 +36,17 @@ export default function validateFirebaseIdToken(req, res, next) {
     .verifyIdToken(idToken)
     .then(decodedIdToken => {
       req.user = decodedIdToken
+      return admin
+        .database()
+        .ref(`user/${req.user.uid}`)
+        .once('value')
+    })
+    .then(snapshot => {
+      req.user.details = snapshot.val()
       next()
     })
     .catch(error => {
+      console.error(error)
       res.status(403).send('Unauthorized')
     })
 }

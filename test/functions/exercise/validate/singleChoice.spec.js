@@ -1,4 +1,4 @@
-import { singleChoice } from '../../../../functions/src/exercise/userControls/singleChoice'
+import { singleChoice } from '../../../../functions/src/exercise/validate/userControls/singleChoice'
 
 describe('singleChoice', () => {
   it('should pass in the simplest case', () => {

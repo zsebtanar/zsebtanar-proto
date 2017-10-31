@@ -1,4 +1,4 @@
-import { binaryChoiceCheck as multiChoice } from '../../../../functions/src/exercise/userControls/multiChoice'
+import { binaryChoiceCheck as multiChoice } from '../../../../functions/src/exercise/validate/userControls/multiChoice'
 
 describe('multiChoice', () => {
   it('should pass in the basic case', () => {

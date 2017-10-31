@@ -30,22 +30,14 @@ export function selectPublicExercisesById(ids) {
   return Promise.all(ids.map(getPublicExercise))
 }
 
-export function createExercise(data) {
-  return cloudFnPost(`exercise`, data)
-}
+export const createExercise = data => cloudFnPost(`exercise`, data, { withToken: true })
 
-export function updateExercise(key, data) {
-  return cloudFnPost(`exercise/${key}`, data)
-}
+export const updateExercise = (key, data) =>
+  cloudFnPost(`exercise/${key}`, data, { withToken: true })
 
-export function removeExercise(key) {
-  return cloudFnDelete(`exercise/${key}`)
-}
+export const removeExercise = key => cloudFnDelete(`exercise/${key}`, { withToken: true })
 
-export function checkSolution(key, solutions) {
-  return cloudFnPost('exercise/check', { key, solutions })
-}
+export const checkSolution = (key, solutions) => cloudFnPost('exercise/check', { key, solutions })
 
-export function getHint(key, hint) {
-  return cloudFnGet('exercise/getNextHint', { key, hint }).then(prop('data'))
-}
+export const getHint = (key, hint) =>
+  cloudFnGet('exercise/getNextHint', { key, hint }).then(prop('data'))

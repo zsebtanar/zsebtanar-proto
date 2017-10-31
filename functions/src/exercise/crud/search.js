@@ -1,4 +1,4 @@
-import { getClient } from '../common/algolia'
+import { getClient } from '../../utils/algolia'
 
 const getIndex = () => getClient().initIndex('exercises')
 

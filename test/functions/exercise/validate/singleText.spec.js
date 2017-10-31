@@ -1,4 +1,4 @@
-import { simpleTextCheck as simpleText } from '../../../../functions/src/exercise/userControls/simpleText'
+import { simpleTextCheck as simpleText } from '../../../../functions/src/exercise/validate/userControls/simpleText'
 
 describe('simpleText', () => {
   it('should pass in the simplest case', () => {

@@ -43,6 +43,7 @@
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "lint-staged": "^4.2.3",
+    "mocha": "^4.0.1",
     "node-sass": "^4.5.3",
     "prettier": "^1.7.4",
     "react-test-renderer": "^16.0.0",
@@ -66,7 +67,7 @@
     "prebuild": "node build/pre-build",
     "build": "NODE_ENV=production npm run build-app && npm run build-functions",
     "postbuild": "node build/post-build && npm run install-functions-deps",
-    "-predeploy": "npm run test",
+    "predeploy": "npm run test",
     "serv-functions": "npm run build-functions && npm run install-functions-deps && node bin/functions/local-server.js",
     "deploy": "npm run build && firebase deploy",
     "deploy-functions":
@@ -75,7 +76,7 @@
     "local-server": "babel-node --presets es2015 --plugins transform-object-rest-spread ./functions/local-server.js"
   },
   "jest": {
-    "automock": true
+    "roots": ["src", "functions", "test"]
   },
   "lint-staged": {
     "*.js": ["prettier --write --single-quote --trailing-comma=none --no-semi false --print-width 100", "git add"],

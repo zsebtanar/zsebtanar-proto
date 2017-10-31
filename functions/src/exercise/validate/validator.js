@@ -1,11 +1,11 @@
 import { F, propOr, toPairs } from 'ramda'
 
 const types = {
-  'simple-text': require('./simpleText').simpleTextCheck,
-  'single-number': require('./singleNumber').singleNumber,
-  'single-choice': require('./singleChoice').singleChoice,
-  'binary-choice': require('./binaryChoice').binaryChoiceCheck,
-  'multi-choice': require('./multiChoice').binaryChoiceCheck
+  'simple-text': require('./userControls/simpleText').simpleTextCheck,
+  'single-number': require('./userControls/singleNumber').singleNumber,
+  'single-choice': require('./userControls/singleChoice').singleChoice,
+  'binary-choice': require('./userControls/binaryChoice').binaryChoiceCheck,
+  'multi-choice': require('./userControls/multiChoice').binaryChoiceCheck
 }
 
 export default (userSolutions, exercise) => {

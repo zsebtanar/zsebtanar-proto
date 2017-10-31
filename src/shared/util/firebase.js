@@ -1,19 +1,35 @@
 import axios from 'axios'
+import { merge } from 'ramda'
 
 export function resolveSnapshot(snapshot) {
   return snapshot.val()
 }
 
-export const cloudFnRequest = (method, path, params, data) =>
-  axios({
+const getTokenHeader = () =>
+  firebase
+    .auth()
+    .currentUser.getIdToken()
+    .then(token => ({ headers: { Authorization: `Bearer ${token}` } }))
+
+export const cloudFnRequest = (method, path, params, data, options) => {
+  const opt = Object.assign({}, options)
+
+  return Promise.resolve({
     baseURL: `${__FN_PATH__}/${path}`,
     method,
     path,
     data,
-    params,
-    withCredentials: true
+    params
   })
+    .then(config => (opt.withToken ? getTokenHeader().then(merge(config)) : config))
+    .then(axios)
+}
 
-export const cloudFnGet = (path, params) => cloudFnRequest('get', path, params)
-export const cloudFnPost = (path, data) => cloudFnRequest('post', path, undefined, data)
-export const cloudFnDelete = (path, params) => cloudFnRequest('delete', path, params)
+export const cloudFnGet = (path, params, options) =>
+  cloudFnRequest('get', path, params, undefined, options)
+
+export const cloudFnPost = (path, data, options) =>
+  cloudFnRequest('post', path, undefined, data, options)
+
+export const cloudFnDelete = (path, params, options) =>
+  cloudFnRequest('delete', path, params, undefined, options)

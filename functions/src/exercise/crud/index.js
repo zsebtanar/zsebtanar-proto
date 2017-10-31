@@ -1,7 +1,6 @@
 import * as express from 'express'
-import Markdown from 'markdown-it/lib/index'
-import katex from 'markdown-it-katex'
-import { admin } from '../common/fb-utils'
+import { admin } from '../../utils/fb-utils'
+import { unTokeniseMarkdown } from '../../utils/markdown'
 import {
   __,
   curry,
@@ -23,8 +22,8 @@ import {
   keys,
   map
 } from 'ramda'
-import validateFirebaseIdToken from '../middlewares/firebaseToken'
-import preFetch from '../middlewares/preFetchDB'
+import validateFirebaseIdToken from '../../middlewares/firebaseToken'
+import preFetch from '../../middlewares/preFetchDB'
 import { removeExerciseIndex, indexExercise } from './search'
 
 const PUBLIC_PROPS = ['_key', '_created', '_updated', 'classification', 'description', 'controls']
@@ -54,15 +53,19 @@ route.post('/', (req, res) => {
 
   return Promise.all([
     indexExercise(key, getIndexData(data, req.classifications.data)),
-    savePrivateExercise(event, key, data),
+    savePrivateExercise(key, data),
     updateAllClassification(req.classifications, key, data)
-  ]).then(() => res.status(201).send())
+  ])
+    .then(() => res.status(201).send())
+    .catch(error => {
+      console.error(error)
+      res.status(500).send('Unexpected error')
+    })
 })
 
 // Update
 route.post('/:exerciseId', (req, res) => {
   const key = req.params.exerciseId
-
   const data = {
     ...req.body,
     _key: key,
@@ -71,10 +74,15 @@ route.post('/:exerciseId', (req, res) => {
   }
 
   return Promise.all([
-    indexExercise(key, getIndexData(data, red.classifications.data)),
-    savePrivateExercise(event, key, data),
+    indexExercise(key, getIndexData(data, req.classifications.data)),
+    savePrivateExercise(key, data),
     updateAllClassification(req.classifications, key, data)
-  ]).then(() => res.status(204).send())
+  ])
+    .then(() => res.status(204).send())
+    .catch(error => {
+      console.error(error)
+      res.status(500).send('Unexpected error')
+    })
 })
 
 // Remove
@@ -84,8 +92,15 @@ route.delete('/:exerciseId', (req, res) => {
     removeExerciseIndex(key),
     removeExercise(key),
     updateAllClassification(req.classifications, key, {})
-  ]).then(() => res.status(204).send())
+  ])
+    .then(() => res.status(204).send())
+    .catch(error => {
+      console.error(error)
+      res.status(500).send('Unexpected error')
+    })
 })
+
+//-------------------
 
 const savePrivateExercise = (key, data) => PrivateExercise.child(key).update(data)
 
@@ -151,18 +166,6 @@ const getIndexData = (exercise, classifications) => {
     tags: pipe(prop('tags'), pick(tags), values, map(prop('name')))(classifications),
     difficulty: exercise.difficulty,
     description: exercise.description,
-    searchableDescription: extractDescription(exercise.description)
+    searchableDescription: unTokeniseMarkdown(exercise.description)
   }
 }
-
-const extractDescription = description =>
-  reduceTokenList(new Markdown({}).use(katex).parse(description))
-    .join(' ')
-    .replace(/\s+/g, ' ')
-
-const reduceTokenList = tokenList =>
-  tokenList.reduce((acc, i) => {
-    if (i.type === 'text') return acc.concat(i.content)
-    if (i.type === 'inline') return acc.concat(reduceTokenList(i.children))
-    return acc
-  }, [])
