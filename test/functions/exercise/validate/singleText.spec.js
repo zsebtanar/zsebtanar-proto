@@ -1,11 +1,11 @@
-import simpleText from '../../../functions/src/userControls/simpleText'
+import { simpleTextCheck as simpleText } from '../../../../functions/src/exercise/validate/userControls/simpleText'
 
 describe('simpleText', () => {
   it('should pass in the simplest case', () => {
     const solutionObj = {
       caseSensitive: false,
       ignoreSpaces: false,
-      options: {1: 'a'}
+      options: { 1: 'a' }
     }
     expect(simpleText(null, solutionObj, 'a')).toBe(true)
   })
@@ -14,13 +14,11 @@ describe('simpleText', () => {
     const solutionObj = {
       caseSensitive: false,
       ignoreSpaces: false,
-      options: {1: 'a'}
+      options: { 1: 'a' }
     }
 
     const emptyInputs = ['', null, undefined]
-    emptyInputs.map(input =>
-      expect(simpleText(null, solutionObj, input)).toBe(false)
-    )
+    emptyInputs.map(input => expect(simpleText(null, solutionObj, input)).toBe(false))
   })
 
   it('should fail if the input and the options list are empty', () => {
@@ -31,16 +29,14 @@ describe('simpleText', () => {
     }
 
     const emptyInputs = ['', null, undefined, 'a']
-    emptyInputs.map(input =>
-      expect(simpleText(null, solutionObj, input)).toBe(false)
-    )
+    emptyInputs.map(input => expect(simpleText(null, solutionObj, input)).toBe(false))
   })
 
   it('should pass if the solution is part of the options', () => {
     const solutionObj = {
       caseSensitive: false,
       ignoreSpaces: false,
-      options: {1: 'b', 2: 'c', 3: 'a'}
+      options: { 1: 'b', 2: 'c', 3: 'a' }
     }
     expect(simpleText(null, solutionObj, 'a')).toBe(true)
   })
@@ -49,7 +45,7 @@ describe('simpleText', () => {
     const solutionObj = {
       caseSensitive: false,
       ignoreSpaces: false,
-      options: {1: 'b', 2: 'c', 3: 'a'}
+      options: { 1: 'b', 2: 'c', 3: 'a' }
     }
     expect(simpleText(null, solutionObj, 'd')).toBe(false)
   })
@@ -58,7 +54,7 @@ describe('simpleText', () => {
     const solutionObj = {
       caseSensitive: true,
       ignoreSpaces: false,
-      options: {1: 'b', 2: 'c', 3: 'a'}
+      options: { 1: 'b', 2: 'c', 3: 'a' }
     }
     expect(simpleText(null, solutionObj, 'A')).toBe(false)
   })
@@ -67,7 +63,7 @@ describe('simpleText', () => {
     const solutionObj = {
       caseSensitive: true,
       ignoreSpaces: false,
-      options: {1: 'b', 2: 'c', 3: 'a'}
+      options: { 1: 'b', 2: 'c', 3: 'a' }
     }
     expect(simpleText(null, solutionObj, ' a ')).toBe(false)
   })
@@ -76,7 +72,7 @@ describe('simpleText', () => {
     const solutionObj = {
       caseSensitive: true,
       ignoreSpaces: true,
-      options: {1: 'b', 2: 'c', 3: 'a'}
+      options: { 1: 'b', 2: 'c', 3: 'a' }
     }
     expect(simpleText(null, solutionObj, ' a ')).toBe(true)
   })
@@ -85,7 +81,7 @@ describe('simpleText', () => {
     const solutionObj = {
       caseSensitive: true,
       ignoreSpaces: true,
-      options: {1: 'b', 2: 'c', 3: 'a'}
+      options: { 1: 'b', 2: 'c', 3: 'a' }
     }
     expect(simpleText(null, solutionObj, ' A ')).toBe(false)
   })
@@ -94,7 +90,7 @@ describe('simpleText', () => {
     const solutionObj = {
       caseSensitive: false,
       ignoreSpaces: true,
-      options: {1: 'b', 2: 'c', 3: 'a'}
+      options: { 1: 'b', 2: 'c', 3: 'a' }
     }
     expect(simpleText(null, solutionObj, ' A ')).toBe(true)
   })

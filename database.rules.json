@@ -11,7 +11,7 @@
       }
     },
 
-    "classifications":{
+    "classifications": {
       ".read": true
     },
 
@@ -19,7 +19,7 @@
       "private": {
         "$exerciseId": {
           ".read": "root.child('users/'+auth.uid+'/role').val() > 0",
-          ".write": "root.child('users/'+auth.uid+'/role').val() > 0"
+          ".write": false
         }
       },
       "public": {

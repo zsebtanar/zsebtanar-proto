@@ -2,17 +2,21 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "dependencies": {
-    "@google-cloud/storage": "^0.4.0",
-    "algoliasearch": "^3.24.4",
+    "algoliasearch": "^3.24.5",
+    "child-process-promise": "^2.2.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "firebase-admin": "5.4.2",
+    "firebase-functions": "0.7.1 ",
     "markdown-it": "8.4.0",
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.1.0",
-    "child-process-promise": "^2.2.1",
-    "cors": "^2.8.4",
-    "firebase-admin": "~4.2.1",
-    "firebase-functions": "^0.5.9",
     "mkdirp": "^0.5.1",
     "mkdirp-promise": "^4.0.1",
-    "ramda": "^0.24.1"
+    "ramda": "^0.25.0"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "mock-require": "^2.0.2"
+  }
 }

@@ -1,8 +1,8 @@
-const {pipe, values, toLower, identity, replace, equals, any} = require('ramda')
+import { any, equals, identity, pipe, replace, toLower, values } from 'ramda'
 
-module.exports = function simpleTextCheck (control, solution, userInput) {
+export function simpleTextCheck(control, solution, userInput) {
   const transform = pipe(
-    (input) => input || '',
+    input => input || '',
     solution.caseSensitive ? identity : toLower,
     solution.ignoreSpaces ? replace(/\s*/g, '') : identity
   )

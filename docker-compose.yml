@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: node --debug-brk=5858 ./node_modules/.bin/firebase serve --only functions --token 1/__gE8ZJsEbDqAiCvmfUj6yx8d-SYnAuc-uVhb8MAP6AtUFyc9Ez3Fqeh4AyqkcjT
+    #command: node ./node_modules/.bin/firebase serve --only functions --token 1/__gE8ZJsEbDqAiCvmfUj6yx8d-SYnAuc-uVhb8MAP6AtUFyc9Ez3Fqeh4AyqkcjT
+
+    ports:
+      - "5000-6000:5000-6000"
+      - "443:6443"
+      - "8443:6444"
