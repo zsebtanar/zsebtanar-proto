@@ -5,6 +5,7 @@ import Button from 'shared/component/general/Button'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 import { getAllPrivateExercises, removeExercise } from 'shared/services/exercise'
 import Loading from 'shared/component/general/Loading'
+import ExerciseState from '../components/ExerciseState'
 
 export default class extends React.Component {
   state = {
@@ -54,6 +55,7 @@ export default class extends React.Component {
            <thead>
            <tr>
              <th>#</th>
+             <th title="Státusz">@</th>
              <th>Osztály</th>
              <th>Tantárgy</th>
              <th>Témakör</th>
@@ -75,6 +77,7 @@ export default class extends React.Component {
     return this.state.exercises.map((ex, idx) =>
       <tr key={ex._key}>
         <td>{idx + 1}</td>
+        <td><ExerciseState value={ex._state} short/></td>
         <td className="grade-column">{pathOr([], ['classification', 'grade'], ex).map(x => <span
           key={x}>{x}</span>)}</td>
         <td>{pathOr([], ['classification', 'subject'], ex).map(x => <span key={x}> {x} </span>)}</td>

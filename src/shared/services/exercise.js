@@ -6,18 +6,24 @@ import { cloudFnDelete, cloudFnGet, cloudFnPost } from 'shared/util/firebase'
 const DB = window.firebase.database()
 const Exercises = DB.ref('exercise')
 
-const notFound = assert(pipe(isNil, not), 'A kért feladat nem létezik.')
+export const STATE_KEY = '_state'
+export const EXERCISE_DRAFT = 'draft'
+export const EXERCISE_ACTIVE = 'active'
+export const EXERCISE_ARCHIVE = 'archive'
+export const EXERCISE_REMOVE = 'remove'
+
+const notFound = uid => assert(pipe(isNil, not), `A kért feladat nem létezik: ${uid}.`)
 
 export function getPublicExercise(uid) {
   return Exercises.child(`public/${uid}`)
     .once('value')
-    .then(pipe(resolveSnapshot, notFound))
+    .then(pipe(resolveSnapshot, notFound(uid)))
 }
 
 export function getPrivateExercise(uid) {
   return Exercises.child(`private/${uid}`)
     .once('value')
-    .then(pipe(resolveSnapshot, notFound))
+    .then(pipe(resolveSnapshot, notFound(uid)))
 }
 
 export function getAllPrivateExercises() {
@@ -41,3 +47,6 @@ export const checkSolution = (key, solutions) => cloudFnPost('exercise/check', {
 
 export const getHint = (key, hint) =>
   cloudFnGet('exercise/getNextHint', { key, hint }).then(prop('data'))
+
+export const changeState = (key, state) =>
+  cloudFnPost(`exercise/state/${key}`, { state }, { withToken: true })

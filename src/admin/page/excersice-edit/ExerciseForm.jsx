@@ -25,7 +25,14 @@ import { NavLink } from 'react-router-dom'
 import Select from 'react-select'
 import Button from 'shared/component/general/Button'
 import { createExerciseAction, updateExerciseAction } from 'shared/store/actions/exercise'
-import { getPrivateExercise } from 'shared/services/exercise'
+import {
+  changeState,
+  EXERCISE_ACTIVE,
+  EXERCISE_ARCHIVE,
+  EXERCISE_DRAFT,
+  EXERCISE_REMOVE,
+  getPrivateExercise
+} from 'shared/services/exercise'
 import { openFileManager, openMarkdownHelpModal } from 'shared/store/actions/modal'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 import EditUserControls from './EditUserControls'
@@ -34,6 +41,7 @@ import ExercisePreview from './ExercisePreview'
 import Loading from 'shared/component/general/Loading'
 import { Tab, TabNav } from 'shared/component/general/TabNav'
 import TextEditor from 'shared/component/general/TextEditor'
+import ExerciseState from 'admin/components/ExerciseState'
 
 const modeLabel = {
   Add: 'létrehozása',
@@ -41,6 +49,13 @@ const modeLabel = {
   Clone: 'másolása'
 }
 const tabs = ['Kategóriák', 'Leírás', 'Megoldások', 'Útmutatók', 'Előnézet']
+
+const STATE_MESSAGES = {
+  [EXERCISE_DRAFT]: 'Biztos, hogy szeretnéd visszállítani a feladtot vázlat állapotba?',
+  [EXERCISE_ACTIVE]: 'Valóban szeretnéd aktiválni a feladatot?',
+  [EXERCISE_ARCHIVE]: 'Biztos archiválod a feladatot?',
+  [EXERCISE_REMOVE]: 'Véglegesen töröljük a feladatot, biztos folytatod?'
+}
 
 export default connect(undefined, {
   openFileManager,
@@ -72,7 +87,11 @@ export default connect(undefined, {
     }
 
     shiftEnter = event => {
-      if (event.keyCode === 13 && event.shiftKey && !/(input|textarea|select)/gi.test(event.target.tagName)) {
+      if (
+        event.keyCode === 13 &&
+        event.shiftKey &&
+        !/(input|textarea|select)/gi.test(event.target.tagName)
+      ) {
         this.saveExercise(event)
       }
     }
@@ -96,6 +115,12 @@ export default connect(undefined, {
         this.props.updateExerciseAction(ex._key, ex).then(this.back)
       } else {
         this.props.createExerciseAction(ex).then(this.back)
+      }
+    }
+
+    changeExerciseState = state => event => {
+      if (confirm(STATE_MESSAGES[state])) {
+        changeState(this.state.exercise._key, state).then(this.back)
       }
     }
 
@@ -135,7 +160,11 @@ export default connect(undefined, {
           const subjectTopics = Object.keys(pathOr({}, group.split('.'), state.classifications))
           const currentTopics = pathOr([], path, ex)
           return {
-            exercise: assocPath(path, union(difference(currentTopics, subjectTopics), selectedValues), ex)
+            exercise: assocPath(
+              path,
+              union(difference(currentTopics, subjectTopics), selectedValues),
+              ex
+            )
           }
         } else {
           return { exercise: assocPath(path, selectedValues, ex) }
@@ -270,10 +299,29 @@ export default connect(undefined, {
 
     renderHeader() {
       const mLabel = modeLabel[this.mode]
+      const exercise = this.state.exercise
+      const notNew = !!this.state.exercise._key
+      const exState = exercise._state
       return (
         <div className="d-flex justify-content-between align-items-center">
           <h4>Feladat {mLabel}</h4>
+          <ExerciseState value={exState} />
           <div>
+            {notNew && exState === EXERCISE_ACTIVE && (
+              <Button className="btn btn-link text-dark" onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}>
+                <i className="fa fa-archive" /> Arhiválás
+              </Button>
+            )}{' '}
+            {notNew && (exState === EXERCISE_DRAFT || exState === EXERCISE_ARCHIVE) && (
+              <Button className="btn btn-link text-success" onAction={this.changeExerciseState(EXERCISE_ACTIVE)}>
+                <i className="fa fa-check" /> Aktiválás
+              </Button>
+            )}{' '}
+            {notNew && exState === EXERCISE_DRAFT && (
+              <Button className="btn btn-link text-danger" onAction={this.changeExerciseState(EXERCISE_REMOVE)}>
+                <i className="fa fa-trash" /> Törlés
+              </Button>
+            )}{' '}
             <NavLink exact to="/exercise" className="btn btn-outline-secondary">
               Mégsem
             </NavLink>{' '}

@@ -20,7 +20,7 @@ export default function validateFirebaseIdToken(req, res, next) {
       'Authorization: Bearer <Firebase ID Token>',
       'or by passing a "__session" cookie.'
     )
-    res.status(403).send('Unauthorized')
+    res.status(401).send('Unauthorized')
     return
   }
 
@@ -38,7 +38,7 @@ export default function validateFirebaseIdToken(req, res, next) {
       req.user = decodedIdToken
       return admin
         .database()
-        .ref(`user/${req.user.uid}`)
+        .ref(`users/${req.user.uid}`)
         .once('value')
     })
     .then(snapshot => {
@@ -46,7 +46,6 @@ export default function validateFirebaseIdToken(req, res, next) {
       next()
     })
     .catch(error => {
-      console.error(error)
-      res.status(403).send('Unauthorized')
+      res.status(401).send('Unauthorized')
     })
 }
