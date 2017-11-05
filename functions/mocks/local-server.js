@@ -1,7 +1,8 @@
 const mock = require('mock-require')
+const fakeAdmin = require('./firebase-admin')
 
 mock('firebase-functions', './firebase-functions')
-mock('firebase-admin', './firebase-admin')
+mock('firebase-admin', fakeAdmin())
 
 const app = require('../src/api').default
 
