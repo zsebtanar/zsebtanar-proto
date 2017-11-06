@@ -9,7 +9,7 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:8.5
     environment:
-      NODE_ENV: production
+      NODE_ENV: test
 
     working_directory: ~/repo
 
@@ -27,13 +27,13 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v3-dependencies-
 
-      - run: npm --production=false install
+      - run: npm install
 
       - run: npm rebuild node-sass
 
       - run: npm test
 
-      - run: npm run build
+      - run: NODE_ENV=production npm run build
 
       - save_cache:
           paths:
