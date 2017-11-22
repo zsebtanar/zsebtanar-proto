@@ -14,6 +14,7 @@ import SideNav from './nav/SideNav'
 import Footer from 'public/nav/Footer'
 import Search from 'public/page/Search'
 import About from 'shared/page/About'
+import Profile from 'public/page/Profile'
 
 const mapStateToProps = state => ({
   session: state.app.session
@@ -34,6 +35,7 @@ export default connect(mapStateToProps)(function(props) {
             <div className="content">
               <Switch>
                 <Route path="/" exact component={Home} />
+                {props.session.signedIn && <Route path="/profile" component={Profile} />}
                 <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
                 <Route path="/grade/:grade" component={ExercisesByGrade} />
                 <Route path="/exercise/:key" component={Exercise} />

@@ -3,11 +3,12 @@ import { NavLink, withRouter } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { signOut } from '../../shared/store/actions/auth'
-import { ROLE_USER } from 'shared/services/user'
+import { isUser, ROLE_USER } from 'shared/services/user'
 import Button from 'shared/component/general/Button'
 import { openSideNav } from 'shared/store/reducers/sideNav'
 import { openSignInModal, openSignUpModal } from 'shared/store/actions/modal'
 import Link from 'shared/component/general/Link'
+import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
 
 const mapStateToProps = state => ({
   session: state.app.session,
@@ -15,13 +16,19 @@ const mapStateToProps = state => ({
 })
 
 export default withRouter(
-  connect(mapStateToProps, { signOut, openSideNav, openSignInModal, openSignUpModal })(function Header(props) {
+  connect(mapStateToProps, {
+    signOut,
+    openSideNav,
+    openSignInModal,
+    openSignUpModal
+  })(function Header(props) {
+    const { signedIn, token } = props.session
     return (
       <div className="header clearfix">
         <div className="desktop-header">
           <nav>
             <ul className="nav nav-pills float-right">
-              {props.session.signedIn && props.session.userDetails.role > ROLE_USER ? (
+              {signedIn && isUser(token) ? (
                 <li className="nav-item" key="admin">
                   <a href="/admin/" className="nav-link">
                     Admin
@@ -30,13 +37,24 @@ export default withRouter(
               ) : (
                 ''
               )}
-              {props.session.signedIn ? (
+              {signedIn ? (
                 [
-                  <li className="nav-item" key="sing-out">
-                    <a href="#" className="nav-link" onClick={props.signOut}>
-                      Kijelentkezés
-                    </a>
-                  </li>
+                  <Dropdown elementType="li" className="user-menu" right key="user-menu">
+                    <DropdownToggle>
+                      <span className="fa-stack fa">
+                        <i className="fa fa-circle fa-stack-2x" />
+                        <i className="fa fa-user fa-stack-1x fa-inverse" />
+                      </span>
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <NavLink exact to="/profile" className="dropdown-item">
+                        Profile
+                      </NavLink>
+                      <a href="#" className="dropdown-item" onClick={props.signOut}>
+                        Kijelentkezés
+                      </a>
+                    </DropdownMenu>
+                  </Dropdown>
                 ]
               ) : (
                 [

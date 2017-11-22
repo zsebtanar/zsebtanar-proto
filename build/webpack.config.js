@@ -120,7 +120,7 @@ module.exports = {
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
       __FN_PATH__: JSON.stringify(
-        isProd ? '/api' : 'http://localhost:5002/zsebtanar-proto-76083/us-central1/'
+        isProd ? '/api' : 'https://zsebtanar-proto-76083.firebaseapp.com/api'
       )
     })
   ]

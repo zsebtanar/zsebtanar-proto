@@ -1,15 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default connect(mapStateToProps)(function Home (props) {
+export default connect(mapStateToProps)(function Home(props) {
+  const { signedIn, user } = props.session
   return (
     <div className="msg-block">
       <h2 className="text-center">
-        {props.session.signedIn ? `Szia ${(props.session.userDetails && props.session.userDetails.name) || props.session.user.email}` : ''}
+        {signedIn && `Szia ${user.displayName || user.email}`}
+        {!signedIn && (
+          <div>
+            <div>Üdv a Zsebtanár oldalon!</div>
+            <div>
+              Kérlek <a href="/">jelentkezz be</a>.
+            </div>
+          </div>
+        )}
       </h2>
     </div>
   )

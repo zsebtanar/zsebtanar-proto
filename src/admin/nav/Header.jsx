@@ -4,9 +4,10 @@ import { NavLink, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signOut } from '../../shared/store/actions/auth'
 import { openFileManager } from 'shared/store/actions/modal'
-import Button from 'shared/component/general/Button'
 import { openSideNav } from 'shared/store/reducers/sideNav'
-import { Dropdown, DropdownDevider, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
+import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
+import { isAdmin } from 'shared/services/user'
+import Button from 'shared/component/general/Button'
 
 const mapStateToProps = state => ({
   session: state.app.session,
@@ -32,32 +33,29 @@ export default withRouter(
                   Publikus
                 </a>
               </li>
+              {isAdmin(props.session.token) && (
+                <Dropdown elementType="li">
+                  <DropdownToggle>Rendszer</DropdownToggle>
+                  <DropdownMenu>
+                    <NavLink activeClassName="active" className="dropdown-item" to="/user">
+                      <i className="fa fa-users" /> Felhasználók
+                    </NavLink>
+                    <NavLink activeClassName="active" className="dropdown-item" to="/feedback">
+                      <i className="fa fa-commenting-o" /> Visszajelzések
+                    </NavLink>
+                  </DropdownMenu>
+                </Dropdown>
+              )}
 
-              <Dropdown elementType="li" >
-                <DropdownToggle>Rendszer</DropdownToggle>
-                <DropdownMenu>
-                  <NavLink activeClassName="active" className="dropdown-item" to="/user">
-                    <i className="fa fa-users"/> Felhasználók
-                  </NavLink>
-                  <NavLink activeClassName="active" className="dropdown-item" to="/feedback">
-                    <i className="fa fa-commenting-o"/> Visszajelzések
-                  </NavLink>
-                </DropdownMenu>
-              </Dropdown>
-
-              <Dropdown elementType="li" >
+              <Dropdown elementType="li">
                 <DropdownToggle>Tartalom</DropdownToggle>
                 <DropdownMenu>
                   <NavLink activeClassName="active" className="dropdown-item" to="/exercise">
-                    <i className="fa fa-tasks"/> Feladatok
+                    <i className="fa fa-tasks" /> Feladatok
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/classification">
-                    <i className="fa fa-folder"/> Kategóriák
+                    <i className="fa fa-folder" /> Kategóriák
                   </NavLink>
-                  <DropdownDevider/>
-                  <a className="dropdown-item" href="#" onClick={openFileManager}>
-                    <i className="fa fa-picture-o"/> Képek
-                  </a>
                 </DropdownMenu>
               </Dropdown>
 

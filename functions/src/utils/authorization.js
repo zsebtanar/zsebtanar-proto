@@ -4,11 +4,11 @@ export const ROLE_USER = 0
 export const ROLE_TEACHER = 500
 export const ROLE_ADMIN = 1000
 
-export const roleCheck = curry((roles, handler, req, res) => {
-  const userRole = pathOr(ROLE_USER, ['user', 'details', 'role'], req)
+export const roleCheck = curry((roles, req, res, next) => {
+  const userRole = pathOr(ROLE_USER, ['user', 'role'], req)
 
   if (roles.includes(userRole)) {
-    handler(req, res)
+    next()
   } else {
     console.warn('forbidden', JSON.stringify(req.user))
     res.status(403).send('Forbidden')

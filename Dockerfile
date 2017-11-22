@@ -12,8 +12,8 @@ COPY ./database.rules.json database.rules.json
 RUN npm install firebase-tools
 RUN cd bin/functions && npm install
 
-RUN ./node_modules/.bin/firebase login --token 1/__gE8ZJsEbDqAiCvmfUj6yx8d-SYnAuc-uVhb8MAP6AtUFyc9Ez3Fqeh4AyqkcjT
+RUN ./node_modules/.bin/firebase login --token
 
 CMD ["./node_modules/.bin/firebase","serve", "--only", "functions"]
 
-# ./node_modules/.bin/firebase serve --only functions --token 1/__gE8ZJsEbDqAiCvmfUj6yx8d-SYnAuc-uVhb8MAP6AtUFyc9Ez3Fqeh4AyqkcjT
+# ./node_modules/.bin/firebase serve --only functions --token

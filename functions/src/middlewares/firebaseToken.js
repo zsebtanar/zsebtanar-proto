@@ -10,10 +10,9 @@ import { admin } from '../utils/fb-utils'
  @see: https://firebase.google.com/docs/auth/admin/verify-id-tokens
  */
 export default function validateFirebaseIdToken(req, res, next) {
-  if (
-    (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
-    !req.cookies.__session
-  ) {
+  const authHeader = req.headers.authorization
+
+  if ((!authHeader || !authHeader.startsWith('Bearer ')) && !req.cookies.__session) {
     console.error(
       'No Firebase ID token was passed as a Bearer token in the Authorization header.',
       'Make sure you authorize your request by providing the following HTTP header:',
@@ -25,8 +24,8 @@ export default function validateFirebaseIdToken(req, res, next) {
   }
 
   let idToken
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-    idToken = req.headers.authorization.split('Bearer ')[1]
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    idToken = authHeader.split('Bearer ')[1]
   } else {
     idToken = req.cookies.__session
   }
@@ -36,16 +35,10 @@ export default function validateFirebaseIdToken(req, res, next) {
     .verifyIdToken(idToken)
     .then(decodedIdToken => {
       req.user = decodedIdToken
-      return admin
-        .database()
-        .ref(`users/${req.user.uid}`)
-        .once('value')
-    })
-    .then(snapshot => {
-      req.user.details = snapshot.val()
       next()
     })
     .catch(error => {
+      console.error('Validation error', error)
       res.status(401).send('Unauthorized')
     })
 }

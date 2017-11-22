@@ -1,13 +1,13 @@
+@import '~bootstrap/scss/bootstrap';
 
 /* Space out content a bit */
 html,
 body,
 #root,
 .app,
-.container{
+.container {
   height: 100%;
 }
-
 
 body {
   padding-top: 1.5rem;
@@ -24,7 +24,7 @@ body {
   }
 }
 
-.logo{
+.logo {
   background: url('/assets/logo.png') no-repeat left center;
   background-size: contain;
   padding-left: 2.5em;
@@ -40,16 +40,16 @@ body {
 
 /* Custom page header */
 .header {
-  border-bottom: .05rem solid #e5e5e5;
+  border-bottom: 0.05rem solid #e5e5e5;
 }
 /* Custom page footer */
 .footer {
   margin-top: 1rem;
   padding-top: 1.5rem;
   color: #777;
-  border-top: .05rem solid #e5e5e5;
+  border-top: 0.05rem solid #e5e5e5;
 }
-.modal.show .modal-dialog{
+.modal.show .modal-dialog {
   z-index: 1100;
 }
 /* Responsive: Portrait tablets and up */
@@ -67,24 +67,23 @@ body {
   margin-bottom: 2rem;
 }
 
-
-.single-number input{
+.single-number input {
   width: 100px;
 }
-.single-number-admin input{
+.single-number-admin input {
   width: 100%;
 }
 .user-control span > p {
   margin: 0;
 }
 
-.exercise-list-table .action-column{
+.exercise-list-table .action-column {
   width: 12em;
 }
-.exercise-list-table .grade-column{
+.exercise-list-table .grade-column {
   width: 7em;
 }
-.jumbotron{
+.jumbotron {
   background: transparent;
 }
 
@@ -92,7 +91,7 @@ body {
   width: 100%;
 }
 
-.msg-block{
+.msg-block {
   min-height: 20rem;
   display: flex;
   flex-direction: column;
@@ -102,18 +101,18 @@ body {
   text-align: center;
 }
 
-.msg-block .block-item{
+.msg-block .block-item {
   margin: auto;
 }
 
-.file-manager .modal-body{
+.file-manager .modal-body {
   min-height: 20rem;
 }
-.file-manager figure{
+.file-manager figure {
   margin: 0;
   width: 100px;
 }
-.file-manager figure .img{
+.file-manager figure .img {
   width: 100px;
   height: 100px;
   background-size: contain;
@@ -121,7 +120,7 @@ body {
   background-repeat: no-repeat;
 }
 
-.dnd-overlay{
+.dnd-overlay {
   display: none;
   position: fixed;
   top: 0;
@@ -129,12 +128,12 @@ body {
   bottom: 0;
   right: 0;
   background: rgba(221, 221, 221, 0.5);
-  border: .5rem dashed #007bff;
+  border: 0.5rem dashed #007bff;
   border-radius: 0.5em;
   z-index: 10000;
 }
 
-.dnd-overlay .msg-block{
+.dnd-overlay .msg-block {
   background: white;
   width: 50%;
   margin: auto;
@@ -143,55 +142,55 @@ body {
   max-width: 100%;
 }
 
-.is-dragover .dnd-overlay{
+.is-dragover .dnd-overlay {
   display: flex;
 }
 
-.upload-thumbnail{
+.upload-thumbnail {
   max-width: 100px;
 }
 
 .modal.fade {
   pointer-events: none;
-  filter: contrast(30%)
+  filter: contrast(30%);
 }
 .modal.fade.active-modal {
   pointer-events: auto;
   filter: none;
 }
 
-.header .desktop-header{
+.header .desktop-header {
   display: none;
 }
-.mobile-header{
+.mobile-header {
   position: relative;
   margin: 0 -1rem;
 }
-.mobile-header .logo{
+.mobile-header .logo {
   height: 2rem;
   padding-left: 2rem;
 }
 
 @media (min-width: 768px) {
-  .header .desktop-header{
+  .header .desktop-header {
     display: block;
   }
   .header .mobile-header,
-  .sidebar{
+  .sidebar {
     display: none;
   }
 }
 
-.sidebar{
+.sidebar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 10;
 }
-.sidebar .sidebar-content{
+.sidebar .sidebar-content {
   z-index: 10;
   background: white;
   width: 90%;
@@ -199,34 +198,54 @@ body {
   height: 100%;
 }
 
-.mn-left-side{
+.mn-left-side {
   position: absolute;
   left: 0;
 }
 
-.desktop-header .user-menu .dropdown-menu {
-  position: absolute;
-  transform: translate3d(-98px, 44px, 0px);
-  top: 0;
-  left: 0;
-  will-change: transform;
+.desktop-header .user-menu {
+  .nav-link:focus,
+  .nav-link:active,
+  .nav-link:hover {
+    background: transparent !important;
+    .fa-stack:first-child {
+      color: $primary !important;
+    }
+  }
+  .dropdown-menu {
+    position: absolute;
+    transform: translate3d(-98px, 44px, 0px);
+    top: 0;
+    left: 0;
+    will-change: transform;
+  }
 }
 
-.desktop-header .dropdown-menu{
+.desktop-header .dropdown-menu {
   top: 85%;
 }
 
-.search-input-group{
+.search-input-group {
   position: relative;
-  .search-label{
+  .search-label {
     position: absolute;
-    top: .5em;
+    top: 0.5em;
     left: 0.75em;
   }
   input {
     padding-left: 2.5em;
   }
 }
-.algolia-logo{
+.algolia-logo {
   height: 1.5em;
+}
+
+.profile-page {
+  .picture-col {
+    padding: 1rem;
+  }
+  .data-col {
+    padding: 1rem;
+    border-left: 1px solid #eee;
+  }
 }
