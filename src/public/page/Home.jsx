@@ -16,9 +16,7 @@ export default connect(mapStateToProps, { openSignInModal, openSignUpModal })(fu
       <div className="jumbotron mb-5">
         {props.session.signedIn ? (
           <h1 className="display-4">
-            Szia{' '}
-            {(props.session.userDetails && props.session.userDetails.name) ||
-              props.session.user.email}
+            Szia {props.session.user.displayName || props.session.user.email}
           </h1>
         ) : (
           <div className="text-center">
@@ -45,7 +43,7 @@ export default connect(mapStateToProps, { openSignInModal, openSignUpModal })(fu
           <NavLink to="/search">
             <div className="search-input-group ">
               <label className="search-label" htmlFor="search-input">
-                <Icon fa="search" size="lg"/>
+                <Icon fa="search" size="lg" />
                 <span className="sr-only">Feladat keresés</span>
               </label>
               <input

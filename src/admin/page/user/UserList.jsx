@@ -1,5 +1,12 @@
+import { pathOr } from 'ramda'
 import React from 'react'
-import { getAllUser, ROLE_ADMIN, ROLE_TEACHER, ROLE_USER, updateUser } from 'shared/services/user'
+import {
+  getAllUser,
+  ROLE_ADMIN,
+  ROLE_TEACHER,
+  ROLE_USER,
+  updateUserRole
+} from 'shared/services/user'
 import Loading from 'shared/component/general/Loading'
 
 export default class extends React.Component {
@@ -8,62 +15,69 @@ export default class extends React.Component {
   }
 
   loadList = () => {
-    getAllUser().then(userList => this.setState({userList}))
+    getAllUser().then(({ data }) => this.setState({ userList: data.users }))
   }
 
   setRole = key => e => {
-    updateUser(key, {role: parseInt(e.currentTarget.value, 10)})
-      .then(this.loadList)
+    this.setState({ userList: undefined })
+    updateUserRole(key, parseInt(e.currentTarget.value, 10)).then(this.loadList)
   }
 
-  componentWillMount () {
+  componentWillMount() {
     this.loadList()
   }
 
-  render () {
+  render() {
     return (
       <div>
         <div className="btn-toolbar justify-content-between align-items-center">
           <h3>Felhasználók</h3>
         </div>
-        {this.state.userList ? this.renderTable() : <Loading/>}
+        {this.state.userList ? this.renderTable() : <Loading />}
       </div>
     )
   }
 
-  renderTable () {
+  renderTable() {
     return (
       <table className="table table-hover table mt-3">
         <thead>
-        <tr>
-          <th>#</th>
-          <th>Név</th>
-          <th>Szerepkör</th>
-          <th className="text-center">Aktív</th>
-        </tr>
+          <tr>
+            <th>#</th>
+            <th>Név</th>
+            <th>Szerepkör</th>
+            <th className="text-center">Aktív</th>
+          </tr>
         </thead>
         <tbody>
-        {
-          this.state.userList.map((user, idx) =>
-            <tr key={user._key}>
+          {this.state.userList.map((user, idx) => (
+            <tr key={user.uid}>
               <td>{idx + 1}</td>
-              <td>{user.name}</td>
+              <td>{user.displayName || user.email}</td>
               <td>
-                <select className="form-control" value={user.role} onChange={this.setRole(user._key)}>
+                <select
+                  className="form-control form-control-sm"
+                  value={pathOr(ROLE_USER, ['customClaims', 'role'], user)}
+                  onChange={this.setRole(user.uid)}
+                >
                   <option value={ROLE_USER}>Diák</option>
                   <option value={ROLE_TEACHER}>Tanár</option>
                   <option value={ROLE_ADMIN}>Admin</option>
                 </select>
               </td>
-              <td className="text-center">{
-                user.active
-                  ? <span className="text-success" title="Aktív"><i className="fa fa-check"/></span>
-                  : <span className="text-danger" title="Inaktív"><i className="fa fa-ban"/></span>
-              }
+              <td className="text-center">
+                {user.disabled ? (
+                  <span className="text-danger" title="Inaktív">
+                    <i className="fa fa-ban" />
+                  </span>
+                ) : (
+                  <span className="text-success" title="Aktív">
+                    <i className="fa fa-check" />
+                  </span>
+                )}
               </td>
             </tr>
-          )
-        }
+          ))}
         </tbody>
       </table>
     )

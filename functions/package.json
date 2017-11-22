@@ -9,6 +9,7 @@
     "express": "^4.16.2",
     "firebase-admin": "5.4.2",
     "firebase-functions": "0.7.1 ",
+    "joi": "^13.0.1",
     "markdown-it": "8.4.0",
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.1.0",
     "mkdirp": "^0.5.1",

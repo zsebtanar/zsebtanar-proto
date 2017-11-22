@@ -1,8 +1,8 @@
 {
   "rules": {
     // admin can read and write everything
-    ".read": "root.child('users/'+auth.uid+'/role').val() === 1000",
-    ".write": "root.child('users/'+auth.uid+'/role').val() === 1000",
+    ".read": "auth.token.role === 1000",
+    ".write": "auth.token.role === 1000",
 
     "users": {
       "$uid": {
@@ -18,7 +18,7 @@
     "exercise": {
       "private": {
         "$exerciseId": {
-          ".read": "root.child('users/'+auth.uid+'/role').val() > 0",
+          ".read": "auth.token.role > 0",
           ".write": false
         }
       },
@@ -29,7 +29,7 @@
       }
     },
     "feedback": {
-      ".write": "!data.exists() || root.child('users/'+auth.uid+'/role').val() === 1000",
+      ".write": "auth.token.role === 1000",
       "$feedbackId": {
         "description": {
           ".validate": "newData.isString() && newData.val().length < 1024"
@@ -37,7 +37,7 @@
       }
     },
     "storage": {
-      ".write": "!data.exists() || root.child('users/'+auth.uid+'/role').val() === 1000",
+      ".write": "auth.token.role === 1000",
       ".read": true
     }
   }
