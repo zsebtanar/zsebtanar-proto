@@ -1,6 +1,5 @@
 import React from 'react'
 import Button from '../general/Button'
-import Link from 'shared/component/general/Link'
 
 export default (function ExerciseModal(props) {
   return (
@@ -12,21 +11,30 @@ export default (function ExerciseModal(props) {
               <div className="alert alert-success text-center">
                 <i className="fa fa-check fa-lg" /> A megoldás helyes. Gratuláunk!
               </div>
-              <hr/>
-              <Button className="btn btn-secondary btn-lg btn-block" onAction={() => props.close('back')}>
+              <hr />
+              <Button
+                className="btn btn-secondary btn-lg btn-block"
+                onAction={() => props.close('back')}
+              >
                 <i className="fa fa-chevron-left" /> Vissza a feladatok listához
               </Button>
             </div>
           ) : (
             <div>
               <div className="alert alert-warning text-center">
-                Sajnos rossz választ adtál meg. <br/> Próbáld meg újra!
+                Sajnos rossz választ adtál meg. <br /> Próbáld meg újra!
               </div>
-              <hr/>
-              <Button className="btn btn-primary btn-lg btn-block" onAction={() => props.close('retry')}>
+              <hr />
+              <Button
+                className="btn btn-primary btn-lg btn-block"
+                onAction={() => props.close('retry')}
+              >
                 <i className="fa fa-repeat" /> Újra próbálom
               </Button>
-              <Button className="btn btn-secondary btn-lg btn-block" onAction={() => props.close('back')}>
+              <Button
+                className="btn btn-secondary btn-lg btn-block"
+                onAction={() => props.close('back')}
+              >
                 <i className="fa fa-chevron-left" /> Vissza a feladatok listához
               </Button>
             </div>

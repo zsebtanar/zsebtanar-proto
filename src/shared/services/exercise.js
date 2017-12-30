@@ -2,6 +2,7 @@ import { isNil, not, pipe, prop, values } from 'ramda'
 import { resolveSnapshot } from '../util/firebase'
 import { assert } from '../util/fn'
 import { cloudFnDelete, cloudFnGet, cloudFnPost } from 'shared/util/firebase'
+import { excludeMetaKeys } from 'shared/util/fn'
 
 const DB = window.firebase.database()
 const Exercises = DB.ref('exercise')
@@ -39,7 +40,7 @@ export function selectPublicExercisesById(ids) {
 export const createExercise = data => cloudFnPost(`exercise`, data, { withToken: true })
 
 export const updateExercise = (key, data) =>
-  cloudFnPost(`exercise/${key}`, data, { withToken: true })
+  cloudFnPost(`exercise/${key}`, excludeMetaKeys(data), { withToken: true })
 
 export const removeExercise = key => cloudFnDelete(`exercise/${key}`, { withToken: true })
 

@@ -1,3 +1,4 @@
+import { pathOr } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
@@ -9,9 +10,9 @@ export default connect(undefined, { openInputModal })(
       super(props)
 
       this.state = {
-        prefix: props.value.prefix || null,
-        postfix: props.value.postfix || null,
-        solution: props.value.solution || ''
+        prefix: pathOr(null, ['value', 'prefix'], props),
+        postfix: pathOr(null, ['value', 'postfix'], props),
+        solution: pathOr('', ['value', 'solution'], props)
       }
     }
 

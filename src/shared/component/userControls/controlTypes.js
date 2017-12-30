@@ -4,7 +4,7 @@ export const SINGLE_CHOICE = 'single-choice'
 export const BINARY_CHOICE = 'binary-choice'
 export const MULTI_CHOICE = 'multi-choice'
 
-export const names = {
+export const NAMES = {
   [SIMPLE_TEXT]: 'Egyszerű szöveg',
   [SINGLE_NUMBER]: 'Szám',
   [SINGLE_CHOICE]: 'Feleletválasztó',

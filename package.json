@@ -10,7 +10,7 @@
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.1.0",
     "prop-types": "15.6.0",
     "ramda": "0.25.0",
-    "react": "16.0.0",
+    "react": "16.2.0",
     "react-dom": "16.0.0",
     "react-input-autosize": "^2.0.1",
     "react-redux": "^5.0.6",

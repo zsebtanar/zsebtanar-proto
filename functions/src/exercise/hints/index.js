@@ -2,7 +2,9 @@ import * as express from 'express'
 import { admin } from '../../utils/fb-utils'
 import nextHint from './nextHint'
 
-export default express.Router().get('/', (req, res) => {
+export const route = express.Router()
+
+route.get('/', (req, res) => {
   const exerciseId = req.query.key
   const lastHint = req.query.hint
 

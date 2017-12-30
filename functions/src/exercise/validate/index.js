@@ -2,7 +2,9 @@ import * as express from 'express'
 import { admin } from '../../utils/fb-utils'
 import validator from './validator'
 
-export default express.Router().post('/', (req, res) => {
+export const route = express.Router()
+
+route.post('/', (req, res) => {
   const exerciseId = req.body.key
   const userSolutions = req.body.solutions
 

@@ -8,6 +8,7 @@ import { openSideNav } from 'shared/store/reducers/sideNav'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
 import { isAdmin } from 'shared/services/user'
 import Button from 'shared/component/general/Button'
+import Icon from 'shared/component/general/Icon'
 
 const mapStateToProps = state => ({
   session: state.app.session,
@@ -38,10 +39,13 @@ export default withRouter(
                   <DropdownToggle>Rendszer</DropdownToggle>
                   <DropdownMenu>
                     <NavLink activeClassName="active" className="dropdown-item" to="/user">
-                      <i className="fa fa-users" /> Felhasználók
+                      <Icon fa="users"/> Felhasználók
                     </NavLink>
                     <NavLink activeClassName="active" className="dropdown-item" to="/feedback">
-                      <i className="fa fa-commenting-o" /> Visszajelzések
+                      <Icon fa="commenting-o"/> Visszajelzések
+                    </NavLink>
+                    <NavLink activeClassName="active" className="dropdown-item" to="/utilities">
+                      <Icon fa="exclamation-triangle"/> Gépház
                     </NavLink>
                   </DropdownMenu>
                 </Dropdown>
@@ -51,10 +55,10 @@ export default withRouter(
                 <DropdownToggle>Tartalom</DropdownToggle>
                 <DropdownMenu>
                   <NavLink activeClassName="active" className="dropdown-item" to="/exercise">
-                    <i className="fa fa-tasks" /> Feladatok
+                    <Icon fa="tasks"/> Feladatok
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/classification">
-                    <i className="fa fa-folder" /> Kategóriák
+                    <Icon fa="folder"/> Kategóriák
                   </NavLink>
                 </DropdownMenu>
               </Dropdown>
@@ -68,7 +72,7 @@ export default withRouter(
                 </DropdownToggle>
                 <DropdownMenu>
                   <a href="#" className="dropdown-item" onClick={props.signOut}>
-                    <i className="fa fa-power-off" /> Kijelentkezés
+                    <Icon fa="power-off"/> Kijelentkezés
                   </a>
                 </DropdownMenu>
               </Dropdown>

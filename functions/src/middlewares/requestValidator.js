@@ -19,7 +19,7 @@ export default function requestValidator(schema, options) {
       const result = validator(options, req[key], schema)
       return result.error
         ? {
-            message: `Schema validation failed: "${res.originalPath} - req.${key}"`,
+            message: `Schema validation failed: "${req.originalUrl} - req.${key}"`,
             details: result.error
           }
         : null

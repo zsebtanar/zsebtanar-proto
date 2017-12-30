@@ -4,7 +4,7 @@ export class TabNav extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      activeTabIndex: this.props.defaultActiveTabIndex || 0
+      activeTabIndex: this.props.defaultTab || 0
     }
     this.handleTabClick = this.handleTabClick.bind(this)
   }
@@ -12,7 +12,8 @@ export class TabNav extends React.Component {
   // Toggle currently active tab
   handleTabClick(tabIndex) {
     this.setState({
-      activeTabIndex: tabIndex === this.state.activeTabIndex ? this.props.defaultActiveTabIndex : tabIndex
+      activeTabIndex:
+        tabIndex === this.state.activeTabIndex ? this.props.defaultTab : tabIndex
     })
   }
 
@@ -20,7 +21,7 @@ export class TabNav extends React.Component {
   renderChildrenWithTabsApiAsProps() {
     return React.Children.map(this.props.children, (child, index) => {
       return React.cloneElement(child, {
-        onClick: this.handleTabClick,
+        selectTab: this.handleTabClick,
         tabIndex: index,
         isActive: index === this.state.activeTabIndex
       })
@@ -37,10 +38,34 @@ export class TabNav extends React.Component {
   }
 
   render() {
+    if (this.props.vertical) {
+      return (
+        <div className={`nav-vertical row ${this.props.className || ''}`}>
+          <div className="col-3">
+            <ul className="nav flex-column nav-pills" role="tablist">
+              {this.renderChildrenWithTabsApiAsProps()}
+            </ul>
+          </div>
+          <div className="col-9">{this.renderContent()}</div>
+        </div>
+      )
+    } else {
+      return (
+        <div className={`nav ${this.props.className || ''}`}>
+          <ul className={`nav ${this.props.navClassName || ''}`} role="tablist">
+            {this.renderChildrenWithTabsApiAsProps()}
+          </ul>
+
+          {this.renderContent()}
+        </div>
+      )
+    }
+  }
+
+  renderContent() {
     return (
-      <div className={`nav ${this.props.className || ''}`}>
-        <ul className={`nav ${this.props.navClassName || ''}`}>{this.renderChildrenWithTabsApiAsProps()}</ul>
-        <div className="tab-pane active w-100" role="tabpanel">
+      <div className="tab-content w-100">
+        <div className="tab-pane active" role="tabpanel">
           {this.renderActiveTabContent()}
         </div>
       </div>
@@ -52,11 +77,11 @@ export const Tab = props => {
   return (
     <li className="nav-item">
       <a
-        href='#'
+        href="#"
         className={`nav-link ${props.isActive ? 'active' : ''}`}
         onClick={event => {
           event.preventDefault()
-          props.onClick(props.tabIndex)
+          props.selectTab(props.tabIndex)
         }}
       >
         {props.label}

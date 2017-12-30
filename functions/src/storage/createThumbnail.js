@@ -26,7 +26,7 @@ const fs = require('fs')
 // Max height and width of the thumbnail in pixels.
 const THUMB_MAX_HEIGHT = 200
 const THUMB_MAX_WIDTH = 200
-// Thumbnail prefix added to file names.
+// Thumbnail prefix added to file NAMES.
 const THUMB_PREFIX = 'thumb_'
 
 /**
@@ -44,7 +44,7 @@ module.exports = admin => event => {
   const tempLocalFile = path.join(os.tmpdir(), filePath)
   const tempLocalDir = path.dirname(tempLocalFile)
   const tempLocalThumbFile = path.join(os.tmpdir(), thumbFilePath)
-  const gcs = gcsInit({keyFilename: path.join(__dirname, 'service-account-credentials.json')})
+  const gcs = gcsInit({ keyFilename: path.join(__dirname, 'service-account-credentials.json') })
 
   // Exit if this is triggered on a file that is not an image.
   if (!event.data.contentType.startsWith('image/')) {
@@ -71,14 +71,19 @@ module.exports = admin => event => {
 
   // Create the temp directory where the storage file will be downloaded.
   return mkdirp(tempLocalDir)
-    .then(() => file.download({destination: tempLocalFile}))
+    .then(() => file.download({ destination: tempLocalFile }))
     .then(() => {
       console.log('The file has been downloaded to', tempLocalFile)
-      return spawn('convert', [tempLocalFile, '-thumbnail', `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`, tempLocalThumbFile])
+      return spawn('convert', [
+        tempLocalFile,
+        '-thumbnail',
+        `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`,
+        tempLocalThumbFile
+      ])
     })
     .then(() => {
       console.log('Thumbnail created at', tempLocalThumbFile)
-      return bucket.upload(tempLocalThumbFile, {destination: thumbFilePath})
+      return bucket.upload(tempLocalThumbFile, { destination: thumbFilePath })
     })
     .then(() => {
       console.log('Thumbnail uploaded to Storage at', thumbFilePath)
@@ -90,10 +95,7 @@ module.exports = admin => event => {
         action: 'read',
         expires: '03-01-2500'
       }
-      return Promise.all([
-        thumbFile.getSignedUrl(config),
-        file.getSignedUrl(config)
-      ])
+      return Promise.all([thumbFile.getSignedUrl(config), file.getSignedUrl(config)])
     })
     .then(results => {
       console.log('Got Signed URLs.')
@@ -105,6 +107,6 @@ module.exports = admin => event => {
       return admin
         .database()
         .ref(filePath)
-        .update({thumbnail: thumbFileUrl})
+        .update({ thumbnail: thumbFileUrl })
     })
 }
