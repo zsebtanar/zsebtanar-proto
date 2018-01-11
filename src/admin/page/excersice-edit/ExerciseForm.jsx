@@ -24,14 +24,13 @@ import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import Select from 'react-select'
 import Button from 'shared/component/general/Button'
-import { createExerciseAction, updateExerciseAction } from 'shared/store/actions/exercise'
 import {
-  changeState,
+  changeState, createExercise,
   EXERCISE_ACTIVE,
   EXERCISE_ARCHIVE,
   EXERCISE_DRAFT,
   EXERCISE_REMOVE,
-  getPrivateExercise
+  getPrivateExercise, updateExercise
 } from 'shared/services/exercise'
 import { openFileManager, openMarkdownHelpModal } from 'shared/store/actions/modal'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
@@ -48,7 +47,7 @@ const modeLabel = {
   Update: 'módosítása',
   Clone: 'másolása'
 }
-const TABS = ['Kategóriák', 'Leírás', 'Részfeladatok', 'Előnézet']
+const TABS = ['Leírás', 'Részfeladatok', 'Kategóriák', 'Előnézet']
 
 const STATE_MESSAGES = {
   [EXERCISE_DRAFT]: 'Biztos, hogy szeretnéd visszállítani a feladtot vázlat állapotba?',
@@ -59,9 +58,7 @@ const STATE_MESSAGES = {
 
 export default connect(undefined, {
   openFileManager,
-  openMarkdownHelpModal,
-  createExerciseAction,
-  updateExerciseAction
+  openMarkdownHelpModal
 })(
   class ExerciseForm extends React.Component {
     mode = 'Add'
@@ -112,9 +109,9 @@ export default connect(undefined, {
       }
       const ex = this.state.exercise
       if (ex._key) {
-        this.props.updateExerciseAction(ex._key, ex).then(this.back)
+        updateExercise(ex._key, ex).then(this.back)
       } else {
-        this.props.createExerciseAction(ex).then(this.back)
+        createExercise(ex).then(this.back)
       }
     }
 
@@ -229,7 +226,7 @@ export default connect(undefined, {
           {this.renderHeader()}
 
           <form onSubmit={this.saveExercise} className="tab-content w-100">
-            <TabNav navClassName="nav-tabs nav-fill w-100 mt-4 mb-2" defaultTab={2}>
+            <TabNav navClassName="nav-tabs nav-fill w-100 mt-4 mb-2" defaultTab={0}>
               {TABS.map((item, idx) => (
                 <Tab key={item} label={item}>
                   {this.renderActiveTabContent(idx)}
@@ -292,11 +289,11 @@ export default connect(undefined, {
     renderActiveTabContent(idx) {
       switch (idx) {
         case 0:
-          return this.renderCategories()
-        case 1:
           return this.renderDescription()
-        case 2:
+        case 1:
           return this.renderSubTasks()
+        case 2:
+          return this.renderCategories()
         case 3:
           return this.renderPreview()
       }

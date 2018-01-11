@@ -9,7 +9,6 @@ import SideNav from './nav/SideNav'
 import Home from './page/Home'
 import ExerciseList from './page/ExerciseList'
 import ExerciseForm from './page/excersice-edit/ExerciseForm'
-import Exercise from './page/Exercise'
 import Page404 from 'shared/page/Page404'
 import Overlay from 'shared/component/modal/Overlay'
 import UserList from './page/user/UserList'
@@ -43,7 +42,6 @@ export default connect(mapStateToProps)(function(props) {
                 <Route path="/exercise" exact component={ExerciseList} />
                 <Route path="/exercise/add/:clone" component={ExerciseForm} />
                 <Route path="/exercise/add/" component={ExerciseForm} />
-                <Route path="/exercise/view/:key" component={Exercise} />
                 <Route path="/exercise/edit/:key" component={ExerciseForm} />
                 <Route path="/feedback" component={FeedbackList} />
                 <Route path="/utilities" component={AdminUtils} />

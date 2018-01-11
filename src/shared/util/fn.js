@@ -26,3 +26,8 @@ const isNotMetaKey = (_, key) => key.charAt(0) !== '_'
 export function excludeMetaKeys(obj) {
   return pickBy(isNotMetaKey, obj)
 }
+
+const littleACode = 'a'.charCodeAt(0)
+export function abcIndex(idx) {
+  return String.fromCharCode(littleACode + idx)
+}

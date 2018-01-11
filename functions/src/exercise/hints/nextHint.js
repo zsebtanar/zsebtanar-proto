@@ -3,7 +3,7 @@ import { pairsInOrder } from '../../utils/fn'
 
 const getHints = pipe(pathOr({}, ['hints']), pairsInOrder)
 
-export default (exerciseId, lastHint) => snapshot => {
+export default lastHint => snapshot => {
   const ex = snapshot.val()
   const hints = getHints(ex)
   const lastHintIdx = findIndex(propEq(0, lastHint), hints)

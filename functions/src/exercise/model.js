@@ -42,7 +42,8 @@ const subTaskSchema = Joi.object({
     .pattern(uidPattern, controlsSchema)
     .min(1),
   solutions: Joi.object()
-    .pattern(uidPattern, Joi.string())
+    .pattern(uidPattern, Joi.any())
+    .pattern(uidPattern, Joi.any())
     .min(1),
   hints: Joi.object()
     .optional()

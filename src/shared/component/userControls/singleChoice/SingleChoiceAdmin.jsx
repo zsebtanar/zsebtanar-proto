@@ -5,11 +5,11 @@ import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
 import Markdown from 'shared/component/general/Markdown'
 
-export default connect(undefined, { openInputModal })(
+export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
     state = {
       options: [],
-      solution: undefined
+      solution: ''
     }
 
     componentWillMount() {
@@ -91,7 +91,7 @@ export default connect(undefined, { openInputModal })(
               name={item.name}
               value={item.value}
               checked={item.value === this.state.solution}
-              required={this.props.required}
+              required
               onChange={this.selectSolution}
             />
             <span className="custom-control-indicator" />

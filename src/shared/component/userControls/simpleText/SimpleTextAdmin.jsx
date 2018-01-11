@@ -1,26 +1,30 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { assocPath, dissocPath, toPairs } from 'ramda'
+import { assocPath, dissocPath, pathOr, toPairs } from 'ramda'
 import { uid } from 'shared/util/uuid'
 import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
 import Checkbox from 'shared/component/input/Checkbox'
-import TrashButton from 'shared/component/userControls/common/TrashButton'
-import MarkdownField from 'shared/component/userControls/common/MarkdownField'
+import { TrashButton } from 'shared/component/userControls/common/TrashButton'
+import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
 
-export default connect(undefined, { openInputModal })(
+export const SimpleTextAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
     constructor(props) {
       super(props)
 
       this.state = {
-        prefix: props.value.prefix || null,
-        postfix: props.value.postfix || null,
-        solution: props.value.solution || {
-          ignoreSpaces: props.value.ignoreSpaces || false,
-          caseSensitive: props.value.caseSensitive || true,
-          options: false
-        }
+        prefix: pathOr(null, ['value', 'prefix'], props),
+        postfix: pathOr(null, ['value', 'postfix'], props),
+        solution: pathOr(
+          {
+            ignoreSpaces: pathOr(false, ['value', 'ignoreSpaces'], props),
+            caseSensitive: pathOr(true, ['value', 'caseSensitive'], props),
+            options: false
+          },
+          ['value', 'solution'],
+          props
+        )
       }
     }
 
@@ -65,12 +69,20 @@ export default connect(undefined, { openInputModal })(
       return (
         <div className="user-control simple-text simple-text-admin">
           <div>
-            <Checkbox name="ignoreSpaces" checked={this.state.solution.ignoreSpaces} onChange={this.setOption}>
+            <Checkbox
+              name="ignoreSpaces"
+              checked={this.state.solution.ignoreSpaces}
+              onChange={this.setOption}
+            >
               Szóközök figyelmen kívül hagyása
             </Checkbox>
           </div>
           <div className="my-2">
-            <Checkbox name="caseSensitive" checked={this.state.solution.caseSensitive} onChange={this.setOption}>
+            <Checkbox
+              name="caseSensitive"
+              checked={this.state.solution.caseSensitive}
+              onChange={this.setOption}
+            >
               Kis- és nagybetűk megkülönböztetése
             </Checkbox>
           </div>
@@ -94,12 +106,17 @@ export default connect(undefined, { openInputModal })(
           <div className="form-group row">
             <label className="col-3 col-form-label">Megoldások:</label>
             <div className="col-9">
-              <ol className="list-unstyled">{solution.map(item => this.renderItem(item, solution.length < 2))}</ol>
+              <ol className="list-unstyled">
+                {solution.map(item => this.renderItem(item, solution.length < 2))}
+              </ol>
             </div>
           </div>
           <div className="form-group row">
             <div className="col-9 ml-auto">
-              <Button className="btn-sm btn-outline-primary d-block mx-auto" onAction={this.addSolution}>
+              <Button
+                className="btn-sm btn-outline-primary d-block mx-auto"
+                onAction={this.addSolution}
+              >
                 <i className="fa fa-plus" /> Alternatív megoldás megadása
               </Button>
             </div>

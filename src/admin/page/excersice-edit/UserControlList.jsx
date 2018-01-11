@@ -1,5 +1,5 @@
 import {
-  __,
+  __, always,
   assocPath,
   dissoc,
   dissocPath,
@@ -46,7 +46,7 @@ export default connect(undefined, { openUserControlModal })(
       this.setValue(
         evolve({
           controls: { [key]: merge(__, dissocPath(['controlProps', 'solution'], value)) },
-          solutions: { [key]: merge(__, path(['controlProps', 'solution'], value)) }
+          solutions: merge(__, { [key]: path(['controlProps', 'solution'], value) })
         })
       )
 

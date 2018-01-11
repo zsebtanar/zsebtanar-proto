@@ -2,9 +2,9 @@ import { pathOr } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
-import MarkdownField from 'shared/component/userControls/common/MarkdownField'
+import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
 
-export default connect(undefined, { openInputModal })(
+export const SingleNumberAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
     constructor(props) {
       super(props)
@@ -54,7 +54,12 @@ export default connect(undefined, { openInputModal })(
           <div className="form-group row">
             <label className="col-3 col-form-label">Megoldás:</label>
             <div className="col-7">
-              <input type="number" onChange={this.setSolution} className="form-control" value={solution} />
+              <input
+                type="number"
+                onChange={this.setSolution}
+                className="form-control"
+                value={solution}
+              />
             </div>
           </div>
         </div>

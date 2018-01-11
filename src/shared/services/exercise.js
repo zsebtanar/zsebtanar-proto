@@ -15,16 +15,16 @@ export const EXERCISE_REMOVE = 'remove'
 
 const notFound = uid => assert(pipe(isNil, not), `A kért feladat nem létezik: ${uid}.`)
 
-export function getPublicExercise(uid) {
-  return Exercises.child(`public/${uid}`)
+export function getPublicExercise(exerciseId) {
+  return Exercises.child(`public/${exerciseId}`)
     .once('value')
-    .then(pipe(resolveSnapshot, notFound(uid)))
+    .then(pipe(resolveSnapshot, notFound(exerciseId)))
 }
 
-export function getPrivateExercise(uid) {
-  return Exercises.child(`private/${uid}`)
+export function getPrivateExercise(exerciseId) {
+  return Exercises.child(`private/${exerciseId}`)
     .once('value')
-    .then(pipe(resolveSnapshot, notFound(uid)))
+    .then(pipe(resolveSnapshot, notFound(exerciseId)))
 }
 
 export function getAllPrivateExercises() {
@@ -33,21 +33,23 @@ export function getAllPrivateExercises() {
     .then(pipe(resolveSnapshot, values))
 }
 
-export function selectPublicExercisesById(ids) {
-  return Promise.all(ids.map(getPublicExercise))
+export function selectPublicExercisesById(exerciseIds) {
+  return Promise.all(exerciseIds.map(getPublicExercise))
 }
 
 export const createExercise = data => cloudFnPost(`exercise`, data, { withToken: true })
 
-export const updateExercise = (key, data) =>
-  cloudFnPost(`exercise/${key}`, excludeMetaKeys(data), { withToken: true })
+export const updateExercise = (exerciseId, data) =>
+  cloudFnPost(`exercise/${exerciseId}`, excludeMetaKeys(data), { withToken: true })
 
-export const removeExercise = key => cloudFnDelete(`exercise/${key}`, { withToken: true })
+export const removeExercise = exerciseId =>
+  cloudFnDelete(`exercise/${exerciseId}`, { withToken: true })
 
-export const checkSolution = (key, solutions) => cloudFnPost('exercise/check', { key, solutions })
+export const checkSolution = (exerciseId, subTaskId, solutions) =>
+  cloudFnPost('exercise/check', { key: exerciseId, task: subTaskId, solutions })
 
-export const getHint = (key, hint) =>
-  cloudFnGet('exercise/getNextHint', { key, hint }).then(prop('data'))
+export const getHint = (exerciseId, subTaskId, lastHintId) =>
+  cloudFnGet('exercise/getNextHint', { key: exerciseId, task: subTaskId, hint: lastHintId })
 
-export const changeState = (key, state) =>
-  cloudFnPost(`exercise/state/${key}`, { state }, { withToken: true })
+export const changeState = (exerciseId, state) =>
+  cloudFnPost(`exercise/state/${exerciseId}`, { state }, { withToken: true })

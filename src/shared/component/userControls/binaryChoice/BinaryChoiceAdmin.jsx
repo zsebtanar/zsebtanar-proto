@@ -6,11 +6,11 @@ import { uid } from 'shared/util/uuid'
 import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
 import Checkbox from 'shared/component/input/Checkbox'
-import MarkdownField from '../common/MarkdownField'
-import TrashButton from '../common/TrashButton'
+import { MarkdownField } from '../common/MarkdownField'
+import { TrashButton } from '../common/TrashButton'
 import { DEFAULT_FALSE_LABEL, DEFAULT_TRUE_LABEL } from './BinaryChoice'
 
-export default connect(undefined, { openInputModal })(
+export const BinaryChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
     state = {
       options: {},
@@ -31,7 +31,9 @@ export default connect(undefined, { openInputModal })(
       this.updateState(
         evolve(
           {
-            options: merge(__, { [id]: { label: `Állítás`, order: keys(this.state.options).length } }),
+            options: merge(__, {
+              [id]: { label: `Állítás`, order: keys(this.state.options).length }
+            }),
             solution: merge(__, { [id]: false })
           },
           this.state
@@ -84,7 +86,11 @@ export default connect(undefined, { openInputModal })(
       return (
         <div className="user-control binary-choice binary-choice-admin">
           <div className="my-2">
-            <Checkbox name="randomOrder" checked={this.state.solution.randomOrder} onChange={this.setParam}>
+            <Checkbox
+              name="randomOrder"
+              checked={this.state.solution.randomOrder}
+              onChange={this.setParam}
+            >
               Kitöltéskor az állítások véletlenszerű sorredben jelenjenek meg
             </Checkbox>
           </div>
@@ -94,7 +100,10 @@ export default connect(undefined, { openInputModal })(
                 this.renderItem({ id, ...data, name: 'admin', isLast: options.length < 2 }, idx)
               )}
             </div>
-            <Button className="btn-sm btn-outline-primary mx-auto my-4 d-block" onAction={this.addItem}>
+            <Button
+              className="btn-sm btn-outline-primary mx-auto my-4 d-block"
+              onAction={this.addItem}
+            >
               <i className="fa fa-plus" /> Válasz lehetőség hozzáadása
             </Button>
           </div>
@@ -111,10 +120,19 @@ export default connect(undefined, { openInputModal })(
               {' - '}
               {item.label}
             </span>
-            {item.isLast ? '' : <TrashButton label="Törlés" onAction={() => this.removeItem(item.id)} />}
+            {item.isLast ? (
+              ''
+            ) : (
+              <TrashButton label="Törlés" onAction={() => this.removeItem(item.id)} />
+            )}
           </div>
           <div className="card-body">
-            <MarkdownField label="Állítás" name="label" value={item.label} onChange={this.updateOption(item.id)} />
+            <MarkdownField
+              label="Állítás"
+              name="label"
+              value={item.label}
+              onChange={this.updateOption(item.id)}
+            />
             <MarkdownField
               label="Igaz"
               name="trueLabel"

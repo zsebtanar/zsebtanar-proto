@@ -1,23 +1,24 @@
-import { keys } from 'ramda'
+import { mapObjIndexed } from 'ramda'
 import React from 'react'
 import Markdown from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
 import Checkbox from 'shared/component/input/Checkbox'
+import Icon from 'shared/component/general/Icon'
 
-export default (class extends React.Component {
-  constructor (props) {
+export class MultiChoice extends React.Component {
+  constructor(props) {
     super(props)
     const opt = pairsInOrder(props.options)
     this.state = {
       options: this.props.randomOrder ? shuffle(opt) : opt,
-      solutions: keys(props.options).reduce((acc, id) => ({...acc, [id]: false}), {})
+      solutions: mapObjIndexed(() => false, props.options)
     }
   }
 
-  onChange = (e) => {
-    const {name, checked} = e.currentTarget
-    const solutions = {...this.state.solutions, [name]: checked}
-    this.setState({...this.state, solutions})
+  onChange = e => {
+    const { name, checked } = e.currentTarget
+    const solutions = { ...this.state.solutions, [name]: checked }
+    this.setState({ ...this.state, solutions })
 
     if (this.props.onChange) {
       this.props.onChange({
@@ -27,23 +28,34 @@ export default (class extends React.Component {
     }
   }
 
-  render () {
+  render() {
+    return (
+      <div className="user-control multi-choice">
+        {this.props.readOnly ? this.renderReadOnly() : this.renderNormal()}
+      </div>
+    )
+  }
+  renderNormal() {
     const options = this.state.options
 
-    return (<div className="user-control multi-choice">
-      {
-        options.map(([id, item]) => (
-          <div key={id} className="">
-            <Checkbox
-              name={id}
-              checked={this.state[id]}
-              onChange={this.onChange}
-            >
-              <Markdown source={item.label}/>
-            </Checkbox>
-          </div>
-        ))
-      }
-    </div>)
+    return options.map(([id, item]) => (
+      <div key={id} className="">
+        <Checkbox name={id} checked={this.state[id]} onChange={this.onChange}>
+          <Markdown source={item.label} />
+        </Checkbox>
+      </div>
+    ))
   }
-})
+
+  renderReadOnly() {
+    const options = this.state.options
+    const value = this.props.value
+
+    return options.map(([id, item]) => (
+      <div key={id} className="row">
+        <Icon fa={value[id] ? 'check' : 'ban'} className="col-1" />
+        <Markdown source={item.label} className="col-11" />
+      </div>
+    ))
+  }
+}
