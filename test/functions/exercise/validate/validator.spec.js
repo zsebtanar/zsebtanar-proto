@@ -1,8 +1,8 @@
 import validator from '../../../../functions/src/exercise/validate/validator'
 
 describe('validator', () => {
-  it('should return empty array if no user input in the exercise', () => {
-    ;[null, undefined, {}, []].map(input => expect(validator({}, { solutions: input })).toEqual([]))
+  it('should return empty object if no user input in the exercise', () => {
+    ;[null, undefined, {}, []].map(input => expect(validator({}, { solutions: input })).toEqual({}))
   })
 
   it('should return invalid solution(s) if no solution from the user', () => {
@@ -12,7 +12,7 @@ describe('validator', () => {
           solutions: { idA: 'solution' },
           controls: { idA: { controlType: 'simple-text' } }
         })
-      ).toEqual([false])
+      ).toEqual({ idA: false })
     )
   })
 
@@ -25,7 +25,7 @@ describe('validator', () => {
           controls: { idA: { controlType: 'unknown' } }
         }
       )
-    ).toEqual([false])
+    ).toEqual({ idA: false })
   })
 
   it('should return valid solution(s) if the user send valid solution', () => {
@@ -37,6 +37,6 @@ describe('validator', () => {
           controls: { idA: { controlType: 'binary-choice' } }
         }
       )
-    ).toEqual([true])
+    ).toEqual({ idA: true })
   })
 })

@@ -19,7 +19,6 @@ export class SingleChoice extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="user-control single-choice">
         {this.props.readOnly ? this.renderReadOnly() : this.renderNormal()}

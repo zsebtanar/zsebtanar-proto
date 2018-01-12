@@ -5,7 +5,7 @@ import UserControls from 'shared/component/userControls/UserControl'
 import Markdown from 'shared/component/general/Markdown'
 import Button from 'shared/component/general/Button'
 import { connect } from 'react-redux'
-import { checkSolutionAction, getHintAction } from 'public/store/exercise'
+import { checkSolutionAction, getHintAction, TASK_STATUS_DONE } from 'public/store/exercise'
 import Icon from 'shared/component/general/Icon'
 
 export const SubTask = connect(undefined, { getHintAction, checkSolutionAction })(
@@ -39,20 +39,20 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
     render() {
       const { task } = this.props
       const { loadingHint, loadingCheck } = this.state
+      const isDone = task.status === TASK_STATUS_DONE
       const hints = task.hints || []
       const controls = pairsInOrder(task.details.controls)
 
       return (
-        <div className="row">
-          <div className="col-1">{abcIndex(task.order)})</div>
-          <div className="col-10">
+        <div>
             {this.renderDescription()}
 
             <div className="form-group">
               {hints && <ol>{hints.map(this.renderHint)}</ol>}
 
-              <div className="form-group">
-                {task.hintsLeft > 0 && (
+              {!isDone &&
+              task.hintsLeft > 0 && (
+                <div className="form-group">
                   <Button
                     className="btn-link"
                     onAction={this.getHint}
@@ -61,19 +61,20 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
                   >
                     Következő tipp (még {task.hintsLeft})
                   </Button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             <form onSubmit={this.checkSolution}>
               {controls.map(this.renderControl)}
-              <Button submit loading={loadingCheck} disabled={loadingHint}>
-                <Icon fa="check" /> Ellenőrzés
-              </Button>
+
+              {!isDone && (
+                <Button submit loading={loadingCheck} disabled={loadingHint}>
+                  <Icon fa="check" /> Ellenőrzés
+                </Button>
+              )}
             </form>
-          </div>
-        </div>
-      )
+          </div>)
     }
 
     renderDescription() {
@@ -84,6 +85,7 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
     renderControl = ([ctrlId, { controlType, controlProps }]) => {
       const value = this.state.solutions[ctrlId]
       const readOnly = this.props.task.validity[ctrlId]
+      const isDone = this.props.task.status === TASK_STATUS_DONE
 
       const props = {
         controlType,
@@ -96,14 +98,22 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
         }
       }
 
-      return (
-        <div className="form-group row" key={ctrlId}>
-          <div className="col-1">{this.resultIcon(ctrlId)}</div>
-          <div className="col-11">
+      if (isDone) {
+        return (
+          <div className="form-group row" key={ctrlId}>
             <UserControls {...props} />
           </div>
-        </div>
-      )
+        )
+      } else {
+        return (
+          <div className="form-group row" key={ctrlId}>
+            <div className="col-1">{this.resultIcon(ctrlId)}</div>
+            <div className="col-11">
+              <UserControls {...props} />
+            </div>
+          </div>
+        )
+      }
     }
 
     renderHint = item => (

@@ -50,7 +50,10 @@ export default connect(undefined, { openUserControlModal })(
         })
       )
 
-    removeUserControl = key => this.setValue(evolve({ controls: dissoc(key) }))
+    removeUserControl = key => this.setValue(evolve({
+      controls: dissoc(key),
+      solutions: dissoc(key)
+    }))
 
     setValue = fn => {
       const data = fn(this.props)

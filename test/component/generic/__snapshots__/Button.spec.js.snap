@@ -3,6 +3,7 @@
 exports[`Button renders correctly the default 1`] = `
 <button
   className="btn btn-secondary"
+  disabled={undefined}
   onClick={[Function]}
   tabIndex={undefined}
   title={undefined}
@@ -15,6 +16,7 @@ exports[`Button renders correctly the default 1`] = `
 exports[`Button renders correctly the primary 1`] = `
 <button
   className="btn btn-primary"
+  disabled={undefined}
   onClick={[Function]}
   tabIndex={undefined}
   title={undefined}
@@ -27,6 +29,7 @@ exports[`Button renders correctly the primary 1`] = `
 exports[`Button renders correctly the submit 1`] = `
 <button
   className="btn btn-secondary"
+  disabled={undefined}
   onClick={[Function]}
   tabIndex={undefined}
   title={undefined}

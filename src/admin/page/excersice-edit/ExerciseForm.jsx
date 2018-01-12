@@ -170,7 +170,7 @@ export default connect(undefined, {
     }
 
     updateSubTask = subTasks =>
-      console.log(subTasks) || this.setState(assocPath(['exercise', 'subTasks'], subTasks))
+      this.setState(assocPath(['exercise', 'subTasks'], subTasks))
 
     loadExercise = () => {
       const key = this.props.match.params.key
