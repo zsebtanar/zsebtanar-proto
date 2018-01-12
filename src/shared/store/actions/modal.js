@@ -5,7 +5,7 @@ import MarkdownHelpModal from 'shared/component/modal/MarkdownHelpModal'
 import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
 import FileManager from 'shared/component/modal/fileManager/FileManager'
 import FeedbackModal from 'shared/component/modal/FeedbackModal'
-import UserControlSelectorModal from 'shared/component/modal/UserControlSelectorModal'
+import UserControlModal from 'shared/component/modal/UserControlModal'
 import SignInModal from 'shared/component/modal/SignInModal'
 import SignUpModal from 'shared/component/modal/SignUpModal'
 import ExerciseResultModal from 'shared/component/modal/ExerciseResultModal'
@@ -89,8 +89,8 @@ export function openFeedbackModal(params) {
   })
 }
 
-export function openUserControlSelectorModal(params) {
-  return openModal(UserControlSelectorModal, {
+export function openUserControlModal(params) {
+  return openModal(UserControlModal, {
     onClose: identity,
     onUpdate: identity,
     ...params

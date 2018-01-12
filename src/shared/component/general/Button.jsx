@@ -17,8 +17,10 @@ export default function Button (props) {
     onClick={onClick}
     tabIndex={props.tabIndex}
     title={props.title}
+    disabled={props.disabled || props.loading}
     {...pickArea(props)}
   >
     {props.children}
+    {props.loading && <i className="fa fa-cog fa-spin fa-fw"/>}
   </button>)
 }

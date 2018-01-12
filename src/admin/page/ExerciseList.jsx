@@ -6,6 +6,7 @@ import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/servic
 import { getAllPrivateExercises, removeExercise } from 'shared/services/exercise'
 import Loading from 'shared/component/general/Loading'
 import ExerciseState from '../components/ExerciseState'
+import { rePublishAllExercise } from 'shared/services/admin'
 
 export default class extends React.Component {
   state = {

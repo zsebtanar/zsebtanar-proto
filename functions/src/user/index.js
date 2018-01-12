@@ -7,7 +7,7 @@ import userRoleUpdate from './updateRole'
 import getAllUser from './getAllUser'
 import userProfileUpdate from './updateProfile'
 
-const route = express.Router()
+export const route = express.Router()
 
 route.get('/all', [getToken, onlyAdmin], getAllUser)
 
@@ -22,5 +22,3 @@ route.post(
   [getToken, onlyUser, requestValidator({ body: profileUpdateSchema })],
   userProfileUpdate
 )
-
-export default route

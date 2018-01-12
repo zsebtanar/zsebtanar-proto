@@ -9,7 +9,6 @@ import SideNav from './nav/SideNav'
 import Home from './page/Home'
 import ExerciseList from './page/ExerciseList'
 import ExerciseForm from './page/excersice-edit/ExerciseForm'
-import Exercise from './page/Exercise'
 import Page404 from 'shared/page/Page404'
 import Overlay from 'shared/component/modal/Overlay'
 import UserList from './page/user/UserList'
@@ -17,6 +16,7 @@ import ClassificationList from './page/classification/ClassificationList'
 import FeedbackList from 'admin/page/FeedbackList'
 import About from 'shared/page/About'
 import Footer from 'admin/nav/Footer'
+import { AdminUtils } from 'admin/page/AdminUtils'
 
 const mapStateToProps = state => ({
   session: state.app.session
@@ -42,9 +42,9 @@ export default connect(mapStateToProps)(function(props) {
                 <Route path="/exercise" exact component={ExerciseList} />
                 <Route path="/exercise/add/:clone" component={ExerciseForm} />
                 <Route path="/exercise/add/" component={ExerciseForm} />
-                <Route path="/exercise/view/:key" component={Exercise} />
                 <Route path="/exercise/edit/:key" component={ExerciseForm} />
                 <Route path="/feedback" component={FeedbackList} />
+                <Route path="/utilities" component={AdminUtils} />
                 <Route path="/about" component={About} />
                 <Route component={Page404} />
               </Switch>

@@ -13,8 +13,7 @@ export const EXERCISE_ACTIVE = 'active'
 export const EXERCISE_ARCHIVE = 'archive'
 export const EXERCISE_REMOVE = 'remove'
 
-const route = express.Router()
-export default route
+export const route = express.Router()
 
 route.use(validateFirebaseIdToken)
 route.use(preFetch('classifications/', 'exercise/private/:id'))

@@ -15,7 +15,7 @@ export default (class extends React.Component {
 
   render() {
     return (
-      <div className="markdown">
+      <div className={`markdown ${this.props.className || ''}`}>
         {this.props.source ? (
           <span
             dangerouslySetInnerHTML={{

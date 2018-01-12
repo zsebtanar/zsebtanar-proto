@@ -1,4 +1,4 @@
-import { F, propOr, toPairs } from 'ramda'
+import { F, mapObjIndexed, propOr } from 'ramda'
 
 const types = {
   'simple-text': require('./userControls/simpleText').simpleTextCheck,
@@ -9,7 +9,7 @@ const types = {
 }
 
 export default (userSolutions, exercise) => {
-  return toPairs(exercise.solutions).map(([key, solution]) => {
+  return mapObjIndexed((solution, key) => {
     const control = propOr({}, key, exercise.controls)
     const userSolution = propOr(undefined, key, userSolutions)
     const inputTypeValidator = propOr(F, control.controlType, types)
@@ -19,5 +19,5 @@ export default (userSolutions, exercise) => {
     }
 
     return inputTypeValidator(control, solution, userSolution)
-  })
+  }, exercise.solutions)
 }

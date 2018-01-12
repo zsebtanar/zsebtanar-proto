@@ -16,39 +16,38 @@ import {
   pipe,
   prop,
   union,
-  values
+  values,
+  keys
 } from 'ramda'
-import { uid } from 'shared/util/uuid'
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import Select from 'react-select'
 import Button from 'shared/component/general/Button'
-import { createExerciseAction, updateExerciseAction } from 'shared/store/actions/exercise'
 import {
-  changeState,
+  changeState, createExercise,
   EXERCISE_ACTIVE,
   EXERCISE_ARCHIVE,
   EXERCISE_DRAFT,
   EXERCISE_REMOVE,
-  getPrivateExercise
+  getPrivateExercise, updateExercise
 } from 'shared/services/exercise'
 import { openFileManager, openMarkdownHelpModal } from 'shared/store/actions/modal'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
-import EditUserControls from './EditUserControls'
-import EditHints from './EditHints'
 import ExercisePreview from './ExercisePreview'
 import Loading from 'shared/component/general/Loading'
 import { Tab, TabNav } from 'shared/component/general/TabNav'
 import TextEditor from 'shared/component/general/TextEditor'
 import ExerciseState from 'admin/components/ExerciseState'
+import FormGroup from 'shared/component/general/FormGroup'
+import SubTaskList from 'admin/page/excersice-edit/SubTaskList'
 
 const modeLabel = {
   Add: 'létrehozása',
   Update: 'módosítása',
   Clone: 'másolása'
 }
-const tabs = ['Kategóriák', 'Leírás', 'Megoldások', 'Útmutatók', 'Előnézet']
+const TABS = ['Leírás', 'Részfeladatok', 'Kategóriák', 'Előnézet']
 
 const STATE_MESSAGES = {
   [EXERCISE_DRAFT]: 'Biztos, hogy szeretnéd visszállítani a feladtot vázlat állapotba?',
@@ -59,9 +58,7 @@ const STATE_MESSAGES = {
 
 export default connect(undefined, {
   openFileManager,
-  openMarkdownHelpModal,
-  createExerciseAction,
-  updateExerciseAction
+  openMarkdownHelpModal
 })(
   class ExerciseForm extends React.Component {
     mode = 'Add'
@@ -100,21 +97,21 @@ export default connect(undefined, {
 
     setExercise = exercise => {
       this.setState({
-        exercise: merge({ controls: {}, solutions: {}, hints: {} }, exercise),
+        exercise: merge({ }, exercise),
         loading: false
       })
     }
 
     saveExercise = event => {
       event.preventDefault()
-      if (values(this.state.exercise.controls).length < 1) {
-        return alert('Kérlek hozz létre legalább egy bevitel mezőt')
+      if (keys(this.state.exercise.subTasks).length < 1) {
+        return alert('Kérlek hozz létre legalább egy részfeladatot')
       }
       const ex = this.state.exercise
       if (ex._key) {
-        this.props.updateExerciseAction(ex._key, ex).then(this.back)
+        updateExercise(ex._key, ex).then(this.back)
       } else {
-        this.props.createExerciseAction(ex).then(this.back)
+        createExercise(ex).then(this.back)
       }
     }
 
@@ -172,64 +169,8 @@ export default connect(undefined, {
       })
     }
 
-    updateSolution = ({ name, value }) =>
-      this.setState(
-        evolve({
-          exercise: {
-            controls: {
-              [name]: merge(__, { controlProps: omit(['solution'], value) })
-            },
-            solutions: merge(__, { [name]: value.solution })
-          }
-        })
-      )
-
-    addUserControl = controlType =>
-      this.setState(
-        evolve({
-          exercise: {
-            controls: c => ({
-              ...c,
-              [uid()]: { order: values(c).length, controlType }
-            })
-          }
-        })
-      )
-
-    removeUserControl = key =>
-      this.setState(
-        evolve({
-          exercise: {
-            controls: dissoc(key),
-            solutions: dissoc(key)
-          }
-        })
-      )
-
-    addHint = text =>
-      this.setState(
-        evolve({
-          exercise: {
-            hints: c => ({ ...c, [uid()]: { order: values(c).length, text } })
-          }
-        })
-      )
-
-    updateHint = (key, text) =>
-      this.setState(
-        evolve({
-          exercise: {
-            hints: { [key]: merge(__, { text }) }
-          }
-        })
-      )
-
-    removeHint = key =>
-      this.setState(
-        evolve({
-          exercise: { hints: dissoc(key) }
-        })
-      )
+    updateSubTask = subTasks =>
+      this.setState(assocPath(['exercise', 'subTasks'], subTasks))
 
     loadExercise = () => {
       const key = this.props.match.params.key
@@ -285,8 +226,8 @@ export default connect(undefined, {
           {this.renderHeader()}
 
           <form onSubmit={this.saveExercise} className="tab-content w-100">
-            <TabNav navClassName="nav-tabs nav-fill w-100 my-4">
-              {tabs.map((item, idx) => (
+            <TabNav navClassName="nav-tabs nav-fill w-100 mt-4 mb-2" defaultTab={0}>
+              {TABS.map((item, idx) => (
                 <Tab key={item} label={item}>
                   {this.renderActiveTabContent(idx)}
                 </Tab>
@@ -307,18 +248,30 @@ export default connect(undefined, {
           <h4>Feladat {mLabel}</h4>
           <ExerciseState value={exState} />
           <div>
-            {notNew && exState === EXERCISE_ACTIVE && (
-              <Button className="btn btn-link text-dark" onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}>
+            {notNew &&
+            exState === EXERCISE_ACTIVE && (
+              <Button
+                className="btn btn-link text-dark"
+                onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}
+              >
                 <i className="fa fa-archive" /> Arhiválás
               </Button>
             )}{' '}
-            {notNew && (exState === EXERCISE_DRAFT || exState === EXERCISE_ARCHIVE) && (
-              <Button className="btn btn-link text-success" onAction={this.changeExerciseState(EXERCISE_ACTIVE)}>
+            {notNew &&
+            (exState === EXERCISE_DRAFT || exState === EXERCISE_ARCHIVE) && (
+              <Button
+                className="btn btn-link text-success"
+                onAction={this.changeExerciseState(EXERCISE_ACTIVE)}
+              >
                 <i className="fa fa-check" /> Aktiválás
               </Button>
             )}{' '}
-            {notNew && exState === EXERCISE_DRAFT && (
-              <Button className="btn btn-link text-danger" onAction={this.changeExerciseState(EXERCISE_REMOVE)}>
+            {notNew &&
+            exState === EXERCISE_DRAFT && (
+              <Button
+                className="btn btn-link text-danger"
+                onAction={this.changeExerciseState(EXERCISE_REMOVE)}
+              >
                 <i className="fa fa-trash" /> Törlés
               </Button>
             )}{' '}
@@ -336,14 +289,12 @@ export default connect(undefined, {
     renderActiveTabContent(idx) {
       switch (idx) {
         case 0:
-          return this.renderCategories()
-        case 1:
           return this.renderDescription()
+        case 1:
+          return this.renderSubTasks()
         case 2:
-          return this.renderUserControls()
+          return this.renderCategories()
         case 3:
-          return this.renderHints()
-        case 4:
           return this.renderPreview()
       }
     }
@@ -396,27 +347,9 @@ export default connect(undefined, {
       )
     }
 
-    renderUserControls() {
+    renderSubTasks() {
       return (
-        <EditUserControls
-          controls={this.state.exercise.controls}
-          onAdd={this.addUserControl}
-          onUpdate={this.updateSolution}
-          onRemove={this.removeUserControl}
-        />
-      )
-    }
-
-    renderHints() {
-      return (
-        <div className="col-11 mx-auto">
-          <EditHints
-            hints={this.state.exercise.hints}
-            onAdd={this.addHint}
-            onUpdate={this.updateHint}
-            onRemove={this.removeHint}
-          />
-        </div>
+        <SubTaskList subTasks={this.state.exercise.subTasks || {}} onChange={this.updateSubTask} />
       )
     }
 
@@ -430,29 +363,24 @@ export default connect(undefined, {
 
     renderTextInput(label, path) {
       return (
-        <div className="form-group row">
-          <label className="col-4 col-form-label">{label}</label>
-          <div className="col-8">
-            <input
-              className="form-control"
-              type="text"
-              name={path.join('.')}
-              onChange={this.update}
-              required
-              value={pathOr('', path, this.state.exercise)}
-            />
-          </div>
-        </div>
+        <FormGroup label={label}>
+          <input
+            className="form-control"
+            type="text"
+            name={path.join('.')}
+            onChange={this.update}
+            required
+            value={pathOr('', path, this.state.exercise)}
+          />
+        </FormGroup>
       )
     }
 
     renderSelect(group, label, path) {
       const classifications = this.state.classifications
-      if (!classifications) return <div />
       return (
-        <div key={group} className="form-group row">
-          <label className="col-4 col-form-label">{label}</label>
-          <div className="col-8">
+        classifications && (
+          <FormGroup key={group} label={label}>
             <Select
               value={pathOr([], path, this.state.exercise)}
               multi={true}
@@ -464,8 +392,8 @@ export default connect(undefined, {
               options={values(pathOr({}, group.split('.'), classifications))}
               onChange={this.updateClassification(group, path)}
             />
-          </div>
-        </div>
+          </FormGroup>
+        )
       )
     }
   }

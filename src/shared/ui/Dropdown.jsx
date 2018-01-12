@@ -53,10 +53,11 @@ export class Dropdown extends React.Component {
 export function DropdownToggle(props) {
   return (
     <a
-      className={`nav-link dropdown-toggle`}
+      className={`${props.className || 'nav-link'} dropdown-toggle`}
       id={props.id}
       aria-haspopup="true"
       aria-expanded={props.active}
+      title={props.title}
     >
       {props.children}
     </a>

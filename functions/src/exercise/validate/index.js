@@ -2,14 +2,18 @@ import * as express from 'express'
 import { admin } from '../../utils/fb-utils'
 import validator from './validator'
 
-export default express.Router().post('/', (req, res) => {
+export const route = express.Router()
+
+route.post('/', (req, res) => {
   const exerciseId = req.body.key
+  const taskId = req.body.task
   const userSolutions = req.body.solutions
 
   admin
     .database()
-    .ref(`/exercise/private/${exerciseId}`)
+    .ref(`/exercise/private/${exerciseId}/subTasks/${taskId}`)
     .once('value')
-    .then(snapshot => res.json({ valid: validator(userSolutions, snapshot.val()) }))
+    .then(snapshot => validator(userSolutions, snapshot.val()))
+    .then(result => res.json({ valid: result }))
     .catch(e => res.status(500).send(e.message))
 })
