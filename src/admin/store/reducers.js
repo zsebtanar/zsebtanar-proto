@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import app from 'shared/store/reducers/index'
+import { rootReducer as app } from 'shared/store'
 
 export default combineReducers({
   app

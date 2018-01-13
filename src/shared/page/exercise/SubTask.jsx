@@ -5,7 +5,12 @@ import UserControls from 'shared/component/userControls/UserControl'
 import Markdown from 'shared/component/general/Markdown'
 import Button from 'shared/component/general/Button'
 import { connect } from 'react-redux'
-import { checkSolutionAction, getHintAction, TASK_STATUS_DONE } from 'public/store/exercise'
+import {
+  checkSolutionAction,
+  getHintAction,
+  TASK_STATUS_DONE,
+  TASK_STATUS_PREVIEW
+} from 'shared/store/exercise'
 import Icon from 'shared/component/general/Icon'
 
 export const SubTask = connect(undefined, { getHintAction, checkSolutionAction })(
@@ -39,42 +44,43 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
     render() {
       const { task } = this.props
       const { loadingHint, loadingCheck } = this.state
-      const isDone = task.status === TASK_STATUS_DONE
+      const isDone = task.status === TASK_STATUS_DONE || task.status === TASK_STATUS_PREVIEW
       const hints = task.hints || []
       const controls = pairsInOrder(task.details.controls)
 
       return (
         <div>
-            {this.renderDescription()}
+          {this.renderDescription()}
 
-            <div className="form-group">
-              {hints && <ol>{hints.map(this.renderHint)}</ol>}
+          <div className="form-group">
+            {hints && <ol>{hints.map(this.renderHint)}</ol>}
 
-              {!isDone &&
-              task.hintsLeft > 0 && (
-                <div className="form-group">
-                  <Button
-                    className="btn-link"
-                    onAction={this.getHint}
-                    loading={loadingHint}
-                    disabled={loadingCheck}
-                  >
-                    Következő tipp (még {task.hintsLeft})
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            <form onSubmit={this.checkSolution}>
-              {controls.map(this.renderControl)}
-
-              {!isDone && (
-                <Button submit loading={loadingCheck} disabled={loadingHint}>
-                  <Icon fa="check" /> Ellenőrzés
+            {!isDone &&
+            task.hintsLeft > 0 && (
+              <div className="form-group">
+                <Button
+                  className="btn-link"
+                  onAction={this.getHint}
+                  loading={loadingHint}
+                  disabled={loadingCheck}
+                >
+                  Következő tipp (még {task.hintsLeft})
                 </Button>
-              )}
-            </form>
-          </div>)
+              </div>
+            )}
+          </div>
+
+          <form onSubmit={this.checkSolution}>
+            {controls.map(this.renderControl)}
+
+            {!isDone && (
+              <Button submit loading={loadingCheck} disabled={loadingHint}>
+                <Icon fa="check" /> Ellenőrzés
+              </Button>
+            )}
+          </form>
+        </div>
+      )
     }
 
     renderDescription() {

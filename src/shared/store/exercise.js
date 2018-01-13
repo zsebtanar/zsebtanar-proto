@@ -24,8 +24,7 @@ export const EXERCISE_GET_ERROR = 'EXERCISE_GET_ERROR'
 export const EXERCISE_CHECK_SUCCESS = 'EXERCISE_CHECK_SUCCESS'
 export const EXERCISE_CHECK_FAIL = 'EXERCISE_CHECK_FAIL'
 export const EXERCISE_CHECK_ERROR = 'EXERCISE_CHECK_ERROR'
-export const EXERCISE_DONE = 'EXERCISE_DONE'
-export const EXERCISE_NEXT_SUB_TASK = 'EXERCISE_DONE'
+export const EXERCISE_NEXT_SUB_TASK = 'EXERCISE_NEXT_SUB_TASK'
 
 export const HINT_GET = 'HINT_GET'
 export const HINT_GET_ERROR = 'HINT_GET_ERROR'
@@ -34,11 +33,12 @@ export const TASK_STATUS_WAITING = 'waiting'
 export const TASK_STATUS_ACTIVE = 'active'
 export const TASK_STATUS_FAILED = 'failed'
 export const TASK_STATUS_DONE = 'done'
+export const TASK_STATUS_PREVIEW = 'preview'
 
 export function getPublicExerciseAction(key) {
   return dispatch => {
     dispatch({ type: EXERCISE_INIT })
-    getPublicExercise(key)
+    return getPublicExercise(key)
       .then(payload => dispatch({ type: EXERCISE_GET, payload }))
       .then(() => dispatch(activateNextSubTask()))
       .catch(error => dispatch({ type: EXERCISE_GET_ERROR, error }))
@@ -55,7 +55,7 @@ export function checkSolutionAction(exerciseId, subTaskId, solutions) {
       .then(({ data }) => {
         const isValid = all(identity, values(data.valid))
 
-        return dispatch({
+        dispatch({
           type: isValid ? EXERCISE_CHECK_SUCCESS : EXERCISE_CHECK_FAIL,
           payload: data,
           meta: {
@@ -63,8 +63,11 @@ export function checkSolutionAction(exerciseId, subTaskId, solutions) {
             subTaskId
           }
         })
+
+        if (isValid) {
+          dispatch(activateNextSubTask())
+        }
       })
-      .then(() => dispatch(activateNextSubTask()))
       .catch(error => dispatch({ type: EXERCISE_CHECK_ERROR, payload: error }))
 }
 
@@ -102,10 +105,6 @@ export function activateNextSubTask() {
   return { type: EXERCISE_NEXT_SUB_TASK }
 }
 
-export function finished() {
-  return { type: EXERCISE_DONE }
-}
-
 /**
  * Reducers
  */
@@ -128,8 +127,6 @@ export function exerciseReducer(state = INIT_STATE, action) {
       return reduceFailedCheck(state, action)
     case EXERCISE_CHECK_SUCCESS:
       return reduceSuccessCheck(state, action)
-    case EXERCISE_DONE:
-
     default:
       return state
   }

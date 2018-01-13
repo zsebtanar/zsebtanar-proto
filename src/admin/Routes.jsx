@@ -17,6 +17,7 @@ import FeedbackList from 'admin/page/FeedbackList'
 import About from 'shared/page/About'
 import Footer from 'admin/nav/Footer'
 import { AdminUtils } from 'admin/page/AdminUtils'
+import { ExercisePreview } from 'admin/page/ExercisePreview'
 
 const mapStateToProps = state => ({
   session: state.app.session
@@ -43,6 +44,7 @@ export default connect(mapStateToProps)(function(props) {
                 <Route path="/exercise/add/:clone" component={ExerciseForm} />
                 <Route path="/exercise/add/" component={ExerciseForm} />
                 <Route path="/exercise/edit/:key" component={ExerciseForm} />
+                <Route path="/exercise/view/:key" component={ExercisePreview} />
                 <Route path="/feedback" component={FeedbackList} />
                 <Route path="/utilities" component={AdminUtils} />
                 <Route path="/about" component={About} />

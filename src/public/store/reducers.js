@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux'
-import app from 'shared/store/reducers/index'
+import { rootReducer as app } from 'shared/store'
 import classification from './classification'
-import { exerciseReducer as exercise } from './exercise'
 
 export default combineReducers({
   app,
-  classification,
-  exercise
+  classification
 })

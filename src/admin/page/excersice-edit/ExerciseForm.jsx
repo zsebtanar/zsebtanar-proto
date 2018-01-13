@@ -25,16 +25,18 @@ import { NavLink } from 'react-router-dom'
 import Select from 'react-select'
 import Button from 'shared/component/general/Button'
 import {
-  changeState, createExercise,
+  changeState,
+  createExercise,
   EXERCISE_ACTIVE,
   EXERCISE_ARCHIVE,
   EXERCISE_DRAFT,
   EXERCISE_REMOVE,
-  getPrivateExercise, updateExercise
+  getPrivateExercise,
+  updateExercise
 } from 'shared/services/exercise'
 import { openFileManager, openMarkdownHelpModal } from 'shared/store/actions/modal'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
-import ExercisePreview from './ExercisePreview'
+import { ExercisePreview } from '../ExercisePreview'
 import Loading from 'shared/component/general/Loading'
 import { Tab, TabNav } from 'shared/component/general/TabNav'
 import TextEditor from 'shared/component/general/TextEditor'
@@ -97,7 +99,7 @@ export default connect(undefined, {
 
     setExercise = exercise => {
       this.setState({
-        exercise: merge({ }, exercise),
+        exercise: merge({}, exercise),
         loading: false
       })
     }
@@ -169,8 +171,7 @@ export default connect(undefined, {
       })
     }
 
-    updateSubTask = subTasks =>
-      this.setState(assocPath(['exercise', 'subTasks'], subTasks))
+    updateSubTask = subTasks => this.setState(assocPath(['exercise', 'subTasks'], subTasks))
 
     loadExercise = () => {
       const key = this.props.match.params.key
@@ -225,7 +226,7 @@ export default connect(undefined, {
         <div>
           {this.renderHeader()}
 
-          <form onSubmit={this.saveExercise} className="tab-content w-100">
+          <div className="tab-content w-100">
             <TabNav navClassName="nav-tabs nav-fill w-100 mt-4 mb-2" defaultTab={0}>
               {TABS.map((item, idx) => (
                 <Tab key={item} label={item}>
@@ -233,7 +234,7 @@ export default connect(undefined, {
                 </Tab>
               ))}
             </TabNav>
-          </form>
+          </div>
         </div>
       )
     }
@@ -295,7 +296,7 @@ export default connect(undefined, {
         case 2:
           return this.renderSubTasks()
         case 3:
-          return this.renderPreview()
+          return <ExercisePreview exercise={this.state.exercise} />
       }
     }
 
@@ -350,14 +351,6 @@ export default connect(undefined, {
     renderSubTasks() {
       return (
         <SubTaskList subTasks={this.state.exercise.subTasks || {}} onChange={this.updateSubTask} />
-      )
-    }
-
-    renderPreview() {
-      return (
-        <div className="col-8 mx-auto">
-          <ExercisePreview exercise={this.state.exercise} />
-        </div>
       )
     }
 

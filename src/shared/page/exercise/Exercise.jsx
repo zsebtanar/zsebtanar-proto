@@ -1,42 +1,59 @@
 import { compose, pathOr } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { abcIndex, pairsInOrder } from 'shared/util/fn'
 import Markdown from 'shared/component/general/Markdown'
 import { openExerciseResultModal } from 'shared/store/actions/modal'
-import { withRouter } from 'react-router-dom'
 import Loading from 'shared/component/general/Loading'
-import { SubTask } from 'public/page/exercise/SubTask'
-import { getPublicExerciseAction, unloadExerciseAction, TASK_STATUS_WAITING } from 'public/store/exercise'
+import { SubTask } from 'shared/page/exercise/SubTask'
+import {
+  getPublicExerciseAction,
+  unloadExerciseAction,
+  TASK_STATUS_WAITING
+} from 'shared/store/exercise'
 import { ProgressBar } from 'shared/ui/Progress'
 
-const mapStateToProps = state => ({
-  session: state.app.session,
-  exercise: state.exercise.item,
-  loading: !state.exercise.item
-})
+const mapStateToProps = (state, ownProps) => {
+  const exercise = ownProps.exercise || state.app.exercise.item
+  return {
+    exercise,
+    loading: !exercise,
+    session: state.app.session
+  }
+}
 
 const isFinished = pathOr(false, ['exercise', 'isFinished'])
 
 export const Exercise = compose(
   withRouter,
-  connect(mapStateToProps, { openExerciseResultModal, getPublicExerciseAction, unloadExerciseAction })
+  connect(mapStateToProps, {
+    openExerciseResultModal,
+    getPublicExerciseAction,
+    unloadExerciseAction
+  })
 )(
   class ExerciseComponent extends React.Component {
     componentWillMount() {
-      const { match, getPublicExerciseAction } = this.props
+      const { match, getPublicExerciseAction, previewMode } = this.props
 
-      getPublicExerciseAction(match.params.key)
+      if (!previewMode) {
+        getPublicExerciseAction(match.params.key)
+      }
     }
 
     componentWillReceiveProps(nextProps) {
       if (isFinished(nextProps) && !isFinished(this.props)) {
-        this.props.openExerciseResultModal({success: true, onClose: this.closeResultModal})
+        this.props.openExerciseResultModal({ success: true, onClose: this.closeResultModal })
       }
     }
 
     componentWillUnmount() {
-      this.props.unloadExerciseAction()
+      const { unloadExerciseAction, previewMode } = this.props
+
+      if (!previewMode) {
+        unloadExerciseAction()
+      }
     }
 
     closeResultModal = res => {
