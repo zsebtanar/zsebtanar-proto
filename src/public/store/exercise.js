@@ -64,12 +64,7 @@ export function checkSolutionAction(exerciseId, subTaskId, solutions) {
           }
         })
       })
-      .then(() => {
-        const state = getState()
-        if (isValid) {
-          dispatch(activateNextSubTask())
-        }
-      })
+      .then(() => dispatch(activateNextSubTask()))
       .catch(error => dispatch({ type: EXERCISE_CHECK_ERROR, payload: error }))
 }
 
