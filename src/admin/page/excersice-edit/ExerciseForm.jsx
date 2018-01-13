@@ -291,9 +291,9 @@ export default connect(undefined, {
         case 0:
           return this.renderMetadata()
         case 1:
-          return this.renderSubTasks()
-        case 2:
           return this.renderDescription()
+        case 2:
+          return this.renderSubTasks()
         case 3:
           return this.renderPreview()
       }

@@ -18,24 +18,21 @@ export const route = express.Router()
 route.use(validateFirebaseIdToken)
 route.use(preFetch('classifications/', 'exercise/private/:id'))
 
-route.post(
-  '/:exerciseId',
-  onlyAdmin((req, res) => {
-    const key = req.params.exerciseId
-    const newState = req.body.state
-    const cf = req.db.classifications
-    const exercise = req.db.exercise.data
+route.post('/:exerciseId', [onlyAdmin], (req, res) => {
+  const key = req.params.exerciseId
+  const newState = req.body.state
+  const cf = req.db.classifications
+  const exercise = req.db.exercise.data
 
-    return Promise.resolve(exercise[STATE_KEY])
-      .then(selectUpdateMethod(newState))
-      .then(fn => fn(key, cf, exercise))
-      .then(() => res.status(204).send())
-      .catch(error => {
-        console.error(error)
-        res.status(500).send('Unexpected error')
-      })
-  })
-)
+  return Promise.resolve(exercise[STATE_KEY])
+    .then(selectUpdateMethod(newState))
+    .then(fn => fn(key, cf, exercise))
+    .then(() => res.status(204).send())
+    .catch(error => {
+      console.error(error)
+      res.status(500).send('Unexpected error')
+    })
+})
 
 const selectUpdateMethod = curry((newState, oldState) => {
   if (
