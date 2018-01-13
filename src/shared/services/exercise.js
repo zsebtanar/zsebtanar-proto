@@ -1,4 +1,4 @@
-import { isNil, not, pipe, prop, values } from 'ramda'
+import { isNil, not, pipe, values } from 'ramda'
 import { resolveSnapshot } from '../util/firebase'
 import { assert } from '../util/fn'
 import { cloudFnDelete, cloudFnGet, cloudFnPost } from 'shared/util/firebase'
@@ -37,13 +37,11 @@ export function selectPublicExercisesById(exerciseIds) {
   return Promise.all(exerciseIds.map(getPublicExercise))
 }
 
-export const createExercise = data => cloudFnPost(`exercise`, data, { withToken: true })
+export const createExercise = data =>
+  cloudFnPost(`exercise`, excludeMetaKeys(data), { withToken: true })
 
 export const updateExercise = (exerciseId, data) =>
   cloudFnPost(`exercise/${exerciseId}`, excludeMetaKeys(data), { withToken: true })
-
-export const removeExercise = exerciseId =>
-  cloudFnDelete(`exercise/${exerciseId}`, { withToken: true })
 
 export const checkSolution = (exerciseId, subTaskId, solutions) =>
   cloudFnPost('exercise/check', { key: exerciseId, task: subTaskId, solutions })

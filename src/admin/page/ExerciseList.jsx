@@ -3,19 +3,24 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import Button from 'shared/component/general/Button'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
-import { getAllPrivateExercises, removeExercise } from 'shared/services/exercise'
+import {
+  changeState,
+  EXERCISE_DRAFT,
+  EXERCISE_REMOVE,
+  getAllPrivateExercises
+} from 'shared/services/exercise'
 import Loading from 'shared/component/general/Loading'
 import ExerciseState from '../components/ExerciseState'
-import { rePublishAllExercise } from 'shared/services/admin'
+import Icon from 'shared/component/general/Icon'
 
 export default class extends React.Component {
   state = {
     exercises: null
   }
 
-  deleteExercise = (key) => () => {
+  deleteExercise = key => () => {
     if (confirm('Biztos, hogy törlöd a feladatot?')) {
-      removeExercise(key).then(this.loadList)
+      changeState(key, EXERCISE_REMOVE).then(this.loadList)
     }
   }
 
@@ -24,88 +29,126 @@ export default class extends React.Component {
       getAllClassification(),
       getAllPrivateExercises()
     ]).then(([classifications, list]) => {
-      const topics = values(classifications[SUBJECT]).reduce((acc, sub) => Object.assign(acc, sub[TOPIC]), {})
+      const topics = values(classifications[SUBJECT]).reduce(
+        (acc, sub) => Object.assign(acc, sub[TOPIC]),
+        {}
+      )
       this.setState({
-        exercises: list.map(evolve({
-          classification: {
-            grade: map(key => pathOr(key, [GRADE, key, 'name'], classifications)),
-            subject: map(key => pathOr(key, [SUBJECT, key, 'name'], classifications)),
-            topic: map(key => pathOr(key, [key, 'name'], topics)),
-            tags: map(key => pathOr(key, [TAGS, key, 'name'], classifications))
-          }
-        }))
+        exercises: list.map(
+          evolve({
+            classification: {
+              grade: map(key => pathOr(key, [GRADE, key, 'name'], classifications)),
+              subject: map(key => pathOr(key, [SUBJECT, key, 'name'], classifications)),
+              topic: map(key => pathOr(key, [key, 'name'], topics)),
+              tags: map(key => pathOr(key, [TAGS, key, 'name'], classifications))
+            }
+          })
+        )
       })
     })
   }
 
-  componentWillMount () {
+  componentWillMount() {
     this.loadList()
   }
 
-  render () {
+  render() {
     return (
       <div>
         <div className="btn-toolbar justify-content-between align-items-center">
           <h3>Feladatok</h3>
           <NavLink exact to="/exercise/add" className="btn btn-outline-secondary">
-            <i className="fa fa-plus"/> Feladat létrehozása
+            <i className="fa fa-plus" /> Feladat létrehozása
           </NavLink>
         </div>
-        {this.state.exercises
-          ? <table className="table table-hover table mt-3 exercise-list-table">
-           <thead>
-           <tr>
-             <th>#</th>
-             <th title="Státusz">@</th>
-             <th>Osztály</th>
-             <th>Tantárgy</th>
-             <th>Témakör</th>
-             <th>Cím</th>
-             <th>Címkék</th>
-             <th className="text-center action-column"><i className="fa fa-lg fa-cog"/></th>
-           </tr>
-           </thead>
-           <tbody>
-           {this.renderItem()}
-           </tbody>
-         </table>
-          : <Loading/>}
+        {this.state.exercises ? (
+          <table className="table table-hover table mt-3 exercise-list-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th title="Státusz">@</th>
+                <th>Osztály</th>
+                <th>Tantárgy</th>
+                <th>Témakör</th>
+                <th>Cím</th>
+                <th>Címkék</th>
+                <th className="text-center action-column">
+                  <i className="fa fa-lg fa-cog" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>{this.renderItem()}</tbody>
+          </table>
+        ) : (
+          <Loading />
+        )}
       </div>
     )
   }
 
-  renderItem () {
-    return this.state.exercises.map((ex, idx) =>
+  renderItem() {
+    return this.state.exercises.map((ex, idx) => (
       <tr key={ex._key}>
         <td>{idx + 1}</td>
-        <td><ExerciseState value={ex._state} short/></td>
-        <td className="grade-column">{pathOr([], ['classification', 'grade'], ex).map(x => <span
-          key={x}>{x}</span>)}</td>
-        <td>{pathOr([], ['classification', 'subject'], ex).map(x => <span key={x}> {x} </span>)}</td>
-        <td>{(pathOr([], ['classification', 'topic '], ex)).map(x => <span key={x}> {x} </span>)}</td>
+        <td>
+          <ExerciseState value={ex._state} short />
+        </td>
+        <td className="grade-column">
+          {pathOr([], ['classification', 'grade'], ex).map(x => <span key={x}>{x}</span>)}
+        </td>
+        <td>
+          {pathOr([], ['classification', 'subject'], ex).map(x => <span key={x}> {x} </span>)}
+        </td>
+        <td>{pathOr([], ['classification', 'topic '], ex).map(x => <span key={x}> {x} </span>)}</td>
         <td>{ex.title}</td>
-        <td>{pathOr([], ['classification', 'tags'], ex).map(tag =>
-          <span className="badge badge-secondary mx-1" key={tag}>{tag}</span>
-        )}</td>
-        <td className="text-center">
-          <NavLink exact to={`/exercise/view/${ex._key}`} className="btn btn-sm btn-light" title="Megtekintés">
-            <i className="fa fa-eye"/>
+        <td>
+          {pathOr([], ['classification', 'tags'], ex).map(tag => (
+            <span className="badge badge-secondary mx-1" key={tag}>
+              {tag}
+            </span>
+          ))}
+        </td>
+        <td className="text-right">
+          {ex._state === EXERCISE_DRAFT && (
+            <Button
+              title="Feladat törlése"
+              className="btn btn-sm btn-light"
+              onAction={this.deleteExercise(ex._key)}
+            >
+              <span className="text-danger">
+                <Icon fa="trash" />
+              </span>
+            </Button>
+          )}
+          &nbsp;
+          <NavLink
+            exact
+            to={`/exercise/view/${ex._key}`}
+            className="btn btn-sm btn-light"
+            title="Megtekintés"
+          >
+            <Icon fa="eye" />
           </NavLink>
           &nbsp;
-          <NavLink exact to={`/exercise/edit/${ex._key}`} className="btn btn-sm btn-light"
-                   title="Feladat szerkesztése">
-            <i className="fa fa-edit"/>
+          <NavLink
+            exact
+            to={`/exercise/add/${ex._key}`}
+            className="btn btn-sm btn-light"
+            title="Feladat másolása"
+          >
+            <Icon fa="clone" />
           </NavLink>
           &nbsp;
-          <NavLink exact to={`/exercise/add/${ex._key}`} className="btn btn-sm btn-light" title="Feladat másolása">
-            <i className="fa fa-clone"/>
+          <NavLink
+            exact
+            to={`/exercise/edit/${ex._key}`}
+            className="btn btn-sm btn-light"
+            title="Feladat szerkesztése"
+          >
+            <Icon fa="edit" />
           </NavLink>
-          &nbsp;
-          <Button title="Feladat törlése" className="btn btn-sm btn-light" onAction={this.deleteExercise(ex._key)}>
-            <span className="text-danger"><i className="fa fa-trash"/></span>
-          </Button>
         </td>
       </tr>
-    )
+    ))
   }
 }
