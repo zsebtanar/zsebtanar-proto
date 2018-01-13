@@ -130,7 +130,7 @@ export default connect(mapStateToProps, {})(
         !list &&
         !loading && (
           <div className="text-info col-md-8 mx-auto text-center">
-            Írj be legalább 2 karamktert a keresés megkezdéséhez.
+            Írj be legalább 2 karaktert a keresés megkezdéséhez.
           </div>
         )
       )
