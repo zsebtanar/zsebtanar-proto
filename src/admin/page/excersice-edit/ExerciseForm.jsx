@@ -47,7 +47,7 @@ const modeLabel = {
   Update: 'módosítása',
   Clone: 'másolása'
 }
-const TABS = ['Leírás', 'Részfeladatok', 'Kategóriák', 'Előnézet']
+const TABS = ['Metaadatok', 'Leírás', 'Részfeladatok', 'Előnézet']
 
 const STATE_MESSAGES = {
   [EXERCISE_DRAFT]: 'Biztos, hogy szeretnéd visszállítani a feladtot vázlat állapotba?',
@@ -289,17 +289,17 @@ export default connect(undefined, {
     renderActiveTabContent(idx) {
       switch (idx) {
         case 0:
-          return this.renderDescription()
+          return this.renderMetadata()
         case 1:
           return this.renderSubTasks()
         case 2:
-          return this.renderCategories()
+          return this.renderDescription()
         case 3:
           return this.renderPreview()
       }
     }
 
-    renderCategories() {
+    renderMetadata() {
       const ex = this.state.exercise
       return (
         <div className="col-10 mx-auto">
