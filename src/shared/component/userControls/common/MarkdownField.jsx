@@ -23,7 +23,7 @@ export const MarkdownField = connect(undefined, { openInputModal })(props => {
     <div className={`form-group row ${className}`}>
       <label className="col-3 col-form-label">{label}</label>
       <div className="col-6">
-        <div className="form-control-static">
+        <div className="form-control-static m-2">
           {value ? <Markdown source={value} /> : <Muted>{placeholder || 'Üres'}</Muted>}
         </div>
       </div>

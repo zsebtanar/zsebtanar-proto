@@ -4,7 +4,7 @@ import { __, evolve, merge, dissoc, assocPath, keys } from 'ramda'
 import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
 import { uid } from 'shared/util/uuid'
-import { pairsInOrder } from 'shared/util/fn'
+import { abcIndex, pairsInOrder } from 'shared/util/fn'
 import Checkbox from 'shared/component/input/Checkbox'
 import { TrashButton } from 'shared/component/userControls/common/TrashButton'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
@@ -31,7 +31,7 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
         evolve(
           {
             options: merge(__, {
-              [id]: { label: `Állítás`, order: keys(this.state.options).length }
+              [id]: { label: `Nos?`, order: keys(this.state.options).length }
             }),
             solution: merge(__, { [id]: false })
           },
@@ -53,11 +53,12 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
     }
 
     selectSolution = e => {
-      const { name, checked } = e.currentTarget
+      const { name, value } = e.currentTarget
+      console.log(value)
       this.updateState(
         evolve(
           {
-            solution: merge(__, { [name]: checked })
+            solution: merge(__, { [name]: value === 'true' })
           },
           this.state
         )
@@ -112,33 +113,49 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
     renderItem = (item, idx) => {
       return (
         <div key={item.id} className="card mb-1">
-          <div className="card-header d-flex justify-content-between align-items-center">
-            <span>
-              {idx + 1}
-              {' - '}
-              {item.label}
-            </span>
-            {item.isLast ? (
-              ''
-            ) : (
+          <div className="card-header card-header-sm d-flex justify-content-between align-items-center">
+            <span>{abcIndex(idx)})</span>
+            {!item.isLast && (
               <TrashButton label="Törlés" onAction={() => this.removeItem(item.id)} />
             )}
           </div>
           <div className="card-body">
             <MarkdownField
-              label="Állítás"
+              label="Állítás:"
               name="label"
               value={item.label}
               onChange={this.updateOption(item.id)}
             />
-            <div className="col-9 ml-auto">
-              <Checkbox
-                name={item.id}
-                checked={this.state.solution[item.id]}
-                onChange={this.selectSolution}
-              >
-                Megoldás értéke
-              </Checkbox>
+            <div className="row">
+              <label className="col-3">Megoldás:</label>
+              <div className="col-9">
+                <label className="custom-control custom-radio">
+                  <input
+                    type="radio"
+                    className="custom-control-input"
+                    name={item.id}
+                    value={true}
+                    checked={this.state.solution[item.id]}
+                    required
+                    onChange={this.selectSolution}
+                  />
+                  <span className="custom-control-indicator" />
+                  <span className="custom-control-description">Igaz</span>
+                </label>
+                <label className="custom-control custom-radio">
+                  <input
+                    type="radio"
+                    className="custom-control-input"
+                    name={item.id}
+                    value={false}
+                    checked={!this.state.solution[item.id]}
+                    required
+                    onChange={this.selectSolution}
+                  />
+                  <span className="custom-control-indicator" />
+                  <span className="custom-control-description">Hamis</span>
+                </label>
+              </div>
             </div>
           </div>
         </div>

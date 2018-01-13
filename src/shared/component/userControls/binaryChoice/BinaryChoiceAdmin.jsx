@@ -114,7 +114,7 @@ export const BinaryChoiceAdmin = connect(undefined, { openInputModal })(
     renderItem = (item, idx) => {
       return (
         <div key={item.id} className="card mb-1">
-          <div className="card-header d-flex justify-content-between align-items-center">
+          <div className="card-header card-header-sm d-flex justify-content-between align-items-center">
             <span>
               {idx + 1}
               {' - '}
