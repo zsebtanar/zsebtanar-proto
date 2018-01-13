@@ -58,7 +58,7 @@ export default connect(undefined, { openInputModal })(
       return (
         <div>
           <div className="list-group my-2">
-            {hints.length && hints.map(this.renderHint)}
+            {hints.length > 0 && hints.map(this.renderHint)}
             {!hints.length && (
               <div className="alert alert-info">
                 Megadhatsz egy vagy több tippet a feladat megoldásához
