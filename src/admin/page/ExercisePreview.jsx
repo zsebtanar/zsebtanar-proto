@@ -5,6 +5,7 @@ import { Exercise } from 'shared/page/exercise/Exercise'
 import { TASK_STATUS_PREVIEW } from 'shared/store/exercise'
 import { getPrivateExercise } from 'shared/services/exercise'
 import Loading from 'shared/component/general/Loading'
+import Icon from 'shared/component/general/Icon'
 
 export class ExercisePreview extends React.Component {
   state = {
@@ -42,7 +43,23 @@ export class ExercisePreview extends React.Component {
     } else if (exercise === undefined) {
       return <div className="alert alert-danger">A feladat nemtalálható</div>
     } else {
-      return <Exercise previewMode exercise={exercise} />
+
+      return <div>
+        <div className="col-10 mx-auto my-4 alert alert-info row">
+          <div className="col-1">
+            <Icon fa="info-circle" size="2x" />
+          </div>
+          <div className="col-11">
+            <small>
+              A feladat előnézete csak tájékoztató jellegű. A következőkben tér az éles megjelenítéstől:
+              <ul>
+                <li>Minden részfeladatot és útmutatót egyszerre jelenik meg</li>
+              </ul>
+            </small>
+          </div>
+        </div>
+        <Exercise previewMode exercise={exercise} />
+      </div>
     }
   }
 }

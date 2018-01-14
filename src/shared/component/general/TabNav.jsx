@@ -64,7 +64,7 @@ export class TabNav extends React.Component {
 
   renderContent() {
     return (
-      <div className="tab-content w-100">
+      <div className="tab-content w-100" key={this.state.activeTabIndex}>
         <div className="tab-pane active" role="tabpanel">
           {this.renderActiveTabContent()}
         </div>

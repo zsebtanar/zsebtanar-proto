@@ -53,7 +53,7 @@ export default class SubTaskList extends React.Component {
   }
 
   renderTabs = ([key, item]) => (
-    <Tab key={key} label={item.title || `${item.order + 1}. rész`}>
+    <Tab key={key} label={item.title || `${item.order + 1}. részfeladat`}>
       <Button className="btn btn-sm btn-outline-danger mx-1" onAction={this.removeSubTask(key)}>
         <Icon fa="ban" /> Részfeladat törlése
       </Button>
