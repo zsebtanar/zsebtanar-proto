@@ -51,7 +51,7 @@ jobs:
              ./node_modules/.bin/firebase deploy --token=$TESt_FIREBASE_DEPLOY_TOKEN
            fi
 
-   build-prod:
+  build-prod:
     docker:
       - image: circleci/node:8.5
     environment:
@@ -97,7 +97,6 @@ jobs:
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 ./node_modules/.bin/firebase deploy --token=$PROD_FIREBASE_DEPLOY_TOKEN
               fi
-
 workflows:
   version: 2
   build-deploy:
