@@ -102,12 +102,10 @@ workflows:
   build-deploy:
     jobs:
       - deploy-test:
-          - build-test
-          filters:
-            branches:
-              only: developt
+        filters:
+          branches:
+            only: developt
       - deploy-prod:
-          - build-prod
-          filters:
-            branches:
-              only: master
+        filters:
+         branches:
+            only: master
