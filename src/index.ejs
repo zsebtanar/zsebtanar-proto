@@ -22,10 +22,10 @@
     messagingSenderId: "780951406505"
   });
 </script>
-<% if (!htmlWebpackPlugin.options.isDev) { %>
+<% if (!htmlWebpackPlugin.options.isDev && htmlWebpackPlugin.options.sentryDSN) { %>
 <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
 <script>
-  Raven.config('https://666c40fa2cf14044b2d20d1f8d836a83@sentry.io/206471', {
+  Raven.config(htmlWebpackPlugin.options.sentryDSN, {
     environment: 'prototype',
     tags: {site: '<%= htmlWebpackPlugin.options.site %>'},
     ignoreErrors: ['top.GLOBALS', 'originalCreateNotification', 'canvas.contentDocument', 'MyApp_RemoveAllHighlights', 'http://tt.epicplay.com', 'Can\'t find variable: ZiteReader', 'jigsaw is not defined', 'ComboSearch is not defined', 'http://loading.retry.widdit.com/', 'atomicFindClose', 'fb_xd_fragment', 'bmi_SafeAddOnload', 'EBCallBackMessageReceived', 'conduitPage'],

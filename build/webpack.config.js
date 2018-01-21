@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = process.env.NODE_ENV === 'production'
+const sentryDSN = process.env.SENTRY_DSN ? JSON.stringify(process.env.SENTRY_DSN) : undefined
 
 const sassExtract = new ExtractTextPlugin({
   filename: '[name].css',
@@ -99,7 +100,8 @@ module.exports = {
       title: 'Zsebtanár - Tanár',
       isDev: !isProd,
       site: 'admin',
-      chunks: ['vendor', 'admin']
+      chunks: ['vendor', 'admin'],
+      sentryDSN
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/index.ejs'),
@@ -108,7 +110,8 @@ module.exports = {
       isDev: !isProd,
       site: 'public',
       title: 'Zsebtanár - proto',
-      chunks: ['vendor', 'public']
+      chunks: ['vendor', 'public'],
+      sentryDSN
     }),
     new HtmlWebpackHarddiskPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -119,9 +122,7 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
-      __FN_PATH__: JSON.stringify(
-        isProd ? '/api' : 'https://zsebtanar-proto-76083.firebaseapp.com/api'
-      )
+      __FN_PATH__: JSON.stringify(isProd ? '/api' : 'https://zsebtanar-test.firebaseapp.com/api')
     })
   ]
 }
