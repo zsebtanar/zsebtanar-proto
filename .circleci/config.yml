@@ -101,11 +101,11 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - deploy-test:
+      - build-test:
         filters:
           branches:
             only: developt
-      - deploy-prod:
+      - build-prod:
         filters:
          branches:
             only: master
