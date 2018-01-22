@@ -14,8 +14,8 @@ jobs:
 
     steps:
       - run:
-        name: 'Setup env variables'
-        command: echo 'export SENTRY_DSN=$TEST_SENTRY_DSN' >> $BASH_ENV
+          name: 'Setup env variables'
+          command: echo 'export SENTRY_DSN=$TEST_SENTRY_DSN' >> $BASH_ENV
 
       - checkout
 
@@ -41,7 +41,7 @@ jobs:
           key: v4-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
 
       - deploy:
-          name: Deploy to Firebase test
+          name: Deploy on Test
           command: |
            ./node_modules/.bin/firebase deploy --token=$TESt_FIREBASE_DEPLOY_TOKEN
 
@@ -55,17 +55,17 @@ jobs:
 
     steps:
       - run:
-        name: 'Setup env variables'
-        command: echo 'export SENTRY_DSN=$PROD_SENTRY_DSN' >> $BASH_ENV
+          name: 'Setup env variables'
+          command: echo 'export SENTRY_DSN=$PROD_SENTRY_DSN' >> $BASH_ENV
 
       - checkout
 
        # Download and cache dependencies
       - restore_cache:
-           keys:
-           - v4-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
-           # fallback to using the latest cache if no exact match is found
-           - v4-dependencies-
+          keys:
+          - v4-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v4-dependencies-
 
       - run: npm install
 
@@ -82,7 +82,7 @@ jobs:
           key: v4-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
 
       - deploy:
-          name: Deploy Master to Firebase
+          name: Deploy on Producetion
           command: |
             ./node_modules/.bin/firebase deploy --token=$PROD_FIREBASE_DEPLOY_TOKEN
 
