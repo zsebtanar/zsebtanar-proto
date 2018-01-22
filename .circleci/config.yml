@@ -43,7 +43,7 @@ jobs:
       - deploy:
           name: Deploy on Test
           command: |
-           ./node_modules/.bin/firebase deploy --token=$TESt_FIREBASE_DEPLOY_TOKEN
+           ./node_modules/.bin/firebase deploy --project=test --token=$TESt_FIREBASE_DEPLOY_TOKEN
 
   build-prod:
     docker:
@@ -84,7 +84,7 @@ jobs:
       - deploy:
           name: Deploy on Producetion
           command: |
-            ./node_modules/.bin/firebase deploy --token=$PROD_FIREBASE_DEPLOY_TOKEN
+            ./node_modules/.bin/firebase deploy --project=prod --token=$PROD_FIREBASE_DEPLOY_TOKEN
 
 workflows:
   version: 2
