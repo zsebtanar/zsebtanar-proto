@@ -4,16 +4,11 @@
 #
 version: 2
 jobs:
-  # test
-  build:
+  build-test:
     docker:
       - image: circleci/node:8.5
     environment:
       NODE_ENV: test
-
-    branches:
-      only:
-        - develop
 
     working_directory: ~/repo
 
@@ -50,16 +45,11 @@ jobs:
           command: |
            ./node_modules/.bin/firebase deploy --token=$TESt_FIREBASE_DEPLOY_TOKEN
 
-  # production
-  build:
+  build-prod:
     docker:
       - image: circleci/node:8.5
     environment:
       NODE_ENV: test
-
-    branches:
-      only:
-        - master
 
     working_directory: ~/repo
 
@@ -95,3 +85,16 @@ jobs:
           name: Deploy Master to Firebase
           command: |
             ./node_modules/.bin/firebase deploy --token=$PROD_FIREBASE_DEPLOY_TOKEN
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-test:
+          filters:
+            branches:
+              only: develop
+      - build-prod:
+          filters:
+           branches:
+              only: master
