@@ -9,6 +9,7 @@ jobs:
       - image: circleci/node:8.5
     environment:
       NODE_ENV: test
+      SERVER_ENV: test
 
     working_directory: ~/repo
 
@@ -50,6 +51,7 @@ jobs:
       - image: circleci/node:8.5
     environment:
       NODE_ENV: test
+      SERVER_ENV: production
 
     working_directory: ~/repo
 

@@ -13,19 +13,12 @@
 <div id="root"></div>
 <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
 <script>
-  firebase.initializeApp({
-    apiKey: "AIzaSyBnmKeq-iqSZaqNWBix-K8xFLdhecwrYRE",
-    authDomain: "zsebtanar-proto-76083.firebaseapp.com",
-    databaseURL: "https://zsebtanar-proto-76083.firebaseio.com",
-    projectId: "zsebtanar-proto-76083",
-    storageBucket: "zsebtanar-proto-76083.appspot.com",
-    messagingSenderId: "780951406505"
-  });
+  firebase.initializeApp(<%= JSON.stringify(htmlWebpackPlugin.options.env.firebase) %>);
 </script>
-<% if (!htmlWebpackPlugin.options.isDev && htmlWebpackPlugin.options.sentryDSN) { %>
+<% if (!htmlWebpackPlugin.options.isDev) { %>
 <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
 <script>
-  Raven.config(htmlWebpackPlugin.options.sentryDSN, {
+  Raven.config(<%= JSON.stringify(htmlWebpackPlugin.options.env.sentry.dsn) %>, {
     environment: 'prototype',
     tags: {site: '<%= htmlWebpackPlugin.options.site %>'},
     ignoreErrors: ['top.GLOBALS', 'originalCreateNotification', 'canvas.contentDocument', 'MyApp_RemoveAllHighlights', 'http://tt.epicplay.com', 'Can\'t find variable: ZiteReader', 'jigsaw is not defined', 'ComboSearch is not defined', 'http://loading.retry.widdit.com/', 'atomicFindClose', 'fb_xd_fragment', 'bmi_SafeAddOnload', 'EBCallBackMessageReceived', 'conduitPage'],

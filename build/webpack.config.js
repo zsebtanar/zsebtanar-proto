@@ -1,22 +1,25 @@
+const ENV_CONFIG = require('./config')
+
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-const isDev = process.env.NODE_ENV === 'development'
-const isProd = process.env.NODE_ENV === 'production'
-const sentryDSN = process.env.SENTRY_DSN ? JSON.stringify(process.env.SENTRY_DSN) : undefined
+const server = process.env.SERVER_ENV || 'development'
+const env = process.env.NODE_ENV || 'development'
+const isDev = env === 'development'
+const isProd = env === 'production'
+
+const envConfig = ENV_CONFIG[server]
 
 const sassExtract = new ExtractTextPlugin({
   filename: '[name].css',
-  allChunks: true,
-  disable: isDev
+  allChunks: true
 })
 const cssExtract = new ExtractTextPlugin({
   filename: '[name].css',
-  allChunks: true,
-  disable: isDev
+  allChunks: true
 })
 
 module.exports = {
@@ -101,7 +104,8 @@ module.exports = {
       isDev: !isProd,
       site: 'admin',
       chunks: ['vendor', 'admin'],
-      sentryDSN
+      hash: true,
+      env: envConfig
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/index.ejs'),
@@ -109,9 +113,10 @@ module.exports = {
       filename: 'index.html',
       isDev: !isProd,
       site: 'public',
-      title: 'Zsebtanár - proto',
+      title: 'Zsebtanár',
       chunks: ['vendor', 'public'],
-      sentryDSN
+      hash: true,
+      env: envConfig
     }),
     new HtmlWebpackHarddiskPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -122,7 +127,7 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
-      __FN_PATH__: JSON.stringify(isProd ? '/api' : 'https://zsebtanar-test.firebaseapp.com/api')
+      __FN_PATH__: JSON.stringify(envConfig.api)
     })
   ]
 }
