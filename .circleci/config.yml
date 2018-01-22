@@ -43,7 +43,7 @@ jobs:
       - deploy:
           name: Deploy on Test
           command: |
-           ./node_modules/.bin/firebase deploy --project=test --token=$TESt_FIREBASE_DEPLOY_TOKEN
+           ./node_modules/.bin/firebase deploy --project=test --token=$TEST_FIREBASE_DEPLOY_TOKEN
 
   build-prod:
     docker:
