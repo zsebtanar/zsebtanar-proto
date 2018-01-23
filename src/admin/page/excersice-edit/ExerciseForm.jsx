@@ -122,7 +122,7 @@ export default connect(undefined, {
     changeExerciseState = state => event => {
       if (confirm(STATE_MESSAGES[state])) {
         this.setState({ saving: true })
-        changeState(this.state.exercise._key, state).then(this.saveSuccess)
+        changeState(this.state.exercise._key, state).then(() => window.location.reload())
       }
     }
 
