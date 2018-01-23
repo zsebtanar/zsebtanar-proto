@@ -258,7 +258,7 @@ export default connect(undefined, {
                 className="btn btn-link text-dark"
                 onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}
               >
-                <i className="fa fa-archive" /> Arhiválás
+                <i className="fa fa-archive" /> Archiválás
               </Button>
             )}{' '}
             {notNew &&
