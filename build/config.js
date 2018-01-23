@@ -11,6 +11,10 @@ module.exports = {
     },
     sentry: {
       dsn: 'https://51329885b5704f2d8b19d4c29cad3e9a@sentry.io/275144'
+    },
+    algolia: {
+      appId: 'J8PWVF536F',
+      key: '502f297f7fecf9051688c205ab391225'
     }
   },
   test: {
@@ -25,6 +29,10 @@ module.exports = {
     },
     sentry: {
       dsn: 'https://51329885b5704f2d8b19d4c29cad3e9a@sentry.io/275144'
+    },
+    algolia: {
+      appId: 'J8PWVF536F',
+      key: '502f297f7fecf9051688c205ab391225'
     }
   },
   production: {
@@ -39,6 +47,10 @@ module.exports = {
     },
     sentry: {
       dsn: 'https://1cdfdee0c0f5468a8b1ae6d207271688@sentry.io/275143'
+    },
+    algolia: {
+      appId: 'UE3Y6VH327',
+      key: '2a69c8b49d5f77f84eaa1b90c31add4d'
     }
   }
 }

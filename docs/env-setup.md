@@ -1,5 +1,27 @@
 # Környezetek
 
+## Lépések:
+
+ - Új firebase projekt készítése
+   - Jogosúltságok beállítása 
+   - Firebase plan beállítása "Blaze"-re (pay as you go)
+   - DB átelemése
+     - DB exportálása
+     - Töröljünk ki mindent a kategóriákat kivéve
+     - importáljuk a DB az új projektbe
+ - Algolia 
+   - Új app létrehozása
+   - app id és publikus kulcs beállítása a firebase config-ban
+ - Sentry 
+   - Új app létrehozása 
+ - CI
+   - Firebase ci kulcs beállítása CI env variables-ben
+   - `.circleci/config.yml` frissítése
+ - Fejlesztői környezet átállítása
+   - `.firebaserc` frissítése
+   - `build/config.js` firssítése (firebase, sentry, algolia, ...) 
+ - Dokumentáció
+ 
 
 ## Firebase
 
