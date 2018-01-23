@@ -79,7 +79,7 @@ export const Exercise = compose(
 
       return (
         <div className="row">
-          <div className="col-8 mx-auto my-5">
+          <div className="col-md-8 col-sm-10 mx-auto my-3">
             {!isSingleTask && (
               <ProgressBar className="my-3" value={ex.finishedTasks / ex.allTasks * 100} />
             )}
