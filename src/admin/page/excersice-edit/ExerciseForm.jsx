@@ -69,6 +69,7 @@ export default connect(undefined, {
       classifications: null,
       error: null,
       loading: true,
+      saving: false,
       exercise: null
     }
 
@@ -111,20 +112,22 @@ export default connect(undefined, {
       }
       const ex = this.state.exercise
       if (ex._key) {
-        updateExercise(ex._key, ex).then(this.back)
+        updateExercise(ex._key, ex).then(this.saveSuccess)
       } else {
-        createExercise(ex).then(this.back)
+        createExercise(ex).then(this.saveSuccess)
       }
+      this.setState({ saving: true })
     }
 
     changeExerciseState = state => event => {
       if (confirm(STATE_MESSAGES[state])) {
-        changeState(this.state.exercise._key, state).then(this.back)
+        this.setState({ saving: true })
+        changeState(this.state.exercise._key, state).then(() => window.location.reload())
       }
     }
 
-    back = () => {
-      this.props.history.push('/exercise')
+    saveSuccess = () => {
+      this.setState({ saving: false })
     }
 
     update = event => {
@@ -255,7 +258,7 @@ export default connect(undefined, {
                 className="btn btn-link text-dark"
                 onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}
               >
-                <i className="fa fa-archive" /> Arhiválás
+                <i className="fa fa-archive" /> Archiválás
               </Button>
             )}{' '}
             {notNew &&
@@ -279,7 +282,11 @@ export default connect(undefined, {
             <NavLink exact to="/exercise" className="btn btn-outline-secondary">
               Mégsem
             </NavLink>{' '}
-            <Button className="btn btn-outline-primary" onAction={this.saveExercise}>
+            <Button
+              loading={this.state.saving}
+              className="btn btn-outline-primary"
+              onAction={this.saveExercise}
+            >
               <i className="fa fa-save" /> Mentés
             </Button>
           </div>

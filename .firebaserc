@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "zsebtanar-proto-76083"
+    "default": "zsebtanar-test",
+    "test": "zsebtanar-test",
+    "prod": "zsebtanar-prod"
   }
 }
