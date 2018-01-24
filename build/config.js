@@ -38,12 +38,12 @@ module.exports = {
   production: {
     api: '/api',
     firebase: {
-      apiKey: 'AIzaSyBnmKeq-iqSZaqNWBix-K8xFLdhecwrYRE',
-      authDomain: 'zsebtanar-proto-76083.firebaseapp.com',
-      databaseURL: 'https://zsebtanar-proto-76083.firebaseio.com',
-      projectId: 'zsebtanar-proto-76083',
-      storageBucket: 'zsebtanar-proto-76083.appspot.com',
-      messagingSenderId: '780951406505'
+      apiKey: 'AIzaSyAqJ6qUZfiB586kHXHZdagx-i0vzHMrqMU',
+      authDomain: 'zsebtanar-prod.firebaseapp.com',
+      databaseURL: 'https://zsebtanar-prod.firebaseio.com',
+      projectId: 'zsebtanar-prod',
+      storageBucket: 'zsebtanar-prod.appspot.com',
+      messagingSenderId: '294861517279'
     },
     sentry: {
       dsn: 'https://1cdfdee0c0f5468a8b1ae6d207271688@sentry.io/275143'

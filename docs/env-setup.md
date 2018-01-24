@@ -5,13 +5,14 @@
  - Új firebase projekt készítése
    - Jogosúltságok beállítása 
    - Firebase plan beállítása "Blaze"-re (pay as you go)
+   - Bejelentkezési módok beállítása
    - DB átelemése
      - DB exportálása
-     - Töröljünk ki mindent a kategóriákat kivéve
+     - Publikált feladatok és felhasználók törlése, minden hivatkozással együüt
      - importáljuk a DB az új projektbe
  - Algolia 
    - Új app létrehozása
-   - app id és publikus kulcs beállítása a firebase config-ban
+   - app id és publikus kulcs beállítása a firebase cloud fanction config-ban
  - Sentry 
    - Új app létrehozása 
  - CI
