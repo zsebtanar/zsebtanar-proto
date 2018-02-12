@@ -12,6 +12,7 @@ export default function Button (props) {
   }
 
   return (<button
+    
     type={props.submit ? 'submit' : 'button'}
     className={`btn ${props.className || (props.primary ? 'btn-primary' : 'btn-secondary')}`}
     onClick={onClick}
