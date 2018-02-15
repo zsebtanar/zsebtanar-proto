@@ -254,3 +254,11 @@ body {
 .card-header-sm {
   padding: 0.25rem 1rem;
 }
+
+.add-file-to-exercise {
+  .custom-file-label::after{
+    width: 100%;
+    text-align: center;
+    content: none;
+  }
+}

@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { openFileManager, openMarkdownHelpModal } from 'shared/store/actions/modal'
+import { openExerciseImageDialog, openMarkdownHelpModal } from 'shared/store/actions/modal'
+import { Markdown } from 'shared/component/general/Markdown'
 import Button from 'shared/component/general/Button'
-import Markdown from 'shared/component/general/Markdown'
 
-export default connect(undefined, {
-  openFileManager,
+export const TextEditor = connect(undefined, {
+  openExerciseImageDialog,
   openMarkdownHelpModal
 })(
-  class ExerciseForm extends React.Component {
+  class extends React.Component {
     constructor(props) {
       super(props)
       this.state = { value: props.value || '' }
@@ -37,9 +37,9 @@ export default connect(undefined, {
     }
 
     insertFile = () => {
-      this.props.openFileManager({
-        onSelect: ({ url, file }) => {
-          this.text.value += `![${file.name}](${url} "${file.name}" =100x)`
+      this.props.openExerciseImageDialog({
+        onSelect: ({ id, file }) => {
+          this.text.value += `@[${file.name}](${id} =100x)`
           this.update()
         }
       })
@@ -100,7 +100,7 @@ export default connect(undefined, {
             value={this.state.value}
           />
 
-          <Markdown source={this.state.value}/>
+          <Markdown source={this.state.value} resources={this.props.resources}/>
         </div>
       )
     }

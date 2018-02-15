@@ -5,7 +5,7 @@ import { Tab, TabNav } from 'shared/component/general/TabNav'
 import Button from 'shared/component/general/Button'
 import Icon from 'shared/component/general/Icon'
 import { pairsInOrder } from 'shared/util/fn'
-import SubTask from 'admin/page/excersice-edit/SubTask'
+import {SubTask} from 'admin/page/excersice-edit/SubTask'
 
 export default class SubTaskList extends React.Component {
   addSubTask = () =>

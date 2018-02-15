@@ -1,15 +1,4 @@
-import {
-  __, always,
-  assocPath,
-  dissoc,
-  dissocPath,
-  evolve,
-  keys,
-  merge,
-  path,
-  pathOr,
-  values
-} from 'ramda'
+import { __, assocPath, dissoc, dissocPath, evolve, keys, merge, path, pathOr, values } from 'ramda'
 import { uid } from 'shared/util/uuid'
 import { pairsInOrder } from 'shared/util/fn'
 import React from 'react'
@@ -17,11 +6,17 @@ import { connect } from 'react-redux'
 import Button from 'shared/component/general/Button'
 import Icon from 'shared/component/general/Icon'
 import { openUserControlModal } from 'shared/store/actions/modal'
-import UserControls from 'shared/component/userControls/UserControl'
+import { UserControls } from 'shared/component/userControls/UserControl'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
 import { NAMES as CONTROL_TYPES } from 'shared/component/userControls/controlTypes'
 
-export default connect(undefined, { openUserControlModal })(
+function mapStateToProps(state) {
+  return {
+    resources: state.exerciseEdit.resources
+  }
+}
+
+export default connect(mapStateToProps, { openUserControlModal })(
   class UserControlList extends React.Component {
     addUserControl = value => {
       const key = uid()
@@ -50,10 +45,13 @@ export default connect(undefined, { openUserControlModal })(
         })
       )
 
-    removeUserControl = key => this.setValue(evolve({
-      controls: dissoc(key),
-      solutions: dissoc(key)
-    }))
+    removeUserControl = key =>
+      this.setValue(
+        evolve({
+          controls: dissoc(key),
+          solutions: dissoc(key)
+        })
+      )
 
     setValue = fn => {
       const data = fn(this.props)
@@ -140,7 +138,7 @@ export default connect(undefined, { openUserControlModal })(
               </Button>
             </div>
           </div>
-          <UserControls {...item} />
+          <UserControls {...item} resources={this.props.resources} />
         </div>
       )
     }

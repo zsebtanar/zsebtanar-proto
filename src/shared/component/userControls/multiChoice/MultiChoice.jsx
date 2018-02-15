@@ -1,6 +1,6 @@
 import { mapObjIndexed } from 'ramda'
 import React from 'react'
-import Markdown from 'shared/component/general/Markdown'
+import { Markdown } from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
 import Checkbox from 'shared/component/input/Checkbox'
 import Icon from 'shared/component/general/Icon'
@@ -41,7 +41,7 @@ export class MultiChoice extends React.Component {
     return options.map(([id, item]) => (
       <div key={id} className="">
         <Checkbox name={id} checked={this.state[id]} onChange={this.onChange}>
-          <Markdown source={item.label} />
+          <Markdown source={item.label} resources={this.props.resources} />
         </Checkbox>
       </div>
     ))
@@ -54,7 +54,7 @@ export class MultiChoice extends React.Component {
     return options.map(([id, item]) => (
       <div key={id} className="row">
         <Icon fa={value[id] ? 'check' : 'ban'} className="col-1" />
-        <Markdown source={item.label} className="col-11" />
+        <Markdown source={item.label} resources={this.props.resources} className="col-11" />
       </div>
     ))
   }

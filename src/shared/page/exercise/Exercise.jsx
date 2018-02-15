@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { abcIndex, pairsInOrder } from 'shared/util/fn'
-import Markdown from 'shared/component/general/Markdown'
+import { Markdown } from 'shared/component/general/Markdown'
 import { openExerciseResultModal } from 'shared/store/actions/modal'
 import Loading from 'shared/component/general/Loading'
 import { SubTask } from 'shared/page/exercise/SubTask'
@@ -84,22 +84,22 @@ export const Exercise = compose(
               <ProgressBar className="my-3" value={ex.finishedTasks / ex.allTasks * 100} />
             )}
 
-            <Markdown source={ex.description} />
+            <Markdown source={ex.description} resources={ex.resources} />
 
             {subTasks.map(([taskId, task]) =>
-              this.renderSubTask(ex._key, taskId, task, isSingleTask)
+              this.renderSubTask(ex._key, taskId, task, isSingleTask, ex.resources)
             )}
           </div>
         </div>
       )
     }
 
-    renderSubTask(exId, taskId, task, isSingleTask) {
+    renderSubTask(exId, taskId, task, isSingleTask, resources) {
       return (
         <div className="row" key={taskId}>
           <div className="col-1">{isSingleTask ? '' : `${abcIndex(task.order)})`}</div>
           <div className="col-10">
-            <SubTask exerciseId={exId} id={taskId} task={task} />
+            <SubTask exerciseId={exId} id={taskId} task={task} resources={resources}/>
           </div>
         </div>
       )

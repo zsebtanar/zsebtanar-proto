@@ -1,5 +1,5 @@
 import React from 'react'
-import Markdown from 'shared/component/general/Markdown'
+import { Markdown } from 'shared/component/general/Markdown'
 
 export function SingleNumber(props) {
   const setSolution = e => {
@@ -14,7 +14,7 @@ export function SingleNumber(props) {
   return (
     <div className="user-control single-number d-flex align-items-center">
       <span className="prefix">
-        <Markdown source={props.prefix} />
+        <Markdown source={props.prefix} resources={props.resources} />
       </span>
       {props.readOnly ? (
         <strong>&nbsp;{props.value}&nbsp;</strong>
@@ -27,7 +27,7 @@ export function SingleNumber(props) {
         />
       )}
       <span className="postfix">
-        <Markdown source={props.postfix} />
+        <Markdown source={props.postfix} resources={props.resources} />
       </span>
     </div>
   )

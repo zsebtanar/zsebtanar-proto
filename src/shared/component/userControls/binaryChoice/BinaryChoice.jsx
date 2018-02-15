@@ -1,6 +1,6 @@
 import { keys } from 'ramda'
 import React from 'react'
-import Markdown from 'shared/component/general/Markdown'
+import { Markdown } from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
 
 export const DEFAULT_TRUE_LABEL = 'Igaz'
@@ -51,6 +51,7 @@ export class BinaryChoice extends React.Component {
             value={'true'}
             checked={this.state[id] === 'true'}
             onChange={this.onChange}
+            resources={this.props.resources}
           />
           <RadioInput
             label={item.falseLabel || DEFAULT_FALSE_LABEL}
@@ -58,6 +59,7 @@ export class BinaryChoice extends React.Component {
             value={'false'}
             checked={this.state[id] === 'false'}
             onChange={this.onChange}
+            resources={this.props.resources}
           />
         </div>
       </div>
@@ -83,11 +85,10 @@ export class BinaryChoice extends React.Component {
 }
 
 const RadioInput = props => (
-  <label className="custom-control custom-radio d-block">
+  <div className="custom-control custom-radio d-block">
     <input {...props} type="radio" className="custom-control-input" />
-    <span className="custom-control-indicator" />
-    <span className="custom-control-description">
-      <Markdown source={props.label} />
-    </span>
-  </label>
+    <label className="custom-control-label">
+      <Markdown source={props.label} resources={props.resources}/>
+    </label>
+  </div>
 )

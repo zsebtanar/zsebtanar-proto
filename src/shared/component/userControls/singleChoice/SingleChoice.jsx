@@ -1,6 +1,6 @@
-import React from 'react'
-import Markdown from 'shared/component/general/Markdown'
 import { find, propEq } from 'ramda'
+import React from 'react'
+import { Markdown } from 'shared/component/general/Markdown'
 import Icon from 'shared/component/general/Icon'
 
 export class SingleChoice extends React.Component {
@@ -32,7 +32,8 @@ export class SingleChoice extends React.Component {
         ...x,
         name: 'random',
         onChange: this.onChange,
-        checked: this.state.checked === x.value
+        checked: this.state.checked === x.value,
+        resources: this.props.resources
       })
     )
   }
@@ -43,18 +44,17 @@ export class SingleChoice extends React.Component {
     return (
       <div className="row">
         <Icon fa="check" className="col-1" />
-        <Markdown source={data.label} className="col-11" />
+        <Markdown source={data.label} resources={this.props.resources} className="col-11" />
       </div>
     )
   }
 }
 
 const RadioInput = props => (
-  <label className="custom-control custom-radio d-block" key={props.value}>
+  <div className="custom-control custom-radio d-block" key={props.value}>
     <input {...props} type="radio" className="custom-control-input" required={props.required} />
-    <span className="custom-control-indicator" />
-    <span className="custom-control-description">
-      <Markdown source={props.label} />
-    </span>
-  </label>
+    <label className="custom-control-label">
+      <Markdown source={props.label} resources={props.resources} />
+    </label>
+  </div>
 )

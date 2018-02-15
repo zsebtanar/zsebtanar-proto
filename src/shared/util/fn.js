@@ -1,6 +1,7 @@
 import { curry, path, pickBy, pipe, sortBy, toPairs } from 'ramda'
 
 export const pairsInOrder = pipe(toPairs, sortBy(path([1, 'order'])))
+export const pairsInNameOrder = pipe(toPairs, sortBy(path([1, 'name'])))
 
 export const assert = curry((predicate, message, value) => {
   if (predicate(value)) {
@@ -31,3 +32,10 @@ const littleACode = 'a'.charCodeAt(0)
 export function abcIndex(idx) {
   return String.fromCharCode(littleACode + idx)
 }
+
+export const reduceP = curry(function reducePF(fn, init, arr) {
+  return arr.reduce(
+    (promise, value) => promise.then(acc => Promise.resolve(fn(acc, value))),
+    Promise.resolve(init)
+  )
+})

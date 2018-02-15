@@ -97,7 +97,7 @@ export default connect(mapStateToProps)(
       return (
         <div>
           <div className="form-group">
-            <label className="custom-control custom-radio">
+            <div className="custom-control custom-radio">
               <input
                 id="id-feedback-type-1"
                 name="feedbackType"
@@ -110,10 +110,9 @@ export default connect(mapStateToProps)(
                   this.feedbackNoteField = inp
                 }}
               />
-              <span className="custom-control-indicator" />
-              <span className="custom-control-description">Megjegyzés</span>
-            </label>
-            <label className="custom-control custom-radio">
+              <label className="custom-control-label">Megjegyzés</label>
+            </div>
+            <div className="custom-control custom-radio">
               <input
                 id="id-feedback-type-2"
                 name="feedbackType"
@@ -126,9 +125,8 @@ export default connect(mapStateToProps)(
                   this.feedbackErrorField = inp
                 }}
               />
-              <span className="custom-control-indicator" />
-              <span className="custom-control-description">Hibabejelentés</span>
-            </label>
+              <label className="custom-control-label">Hibabejelentés</label>
+            </div>
           </div>
           <div className="form-group">
             <input

@@ -1,5 +1,5 @@
 import React from 'react'
-import Markdown from 'shared/component/general/Markdown'
+import { Markdown } from 'shared/component/general/Markdown'
 
 export function SimpleText(props) {
   const setSolution = e => {
@@ -14,7 +14,7 @@ export function SimpleText(props) {
   return (
     <div className="user-control simple-text d-flex align-items-center">
       <span className="prefix">
-        <Markdown source={props.prefix} />
+        <Markdown source={props.prefix} resources={props.resources} />
       </span>
 
       {props.readOnly ? (
@@ -28,7 +28,7 @@ export function SimpleText(props) {
         />
       )}
       <span className="postfix">
-        <Markdown source={props.postfix} />
+        <Markdown source={props.postfix} resources={props.resources} />
       </span>
     </div>
   )

@@ -1,16 +1,11 @@
 import React from 'react'
-import Markdown from 'markdown-it/lib/index'
+import MD from 'markdown-it/lib/index'
 import katex from 'markdown-it-katex'
-import PropTypes from 'prop-types'
+import { imageInit } from 'shared/markdown/image-resource'
 
-export default (class extends React.Component {
-  static propTypes = {
-    source: PropTypes.string,
-    mark: PropTypes.string
-  }
-
-  initMD(options) {
-    this.md = new Markdown(options).use(katex)
+export const Markdown = (class extends React.PureComponent {
+  initMD(options, resources) {
+    this.md = new MD(options).use(katex).use(imageInit(resources))
   }
 
   render() {
@@ -38,14 +33,14 @@ export default (class extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps.options !== this.props.options) {
-      this.initMD(nextProps.options)
+    if (nextProps.options !== this.props.options || nextProps.resources !== this.props.resources) {
+      this.initMD(nextProps.options, nextProps.resources)
     }
   }
 
   renderMarkdown(source) {
     if (!this.md) {
-      this.initMD(this.props.options)
+      this.initMD(this.props.options, this.props.resources)
     }
     return this.md.render(source)
   }

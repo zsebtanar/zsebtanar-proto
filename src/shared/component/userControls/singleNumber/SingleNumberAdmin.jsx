@@ -41,6 +41,7 @@ export const SingleNumberAdmin = connect(undefined, { openInputModal })(
             value={prefix}
             placeholder="Üres"
             onChange={this.editLabel}
+            resources={this.props.resources}
             cleanable
           />
           <MarkdownField
@@ -49,6 +50,7 @@ export const SingleNumberAdmin = connect(undefined, { openInputModal })(
             value={postfix}
             placeholder="Üres"
             onChange={this.editLabel}
+            resources={this.props.resources}
             cleanable
           />
           <div className="form-group row">

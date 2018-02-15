@@ -130,12 +130,14 @@ export const BinaryChoiceAdmin = connect(undefined, { openInputModal })(
             <MarkdownField
               label="Állítás"
               name="label"
+              resources={this.props.resources}
               value={item.label}
               onChange={this.updateOption(item.id)}
             />
             <MarkdownField
               label="Igaz"
               name="trueLabel"
+              resources={this.props.resources}
               value={item.trueLabel}
               placeholder={DEFAULT_TRUE_LABEL}
               onChange={this.updateOption(item.id)}
@@ -144,6 +146,7 @@ export const BinaryChoiceAdmin = connect(undefined, { openInputModal })(
             <MarkdownField
               label="Hamis"
               name="falseLabel"
+              resources={this.props.resources}
               value={item.falseLabel}
               placeholder={DEFAULT_FALSE_LABEL}
               onChange={this.updateOption(item.id)}

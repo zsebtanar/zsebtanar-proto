@@ -1,9 +1,9 @@
+import { findIndex, map, pick, propEq, update } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
-import { findIndex, map, pick, propEq, update } from 'ramda'
 import { openInputModal } from 'shared/store/actions/modal'
+import { Markdown } from 'shared/component/general/Markdown'
 import Button from 'shared/component/general/Button'
-import Markdown from 'shared/component/general/Markdown'
 
 export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
@@ -84,7 +84,7 @@ export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
     renderItem = item => {
       return (
         <li key={`${item.value}-${item.label}`}>
-          <label className="custom-control custom-radio">
+          <div className="custom-control custom-radio">
             <input
               type="radio"
               className="custom-control-input"
@@ -94,11 +94,10 @@ export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
               required
               onChange={this.selectSolution}
             />
-            <span className="custom-control-indicator" />
-            <span className="custom-control-description">
-              <Markdown source={item.label} />
-            </span>
-          </label>
+            <label className="custom-control-label">
+              <Markdown source={item.label} resources={this.props.resources}/>
+            </label>
+          </div>
           {item.isLast ? (
             ''
           ) : (

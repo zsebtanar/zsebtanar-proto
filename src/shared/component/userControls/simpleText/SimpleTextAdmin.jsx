@@ -1,12 +1,12 @@
-import React from 'react'
-import { connect } from 'react-redux'
 import { assocPath, dissocPath, pathOr, toPairs } from 'ramda'
 import { uid } from 'shared/util/uuid'
+import React from 'react'
+import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
-import Button from 'shared/component/general/Button'
-import Checkbox from 'shared/component/input/Checkbox'
 import { TrashButton } from 'shared/component/userControls/common/TrashButton'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
+import Button from 'shared/component/general/Button'
+import Checkbox from 'shared/component/input/Checkbox'
 
 export const SimpleTextAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
@@ -93,6 +93,7 @@ export const SimpleTextAdmin = connect(undefined, { openInputModal })(
             value={prefix}
             placeholder="Üres"
             onChange={this.editLabel}
+            resources={this.props.resources}
             cleanable
           />
           <MarkdownField
@@ -101,6 +102,7 @@ export const SimpleTextAdmin = connect(undefined, { openInputModal })(
             value={postfix}
             placeholder="Üres"
             onChange={this.editLabel}
+            resources={this.props.resources}
             cleanable
           />
           <div className="form-group row">

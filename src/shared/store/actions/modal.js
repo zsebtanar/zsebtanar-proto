@@ -1,14 +1,15 @@
 import { identity } from 'ramda'
 import AlertModal from 'shared/component/modal/AlertModal'
-import InputModal from 'shared/component/modal/InputModal'
+import { InputModal } from 'shared/component/modal/InputModal'
 import MarkdownHelpModal from 'shared/component/modal/MarkdownHelpModal'
 import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
-import FileManager from 'shared/component/modal/fileManager/FileManager'
 import FeedbackModal from 'shared/component/modal/FeedbackModal'
-import UserControlModal from 'shared/component/modal/UserControlModal'
+import { UserControlModal } from 'shared/component/modal/UserControlModal'
 import SignInModal from 'shared/component/modal/SignInModal'
 import SignUpModal from 'shared/component/modal/SignUpModal'
 import ExerciseResultModal from 'shared/component/modal/ExerciseResultModal'
+import { ExerciseImageDialog } from 'shared/component/modal/ExerciseImageDialog'
+import { FileUploadModal } from 'shared/component/modal/FileUploadModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -101,6 +102,24 @@ export function openExerciseResultModal(params) {
   return openModal(ExerciseResultModal, {
     onClose: identity,
     success: false,
+    ...params
+  })
+}
+
+export function openExerciseImageDialog(params) {
+  return openModal(ExerciseImageDialog, {
+    onClose: identity,
+    onSelect: identity,
+    ...params
+  })
+}
+
+export function openFileUpload(params) {
+  return openModal(FileUploadModal, {
+    onClose: identity,
+    onSuccess: identity,
+    onError: identity,
+    resources: [],
     ...params
   })
 }
