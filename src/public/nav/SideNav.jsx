@@ -6,15 +6,18 @@ import { signOut } from 'shared/store/actions/auth'
 import { openFileManager } from 'shared/store/actions/modal'
 import { closeSideNav } from 'shared/store/reducers/sideNav'
 import SideNavLink from 'shared/component/general/SideNavLink'
-import { isUser, ROLE_USER } from 'shared/services/user'
+import { isAdmin } from 'shared/services/user'
 
 const mapStateToProps = state => ({
   session: state.app.session,
+  state: state,
   sideNavActive: state.app.sideNav.active
 })
 
+
 export default withRouter(
   connect(mapStateToProps, { signOut, openFileManager, closeSideNav })(function SideNav(props) {
+
     if (!props.session.signedIn || !props.sideNavActive) return <div />
 
     return (
@@ -34,7 +37,7 @@ export default withRouter(
           </div>
           <nav className="mobile-nav">
             <ul className="nav nav-pills flex-column">
-              {props.session.signedIn && isUser(props.session.token) ? (
+              {props.session.signedIn && isAdmin(props.session.userDetails) ? (
                 <li className="nav-item" key="admin">
                   <a href="/admin/" className="nav-link">
                     Admin
