@@ -18,7 +18,7 @@ export default withRouter(
       e.preventDefault()
       props.signIn(emailField.value, pwField.value).then(({ error }) => {
         if (!error) {
-          if (props.returnPath && props.returnPath !== props.location.pathname){
+          if (props.returnPath && props.returnPath !== props.location.pathname) {
             props.history.push(props.returnPath)
           }
           props.close()
@@ -31,10 +31,14 @@ export default withRouter(
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Belépés</h5>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-              <span aria-hidden={true} onClick={props.close}>
-                &times;
-              </span>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Bezárás"
+              onClick={props.close}
+            >
+              <span aria-hidden={true}>&times;</span>
             </button>
           </div>
           <div className="modal-body">

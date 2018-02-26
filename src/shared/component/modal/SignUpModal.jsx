@@ -18,7 +18,7 @@ export default withRouter(
     facebookSignIn,
     openProviderSignUp
   })(function(props) {
-    const success = (data) => {
+    const success = data => {
       if (!data || !data.error) {
         props.close()
         props.history.push('/')
@@ -48,10 +48,14 @@ export default withRouter(
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Regisztráció</h5>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-              <span aria-hidden={true} onClick={props.close}>
-                &times;
-              </span>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Bezárás"
+              onClick={props.close}
+            >
+              <span aria-hidden={true}>&times;</span>
             </button>
           </div>
           <div className="modal-body">
