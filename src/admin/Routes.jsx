@@ -29,6 +29,7 @@ const mapStateToProps = state => ({
 })
 
 const AuthRoutes = connect(mapStateToProps)(function(props) {
+  console.log(props.session)
   return (
     <Router history={props.history}>
       <div className="app">
@@ -43,16 +44,15 @@ const AuthRoutes = connect(mapStateToProps)(function(props) {
             <div className="content">
               <Switch>
                 <Route path="/" exact component={Home} />
-                <PrivateRoute path="/user" exact component={UserList} />
-                <Route path="/classification" exact component={ClassificationList} />
-                <Route path="/exercise" exact component={ExerciseList} />
-                <Route path="/exercise/add/:clone" component={ExerciseForm} />
-                <Route path="/exercise/add/" component={ExerciseForm} />
-                <Route path="/exercise/edit/:key" component={ExerciseForm} />
-                <Route path="/exercise/view/:key" component={ExercisePreview} />
-                <Route path="/feedback" component={FeedbackList} />
-                <Route path="/utilities" component={AdminUtils} />
-                <Route path="/about" component={About} />
+                <PrivateRoute session={props.session} path="/user" exact component={UserList} />
+                <PrivateRoute session={props.session} path="/classification" exact component={ClassificationList} />
+                <PrivateRoute session={props.session} path="/exercise" exact component={ExerciseList} />
+                <PrivateRoute session={props.session} path="/exercise/add/:clone" component={ExerciseForm} />
+                <PrivateRoute session={props.session} path="/exercise/add/" component={ExerciseForm} />
+                <PrivateRoute session={props.session} path="/exercise/edit/:key" component={ExerciseForm} />
+                <PrivateRoute session={props.session} path="/exercise/view/:key" component={ExercisePreview} />
+                <PrivateRoute session={props.session} path="/feedback" component={FeedbackList} />
+                <PrivateRoute session={props.session} path="/utilities" component={AdminUtils} />
                 <Route component={Page404} />
               </Switch>
             </div>
@@ -65,11 +65,11 @@ const AuthRoutes = connect(mapStateToProps)(function(props) {
   )
 })
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PrivateRoute = ({ session: Session, component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      false ? (
+      Session.signedIn ? (
         <Component {...props} />
       ) : (
         <Redirect
