@@ -1,7 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Route, Router, Switch } from 'react-router-dom'
+import {
+  Route,
+  Router,
+  Switch,
+  Redirect
+} from 'react-router-dom'
 import Loading from 'shared/component/general/Loading'
 
 import Header from './nav/Header'
@@ -23,7 +28,7 @@ const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default connect(mapStateToProps)(function(props) {
+const AuthRoutes = connect(mapStateToProps)(function(props) {
   return (
     <Router history={props.history}>
       <div className="app">
@@ -38,7 +43,7 @@ export default connect(mapStateToProps)(function(props) {
             <div className="content">
               <Switch>
                 <Route path="/" exact component={Home} />
-                <Route path="/user" exact component={UserList} />
+                <PrivateRoute path="/user" exact component={UserList} />
                 <Route path="/classification" exact component={ClassificationList} />
                 <Route path="/exercise" exact component={ExerciseList} />
                 <Route path="/exercise/add/:clone" component={ExerciseForm} />
@@ -59,3 +64,24 @@ export default connect(mapStateToProps)(function(props) {
     </Router>
   )
 })
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      false ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/",
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
+
+
+export default AuthRoutes;
