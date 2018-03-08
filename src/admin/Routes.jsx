@@ -8,7 +8,6 @@ import {
   Redirect
 } from 'react-router-dom'
 import Loading from 'shared/component/general/Loading'
-
 import Header from './nav/Header'
 import SideNav from './nav/SideNav'
 import Home from './page/Home'
@@ -21,7 +20,9 @@ import ClassificationList from './page/classification/ClassificationList'
 import FeedbackList from 'admin/page/FeedbackList'
 import About from 'shared/page/About'
 import Footer from 'admin/nav/Footer'
+import { isAdmin } from 'shared/services/user'
 import { AdminUtils } from 'admin/page/AdminUtils'
+
 import { ExercisePreview } from 'admin/page/ExercisePreview'
 
 const mapStateToProps = state => ({
@@ -29,7 +30,6 @@ const mapStateToProps = state => ({
 })
 
 const AuthRoutes = connect(mapStateToProps)(function(props) {
-  console.log(props.session)
   return (
     <Router history={props.history}>
       <div className="app">
@@ -43,7 +43,7 @@ const AuthRoutes = connect(mapStateToProps)(function(props) {
             <SideNav />
             <div className="content">
               <Switch>
-                <Route path="/" exact component={Home} />
+                <PrivateRoute session={props.session} path="/" exact component={Home} />
                 <PrivateRoute session={props.session} path="/user" exact component={UserList} />
                 <PrivateRoute session={props.session} path="/classification" exact component={ClassificationList} />
                 <PrivateRoute session={props.session} path="/exercise" exact component={ExerciseList} />
@@ -53,7 +53,7 @@ const AuthRoutes = connect(mapStateToProps)(function(props) {
                 <PrivateRoute session={props.session} path="/exercise/view/:key" component={ExercisePreview} />
                 <PrivateRoute session={props.session} path="/feedback" component={FeedbackList} />
                 <PrivateRoute session={props.session} path="/utilities" component={AdminUtils} />
-                <Route component={Page404} />
+                <PrivateRoute session={props.session} component={Page404} />
               </Switch>
             </div>
             <Footer />
@@ -69,7 +69,7 @@ const PrivateRoute = ({ session: Session, component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      Session.signedIn ? (
+      Session.signedIn && isAdmin(Session.token) ? (
         <Component {...props} />
       ) : (
         <Redirect
