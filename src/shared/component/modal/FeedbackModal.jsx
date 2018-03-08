@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { pathOr, prop, propEq } from 'ramda'
-import { createFeedback } from 'shared/services/feebback'
+import { createFeedback } from 'shared/services/feedback'
 import Loading from 'shared/component/general/Loading'
 import Button from 'shared/component/general/Button'
 

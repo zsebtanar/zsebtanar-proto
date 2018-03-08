@@ -1,7 +1,7 @@
 import {values} from 'ramda'
 import React from 'react'
 import Loading from 'shared/component/general/Loading'
-import { getAllFeedback } from 'shared/services/feebback'
+import { getAllFeedback } from 'shared/services/feedback'
 
 const feedbackTypes = {
   note: 'Megjegyzés',

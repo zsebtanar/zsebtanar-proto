@@ -54,7 +54,6 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
 
     selectSolution = e => {
       const { name, value } = e.currentTarget
-      console.log(value)
       this.updateState(
         evolve(
           {
