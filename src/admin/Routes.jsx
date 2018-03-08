@@ -29,7 +29,7 @@ const mapStateToProps = state => ({
   session: state.app.session
 })
 
-const AuthRoutes = connect(mapStateToProps)(function(props) {
+const AuthRoutes = connect(mapStateToProps)(function (props) {
   return (
     <Router history={props.history}>
       <div className="app">
@@ -38,27 +38,27 @@ const AuthRoutes = connect(mapStateToProps)(function(props) {
             <Loading />
           </div>
         ) : (
-          <div className="container">
-            <Header />
-            <SideNav />
-            <div className="content">
-              <Switch>
-                <Route path="/" exact component={Home} />
-                <PrivateRoute session={props.session} path="/user" exact component={UserList} />
-                <PrivateRoute session={props.session} path="/classification" exact component={ClassificationList} />
-                <PrivateRoute session={props.session} path="/exercise" exact component={ExerciseList} />
-                <PrivateRoute session={props.session} path="/exercise/add/:clone" component={ExerciseForm} />
-                <PrivateRoute session={props.session} path="/exercise/add/" component={ExerciseForm} />
-                <PrivateRoute session={props.session} path="/exercise/edit/:key" component={ExerciseForm} />
-                <PrivateRoute session={props.session} path="/exercise/view/:key" component={ExercisePreview} />
-                <PrivateRoute session={props.session} path="/feedback" component={FeedbackList} />
-                <PrivateRoute session={props.session} path="/utilities" component={AdminUtils} />
-                <Route component={Page404} />
-              </Switch>
+            <div className="container">
+              <Header />
+              <SideNav />
+              <div className="content">
+                <Switch>
+                  <PrivateRoute session={props.session} path="/" exact component={Home} />
+                  <PrivateRoute session={props.session} path="/user" exact component={UserList} />
+                  <PrivateRoute session={props.session} path="/classification" exact component={ClassificationList} />
+                  <PrivateRoute session={props.session} path="/exercise" exact component={ExerciseList} />
+                  <PrivateRoute session={props.session} path="/exercise/add/:clone" component={ExerciseForm} />
+                  <PrivateRoute session={props.session} path="/exercise/add/" component={ExerciseForm} />
+                  <PrivateRoute session={props.session} path="/exercise/edit/:key" component={ExerciseForm} />
+                  <PrivateRoute session={props.session} path="/exercise/view/:key" component={ExercisePreview} />
+                  <PrivateRoute session={props.session} path="/feedback" component={FeedbackList} />
+                  <PrivateRoute session={props.session} path="/utilities" component={AdminUtils} />
+                  <Route component={Page404} />
+                </Switch>
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        )}
+          )}
         <Overlay />
       </div>
     </Router>
@@ -68,20 +68,14 @@ const AuthRoutes = connect(mapStateToProps)(function(props) {
 const PrivateRoute = ({ session: Session, component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
-      Session.signedIn && isAdmin(Session.token) ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/",
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
+    render={props => {
+      if (Session.signedIn && isAdmin(Session.token)) {
+        return <Component {...props} />
+      } else {
+        window.location = '/'
+      }
+    }}
   />
 );
-
 
 export default AuthRoutes;
