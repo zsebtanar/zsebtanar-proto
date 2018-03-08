@@ -43,7 +43,7 @@ const AuthRoutes = connect(mapStateToProps)(function(props) {
             <SideNav />
             <div className="content">
               <Switch>
-                <Route path="/" exact component={Home} />
+                <PrivateRoute session={props.session} path="/" exact component={Home} />
                 <PrivateRoute session={props.session} path="/user" exact component={UserList} />
                 <PrivateRoute session={props.session} path="/classification" exact component={ClassificationList} />
                 <PrivateRoute session={props.session} path="/exercise" exact component={ExerciseList} />
@@ -53,7 +53,7 @@ const AuthRoutes = connect(mapStateToProps)(function(props) {
                 <PrivateRoute session={props.session} path="/exercise/view/:key" component={ExercisePreview} />
                 <PrivateRoute session={props.session} path="/feedback" component={FeedbackList} />
                 <PrivateRoute session={props.session} path="/utilities" component={AdminUtils} />
-                <Route component={Page404} />
+                <PrivateRoute session={props.session} component={Page404} />
               </Switch>
             </div>
             <Footer />
