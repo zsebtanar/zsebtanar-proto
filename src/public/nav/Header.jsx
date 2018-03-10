@@ -3,7 +3,7 @@ import { NavLink, withRouter } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { signOut } from '../../shared/store/actions/auth'
-import { isUser, ROLE_USER } from 'shared/services/user'
+import { isAdmin } from 'shared/services/user'
 import Button from 'shared/component/general/Button'
 import { openSideNav } from 'shared/store/reducers/sideNav'
 import { openSignInModal, openSignUpModal } from 'shared/store/actions/modal'
@@ -28,7 +28,7 @@ export default withRouter(
         <div className="desktop-header">
           <nav>
             <ul className="nav nav-pills float-right">
-              {signedIn && isUser(token) ? (
+              {signedIn && isAdmin(token) ? (
                 <li className="nav-item" key="admin">
                   <a href="/admin/" className="nav-link">
                     Admin
