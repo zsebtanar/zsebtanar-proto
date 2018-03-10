@@ -1,15 +1,12 @@
 import {
   __,
-  assoc,
   assocPath,
   contains,
   difference,
-  dissoc,
   evolve,
   filter,
   last,
   map,
-  merge,
   not,
   omit,
   pathOr,
@@ -26,23 +23,29 @@ import Select from 'react-select'
 import Button from 'shared/component/general/Button'
 import {
   changeState,
-  createExercise,
   EXERCISE_ACTIVE,
   EXERCISE_ARCHIVE,
   EXERCISE_DRAFT,
-  EXERCISE_REMOVE,
-  getPrivateExercise,
-  updateExercise
+  EXERCISE_REMOVE
 } from 'shared/services/exercise'
-import { openFileManager, openMarkdownHelpModal } from 'shared/store/actions/modal'
-import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
+import { openExerciseImageDialog } from 'shared/store/actions/modal'
+import { GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 import { ExercisePreview } from '../ExercisePreview'
 import Loading from 'shared/component/general/Loading'
 import { Tab, TabNav } from 'shared/component/general/TabNav'
-import TextEditor from 'shared/component/general/TextEditor'
+import { TextEditor } from 'shared/component/general/TextEditor'
 import ExerciseState from 'admin/components/ExerciseState'
 import FormGroup from 'shared/component/general/FormGroup'
 import SubTaskList from 'admin/page/excersice-edit/SubTaskList'
+import { getClassifications } from 'shared/store/classifications'
+import {
+  cloneExercise,
+  loadExercise,
+  newExercise,
+  updateContent,
+  saveExercise
+} from 'admin/store/exerciseEdit'
+import Icon from 'shared/component/general/Icon'
 
 const modeLabel = {
   Add: 'létrehozása',
@@ -58,26 +61,28 @@ const STATE_MESSAGES = {
   [EXERCISE_REMOVE]: 'Véglegesen töröljük a feladatot, biztos folytatod?'
 }
 
-export default connect(undefined, {
-  openFileManager,
-  openMarkdownHelpModal
-})(
+function mapStateToProps(state) {
+  return {
+    classifications: state.app.classifications,
+    exercise: state.exerciseEdit,
+    loading: state.app.classifications.loading || state.exerciseEdit.loading,
+    error: state.exerciseEdit.error
+  }
+}
+const mapDispatchToProps = {
+  getClassifications,
+  newExercise,
+  loadExercise,
+  cloneExercise,
+  saveExercise,
+  updateContent,
+  openExerciseImageDialog
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
   class ExerciseForm extends React.Component {
-    mode = 'Add'
-
-    state = {
-      classifications: null,
-      error: null,
-      loading: true,
-      saving: false,
-      exercise: null
-    }
-
     componentWillMount() {
-      getAllClassification().then(classifications => {
-        this.setState({ classifications })
-        this.loadExercise()
-      })
+      this.props.getClassifications().then(() => this.loadExercise())
 
       document.addEventListener('keyup', this.shiftEnter)
     }
@@ -96,38 +101,22 @@ export default connect(undefined, {
       }
     }
 
-    errorHandler = error => this.setState({ error, loading: false })
-
-    setExercise = exercise => {
-      this.setState({
-        exercise: merge({}, exercise),
-        loading: false
-      })
-    }
-
     saveExercise = event => {
       event.preventDefault()
-      if (keys(this.state.exercise.subTasks).length < 1) {
+      if (keys(this.props.exercise.data.subTasks).length < 1) {
         return alert('Kérlek hozz létre legalább egy részfeladatot')
       }
-      const ex = this.state.exercise
-      if (ex._key) {
-        updateExercise(ex._key, ex).then(this.saveSuccess)
-      } else {
-        createExercise(ex).then(this.saveSuccess)
-      }
-      this.setState({ saving: true })
+      this.props.saveExercise()
     }
 
     changeExerciseState = state => event => {
       if (confirm(STATE_MESSAGES[state])) {
-        this.setState({ saving: true })
-        changeState(this.state.exercise._key, state).then(() => window.location.reload())
+        changeState(this.props.exercise.data._key, state).then(() => window.location.reload())
       }
     }
 
-    saveSuccess = () => {
-      this.setState({ saving: false })
+    updateContent = fn => {
+      this.props.updateContent(fn(this.props.exercise.data))
     }
 
     update = event => {
@@ -136,11 +125,11 @@ export default connect(undefined, {
       if (last(path) === 'difficulty') {
         value = parseInt(value, 10)
       }
-      this.setState({ exercise: assocPath(path, value, this.state.exercise) })
+      this.updateContent(assocPath(path, value))
     }
 
     updateClassification = (group, path) => value => {
-      this.setState(state => {
+      this.updateContent(state => {
         let ex = state.exercise
         const selectedValues = map(prop('_key'), value)
         if (last(path) === SUBJECT) {
@@ -161,70 +150,57 @@ export default connect(undefined, {
           // remove and add only the selected topic(s) from the current subject
           const subjectTopics = Object.keys(pathOr({}, group.split('.'), state.classifications))
           const currentTopics = pathOr([], path, ex)
-          return {
-            exercise: assocPath(
-              path,
-              union(difference(currentTopics, subjectTopics), selectedValues),
-              ex
-            )
-          }
+          return assocPath(path, union(difference(currentTopics, subjectTopics), selectedValues))
         } else {
-          return { exercise: assocPath(path, selectedValues, ex) }
+          return assocPath(path, selectedValues)
         }
       })
     }
 
-    updateSubTask = subTasks => this.setState(assocPath(['exercise', 'subTasks'], subTasks))
+    updateSubTask = subTasks => this.updateContent(assocPath(['subTasks'], subTasks))
 
     loadExercise = () => {
       const key = this.props.match.params.key
       const cloneKey = this.props.match.params.clone
       if (key) {
-        this.mode = 'Update'
-        return getPrivateExercise(key)
-          .then(this.setExercise)
-          .catch(this.errorHandler)
+        return this.props.loadExercise(key)
       }
       if (cloneKey) {
-        this.mode = 'Clone'
-        return getPrivateExercise(cloneKey)
-          .then(dissoc('_key'))
-          .then(ex => assoc('title', `${ex.title || ''} [másolat]`, ex))
-          .then(this.setExercise)
-          .catch(this.errorHandler)
+        return this.props.cloneExercise(key)
       }
-      return this.setExercise({})
+      return this.props.newExercise()
+    }
+
+    openExerciseImageDialog = () => {
+      this.props.openExerciseImageDialog()
     }
 
     render() {
-      const { loading } = this.state
+      if (this.props.loading) {
+        return <Loading />
+      } else if (this.props.error) {
+        return this.renderError()
+      } else {
+        return <div>{this.renderContent()}</div>
+      }
+    }
 
+    renderError() {
+      const { error } = this.props
       return (
         <div>
-          {loading && <Loading />}
-          {this.renderError()}
-          {this.renderContent()}
+          <div className="alert alert-danger">
+            Hiba történt:
+            <pre>{error.message || JSON.stringify(error, null, 3)}</pre>
+          </div>
+          <NavLink exact to="/exercise" className="btn btn-secondary">
+            Vissza a feladatlistához
+          </NavLink>
         </div>
       )
     }
 
-    renderError() {
-      const error = this.state.error
-      if (error) {
-        return (
-          <div>
-            <div className="alert alert-danger">{error.message || error}</div>
-            <NavLink exact to="/exercise" className="btn btn-secondary">
-              Vissza a feladatlistához
-            </NavLink>
-          </div>
-        )
-      }
-    }
-
     renderContent() {
-      const { loading, error, exercise } = this.state
-      if (loading || error || !exercise) return
       return (
         <div>
           {this.renderHeader()}
@@ -243,22 +219,25 @@ export default connect(undefined, {
     }
 
     renderHeader() {
-      const mLabel = modeLabel[this.mode]
-      const exercise = this.state.exercise
-      const notNew = !!this.state.exercise._key
+      const { data: exercise, mode, saving, changed } = this.props.exercise
+      const mLabel = modeLabel[mode]
+      const notNew = mode === 'new'
       const exState = exercise._state
       return (
         <div className="d-flex justify-content-between align-items-center">
           <h4>Feladat {mLabel}</h4>
           <ExerciseState value={exState} />
           <div>
+            <Button className="btn btn-link text-dark" onAction={this.openExerciseImageDialog}>
+              <Icon fa="picture-o" />&nbsp; Képek
+            </Button>
             {notNew &&
             exState === EXERCISE_ACTIVE && (
               <Button
                 className="btn btn-link text-dark"
                 onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}
               >
-                <i className="fa fa-archive" /> Archiválás
+                <Icon fa="archive" /> Archiválás
               </Button>
             )}{' '}
             {notNew &&
@@ -267,7 +246,7 @@ export default connect(undefined, {
                 className="btn btn-link text-success"
                 onAction={this.changeExerciseState(EXERCISE_ACTIVE)}
               >
-                <i className="fa fa-check" /> Aktiválás
+                <Icon fa="check" /> Aktiválás
               </Button>
             )}{' '}
             {notNew &&
@@ -276,18 +255,19 @@ export default connect(undefined, {
                 className="btn btn-link text-danger"
                 onAction={this.changeExerciseState(EXERCISE_REMOVE)}
               >
-                <i className="fa fa-trash" /> Törlés
+                <Icon fa="trash" /> Törlés
               </Button>
             )}{' '}
             <NavLink exact to="/exercise" className="btn btn-outline-secondary">
               Mégsem
             </NavLink>{' '}
             <Button
-              loading={this.state.saving}
+              loading={saving}
+              disabled={!changed}
               className="btn btn-outline-primary"
               onAction={this.saveExercise}
             >
-              <i className="fa fa-save" /> Mentés
+              <Icon fa="save" /> Mentés
             </Button>
           </div>
         </div>
@@ -303,19 +283,20 @@ export default connect(undefined, {
         case 2:
           return this.renderSubTasks()
         case 3:
-          return <ExercisePreview exercise={this.state.exercise} />
+          return <ExercisePreview exercise={this.props.exercise.data} />
       }
     }
 
     renderMetadata() {
-      const ex = this.state.exercise
+      const ex = this.props.exercise.data
+      const classifications = this.props.classifications.data
       return (
         <div className="col-10 mx-auto">
           {this.renderTextInput('Cím: ', ['title'])}
           {this.renderSelect(GRADE, 'Osztály: ', ['classification', GRADE])}
           {this.renderSelect(SUBJECT, 'Tantárgy: ', ['classification', SUBJECT])}
           {pathOr([], ['classification', 'subject'], ex).map(sub => {
-            const label = `${this.state.classifications[SUBJECT][sub].name} témakörök`
+            const label = `${classifications[SUBJECT][sub].name} témakörök`
             return this.renderSelect(`${SUBJECT}.${sub}.${TOPIC}`, label, ['classification', TOPIC])
           })}
           {this.renderSelect(TAGS, 'Címkék: ', ['classification', TAGS])}
@@ -327,7 +308,7 @@ export default connect(undefined, {
                 name="classification.difficulty"
                 onChange={this.update}
                 required
-                value={pathOr('', ['classification', 'difficulty'], this.state.exercise)}
+                value={pathOr('', ['classification', 'difficulty'], ex)}
               >
                 <option value={0}>Könnyű</option>
                 <option value={5}>Közepes</option>
@@ -340,7 +321,7 @@ export default connect(undefined, {
     }
 
     renderDescription() {
-      const ex = this.state.exercise
+      const { data, resources } = this.props.exercise
       return (
         <div className="col-11 mx-auto">
           <TextEditor
@@ -349,7 +330,8 @@ export default connect(undefined, {
             rows="10"
             required
             onChange={this.update}
-            value={pathOr('', ['description'], ex)}
+            value={pathOr('', ['description'], data)}
+            resources={resources}
           />
         </div>
       )
@@ -357,7 +339,10 @@ export default connect(undefined, {
 
     renderSubTasks() {
       return (
-        <SubTaskList subTasks={this.state.exercise.subTasks || {}} onChange={this.updateSubTask} />
+        <SubTaskList
+          subTasks={this.props.exercise.data.subTasks || {}}
+          onChange={this.updateSubTask}
+        />
       )
     }
 
@@ -370,19 +355,19 @@ export default connect(undefined, {
             name={path.join('.')}
             onChange={this.update}
             required
-            value={pathOr('', path, this.state.exercise)}
+            value={pathOr('', path, this.props.exercise.data)}
           />
         </FormGroup>
       )
     }
 
     renderSelect(group, label, path) {
-      const classifications = this.state.classifications
+      const classifications = this.props.classifications.data
       return (
         classifications && (
           <FormGroup key={group} label={label}>
             <Select
-              value={pathOr([], path, this.state.exercise)}
+              value={pathOr([], path, this.props.exercise.data)}
               multi={true}
               labelKey="name"
               valueKey="_key"

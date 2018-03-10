@@ -1,5 +1,6 @@
 import Markdown from 'markdown-it/lib/index'
 import katex from 'markdown-it-katex'
+import { imageInit } from '../markdown/image-resource'
 
 export const unTokeniseMarkdown = description =>
   reduceTokenList(initMarkdown().parse(description))
@@ -10,7 +11,7 @@ export const unTokeniseMarkdown = description =>
     .toLowerCase()
     .trim()
 
-const initMarkdown = () => new Markdown({}).use(katex)
+const initMarkdown = () => new Markdown({}).use(katex).use(imageInit({}))
 
 const reduceTokenList = tokenList =>
   tokenList.reduce((acc, i) => {

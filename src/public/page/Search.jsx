@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import Markdown from 'shared/component/general/Markdown'
+import { Markdown } from 'shared/component/general/Markdown'
 import Loading from 'shared/component/general/Loading'
 import Icon from 'shared/component/general/Icon'
 import { parseQueryParams } from 'shared/util/url'

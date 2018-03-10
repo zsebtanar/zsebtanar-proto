@@ -1,13 +1,13 @@
+import { __, evolve, merge, dissoc, assocPath, keys } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
-import { __, evolve, merge, dissoc, assocPath, keys } from 'ramda'
 import { openInputModal } from 'shared/store/actions/modal'
-import Button from 'shared/component/general/Button'
 import { uid } from 'shared/util/uuid'
 import { abcIndex, pairsInOrder } from 'shared/util/fn'
-import Checkbox from 'shared/component/input/Checkbox'
 import { TrashButton } from 'shared/component/userControls/common/TrashButton'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
+import Button from 'shared/component/general/Button'
+import Checkbox from 'shared/component/input/Checkbox'
 
 export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
@@ -54,7 +54,6 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
 
     selectSolution = e => {
       const { name, value } = e.currentTarget
-      console.log(value)
       this.updateState(
         evolve(
           {
@@ -124,12 +123,13 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
               label="Állítás:"
               name="label"
               value={item.label}
+              resources={this.props.resources}
               onChange={this.updateOption(item.id)}
             />
             <div className="row">
               <label className="col-3">Megoldás:</label>
               <div className="col-9">
-                <label className="custom-control custom-radio">
+                <div className="custom-control custom-radio">
                   <input
                     type="radio"
                     className="custom-control-input"
@@ -139,10 +139,9 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
                     required
                     onChange={this.selectSolution}
                   />
-                  <span className="custom-control-indicator" />
-                  <span className="custom-control-description">Igaz</span>
-                </label>
-                <label className="custom-control custom-radio">
+                  <label className="custom-control-label">Igaz</label>
+                </div>
+                <div className="custom-control custom-radio">
                   <input
                     type="radio"
                     className="custom-control-input"
@@ -152,9 +151,8 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
                     required
                     onChange={this.selectSolution}
                   />
-                  <span className="custom-control-indicator" />
-                  <span className="custom-control-description">Hamis</span>
-                </label>
+                  <label className="custom-control-label">Hamis</label>
+                </div>
               </div>
             </div>
           </div>

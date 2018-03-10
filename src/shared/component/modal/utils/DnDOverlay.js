@@ -2,10 +2,10 @@ import * as React from 'react'
 
 const events = ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop']
 
-export default class DnDOverlay extends React.Component {
+export class DnDOverlay extends React.Component {
   counter = 0
 
-  prevent = (e) => {
+  prevent = e => {
     e.preventDefault()
     e.stopPropagation()
   }
@@ -15,7 +15,7 @@ export default class DnDOverlay extends React.Component {
     document.body.classList.add('is-dragover')
   }
 
-  removeClass = (e) => {
+  removeClass = e => {
     this.counter--
     if (e.type === 'drop') this.counter = 0
     if (!this.counter) {
@@ -23,7 +23,7 @@ export default class DnDOverlay extends React.Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     events.map(eventName => {
       document.addEventListener(eventName, this.prevent)
     })
@@ -35,7 +35,7 @@ export default class DnDOverlay extends React.Component {
     document.addEventListener('drop', this.removeClass, false)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     events.map(eventName => {
       document.removeEventListener(eventName, this.prevent)
     })
@@ -47,12 +47,14 @@ export default class DnDOverlay extends React.Component {
     document.removeEventListener('drop', this.removeClass, false)
   }
 
-  render () {
+  render() {
     return (
       <div className="dnd-overlay">
         <div className="msg-block">
           <div className="block-item">
-            <i className="fa fa-upload fa-5x"/><br/><br/>
+            <i className="fa fa-upload fa-5x" />
+            <br />
+            <br />
             Csak dobd ide a feltöltendő fájlokat.
           </div>
         </div>

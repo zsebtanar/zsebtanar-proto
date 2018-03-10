@@ -1,4 +1,4 @@
-import { pick, keys, pipe, evolve, mapObjIndexed } from 'ramda'
+import { pick, keys, pipe, evolve, mapObjIndexed, toPairs, fromPairs, map } from 'ramda'
 import { admin } from '../utils/fb-utils'
 import * as Joi from 'joi'
 
@@ -8,12 +8,14 @@ const PUBLIC_EXERCISE_PROPS = [
   '_updated',
   'classification',
   'description',
-  'subTasks'
+  'subTasks',
+  'resources'
 ]
 const PUBLIC_SUB_TASK_PROPS = ['controls', 'order', 'description']
 const DB = admin.database()
 const PrivateExercise = DB.ref('exercise/private')
 const PublicExercise = DB.ref('exercise/public')
+const storageRef = admin.storage().bucket()
 
 const classificationSchema = Joi.array().items(Joi.string())
 
@@ -50,7 +52,7 @@ const subTaskSchema = Joi.object({
     .pattern(uidPattern, hintSchema)
 })
 
-export const exerciseCreateSchema = Joi.object({
+export const exerciseSchema = Joi.object({
   title: Joi.string().max(128),
   classification: Joi.object().keys({
     grade: classificationSchema,
@@ -58,11 +60,20 @@ export const exerciseCreateSchema = Joi.object({
     topic: classificationSchema,
     tags: classificationSchema
   }),
+  difficulty: Joi.any().optional(),
   description: Joi.string().required(),
   subTasks: Joi.object()
     .pattern(uidPattern, subTaskSchema)
     .min(1),
-  difficulty: Joi.any().optional()
+  resources: Joi.object().pattern(
+    uidPattern,
+    Joi.object({
+      _key: Joi.string(),
+      name: Joi.string(),
+      fullPath: Joi.string(),
+      url: Joi.string()
+    })
+  )
 })
 
 export const newPrivateExerciseKey = () => PrivateExercise.push().key
@@ -78,6 +89,13 @@ export const getAllPrivateExercise = () => PrivateExercise.once('value')
 
 export const savePrivateExercise = (key, data) => PrivateExercise.child(key).update(data)
 
+export const resolveNewResources = newRes => {
+  const fn = ([id, data]) => getDownloadUrl(data.fullPath).then(url => [id, { ...data, url }])
+  return Promise.all(pipe(toPairs, map(fn))(newRes)).then(fromPairs)
+}
+
+const getDownloadUrl = fullPath => storageRef.child(fullPath).getDownloadURL()
+
 export const savePublicExercise = (key, data) =>
   PublicExercise.child(key).set(
     pipe(
@@ -86,7 +104,8 @@ export const savePublicExercise = (key, data) =>
         subTasks: mapObjIndexed(task => ({
           ...pick(PUBLIC_SUB_TASK_PROPS, task),
           hintCount: keys(task.hints).length
-        }))
+        })),
+        resources: mapObjIndexed(pick(['url']))
       })
     )(data)
   )

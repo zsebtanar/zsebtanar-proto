@@ -12,18 +12,18 @@ import { SingleNumberAdmin } from './singleNumber/SingleNumberAdmin'
 import { BinaryChoiceAdmin } from './binaryChoice/BinaryChoiceAdmin'
 import { MultiChoiceAdmin } from './multiChoice/MultiChoiceAdmin'
 
-export default function UserControlsAdmin({ controlType, controlProps }) {
+export function UserControlsAdmin({ controlType, controlProps, resources }) {
   switch (controlType) {
     case SIMPLE_TEXT:
-      return <SimpleTextAdmin {...controlProps} />
+      return <SimpleTextAdmin {...controlProps} resources={resources} />
     case SINGLE_NUMBER:
-      return <SingleNumberAdmin {...controlProps} />
+      return <SingleNumberAdmin {...controlProps} resources={resources} />
     case SINGLE_CHOICE:
-      return <SingleChoiceAdmin {...controlProps} />
+      return <SingleChoiceAdmin {...controlProps} resources={resources} />
     case BINARY_CHOICE:
-      return <BinaryChoiceAdmin {...controlProps} />
+      return <BinaryChoiceAdmin {...controlProps} resources={resources} />
     case MULTI_CHOICE:
-      return <MultiChoiceAdmin {...controlProps} />
+      return <MultiChoiceAdmin {...controlProps} resources={resources} />
     default:
       return (
         <div className="alert alert-danger">Not implemented Admin control type "{controlType}"</div>

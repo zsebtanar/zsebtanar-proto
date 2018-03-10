@@ -1,9 +1,8 @@
-import React from 'react'
 import { propOr, last, assocPath } from 'ramda'
-import { abcIndex, pairsInOrder } from 'shared/util/fn'
-import UserControls from 'shared/component/userControls/UserControl'
-import Markdown from 'shared/component/general/Markdown'
-import Button from 'shared/component/general/Button'
+import React from 'react'
+import { pairsInOrder } from 'shared/util/fn'
+import { UserControls } from 'shared/component/userControls/UserControl'
+import { Markdown } from 'shared/component/general/Markdown'
 import { connect } from 'react-redux'
 import {
   checkSolutionAction,
@@ -11,6 +10,7 @@ import {
   TASK_STATUS_DONE,
   TASK_STATUS_PREVIEW
 } from 'shared/store/exercise'
+import Button from 'shared/component/general/Button'
 import Icon from 'shared/component/general/Icon'
 
 export const SubTask = connect(undefined, { getHintAction, checkSolutionAction })(
@@ -85,7 +85,7 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
 
     renderDescription() {
       const desc = this.props.task.details.description
-      return desc && <Markdown source={desc} />
+      return desc && <Markdown source={desc} resources={this.props.resources} />
     }
 
     renderControl = ([ctrlId, { controlType, controlProps }]) => {
@@ -107,7 +107,7 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
       if (isDone) {
         return (
           <div className="form-group row" key={ctrlId}>
-            <UserControls {...props} />
+            <UserControls {...props} resources={this.props.resources} />
           </div>
         )
       } else {
@@ -115,7 +115,7 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
           <div className="form-group row" key={ctrlId}>
             <div className="col-1">{this.resultIcon(ctrlId)}</div>
             <div className="col-11">
-              <UserControls {...props} />
+              <UserControls {...props} resources={this.props.resources} />
             </div>
           </div>
         )
@@ -124,7 +124,7 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
 
     renderHint = item => (
       <li key={item.key}>
-        <Markdown source={item.hint.text} />
+        <Markdown source={item.hint.text} resources={this.props.resources} />
       </li>
     )
 

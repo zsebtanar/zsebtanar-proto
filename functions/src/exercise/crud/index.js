@@ -12,44 +12,40 @@ import { updateAllClassification } from './utils'
 import { EXERCISE_ACTIVE, EXERCISE_DRAFT, STATE_KEY } from '../state'
 import getToken from '../../middlewares/firebaseToken'
 import requestValidator from '../../middlewares/requestValidator'
-import { exerciseCreateSchema } from '../model'
+import { exerciseSchema } from '../model'
 
 export const route = express.Router()
 
 route.use(preFetch('classifications/'))
 
 // create
-route.post(
-  '/',
-  [getToken, onlyEditors, requestValidator({ body: exerciseCreateSchema })],
-  (req, res) => {
-    const key = newPrivateExerciseKey()
-    const now = new Date()
-    const cf = req.db.classifications
+route.post('/', [getToken, onlyEditors, requestValidator({ body: exerciseSchema })], (req, res) => {
+  const key = newPrivateExerciseKey()
+  const now = new Date()
+  const cf = req.db.classifications
 
-    const data = {
-      ...req.body,
-      _key: key,
-      _created: now,
-      _createdBy: req.user.uid,
-      _updated: now,
-      _updatedBy: req.user.uid,
-      [STATE_KEY]: EXERCISE_DRAFT
-    }
-
-    return Promise.all([indexExercise(key, data, cf.data), savePrivateExercise(key, data)])
-      .then(() => res.status(201).send())
-      .catch(error => {
-        console.error(error)
-        res.status(500).send('Unexpected error')
-      })
+  const data = {
+    ...req.body,
+    _key: key,
+    _created: now,
+    _createdBy: req.user.uid,
+    _updated: now,
+    _updatedBy: req.user.uid,
+    [STATE_KEY]: EXERCISE_DRAFT
   }
-)
+
+  return Promise.all([indexExercise(key, data, cf.data), savePrivateExercise(key, data)])
+    .then(() => res.status(201).send())
+    .catch(error => {
+      console.error(error)
+      res.status(500).send('Unexpected error')
+    })
+})
 
 // Update
 route.post(
   '/:exerciseId',
-  [getToken, onlyEditors, requestValidator({ body: exerciseCreateSchema })],
+  [getToken, onlyEditors, requestValidator({ body: exerciseSchema })],
   (req, res) => {
     const key = req.params.exerciseId
     const cf = req.db.classifications

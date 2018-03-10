@@ -50,10 +50,6 @@ export default withRouter(connect(mapStateToProps, {signOut, openFileManager, cl
             </li>
 
             <li className="nav-item">
-              <a className="nav-link" href="#" onClick={openFileManager}>Képek</a>
-            </li>
-
-            <li className="nav-item">
               <SideNavLink activeClassName="active" className="nav-link" to="/exercise">Feladatok</SideNavLink>
             </li>
             <li>

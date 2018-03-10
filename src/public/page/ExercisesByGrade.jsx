@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { selectPublicExercisesById } from 'shared/services/exercise'
 import { getAllClassification, TAGS } from 'shared/services/classification'
-import Markdown from 'shared/component/general/Markdown'
+import { Markdown } from 'shared/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import Loading from 'shared/component/general/Loading'
 
@@ -49,7 +49,7 @@ export default pipe(
                   className="list-group-item list-group-item-action d-flex flex-column align-items-start"
                 >
                   <div className="mb-1 d-flex w-100 ">
-                    <Markdown source={ex.description}/>
+                    <Markdown source={ex.description} resources={ex.resources}/>
                   </div>
                   <div>{
                     ex.classification.tags.map(tag =>

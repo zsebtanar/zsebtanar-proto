@@ -10,9 +10,9 @@ export const ROLE_ADMIN = 1000
 
 export const roleIs = (roles, token) => roles.indexOf(token && token.role) > -1
 
-export const isUser = token => roleIs([ROLE_ADMIN], token)
+export const isUser = token => roleIs([ROLE_USER], token)
 export const isAdmin = token => roleIs([ROLE_ADMIN], token)
-export const isTeacher = token => roleIs([ROLE_ADMIN], token)
+export const isTeacher = token => roleIs([ROLE_TEACHER], token)
 
 export function parseToken(currentUser, force) {
   return currentUser.getIdToken(force).then(idToken => JSON.parse(atob(idToken.split('.')[1])))

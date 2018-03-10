@@ -5,11 +5,21 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
 import Button from 'shared/component/general/Button'
-import Markdown from 'shared/component/general/Markdown'
+import { Markdown } from 'shared/component/general/Markdown'
 import Icon from 'shared/component/general/Icon'
 
-export default connect(undefined, { openInputModal })(
-  class HintList extends React.Component {
+function mapStateToProps(state) {
+  return {
+    resources: state.exerciseEdit.resources,
+  }
+}
+
+const mapDispatchToProps = {
+  openInputModal
+}
+
+export const HintList = connect(mapStateToProps, mapDispatchToProps)(
+  class extends React.Component {
 
     addHint = text =>
       this.setValue(
@@ -94,7 +104,7 @@ export default connect(undefined, { openInputModal })(
               </Button>
             </div>
           </div>
-          <Markdown source={item.text} />
+          <Markdown source={item.text} resources={this.props.resources}/>
         </div>
       )
     }

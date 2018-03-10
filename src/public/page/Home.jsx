@@ -12,7 +12,9 @@ const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default compose(withRouter, connect(mapStateToProps, { openSignInModal, openSignUpModal }))(
+export default compose(withRouter,
+
+  connect(mapStateToProps, { openSignInModal, openSignUpModal }))(
   class Home extends React.Component {
     searchInput = null
 
