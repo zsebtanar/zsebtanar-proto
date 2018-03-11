@@ -129,32 +129,30 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     }
 
     updateClassification = (group, path) => value => {
-      this.updateContent(state => {
-        let ex = state.exercise
-        const selectedValues = map(prop('_key'), value)
-        if (last(path) === SUBJECT) {
-          // remove all topic(s) which is not connect to any selected subject(s)
-          const allNOTUsedSubjectTopics = values(
-            omit(selectedValues, pathOr({}, [SUBJECT], state.classifications))
-          ).reduce((acc, sub) => acc.concat(Object.keys(sub.topic || {})), [])
-          ex = evolve(
-            {
-              classification: {
-                [TOPIC]: filter(pipe(contains(__, allNOTUsedSubjectTopics), not))
-              }
-            },
-            ex
-          )
-        }
-        if (last(path) === TOPIC) {
-          // remove and add only the selected topic(s) from the current subject
-          const subjectTopics = Object.keys(pathOr({}, group.split('.'), state.classifications))
-          const currentTopics = pathOr([], path, ex)
-          return assocPath(path, union(difference(currentTopics, subjectTopics), selectedValues))
-        } else {
-          return assocPath(path, selectedValues)
-        }
-      })
+      const selectedValues = map(prop('_key'), value)
+      let ex = this.props.exercise.data
+      if (last(path) === SUBJECT) {
+        // remove all topic(s) which is not connect to any selected subject(s)
+        const allNOTUsedSubjectTopics = values(
+          omit(selectedValues, pathOr({}, [SUBJECT], ex.classifications))
+        ).reduce((acc, sub) => acc.concat(Object.keys(sub.topic || {})), [])
+        ex = evolve(
+          {
+            classification: {
+              [TOPIC]: filter(pipe(contains(__, allNOTUsedSubjectTopics), not))
+            }
+          },
+          ex
+        )
+      }
+      if (last(path) === TOPIC) {
+        // remove and add only the selected topic(s) from the current subject
+        const subjectTopics = Object.keys(pathOr({}, group.split('.'), this.props.classifications.data))
+        const currentTopics = pathOr([], path, ex)
+        this.updateContent(assocPath(path, union(difference(currentTopics, subjectTopics), selectedValues)))
+      } else {
+        this.updateContent(assocPath(path, selectedValues))
+      }
     }
 
     updateSubTask = subTasks => this.updateContent(assocPath(['subTasks'], subTasks))
