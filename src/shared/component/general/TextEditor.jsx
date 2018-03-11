@@ -48,12 +48,12 @@ export const TextEditor = connect(undefined, {
     render() {
       return (
         <div className={this.props.className || ''}>
-          <div className="btn-toolbar m-2" role="toolbar" aria-label="Szövet szerkesztő eszközök">
+          <div className="btn-toolbar m-2" role="toolbar" aria-label="Szövegszerkesztő eszközök">
             <div className="btn-group mr-2" role="group" aria-label="Formázás">
               <Button secondary onAction={this.wrapText('**')} title="Félkövér">
                 <i className="fa fa-bold" />
               </Button>
-              <Button secondary onAction={this.wrapText('*')} title="Dölt">
+              <Button secondary onAction={this.wrapText('*')} title="Dőlt">
                 <i className="fa fa-italic" />
               </Button>
               <Button secondary onAction={this.wrapText('~~')} title="Áthúzott">

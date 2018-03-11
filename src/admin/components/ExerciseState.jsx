@@ -12,7 +12,7 @@ export default props => {
     case 'archive':
       return (
         <span className="badge badge-pill badge-dark" title="Arhivált">
-          {props.short ? <Icon fa='archive'/> : 'Arhivált'}
+          {props.short ? <Icon fa='archive'/> : 'Archivált'}
         </span>
       )
     case 'draft':
