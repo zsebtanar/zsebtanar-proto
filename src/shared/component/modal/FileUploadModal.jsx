@@ -80,6 +80,7 @@ export class FileUploadModal extends React.Component {
         <div>
           <div className="alert alert-success my-3">Sikeres fájl feltöltés</div>
           <div className="text-center">
+
             <Button onAction={this.success}>Szerkesztés folytatása</Button>
           </div>
         </div>
