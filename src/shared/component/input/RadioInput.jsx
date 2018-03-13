@@ -1,22 +1,12 @@
 import * as React from 'react'
-import { uid } from 'shared/util/uuid'
+import { Markdown } from 'shared/component/general/Markdown'
 
 export default props => {
-  const id = `cc-${uid()}`
   return (
-    <div className="custom-control custom-radio">
-      <input
-        type="radio"
-        className="custom-control-input"
-        name={props.name}
-        value={props.value}
-        checked={props.checked}
-        required={props.required}
-        onChange={props.onChange}
-        id={id}
-      />
-      <label className="custom-control-label" htmlFor={id}>
-        {props.children}
+    <div className="custom-control custom-radio d-block">
+      <input {...props} type="radio" className="custom-control-input" id={props.id}/>
+      <label className="custom-control-label" htmlFor={props.id}>
+        <Markdown source={props.label} resources={props.resources}/>
       </label>
     </div>
   )
