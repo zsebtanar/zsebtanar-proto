@@ -2,6 +2,8 @@ import { keys } from 'ramda'
 import React from 'react'
 import { Markdown } from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
+import RadioInput from 'shared/component/input/RadioInput'
+import { uid } from 'shared/util/uuid'
 
 export const DEFAULT_TRUE_LABEL = 'Igaz'
 export const DEFAULT_FALSE_LABEL = 'Hamis'
@@ -46,6 +48,7 @@ export class BinaryChoice extends React.Component {
         {item.label}
         <div className="d-flex">
           <RadioInput
+            id={uid()}
             label={item.trueLabel || DEFAULT_TRUE_LABEL}
             name={id}
             value={'true'}
@@ -54,6 +57,7 @@ export class BinaryChoice extends React.Component {
             resources={this.props.resources}
           />
           <RadioInput
+            id={uid()}
             label={item.falseLabel || DEFAULT_FALSE_LABEL}
             name={id}
             value={'false'}
@@ -83,12 +87,3 @@ export class BinaryChoice extends React.Component {
     ))
   }
 }
-
-const RadioInput = props => (
-  <div className="custom-control custom-radio d-block">
-    <input {...props} type="radio" className="custom-control-input" />
-    <label className="custom-control-label">
-      <Markdown source={props.label} resources={props.resources}/>
-    </label>
-  </div>
-)

@@ -2,6 +2,8 @@ import { find, propEq } from 'ramda'
 import React from 'react'
 import { Markdown } from 'shared/component/general/Markdown'
 import Icon from 'shared/component/general/Icon'
+import { uid } from 'shared/util/uuid'
+import RadioInput from 'shared/component/input/RadioInput'
 
 export class SingleChoice extends React.Component {
   // we need state here because: https://github.com/facebook/react/issues/10078
@@ -28,13 +30,14 @@ export class SingleChoice extends React.Component {
 
   renderNormal() {
     return (this.props.options || []).map(x =>
-      RadioInput({
-        ...x,
-        name: 'random',
-        onChange: this.onChange,
-        checked: this.state.checked === x.value,
-        resources: this.props.resources
-      })
+      <RadioInput
+        {...x}
+        id={uid()}
+        key={uid()}
+        name={'random'}
+        onChange={this.onChange}
+        checked={this.state.checked === x.value}
+        resources={this.props.resources} />
     )
   }
 
@@ -49,12 +52,3 @@ export class SingleChoice extends React.Component {
     )
   }
 }
-
-const RadioInput = props => (
-  <div className="custom-control custom-radio d-block" key={props.value}>
-    <input {...props} type="radio" className="custom-control-input" required={props.required} />
-    <label className="custom-control-label">
-      <Markdown source={props.label} resources={props.resources} />
-    </label>
-  </div>
-)
