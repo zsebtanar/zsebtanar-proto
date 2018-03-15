@@ -1,6 +1,3 @@
 Javított hibajegy: 
 
-Változások:
--
--
--
+Változások: 
