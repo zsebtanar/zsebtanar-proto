@@ -8,14 +8,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
     <link rel="manifest" href="/manifest.json">
+    <% if (!htmlWebpackPlugin.options.isDev) { %>
     <script type="text/javascript">
       window.smartlook||(function(d) {
       var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
       var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
       c.charset='utf-8';c.src='https://rec.smartlook.com/recorder.js';h.appendChild(c);
-      })(document);
-      smartlook('init', 'c8f36ab8bf000e26c4ccaed201df510e00fab8f4');
+    })(document);
+    smartlook('init', 'c8f36ab8bf000e26c4ccaed201df510e00fab8f4');
     </script>
+    <script type="text/javascript">
+      window._mfq = window._mfq || [];
+      (function() {
+          var mf = document.createElement("script");
+          mf.type = "text/javascript"; mf.async = true;
+          mf.src = "//cdn.mouseflow.com/projects/089c28d5-a646-4050-8c6d-d432b6f575d6.js";
+          document.getElementsByTagName("head")[0].appendChild(mf);
+      })();
+    </script>
+    <% } %>
 </head>
 <body>
 <div id="root"></div>
