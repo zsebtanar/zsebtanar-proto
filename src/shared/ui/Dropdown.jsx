@@ -37,9 +37,13 @@ export class Dropdown extends React.Component {
     const Elm = this.props.elementType || 'div'
     return (
       <Elm
-        className={`nav-item dropdown ${this.props.className || ''} ${this.state.open
-          ? 'show'
-          : ''}`}
+        className={`nav-item ${this.props.dropUp
+            ? 'dropup'
+            : 'dropdown'
+          } ${this.props.className || ''} ${this.state.open
+            ? 'show'
+            : ''
+          }`}
         onMouseOut={this.toggleDropdown}
         onMouseOver={this.toggleDropdown}
       >
