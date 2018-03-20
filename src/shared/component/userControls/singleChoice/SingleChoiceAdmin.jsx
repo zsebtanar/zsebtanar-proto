@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
 import { Markdown } from 'shared/component/general/Markdown'
 import Button from 'shared/component/general/Button'
+import RadioInput from 'shared/component/input/RadioInput'
 
 export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
@@ -82,22 +83,20 @@ export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
     }
 
     renderItem = item => {
+      console.log(item)
       return (
         <li key={`${item.value}-${item.label}`}>
-          <div className="custom-control custom-radio">
-            <input
-              type="radio"
-              className="custom-control-input"
-              name={item.name}
-              value={item.value}
-              checked={item.value === this.state.solution}
-              required
-              onChange={this.selectSolution}
-            />
-            <label className="custom-control-label">
-              <Markdown source={item.label} resources={this.props.resources}/>
-            </label>
-          </div>
+          <RadioInput
+            label={item.label}
+            name={item.name}
+            id={`cc-${item.value.toString()}`}
+            key={item.value}
+            value={item.value}
+            checked={item.value === this.state.solution}
+            required
+            onChange={this.selectSolution}
+            resources={this.props.resources}
+          />
           {item.isLast ? (
             ''
           ) : (
