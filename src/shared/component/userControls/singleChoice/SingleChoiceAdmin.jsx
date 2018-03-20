@@ -83,7 +83,6 @@ export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
     }
 
     renderItem = item => {
-      console.log(item)
       return (
         <li key={`${item.value}-${item.label}`}>
           <RadioInput
