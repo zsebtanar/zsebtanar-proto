@@ -90,7 +90,7 @@ export default connect(mapStateToProps, { openUserControlModal })(
             )}
           </div>
 
-          <Dropdown className="col-6 mx-auto">
+          <Dropdown className="col-6 mx-auto btn-group" dropUp>
             <DropdownToggle
               className="btn btn-sm btn-outline-primary"
               title="Beviteli mező hozzáadása"
