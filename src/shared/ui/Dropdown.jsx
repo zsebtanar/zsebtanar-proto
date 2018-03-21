@@ -10,7 +10,42 @@ export class Dropdown extends React.Component {
     return this.props.children.filter(propEq('type', type))
   }
 
-  toggleDropdown = () => this.setState({ open: !this.state.open })
+  toggleDropdown = (open) => {
+    this.setState({ open }, this.updateMenuPosition)
+  }
+
+  hide = () => this.toggleDropdown(false)
+
+  show = () => this.toggleDropdown(true)
+
+  updateMenuPosition = () => {
+    if (this.state.open && this.props.dropUp) {
+      const [toggle, menu] = this.menuRef.children
+      menu.style.transform = `translate3d(0, -${menu.clientHeight + toggle.clientHeight}px, 0px)`
+    }
+  }
+
+  getMenuRef = (ref) => this.menuRef = ref
+
+
+  render() {
+    const { dropUp, className } = this.props
+    const Elm = this.props.elementType || 'div'
+    return (
+      <Elm
+        className={`nav-item ${dropUp ? 'dropup' : 'dropdown'} ${className || ''} ${this.state.open
+          ? 'show'
+          : ''}`}
+        ref={this.getMenuRef}
+        onMouseEnter={this.show}
+        onMouseLeave={this.hide}
+        onMouseUp={this.hide}
+      >
+        {this.renderToggle()}
+        {this.renderMenu()}
+      </Elm>
+    )
+  }
 
   renderToggle() {
     const toggle = this.getComponent(DropdownToggle)
@@ -30,26 +65,6 @@ export class Dropdown extends React.Component {
         active: this.state.open,
         className: this.props.right ? 'dropdown-menu-right' : ''
       })
-    )
-  }
-
-  render() {
-    const Elm = this.props.elementType || 'div'
-    return (
-      <Elm
-        className={`nav-item ${this.props.dropUp
-            ? 'dropup'
-            : 'dropdown'
-          } ${this.props.className || ''} ${this.state.open
-            ? 'show'
-            : ''
-          }`}
-        onMouseOut={this.toggleDropdown}
-        onMouseOver={this.toggleDropdown}
-      >
-        {this.renderToggle()}
-        {this.renderMenu()}
-      </Elm>
     )
   }
 }
