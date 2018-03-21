@@ -9,9 +9,6 @@ module.exports = {
       storageBucket: 'zsebtanar-test.appspot.com',
       messagingSenderId: '650562716671'
     },
-    sentry: {
-      dsn: 'https://51329885b5704f2d8b19d4c29cad3e9a@sentry.io/275144'
-    },
     algolia: {
       appId: 'J8PWVF536F',
       key: '502f297f7fecf9051688c205ab391225'
