@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ajv": "^6.3.0",
     "algoliasearch": "^3.24.11",
     "axios": "0.17.1",
     "history": "^4.7.2",
