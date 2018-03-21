@@ -163,8 +163,8 @@ export const BinaryChoiceAdmin = connect(undefined, { openInputModal })(
                   defaultValue={propOr(false, ['solution', 'options', item.id], this.state)}
                   onChange={this.selectSolution}
                 >
-                  <option value="false">{item.trueLabel || DEFAULT_FALSE_LABEL}</option>
-                  <option value="true">{item.falseLabel || DEFAULT_TRUE_LABEL}</option>
+                  <option value="false">{item.falseLabel || DEFAULT_FALSE_LABEL}</option>
+                  <option value="true">{item.trueLabel || DEFAULT_TRUE_LABEL}</option>
                 </select>
               </div>
             </div>
