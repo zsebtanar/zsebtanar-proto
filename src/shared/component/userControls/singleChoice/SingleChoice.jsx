@@ -2,11 +2,11 @@ import { find, propEq } from 'ramda'
 import React from 'react'
 import { Markdown } from 'shared/component/general/Markdown'
 import Icon from 'shared/component/general/Icon'
-import { uid } from 'shared/util/uuid'
 import RadioInput from 'shared/component/input/RadioInput'
 
 export class SingleChoice extends React.Component {
   // we need state here because: https://github.com/facebook/react/issues/10078
+
   state = { checked: null }
   onChange = e => {
     const checked = e.currentTarget.value
@@ -29,16 +29,16 @@ export class SingleChoice extends React.Component {
   }
 
   renderNormal() {
-    return (this.props.options || []).map(x =>
-      <RadioInput
-        {...x}
-        id={uid()}
-        key={uid()}
-        name={'random'}
+    return (this.props.options || []).map(x => (
+      <RadioInput {...x}
+        id={x.value.toString()}
+        key={x.value}
+        name='random'
         onChange={this.onChange}
         checked={this.state.checked === x.value}
         resources={this.props.resources} />
     )
+  )
   }
 
   renderReadOnly() {

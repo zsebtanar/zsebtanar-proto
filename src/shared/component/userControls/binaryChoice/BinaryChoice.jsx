@@ -3,7 +3,6 @@ import React from 'react'
 import { Markdown } from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
 import RadioInput from 'shared/component/input/RadioInput'
-import { uid } from 'shared/util/uuid'
 
 export const DEFAULT_TRUE_LABEL = 'Igaz'
 export const DEFAULT_FALSE_LABEL = 'Hamis'
@@ -48,18 +47,18 @@ export class BinaryChoice extends React.Component {
         {item.label}
         <div className="d-flex">
           <RadioInput
-            id={uid()}
             label={item.trueLabel || DEFAULT_TRUE_LABEL}
             name={id}
+            id={id+'-true'}
             value={'true'}
             checked={this.state[id] === 'true'}
             onChange={this.onChange}
             resources={this.props.resources}
           />
           <RadioInput
-            id={uid()}
             label={item.falseLabel || DEFAULT_FALSE_LABEL}
             name={id}
+            id={id+'-false'}
             value={'false'}
             checked={this.state[id] === 'false'}
             onChange={this.onChange}

@@ -219,7 +219,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     renderHeader() {
       const { data: exercise, mode, saving, changed } = this.props.exercise
       const mLabel = modeLabel[mode]
-      const notNew = mode === 'new'
+      const notNew = mode !== 'new'
       const exState = exercise._state
       return (
         <div className="d-flex justify-content-between align-items-center">
