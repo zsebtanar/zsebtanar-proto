@@ -8,6 +8,7 @@ import { TrashButton } from 'shared/component/userControls/common/TrashButton'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
 import Button from 'shared/component/general/Button'
 import Checkbox from 'shared/component/input/Checkbox'
+import RadioInput from 'shared/component/input/RadioInput'
 
 export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
@@ -129,30 +130,24 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
             <div className="row">
               <label className="col-3">Megoldás:</label>
               <div className="col-9">
-                <div className="custom-control custom-radio">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    name={item.id}
-                    value={true}
-                    checked={this.state.solution[item.id]}
-                    required
-                    onChange={this.selectSolution}
-                  />
-                  <label className="custom-control-label">Igaz</label>
-                </div>
-                <div className="custom-control custom-radio">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    name={item.id}
-                    value={false}
-                    checked={!this.state.solution[item.id]}
-                    required
-                    onChange={this.selectSolution}
-                  />
-                  <label className="custom-control-label">Hamis</label>
-                </div>
+                <RadioInput
+                  label={'Igaz'}
+                  name={item.id}
+                  id={item.id+'-true'}
+                  value={'true'}
+                  checked={this.state.solution[item.id]}
+                  required
+                  onChange={this.selectSolution}
+                />
+                <RadioInput
+                  label={'Hamis'}
+                  name={item.id}
+                  id={item.id+'-false'}
+                  value={'false'}
+                  checked={this.state.solution[item.id]}
+                  required
+                  onChange={this.selectSolution}
+                />
               </div>
             </div>
           </div>
