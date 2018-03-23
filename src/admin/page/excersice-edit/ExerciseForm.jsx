@@ -164,7 +164,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         return this.props.loadExercise(key)
       }
       if (cloneKey) {
-        return this.props.cloneExercise(key)
+        return this.props.cloneExercise(cloneKey)
       }
       return this.props.newExercise()
     }
