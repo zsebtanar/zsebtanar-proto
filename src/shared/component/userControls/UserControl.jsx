@@ -4,13 +4,14 @@ import {
   SINGLE_CHOICE,
   SINGLE_NUMBER,
   BINARY_CHOICE,
-  MULTI_CHOICE
+  MULTI_CHOICE, FRACTION_NUMBER
 } from './controlTypes'
 import { SingleChoice } from './singleChoice/SingleChoice'
 import { SingleNumber } from './singleNumber/SingleNumber'
 import { SimpleText } from './simpleText/SimpleText'
 import { BinaryChoice } from './binaryChoice/BinaryChoice'
 import { MultiChoice } from './multiChoice/MultiChoice'
+import { FractionNumber } from './fractionNumber/FractionNumber'
 
 export function UserControls({ controlType, controlProps, resources }) {
   switch (controlType) {
@@ -18,6 +19,8 @@ export function UserControls({ controlType, controlProps, resources }) {
       return <SimpleText {...controlProps} resources={resources} />
     case SINGLE_NUMBER:
       return <SingleNumber {...controlProps} resources={resources} />
+    case FRACTION_NUMBER:
+      return <FractionNumber {...controlProps} resources={resources} />
     case SINGLE_CHOICE:
       return <SingleChoice {...controlProps} resources={resources} />
     case BINARY_CHOICE:
