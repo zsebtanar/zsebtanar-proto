@@ -1,4 +1,4 @@
-import { __, dissoc, evolve, map, merge, values } from 'ramda'
+import { __, addIndex, assocPath, dissoc, evolve, fromPairs, map, merge, pipe, values } from 'ramda'
 import { uid } from 'shared/util/uuid'
 import React from 'react'
 import { Tab, TabNav } from 'shared/component/general/TabNav'
@@ -7,13 +7,31 @@ import Icon from 'shared/component/general/Icon'
 import { pairsInOrder } from 'shared/util/fn'
 import {SubTask} from 'admin/page/excersice-edit/SubTask'
 
+function subTaskTitle(idx) {
+  return `${idx + 1}. rész`
+}
+
+function fixSubTaskTitleAndOrder(subTasksObj) {
+  const mapFn = (pair, idx) => pipe(
+    assocPath([1, 'order'], idx),
+    assocPath([1, 'title'], subTaskTitle(idx))
+  )(pair)
+
+  return pipe(
+    pairsInOrder,
+    addIndex(map)(mapFn),
+    fromPairs
+  )(subTasksObj)
+
+}
+
 export default class SubTaskList extends React.Component {
   addSubTask = () =>
     this.setValue(
       evolve({
         subTasks: subTasks => {
           const order = values(subTasks).length
-          return { ...subTasks, [uid()]: { order, title: `${order + 1}. rész`} }
+          return { ...fixSubTaskTitleAndOrder(subTasks), [uid()]: { order, title: subTaskTitle(order)} }
         }
       })
     )
@@ -25,7 +43,7 @@ export default class SubTaskList extends React.Component {
       })
     )
 
-  removeSubTask = key => () => this.setValue(evolve({ subTasks: dissoc(key) }))
+  removeSubTask = key => () => this.setValue(evolve({ subTasks: pipe(dissoc(key), fixSubTaskTitleAndOrder) }))
 
   setValue = fn => {
     const data = fn(this.props)
