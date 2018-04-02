@@ -1,14 +1,8 @@
 import { evolve, map, pathOr, values } from 'ramda'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import Button from 'shared/component/general/Button'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
-import {
-  changeState,
-  EXERCISE_DRAFT,
-  EXERCISE_REMOVE,
-  getAllPrivateExercises
-} from 'shared/services/exercise'
+import { getAllPrivateExercises } from 'shared/services/exercise'
 import Loading from 'shared/component/general/Loading'
 import ExerciseState from '../components/ExerciseState'
 import Icon from 'shared/component/general/Icon'
@@ -16,12 +10,6 @@ import Icon from 'shared/component/general/Icon'
 export default class extends React.Component {
   state = {
     exercises: null
-  }
-
-  deleteExercise = key => () => {
-    if (confirm('Biztos, hogy törlöd a feladatot?')) {
-      changeState(key, EXERCISE_REMOVE).then(this.loadList)
-    }
   }
 
   loadList = () => {
@@ -94,12 +82,12 @@ export default class extends React.Component {
           <ExerciseState value={ex._state} short />
         </td>
         <td className="grade-column">
-          {pathOr([], ['classification', 'grade'], ex).map(x => <span key={x}>{x}</span>)}
+          {pathOr([], ['classification', 'grade'], ex).map(x => <span className="seq" key={x}> {x}</span>)}
         </td>
         <td>
-          {pathOr([], ['classification', 'subject'], ex).map(x => <span key={x}> {x} </span>)}
+          {pathOr([], ['classification', 'subject'], ex).map(x => <span className="seq" key={x}> {x}</span>)}
         </td>
-        <td>{pathOr([], ['classification', 'topic '], ex).map(x => <span key={x}> {x} </span>)}</td>
+        <td>{pathOr([], ['classification', 'topic'], ex).map(x => <span className="seq" key={x}> {x}</span>)}</td>
         <td>{ex.title}</td>
         <td>
           {pathOr([], ['classification', 'tags'], ex).map(tag => (
@@ -109,18 +97,6 @@ export default class extends React.Component {
           ))}
         </td>
         <td className="text-right">
-          {ex._state === EXERCISE_DRAFT && (
-            <Button
-              title="Feladat törlése"
-              className="btn btn-sm btn-light"
-              onAction={this.deleteExercise(ex._key)}
-            >
-              <span className="text-danger">
-                <Icon fa="trash" />
-              </span>
-            </Button>
-          )}
-          &nbsp;
           <NavLink
             exact
             to={`/exercise/view/${ex._key}`}
