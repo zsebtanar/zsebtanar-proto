@@ -1,7 +1,7 @@
 import { identity } from 'ramda'
 import AlertModal from 'shared/component/modal/AlertModal'
 import { InputModal } from 'shared/component/modal/InputModal'
-import MarkdownHelpModal from 'shared/component/modal/MarkdownHelpModal'
+import { MarkdownHelpModal } from 'shared/component/modal/MarkdownHelpModal'
 import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
 import FeedbackModal from 'shared/component/modal/FeedbackModal'
 import { UserControlModal } from 'shared/component/modal/UserControlModal'

@@ -1,8 +1,8 @@
 import React from 'react'
-import Markdown from '../general/Markdown'
+import { Markdown } from '../general/Markdown'
 import Button from '../general/Button'
 
-export default (function MarkdownHelpModal (props) {
+export function MarkdownHelpModal (props) {
   return (
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">
@@ -242,4 +242,4 @@ minta kód helye...
       </div>
     </div>
   )
-})
+}
