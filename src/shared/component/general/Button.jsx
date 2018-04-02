@@ -20,6 +20,7 @@ export default function Button (props) {
     disabled={props.disabled || props.loading}
     {...pickArea(props)}
   >
+    {props.icon && <i className={`fa fa-${props.icon} fa-fw mr-1`}/>}
     {props.children}
     {props.loading && <i className="fa fa-cog fa-spin fa-fw"/>}
   </button>)
