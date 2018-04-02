@@ -1,3 +1,4 @@
-Javított hibajegy: 
+**Javított hibajegy:** #
 
-Változások: 
+**Változások:**
+ - ...
