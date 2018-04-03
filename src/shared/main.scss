@@ -262,3 +262,10 @@ body {
     content: none;
   }
 }
+
+.seq:after {
+  content: ",";
+}
+.seq:last-child:after {
+  content: none;
+}
