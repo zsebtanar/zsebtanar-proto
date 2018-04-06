@@ -46,7 +46,7 @@ const selectUpdateMethod = curry((newState, oldState) => {
     return archiveExercise
   }
 
-  if (oldState === EXERCISE_DRAFT && newState === EXERCISE_REMOVE) {
+  if (newState === EXERCISE_REMOVE) {
     return removeExercise
   }
 

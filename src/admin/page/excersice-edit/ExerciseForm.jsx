@@ -46,6 +46,8 @@ import {
   saveExercise
 } from 'admin/store/exerciseEdit'
 import Icon from 'shared/component/general/Icon'
+import { isAdmin } from '../../../shared/services/user'
+import { Dropdown, DropdownMenu, DropdownToggle } from '../../../shared/ui/Dropdown'
 
 const modeLabel = {
   Add: 'létrehozása',
@@ -63,6 +65,7 @@ const STATE_MESSAGES = {
 
 function mapStateToProps(state) {
   return {
+    session: state.app.session,
     classifications: state.app.classifications,
     exercise: state.exerciseEdit,
     loading: state.app.classifications.loading || state.exerciseEdit.loading,
@@ -164,7 +167,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         return this.props.loadExercise(key)
       }
       if (cloneKey) {
-        return this.props.cloneExercise(key)
+        return this.props.cloneExercise(cloneKey)
       }
       return this.props.newExercise()
     }
@@ -223,49 +226,69 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       const exState = exercise._state
       return (
         <div className="d-flex justify-content-between align-items-center">
-          <h4>Feladat {mLabel}</h4>
-          <ExerciseState value={exState} />
-          <div>
-            <Button className="btn btn-link text-dark" onAction={this.openExerciseImageDialog}>
-              <Icon fa="picture-o" />&nbsp; Képek
+          <div className="d-flex justify-content-between align-items-center">
+            <NavLink
+              exact
+              to="/exercise"
+              className="btn btn-outline-light py-0 text-dark mx-2"
+              title="Változtatások visszavonása"
+            >
+              <Icon fa="angle-left" size="2x"/>
+            </NavLink>
+            <h4 className="d-inline-block m-0 mr-1">Feladat {mLabel}</h4>
+            <ExerciseState value={exState} />
+          </div>
+          <div className="d-flex">
+            <Dropdown>
+              <DropdownToggle className="btn btn-outline-secondary">További műveletek</DropdownToggle>
+              <DropdownMenu>
+                {notNew &&
+                exState === EXERCISE_ACTIVE && (
+                  <Button
+                    className="btn btn-link text-dark"
+                    onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}
+                    icon="archive"
+                  >
+                    Archiválás
+                  </Button>
+                )}{' '}
+                {notNew &&
+                (exState === EXERCISE_DRAFT || exState === EXERCISE_ARCHIVE) && (
+                  <Button
+                    className="btn btn-link text-success"
+                    onAction={this.changeExerciseState(EXERCISE_ACTIVE)}
+                    icon="check"
+                  >
+                    Aktiválás
+                  </Button>
+                )}{' '}
+                {notNew && isAdmin(this.props.session.token) && (
+                  <Button
+                    className="btn btn-link text-danger"
+                    onAction={this.changeExerciseState(EXERCISE_REMOVE)}
+                    icon="trash"
+                  >
+                    Törlés
+                  </Button>
+                )}{' '}
+              </DropdownMenu>
+            </Dropdown>
+
+            <Button
+              className="btn btn-outline-secondary ml-1"
+              onAction={this.openExerciseImageDialog}
+              icon="picture-o"
+            >
+              Képek
             </Button>
-            {notNew &&
-            exState === EXERCISE_ACTIVE && (
-              <Button
-                className="btn btn-link text-dark"
-                onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}
-              >
-                <Icon fa="archive" /> Archiválás
-              </Button>
-            )}{' '}
-            {notNew &&
-            (exState === EXERCISE_DRAFT || exState === EXERCISE_ARCHIVE) && (
-              <Button
-                className="btn btn-link text-success"
-                onAction={this.changeExerciseState(EXERCISE_ACTIVE)}
-              >
-                <Icon fa="check" /> Aktiválás
-              </Button>
-            )}{' '}
-            {notNew &&
-            exState === EXERCISE_DRAFT && (
-              <Button
-                className="btn btn-link text-danger"
-                onAction={this.changeExerciseState(EXERCISE_REMOVE)}
-              >
-                <Icon fa="trash" /> Törlés
-              </Button>
-            )}{' '}
-            <NavLink exact to="/exercise" className="btn btn-outline-secondary">
-              Mégsem
-            </NavLink>{' '}
+
             <Button
               loading={saving}
               disabled={!changed}
-              className="btn btn-outline-primary"
+              className="btn btn-primary ml-1"
               onAction={this.saveExercise}
-            >
-              <Icon fa="save" /> Mentés
+             icon="save">
+              Mentés
             </Button>
           </div>
         </div>

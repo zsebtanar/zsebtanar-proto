@@ -21,12 +21,13 @@ export default connect(mapStateToProps, { closeModal })(
           <div className="modal-backdrop fade show" />
           {modals.map(({ modal: Modal, id, parameters }, idx) => {
             const close = pipe(parameters.onClose, () => closeModal(id))
+            const hasBackdropClose = !parameters.disableBackdropClose
             return (
               <div
                 key={id}
                 className={`d-block modal fade show ${modals.length - 1 === idx ? 'active-modal' : ''}`}
                 role="dialog"
-                onClick={e => e.target === e.currentTarget && close()}
+                onClick={hasBackdropClose && (e => e.target === e.currentTarget && close())}
               >
                 <Modal {...parameters} close={close} />
               </div>

@@ -24,6 +24,7 @@ export function SingleNumber(props) {
           type="number"
           className="form-control col-4 mx-1"
           onChange={setSolution}
+          step={1 / Math.pow(10, props.fractionDigits || 0)}
         />
       )}
       <span className="postfix">

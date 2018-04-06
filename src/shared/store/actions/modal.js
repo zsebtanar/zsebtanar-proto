@@ -1,7 +1,7 @@
 import { identity } from 'ramda'
 import AlertModal from 'shared/component/modal/AlertModal'
 import { InputModal } from 'shared/component/modal/InputModal'
-import MarkdownHelpModal from 'shared/component/modal/MarkdownHelpModal'
+import { MarkdownHelpModal } from 'shared/component/modal/MarkdownHelpModal'
 import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
 import FeedbackModal from 'shared/component/modal/FeedbackModal'
 import { UserControlModal } from 'shared/component/modal/UserControlModal'
@@ -71,6 +71,7 @@ export function openInputModal(params) {
     value: '',
     onClose: identity,
     onUpdate: identity,
+    disableBackdropClose: true,
     ...params
   })
 }
@@ -79,6 +80,7 @@ export function openFileManager(params) {
   return openModal(FileManager, {
     onClose: identity,
     onSelect: identity,
+    disableBackdropClose: true,
     ...params
   })
 }
@@ -94,6 +96,7 @@ export function openUserControlModal(params) {
   return openModal(UserControlModal, {
     onClose: identity,
     onUpdate: identity,
+    disableBackdropClose: true,
     ...params
   })
 }
@@ -120,6 +123,7 @@ export function openFileUpload(params) {
     onSuccess: identity,
     onError: identity,
     resources: [],
+    disableBackdropClose: true,
     ...params
   })
 }
