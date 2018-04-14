@@ -1,5 +1,6 @@
 import React from 'react'
 import { Markdown } from 'shared/component/general/Markdown'
+import Icon from '../../general/Icon'
 
 export function SingleNumber(props) {
   const setSolution = e => {
@@ -33,8 +34,8 @@ export function SingleNumber(props) {
         </span>
       </div>
       {props.fractionDigits > 0 && (
-        <small className="form-text text-muted">
-          Kérlek {props.fractionDigits} tizedesjegy pontossággal add meg a megoldást.
+        <small className="form-text text-warning">
+          <Icon fa="exclamation-triangle"/> Kérlek, {props.fractionDigits} tizedesjegy pontossággal add meg a megoldást.
         </small>
       )}
     </div>
