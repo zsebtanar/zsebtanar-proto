@@ -1,7 +1,21 @@
-import { curry, path, pickBy, pipe, sortBy, toPairs } from 'ramda'
+import {
+  addIndex,
+  assocPath,
+  curry,
+  flip,
+  fromPairs,
+  map,
+  path,
+  pickBy,
+  pipe,
+  sortBy,
+  toPairs
+} from 'ramda'
 
+export const indexedMap = addIndex(map)
 export const pairsInOrder = pipe(toPairs, sortBy(path([1, 'order'])))
 export const pairsInNameOrder = pipe(toPairs, sortBy(path([1, 'name'])))
+export const listToOrderedObject = pipe(indexedMap(flip(assocPath([1, 'order']))), fromPairs)
 
 export const assert = curry((predicate, message, value) => {
   if (predicate(value)) {

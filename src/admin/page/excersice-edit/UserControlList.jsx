@@ -3,12 +3,15 @@ import { uid } from 'shared/util/uuid'
 import { pairsInOrder } from 'shared/util/fn'
 import React from 'react'
 import { connect } from 'react-redux'
-import Button from 'shared/component/general/Button'
 import Icon from 'shared/component/general/Icon'
 import { openUserControlModal } from 'shared/store/actions/modal'
-import { UserControls } from 'shared/component/userControls/UserControl'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
 import { NAMES as CONTROL_TYPES } from 'shared/component/userControls/controlTypes'
+import { UserControlItem } from './UserControlItem'
+import { Sortable } from 'shared/component/general/Sortable'
+import { listToOrderedObject } from '../../../shared/util/fn'
+
+const controlTypes = keys(CONTROL_TYPES).sort()
 
 function mapStateToProps(state) {
   return {
@@ -53,6 +56,10 @@ export default connect(mapStateToProps, { openUserControlModal })(
         })
       )
 
+    orderUpdate = list => {
+      this.setValue(assocPath(['controls'], listToOrderedObject(list)))
+    }
+
     setValue = fn => {
       const data = fn(this.props)
       this.props.onChange(data)
@@ -82,8 +89,17 @@ export default connect(mapStateToProps, { openUserControlModal })(
       return (
         <div>
           <div className="list-group my-2">
-            {controls.length ? controls.map(this.renderUserControl) : ''}
-            {!controls.length && (
+            {controls.length ? (
+              <Sortable
+                list={controls}
+                itemComponent={UserControlItem}
+                onChange={this.orderUpdate}
+                itemProps={{
+                  editControl: this.openEditUserControl,
+                  removeControl: this.openRemoveUserControl
+                }}
+              />
+            ) : (
               <div className="alert alert-warning">
                 Kérlek hozz létre legalább egy bevitel mezőt
               </div>
@@ -97,50 +113,16 @@ export default connect(mapStateToProps, { openUserControlModal })(
             >
               <Icon fa="plus" /> Beviteli mező hozzáadása
             </DropdownToggle>
-            <DropdownMenu>
-              {keys(CONTROL_TYPES)
-                .sort()
-                .map(type => (
-                  <a
-                    href="#"
-                    className="dropdown-item"
-                    key={type}
-                    onClick={this.openAddUserControl(type)}
-                  >
-                    {CONTROL_TYPES[type]}
-                  </a>
-                ))}
-            </DropdownMenu>
+            <DropdownMenu>{controlTypes.map(this.renderMenuItems)}</DropdownMenu>
           </Dropdown>
         </div>
       )
     }
 
-    renderUserControl = ([key, item], idx) => {
-      return (
-        <div
-          key={key}
-          className="list-group-item list-group-item-action flex-column align-items-start"
-        >
-          <div className="d-flex w-100 justify-content-between">
-            <h5 className="mb-1 text-muted">
-              {idx + 1}. <small className="text-muted">{CONTROL_TYPES[item.controlType]}</small>
-            </h5>
-            <div>
-              <Button
-                className="btn-sm btn-link text-danger"
-                onAction={this.openRemoveUserControl(key)}
-              >
-                <Icon fa="trash" /> Törlés
-              </Button>
-              <Button className="btn-sm btn-link" onAction={this.openEditUserControl(key)}>
-                <Icon fa="edit" /> Módosítás
-              </Button>
-            </div>
-          </div>
-          <UserControls {...item} resources={this.props.resources} />
-        </div>
-      )
-    }
+    renderMenuItems = type => (
+      <a href="#" className="dropdown-item" key={type} onClick={this.openAddUserControl(type)}>
+        {CONTROL_TYPES[type]}
+      </a>
+    )
   }
 )
