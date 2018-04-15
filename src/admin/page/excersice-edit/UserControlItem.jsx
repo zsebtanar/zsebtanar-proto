@@ -4,10 +4,11 @@ import Button from 'shared/component/general/Button'
 import { UserControls } from 'shared/component/userControls/UserControl'
 import { NAMES as CONTROL_TYPES } from 'shared/component/userControls/controlTypes'
 
-export const UserControlItem = class extends React.Component {
+export class UserControlItem extends React.Component {
   render() {
     const {
       data,
+      index,
       editControl,
       removeControl,
       connectDragPreview,
@@ -22,9 +23,11 @@ export const UserControlItem = class extends React.Component {
     return pipe(connectDropTarget, connectDragPreview)(
       <div className="list-group-item list-group-item-action flex-column align-items-start" style={{opacity}}>
         <div className="d-flex w-100 justify-content-between">
-          <h5 className="mb-1 text-muted">
-            <small className="text-muted">{CONTROL_TYPES[itemData.controlType]}</small>
-          </h5>
+          <div className="mb-1 text-muted">
+            <span className="badge badge-pill badge-secondary">{index + 1}.</span>
+            <span className="px-2">-</span>
+            {CONTROL_TYPES[itemData.controlType]}
+          </div>
           <div>
             <Button
               icon="trash"
