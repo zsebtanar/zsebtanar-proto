@@ -1,6 +1,6 @@
-import { __, addIndex, assocPath, dissoc, evolve, fromPairs, map, merge, pipe, values } from 'ramda'
+import { __, assocPath, dissoc, evolve, fromPairs, merge, pipe, values } from 'ramda'
 import { uid } from 'shared/util/uuid'
-import { pairsInOrder } from 'shared/util/fn'
+import { pairsInOrder, indexedMap } from 'shared/util/fn'
 import React from 'react'
 import Button from 'shared/component/general/Button'
 import Icon from 'shared/component/general/Icon'
@@ -11,11 +11,11 @@ function subTaskTitle(idx) {
   return `${idx + 1}. rész`
 }
 
-function fixSubTaskTitleAndOrder(subTasksObj) {
-  const mapFn = (pair, idx) =>
-    pipe(assocPath([1, 'order'], idx), assocPath([1, 'title'], subTaskTitle(idx)))(pair)
+const updateOrderAndTitle = (pair, idx) =>
+  pipe(assocPath([1, 'order'], idx), assocPath([1, 'title'], subTaskTitle(idx)))(pair)
 
-  return pipe(pairsInOrder, addIndex(map)(mapFn), fromPairs)(subTasksObj)
+function fixSubTaskTitleAndOrder(subTasksObj) {
+  return pipe(pairsInOrder, indexedMap(updateOrderAndTitle), fromPairs)(subTasksObj)
 }
 
 export default (class SubTaskList extends React.Component {
@@ -58,8 +58,9 @@ export default (class SubTaskList extends React.Component {
     confirm('Biztosan, hogy törölni szeretnéd?') &&
     this.setValue(evolve({ subTasks: pipe(dissoc(key), fixSubTaskTitleAndOrder) }))
 
-  orderUpdate = list => {
-    this.setValue(assocPath(['subTasks'], pipe(fromPairs, fixSubTaskTitleAndOrder)(list)))
+  orderUpdate = (list, lastMove) => {
+    this.setState({ activeTabIndex: lastMove.index })
+    this.setValue(assocPath(['subTasks'], pipe(indexedMap(updateOrderAndTitle), fromPairs)(list)))
   }
 
   setValue = fn => {
