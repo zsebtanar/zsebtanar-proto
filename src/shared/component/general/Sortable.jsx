@@ -17,12 +17,13 @@ function itemSource(ctx) {
   return {
     beginDrag(props) {
       return {
-        index: props.index
+        index: props.index,
+        originalIndex: props.index
       }
     },
 
     endDrag(props, monitor) {
-      ctx.dndFinish()
+      ctx.dndFinish(monitor.getItem())
     }
   }
 }
@@ -88,9 +89,9 @@ export const Sortable = DragDropContext(HTML5Backend)(
       return null
     }
 
-    dndFinish() {
+    dndFinish(lastItem) {
       const { onChange } = this.props
-      if (onChange) onChange(unwrapSortableList(this.state.list))
+      if (onChange) onChange(unwrapSortableList(this.state.list), lastItem)
     }
 
     render() {
