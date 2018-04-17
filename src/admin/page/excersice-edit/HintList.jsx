@@ -80,7 +80,8 @@ export const HintList = connect(mapStateToProps, mapDispatchToProps)(
                 onChange={this.orderUpdate}
                 itemProps={{
                   openUpdateHint: this.openUpdateHint,
-                  openRemoveHint: this.openRemoveHint
+                  openRemoveHint: this.openRemoveHint,
+                  resources: this.props.resources
                 }}
               />
             ) : (
