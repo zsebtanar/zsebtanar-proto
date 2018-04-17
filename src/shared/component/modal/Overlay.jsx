@@ -1,4 +1,4 @@
-import { pipe } from 'ramda'
+import { pipe, identity } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { closeModal } from 'shared/store/actions/modal'
@@ -22,12 +22,17 @@ export default connect(mapStateToProps, { closeModal })(
           {modals.map(({ modal: Modal, id, parameters }, idx) => {
             const close = pipe(parameters.onClose, () => closeModal(id))
             const hasBackdropClose = !parameters.disableBackdropClose
+            const activeModal = modals.length - 1 === idx ? 'active-modal' : ''
+            const handler = hasBackdropClose
+              ? e => e.target === e.currentTarget && close()
+              : identity
+
             return (
               <div
                 key={id}
-                className={`d-block modal fade show ${modals.length - 1 === idx ? 'active-modal' : ''}`}
+                className={`d-block modal fade show ${activeModal}`}
                 role="dialog"
-                onClick={hasBackdropClose && (e => e.target === e.currentTarget && close())}
+                onClick={handler}
               >
                 <Modal {...parameters} close={close} />
               </div>
