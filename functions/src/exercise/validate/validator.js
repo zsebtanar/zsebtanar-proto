@@ -3,6 +3,7 @@ import { F, mapObjIndexed, propOr } from 'ramda'
 const types = {
   'simple-text': require('./userControls/simpleText').simpleTextCheck,
   'single-number': require('./userControls/singleNumber').singleNumber,
+  'fraction-number': require('./userControls/fractionNumber').fractionNumber,
   'single-choice': require('./userControls/singleChoice').singleChoice,
   'binary-choice': require('./userControls/binaryChoice').binaryChoiceCheck,
   'multi-choice': require('./userControls/multiChoice').binaryChoiceCheck

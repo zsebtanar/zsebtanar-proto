@@ -1,5 +1,5 @@
 export function fractionNum(numerator, denominator) {
-  return { numerator, denominator }
+  return { numerator: parseInt(numerator, 10), denominator: parseInt(denominator, 10) }
 }
 
 /**
@@ -17,6 +17,6 @@ export function gcd(a, b) {
 export function simplifyFractionNumber({ numerator, denominator }) {
   if (numerator == null || denominator == null) return NaN
 
-  const divisor = gcd(numerator, denominator)
+  const divisor = gcd(parseInt(numerator), parseInt(denominator))
   return fractionNum(numerator / divisor, denominator / divisor)
 }
