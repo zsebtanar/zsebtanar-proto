@@ -1,4 +1,4 @@
-import { __, evolve, merge, dissoc, assocPath, keys } from 'ramda'
+import { __, evolve, merge, dissoc, assocPath, keys, propOr } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
@@ -130,24 +130,16 @@ export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
             <div className="row">
               <label className="col-3">Megoldás:</label>
               <div className="col-9">
-                <RadioInput
-                  label={'Igaz'}
+                <select
                   name={item.id}
-                  id={item.id+'-true'}
-                  value={'true'}
-                  checked={this.state.solution[item.id]}
+                  className="form-control"
                   required
+                  defaultValue={propOr(false, ['solution', 'options', item.id], this.state)}
                   onChange={this.selectSolution}
-                />
-                <RadioInput
-                  label={'Hamis'}
-                  name={item.id}
-                  id={item.id+'-false'}
-                  value={'false'}
-                  checked={this.state.solution[item.id]}
-                  required
-                  onChange={this.selectSolution}
-                />
+                >
+                  <option value="false">Hamis</option>
+                  <option value="true">Igaz</option>
+                </select>
               </div>
             </div>
           </div>

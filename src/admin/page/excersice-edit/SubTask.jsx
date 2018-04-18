@@ -12,7 +12,7 @@ const TABS = ['Leírás', 'Megoldások', 'Útmutatók']
 
 function mapStateToProps(state) {
   return {
-    resources: state.exerciseEdit.resources,
+    resources: state.exerciseEdit.resources
   }
 }
 
@@ -86,11 +86,7 @@ export const SubTask = connect(mapStateToProps, mapDispatchToProps)(
 
     renderHints() {
       const subTask = this.props.value
-      return (
-        <div className="col-11 mx-auto">
-          <HintList hints={subTask.hints} onChange={this.updateHints} />
-        </div>
-      )
+      return <HintList hints={subTask.hints} onChange={this.updateHints} />
     }
   }
 )

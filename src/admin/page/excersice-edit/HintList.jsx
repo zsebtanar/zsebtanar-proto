@@ -1,16 +1,18 @@
-import { __, dissoc, evolve, merge, pathOr, values } from 'ramda'
+import { __, assocPath, dissoc, evolve, merge, pathOr, values } from 'ramda'
 import { uid } from 'shared/util/uuid'
 import { pairsInOrder } from 'shared/util/fn'
 import React from 'react'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
+import { Sortable } from 'shared/component/general/Sortable'
 import Button from 'shared/component/general/Button'
-import { Markdown } from 'shared/component/general/Markdown'
 import Icon from 'shared/component/general/Icon'
+import { HintItem } from './HintItem'
+import { listToOrderedObject } from '../../../shared/util/fn'
 
 function mapStateToProps(state) {
   return {
-    resources: state.exerciseEdit.resources,
+    resources: state.exerciseEdit.resources
   }
 }
 
@@ -20,7 +22,6 @@ const mapDispatchToProps = {
 
 export const HintList = connect(mapStateToProps, mapDispatchToProps)(
   class extends React.Component {
-
     addHint = text =>
       this.setValue(
         evolve({
@@ -63,13 +64,27 @@ export const HintList = connect(mapStateToProps, mapDispatchToProps)(
     openRemoveHint = key => () =>
       confirm('Biztosan, hogy törölni szeretnéd?') && this.removeHint(key)
 
+    orderUpdate = list => {
+      this.setValue(assocPath(['hints'], listToOrderedObject(list)))
+    }
+
     render() {
       const hints = pairsInOrder(this.props.hints)
       return (
         <div>
           <div className="list-group my-2">
-            {hints.length > 0 && hints.map(this.renderHint)}
-            {!hints.length && (
+            {hints.length > 0 ? (
+              <Sortable
+                list={hints}
+                itemComponent={HintItem}
+                onChange={this.orderUpdate}
+                itemProps={{
+                  openUpdateHint: this.openUpdateHint,
+                  openRemoveHint: this.openRemoveHint,
+                  resources: this.props.resources
+                }}
+              />
+            ) : (
               <div className="alert alert-info">
                 Megadhatsz egy vagy több tippet a feladat megoldásához
               </div>
@@ -83,28 +98,6 @@ export const HintList = connect(mapStateToProps, mapDispatchToProps)(
           >
             <Icon fa="plus" /> Útmutató hozzáadása
           </Button>
-        </div>
-      )
-    }
-
-    renderHint = ([key, item], idx) => {
-      return (
-        <div
-          key={key}
-          className="list-group-item list-group-item-action flex-column align-items-start"
-        >
-          <div className="d-flex w-100 justify-content-between">
-            <h5 className="mb-1 text-muted">{idx + 1}.</h5>
-            <div>
-              <Button className="btn-sm btn-link text-danger" onAction={this.openRemoveHint(key)}>
-                <Icon fa="trash" /> Törlés
-              </Button>
-              <Button className="btn-sm btn-link" onAction={this.openUpdateHint(key)}>
-                <Icon fa="edit" /> Módosítás
-              </Button>
-            </div>
-          </div>
-          <Markdown source={item.text} resources={this.props.resources}/>
         </div>
       )
     }

@@ -86,6 +86,7 @@ function storeExercise(newResources) {
   return (dispatch, getState) => {
     const state = getState().exerciseEdit
     if (state.changed && !state.saving) {
+      dispatch({ type: EXERCISE_SAVE_START })
       const ex = { ...state.data, resources: { ...state.data.resources, ...newResources } }
       const promise = ex._key ? updateExercise(ex._key, ex) : createExercise(ex)
 

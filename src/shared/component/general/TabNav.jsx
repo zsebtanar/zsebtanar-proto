@@ -6,15 +6,11 @@ export class TabNav extends React.Component {
     this.state = {
       activeTabIndex: this.props.defaultTab || 0
     }
-    this.handleTabClick = this.handleTabClick.bind(this)
   }
 
   // Toggle currently active tab
-  handleTabClick(tabIndex) {
-    this.setState({
-      activeTabIndex:
-        tabIndex === this.state.activeTabIndex ? this.props.defaultTab : tabIndex
-    })
+  handleTabClick = activeTabIndex => {
+    this.setState({ activeTabIndex })
   }
 
   // Encapsulate <Tabs/> component API as props for <Tab/> children
@@ -74,6 +70,7 @@ export class TabNav extends React.Component {
 }
 
 export const Tab = props => {
+  const Content = props.tabComponent || 'span'
   return (
     <li className="nav-item">
       <a
@@ -84,7 +81,7 @@ export const Tab = props => {
           props.selectTab(props.tabIndex)
         }}
       >
-        {props.label}
+        <Content>{props.label}</Content>
       </a>
     </li>
   )

@@ -1,10 +1,10 @@
-import { pathOr } from 'ramda'
+import { assocPath, pathOr } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
 
-export const SingleNumberAdmin = connect(undefined, { openInputModal })(
+export const FractionNumberAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
     constructor(props) {
       super(props)
@@ -12,21 +12,18 @@ export const SingleNumberAdmin = connect(undefined, { openInputModal })(
       this.state = {
         prefix: pathOr(null, ['value', 'prefix'], props),
         postfix: pathOr(null, ['value', 'postfix'], props),
-        fractionDigits: pathOr(0, ['value', 'fractionDigits'], props),
-        solution: pathOr('', ['value', 'solution'], props)
+        solution: {
+          numerator: pathOr(1, ['value', 'solution', 'numerator'], props),
+          denominator: pathOr(1, ['value', 'solution', 'denominator'], props)
+        }
       }
     }
 
     editLabel = ({ name, value }) => this.updateState({ [name]: value })
 
     setSolution = e => {
-      const { value } = e.currentTarget
-      this.updateState({ solution: value })
-    }
-
-    setFractionDigits = e => {
-      const { value } = e.currentTarget
-      this.updateState({ fractionDigits: parseInt(value, 10) })
+      const { name, value } = e.currentTarget
+      this.updateState(assocPath(['solution', name], value, this.state))
     }
 
     updateState = data => {
@@ -38,7 +35,7 @@ export const SingleNumberAdmin = connect(undefined, { openInputModal })(
     }
 
     render() {
-      const { prefix, postfix, solution, fractionDigits } = this.state
+      const { prefix, postfix, solution } = this.state
       return (
         <div className="user-control single-number single-number-admin">
           <MarkdownField
@@ -60,28 +57,28 @@ export const SingleNumberAdmin = connect(undefined, { openInputModal })(
             cleanable
           />
           <div className="form-group row">
-            <label className="col-3 col-form-label">Maximális tizedes jegyek száma:</label>
+            <label className="col-3 col-form-label">Számláló:</label>
             <div className="col-7">
               <input
                 type="number"
-                onChange={this.setFractionDigits}
+                name="numerator"
+                onChange={this.setSolution}
                 className="form-control"
-                value={fractionDigits}
-                step={1}
-                min={0}
-                max={10}
+                value={solution.numerator}
+                step="1"
               />
             </div>
           </div>
           <div className="form-group row">
-            <label className="col-3 col-form-label">Megoldás:</label>
+            <label className="col-3 col-form-label">Nevező:</label>
             <div className="col-7">
               <input
                 type="number"
+                name="denominator"
                 onChange={this.setSolution}
                 className="form-control"
-                value={solution}
-                step={1 / Math.pow(10, fractionDigits || 0)}
+                value={solution.denominator}
+                step="1"
               />
             </div>
           </div>
