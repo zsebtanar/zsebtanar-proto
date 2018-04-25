@@ -2,13 +2,13 @@
   "name": "functions",
   "description": "Zsebtanár szerver",
   "dependencies": {
-    "algoliasearch": "^3.24.11",
+    "algoliasearch": "^3.27.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
-    "firebase-admin": "5.12.0",
-    "firebase-functions": "1.0.1",
-    "joi": "^13.1.2",
+    "firebase-admin": "^5.12.0",
+    "firebase-functions": "^1.0.2",
+    "joi": "^13.2.0",
     "markdown-it": "8.4.0",
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.1.0",
     "ramda": "^0.25.0"

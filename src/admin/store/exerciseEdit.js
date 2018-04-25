@@ -88,11 +88,11 @@ function storeExercise(newResources) {
     if (state.changed && !state.saving) {
       dispatch({ type: EXERCISE_SAVE_START })
       const ex = { ...state.data, resources: { ...state.data.resources, ...newResources } }
-      const promise = ex._key ? updateExercise(ex._key, ex) : createExercise(ex)
+      const promise = ex._key
+        ? updateExercise(ex._key, ex).then(() => dispatch({ type: EXERCISE_SAVED }))
+        : createExercise(ex).then(key => (window.location = `/admin/exercise/edit/${key}`))
 
-      return promise
-        .then(() => dispatch({ type: EXERCISE_SAVED }))
-        .catch(error => dispatch({ type: EXERCISE_ERROR, payload: error }))
+      return promise.catch(error => dispatch({ type: EXERCISE_ERROR, payload: error }))
     }
   }
 }

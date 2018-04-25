@@ -34,8 +34,8 @@ route.post('/', [getToken, onlyEditors, requestValidator({ body: exerciseSchema 
     [STATE_KEY]: EXERCISE_DRAFT
   }
 
-  return Promise.all([indexExercise(key, data, cf.data), savePrivateExercise(key, data)])
-    .then(() => res.status(201).send())
+  Promise.all([indexExercise(key, data, cf.data), savePrivateExercise(key, data)])
+    .then(() => res.status(201).json({ key }))
     .catch(error => {
       console.error(error)
       res.status(500).send('Unexpected error')

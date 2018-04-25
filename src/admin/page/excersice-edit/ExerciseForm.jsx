@@ -114,7 +114,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     changeExerciseState = state => event => {
       if (confirm(STATE_MESSAGES[state])) {
-        changeState(this.props.exercise.data._key, state).then(() => window.location.reload())
+        changeState(this.props.exercise.data._key, state).then(
+          () =>
+            state === EXERCISE_REMOVE
+              ? (window.location = '/admin/exercise/')
+              : window.location.reload()
+        )
       }
     }
 
@@ -150,9 +155,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       }
       if (last(path) === TOPIC) {
         // remove and add only the selected topic(s) from the current subject
-        const subjectTopics = Object.keys(pathOr({}, group.split('.'), this.props.classifications.data))
+        const subjectTopics = Object.keys(
+          pathOr({}, group.split('.'), this.props.classifications.data)
+        )
         const currentTopics = pathOr([], path, ex)
-        this.updateContent(assocPath(path, union(difference(currentTopics, subjectTopics), selectedValues)))
+        this.updateContent(
+          assocPath(path, union(difference(currentTopics, subjectTopics), selectedValues))
+        )
       } else {
         this.updateContent(assocPath(path, selectedValues))
       }
@@ -233,14 +242,16 @@ export default connect(mapStateToProps, mapDispatchToProps)(
               className="btn btn-outline-light py-0 text-dark mx-2"
               title="Változtatások visszavonása"
             >
-              <Icon fa="angle-left" size="2x"/>
+              <Icon fa="angle-left" size="2x" />
             </NavLink>
             <h4 className="d-inline-block m-0 mr-1">Feladat {mLabel}</h4>
             <ExerciseState value={exState} />
           </div>
           <div className="d-flex">
             <Dropdown>
-              <DropdownToggle className="btn btn-outline-secondary">További műveletek</DropdownToggle>
+              <DropdownToggle className="btn btn-outline-secondary">
+                További műveletek
+              </DropdownToggle>
               <DropdownMenu>
                 {notNew &&
                 exState === EXERCISE_ACTIVE && (
@@ -262,7 +273,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                     Aktiválás
                   </Button>
                 )}{' '}
-                {notNew && isAdmin(this.props.session.token) && (
+                {notNew &&
+                isAdmin(this.props.session.token) && (
                   <Button
                     className="btn btn-link text-danger"
                     onAction={this.changeExerciseState(EXERCISE_REMOVE)}
@@ -287,7 +299,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
               disabled={!changed}
               className="btn btn-primary ml-1"
               onAction={this.saveExercise}
-             icon="save">
+              icon="save"
+            >
               Mentés
             </Button>
           </div>
