@@ -1,7 +1,7 @@
-import { isNil, not, pipe, values } from 'ramda'
+import { isNil, not, path, pipe, values } from 'ramda'
 import { resolveSnapshot } from '../util/firebase'
 import { assert } from '../util/fn'
-import { cloudFnDelete, cloudFnGet, cloudFnPost } from 'shared/util/firebase'
+import { cloudFnGet, cloudFnPost } from 'shared/util/firebase'
 import { excludeMetaKeys } from 'shared/util/fn'
 
 const DB = window.firebase.database()
@@ -38,7 +38,7 @@ export function selectPublicExercisesById(exerciseIds) {
 }
 
 export const createExercise = data =>
-  cloudFnPost(`exercise`, excludeMetaKeys(data), { withToken: true })
+  cloudFnPost(`exercise`, excludeMetaKeys(data), { withToken: true }).then(path(['data', 'key']))
 
 export const updateExercise = (exerciseId, data) =>
   cloudFnPost(`exercise/${exerciseId}`, excludeMetaKeys(data), { withToken: true })
