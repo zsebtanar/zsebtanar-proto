@@ -110,7 +110,8 @@ export function activateNextSubTask() {
  */
 
 const INIT_STATE = {
-  item: undefined
+  item: undefined,
+  error: undefined
 }
 
 export function exerciseReducer(state = INIT_STATE, action) {
@@ -121,6 +122,8 @@ export function exerciseReducer(state = INIT_STATE, action) {
       return reduceExercise(state, action)
     case HINT_GET:
       return reduceHint(state, action)
+    case EXERCISE_GET_ERROR:
+      return reduceError(state, action)
     case EXERCISE_NEXT_SUB_TASK:
       return reduceNextSubTask(state, action)
     case EXERCISE_CHECK_FAIL:
@@ -201,3 +204,5 @@ const reduceHint = (state, { payload, meta }) =>
       }
     }
   })(state)
+
+const reduceError = (state, { error }) => ({ error })
