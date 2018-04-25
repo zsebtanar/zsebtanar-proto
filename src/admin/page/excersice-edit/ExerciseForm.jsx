@@ -339,10 +339,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
             <div className="col-8">
               <select
                 className="form-control"
-                name="classification.difficulty"
+                name="difficulty"
                 onChange={this.update}
                 required
-                value={pathOr('', ['classification', 'difficulty'], ex)}
+                value={pathOr('', ['difficulty'], ex)}
               >
                 <option value={0}>Könnyű</option>
                 <option value={5}>Közepes</option>
