@@ -1,7 +1,7 @@
 import { compose, pathOr } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, NavLink } from 'react-router-dom'
 import { abcIndex, pairsInOrder } from 'shared/util/fn'
 import { Markdown } from 'shared/component/general/Markdown'
 import { openExerciseResultModal } from 'shared/store/actions/modal'
@@ -16,9 +16,11 @@ import { ProgressBar } from 'shared/ui/Progress'
 
 const mapStateToProps = (state, ownProps) => {
   const exercise = ownProps.exercise || state.app.exercise.item
+  const exerciseError = state.app.exercise.error
   return {
     exercise,
-    loading: !exercise,
+    exerciseError,
+    loading: !exercise && !exerciseError,
     session: state.app.session
   }
 }
@@ -66,9 +68,15 @@ export const Exercise = compose(
     }
 
     render() {
-      const { loading } = this.props
+      const { loading, exerciseError } = this.props
 
-      return loading ? <Loading /> : this.renderExercise()
+      if (loading) {
+        return <Loading />
+      } else if (exerciseError) {
+        return this.renderError()
+      } else {
+        return this.renderExercise()
+      }
     }
 
     renderExercise() {
@@ -99,8 +107,26 @@ export const Exercise = compose(
         <div className="row" key={taskId}>
           <div className="col-1">{isSingleTask ? '' : `${abcIndex(task.order)})`}</div>
           <div className="col-10">
-            <SubTask exerciseId={exId} id={taskId} task={task} resources={resources}/>
+            <SubTask exerciseId={exId} id={taskId} task={task} resources={resources} />
           </div>
+        </div>
+      )
+    }
+
+    renderError() {
+      const error = this.props.exerciseError
+
+      return (
+        <div className="col-10 mx-auto">
+          <div className="alert alert-danger  my-4">
+            <h3>Sajnos nem várt hiba történt :(</h3>
+            <div className="text-muted m-3">
+              {error.message || JSON.stringify(error, null, 3)}
+            </div>
+          </div>
+          <NavLink exact to="/" className="btn btn-secondary">
+            Vissza a főoldalra
+          </NavLink>
         </div>
       )
     }
