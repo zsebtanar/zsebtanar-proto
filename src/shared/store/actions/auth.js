@@ -4,8 +4,11 @@ import { updateUserProfile } from 'shared/services/user'
 const AUTH = firebase.auth()
 
 export const SIGN_UP_ERROR = 'SIGN_UP_ERROR'
+export const SIGN_UP_START = 'SIGN_UP_START'
+export const USER_SIGN_UP_FINISHED = 'USER_SIGN_UP_FINISHED'
 export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS'
-export const USER_UPDATE = 'USER_UPDATE'
+export const SSO_SIGN_IN_START = 'SSO_SIGN_IN_START'
+export const SSO_SIGN_IN_ERROR = 'SSO_SIGN_IN_ERROR'
 export const SIGN_IN_ERROR = 'SIGN_IN_ERROR'
 export const SIGN_IN_START = 'SIGN_IN_START'
 export const SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS'
@@ -27,11 +30,13 @@ export function initAuthWatch(store) {
 }
 
 export function signUp(email, password, { displayName }) {
-  return dispatch =>
-    AUTH.createUserWithEmailAndPassword(email, password)
+  return dispatch => {
+    dispatch({ type: SIGN_UP_START })
+    return AUTH.createUserWithEmailAndPassword(email, password)
       .then(user => updateUserProfile(user.uid, { displayName }))
-      .then(res => dispatch({ type: USER_UPDATE, payload: { user: res.data } }))
+      .then(res => dispatch({ type: USER_SIGN_UP_FINISHED, payload: { user: res.data } }))
       .catch(handleError(SIGN_UP_ERROR, dispatch))
+  }
 }
 
 export function signIn(email, password) {
@@ -45,21 +50,21 @@ export function signIn(email, password) {
 
 export function googleSignIn() {
   return dispatch => {
-    dispatch({ type: SIGN_IN_START })
+    dispatch({ type: SSO_SIGN_IN_START })
     const provider = new firebase.auth.GoogleAuthProvider()
     provider.addScope('email')
     provider.addScope('profile')
-    return AUTH.signInWithPopup(provider).catch(handleError(SIGN_IN_ERROR, dispatch))
+    return AUTH.signInWithPopup(provider).catch(handleError(SSO_SIGN_IN_ERROR, dispatch))
   }
 }
 
 export function facebookSignIn() {
   return dispatch => {
-    dispatch({ type: SIGN_IN_START })
+    dispatch({ type: SSO_SIGN_IN_START })
     const provider = new firebase.auth.FacebookAuthProvider()
     provider.addScope('email')
     provider.addScope('public_profile')
-    return AUTH.signInWithPopup(provider).catch(handleError(SIGN_IN_ERROR, dispatch))
+    return AUTH.signInWithPopup(provider).catch(handleError(SSO_SIGN_IN_ERROR, dispatch))
   }
 }
 
