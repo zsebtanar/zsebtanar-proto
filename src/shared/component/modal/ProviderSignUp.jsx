@@ -32,17 +32,17 @@ export default (class ProviderSignUp extends React.Component {
     const name = (this.nameField.value || '').trim()
     const passwordReq = this.props.requestPassword
 
-    if (!email) errors.email = 'Kérlek ad meg az e-mail címed'
-    else if (!EMAIL_REGEX.test(email)) errors.email = 'Érvénytelen e-mail cím'
+    if (!email) errors.email = 'Kérlek, add meg az e-mail címed!'
+    else if (!EMAIL_REGEX.test(email)) errors.email = 'Érvénytelen e-mail cím!'
 
-    if (!name) errors.name = 'Kérlek ad meg a felhasználói neved'
-    else if (name.length < 3) errors.name = 'A felhasználói név legalább 3 karakter kell legyen'
+    if (!name) errors.name = 'Kérlek, add meg a felhasználóneved!'
+    else if (name.length < 3) errors.name = 'A felhasználónévnek legalább 3 karakter hosszúnak kell lennie!'
 
     if (passwordReq) {
       const pw1 = this.pwField.value
 
-      if (!pw1) errors.password = 'Kérlek adj meg egy jelszót'
-      else if (pw1.length < 6) errors.password = 'A jelszó hossza minimum 6 kerakter kell legyen'
+      if (!pw1) errors.password = 'Kérlek, adj meg egy jelszót!'
+      else if (pw1.length < 6) errors.password = 'A jelszónak legalább 6 karakter hosszúnak kell lennie!'
     }
     this.setState({ errors })
     return keys(errors).length === 0
