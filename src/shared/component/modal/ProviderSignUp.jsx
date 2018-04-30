@@ -1,32 +1,65 @@
 import React from 'react'
 import Button from '../general/Button'
+import { keys } from 'ramda'
+
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 export default (class ProviderSignUp extends React.Component {
+  state = {
+    errors: {}
+  }
+
   saveDetails = event => {
     event.preventDefault()
-    this.props.onSave(
-      {
-        email: this.emailField.value,
-        displayName: this.nameField.value
-      },
-      {
-        email: this.emailField.value,
-        password: this.props.requestPassword ? this.pwField.value : ''
-      }
-    )
-    this.props.close()
+    if (this.validate()) {
+      this.props.onSave(
+        {
+          email: this.emailField.value,
+          displayName: this.nameField.value
+        },
+        {
+          email: this.emailField.value,
+          password: this.props.requestPassword ? this.pwField.value : ''
+        }
+      )
+      this.props.close()
+    }
+  }
+
+  validate() {
+    const errors = {}
+    const email = (this.emailField.value || '').trim()
+    const name = (this.nameField.value || '').trim()
+    const passwordReq = this.props.requestPassword
+
+    if (!email) errors.email = 'Kérlek, add meg az e-mail címed!'
+    else if (!EMAIL_REGEX.test(email)) errors.email = 'Érvénytelen e-mail cím!'
+
+    if (!name) errors.name = 'Kérlek, add meg a felhasználóneved!'
+    else if (name.length < 3) errors.name = 'A felhasználónévnek legalább 3 karakter hosszúnak kell lennie!'
+
+    if (passwordReq) {
+      const pw1 = this.pwField.value
+
+      if (!pw1) errors.password = 'Kérlek, adj meg egy jelszót!'
+      else if (pw1.length < 6) errors.password = 'A jelszónak legalább 6 karakter hosszúnak kell lennie!'
+    }
+    this.setState({ errors })
+    return keys(errors).length === 0
   }
 
   render() {
-    const props = this.props
+    const { close, data, requestPassword } = this.props
+    const err = this.state.errors
+
     return (
       <div className="modal-dialog" role="document">
-        <form onSubmit={this.saveDetails}>
+        <form onSubmit={this.saveDetails} noValidate>
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Regisztrációs adatok</h5>
               <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-                <span aria-hidden={true} onClick={props.close}>
+                <span aria-hidden={true} onClick={close}>
                   &times;
                 </span>
               </button>
@@ -36,54 +69,46 @@ export default (class ProviderSignUp extends React.Component {
               <div className="form-group">
                 <input
                   type="email"
-                  autoFocus={!this.props.data.email}
-                  id="id-sign-up-name"
-                  className="form-control"
-                  placeholder="Email"
-                  value={this.props.data.email}
+                  autoFocus={!data.email}
+                  id="id-sign-up-email"
+                  className={`form-control ${err.email ? 'is-invalid' : ''}`}
+                  placeholder="E-mail"
+                  value={data.email}
                   required
-                  readOnly={!!this.props.data.email}
+                  readOnly={!!data.email}
                   ref={inp => {
                     this.emailField = inp
                   }}
                 />
+                {this.renderFeedback('email')}
               </div>
               <div className="form-group">
                 <input
                   type="text"
-                  autoFocus={!!this.props.data.email}
+                  autoFocus={!!data.email}
                   id="id-sign-up-name"
-                  className="form-control"
+                  className={`form-control ${err.name ? 'is-invalid' : ''}`}
                   placeholder="Felhasználói név"
-                  value={this.props.data.displayName}
+                  value={data.displayName}
                   ref={inp => {
                     this.nameField = inp
                   }}
                 />
+                {this.renderFeedback('name')}
               </div>
-              {this.props.requestPassword ? (
+              {requestPassword ? (
                 <div>
                   <div className="form-group">
                     <input
                       type="password"
-                      className="form-control"
+                      className={`form-control ${err.password ? 'is-invalid' : ''}`}
                       id="id-pw-1"
                       placeholder="Jelszó"
                       ref={inp => {
                         this.pwField = inp
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="id-pw-2"
-                      placeholder="Jelszó mégegyszer"
-                      ref={inp => {
-                        this.pwField2 = inp
-                      }}
-                    />
+                    {this.renderFeedback('password')}
                   </div>
                 </div>
               ) : (
@@ -100,5 +125,12 @@ export default (class ProviderSignUp extends React.Component {
         </form>
       </div>
     )
+  }
+
+  renderFeedback(name) {
+    const err = this.state.errors[name]
+    if (err) {
+      return <div className="invalid-feedback">{err}</div>
+    }
   }
 })
