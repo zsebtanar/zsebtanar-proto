@@ -3,9 +3,14 @@ import MD from 'markdown-it/lib/index'
 import katex from 'markdown-it-katex'
 import { imageInit } from 'shared/markdown/image-resource'
 
-export const Markdown = (class extends React.PureComponent {
+const katexOptions = {
+  displayMode: false,
+  unicodeTextInMathMode: true
+}
+
+export const Markdown = class extends React.PureComponent {
   initMD(options, resources) {
-    this.md = new MD(options).use(katex).use(imageInit(resources))
+    this.md = new MD(options).use(katex, katexOptions).use(imageInit(resources))
   }
 
   render() {
@@ -44,4 +49,4 @@ export const Markdown = (class extends React.PureComponent {
     }
     return this.md.render(source)
   }
-})
+}
