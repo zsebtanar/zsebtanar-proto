@@ -30,7 +30,7 @@ export default withRouter(
             <ul className="nav nav-pills float-right">
               {signedIn && isAdmin(token) ? (
                 <li className="nav-item" key="admin">
-                  <a href="/admin/" className="nav-link">
+                  <a href="/admin/exercise" className="nav-link">
                     Admin
                   </a>
                 </li>
