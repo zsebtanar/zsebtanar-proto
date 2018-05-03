@@ -28,7 +28,7 @@ describe('markdown', () => {
       expect(unTokeniseMarkdown(text)).toBe(result)
     })
 
-    it.only('should clean complex text', () => {
+    it('should clean complex text', () => {
       const text = `**Szorozzuk meg** mindkét *oldalt* $-1$-gyel:
 $$x+2=-2$$
 Vonjunk ki mindkét oldalból $2$-t!:

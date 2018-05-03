@@ -90,6 +90,9 @@ body {
 .markdown {
   width: 100%;
 }
+.markdown.d-inline-block{
+  width: auto;
+}
 
 .msg-block {
   min-height: 20rem;
