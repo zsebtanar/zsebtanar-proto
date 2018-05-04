@@ -36,7 +36,7 @@ export default pipe(
 
     return (<div>
       <h2>{classification.subject[subject].name}
-        <small>{classification.subject[subject].topic[topic].name}</small>
+        <small> {classification.subject[subject].topic[topic].name}</small>
       </h2>
 
       {
