@@ -2,7 +2,6 @@ import { findIndex, map, pick, propEq, update } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
-import { Markdown } from 'shared/component/general/Markdown'
 import Button from 'shared/component/general/Button'
 import RadioInput from 'shared/component/input/RadioInput'
 
