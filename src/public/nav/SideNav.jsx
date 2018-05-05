@@ -39,7 +39,7 @@ export default withRouter(
             <ul className="nav nav-pills flex-column">
               {props.session.signedIn && isAdmin(props.session.userDetails) ? (
                 <li className="nav-item" key="admin">
-                  <a href="/admin/" className="nav-link">
+                  <a href="/admin/exercise" className="nav-link">
                     Admin
                   </a>
                 </li>
