@@ -28,7 +28,7 @@ export default compose(withRouter,
         <div>
           <div className="jumbotron mb-5">
             {this.renderWelcome()}
-            <div className="my-5">
+            <div className="my-5 col-11 mx-auto">
               <NavLink to="/search">
                 <div className="search-input-group ">
                   <label className="search-label" htmlFor="search-input">
@@ -65,17 +65,14 @@ export default compose(withRouter,
       } else {
         return (
           <div className="text-center">
-            <p className="text-muted">Regisztrálj</p>
             <Button className="btn btn-lg btn-outline-primary my-1" onAction={openSignUpModal}>
-              Diák vagyok
+              Regisztrálj
             </Button>&nbsp;
-            <Button className="btn btn-lg btn-outline-primary my-1" onAction={openSignUpModal}>
-              Tanár vagyok
-            </Button>
-            <p className="text-muted my-3">--- vagy ---</p>
             <Button className="btn btn-link" onAction={openSignInModal}>
               Jelentkezz be
             </Button>
+            <p className="text-muted my-3"><span className="or-label">vagy</span></p>
+            <p>Vesd bele magad a feladatokba</p>
           </div>
         )
       }

@@ -85,6 +85,21 @@ body {
 }
 .jumbotron {
   background: transparent;
+
+  .or-label {
+    display: inline-flex;
+    align-items: center;
+
+    &:after,
+    &:before{
+      content: "";
+      width: 3rem;
+      height: 1px;
+      background: $text-muted;
+      display: inline-block;
+      margin: 0 .5rem;
+    }
+  }
 }
 
 .markdown {
