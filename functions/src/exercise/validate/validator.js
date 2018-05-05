@@ -4,6 +4,7 @@ const types = {
   'simple-text': require('./userControls/simpleText').simpleTextCheck,
   'single-number': require('./userControls/singleNumber').singleNumber,
   'fraction-number': require('./userControls/fractionNumber').fractionNumber,
+  'number-list': require('./userControls/numberList').numberList,
   'single-choice': require('./userControls/singleChoice').singleChoice,
   'binary-choice': require('./userControls/binaryChoice').binaryChoiceCheck,
   'multi-choice': require('./userControls/multiChoice').binaryChoiceCheck

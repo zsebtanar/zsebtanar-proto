@@ -90,6 +90,9 @@ body {
 .markdown {
   width: 100%;
 }
+.markdown.d-inline-block{
+  width: auto;
+}
 
 .msg-block {
   min-height: 20rem;
@@ -268,4 +271,31 @@ body {
 }
 .seq:last-child:after {
   content: none;
+}
+
+.user-control.number-list {
+  display: flex;
+  align-items: center;
+  .item {
+    display: flex;
+    align-items: center;
+    margin: 0 .5rem;
+    input{
+      min-width: 6rem;
+      width: 10rem;
+    }
+  }
+  .markdown {
+    width: auto;
+  }
+  &.multiline {
+    display: block;
+    .prefix, .postfix{
+      display: block;
+    }
+    .item {
+      margin: .5rem 1rem;
+    }
+  }
+
 }
