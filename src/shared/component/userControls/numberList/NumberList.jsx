@@ -26,52 +26,43 @@ export class NumberList extends React.Component {
   }
 
   render() {
-    const { prefix, postfix, resources } = this.props
+    const { prefix, postfix, resources, multiLine } = this.props
     return (
-      <div className="user-control number-list">
-        <span className="prefix">
-          <Markdown source={prefix} resources={resources} className="d-inline-block" />
-        </span>
-        {this.readOnly ? this.renderReadOnly() : this.renderNormal()}
-        <span className="postfix">
-          <Markdown source={postfix} resources={resources} className="d-inline-block" />
-        </span>
+      <div className={`user-control number-list ${multiLine ? 'multiline' : ''}`}>
+        <Markdown source={prefix} resources={resources} className="prefix" />
+        {this.renderItems()}
+        <Markdown source={postfix} resources={resources} className="postfix" />
       </div>
     )
   }
 
-  renderNormal() {
-    const { fields, solutions } = this.state
-    const { separator, resources, fractionDigits } = this.props
-    const lastIdx = fields.length - 1
+  renderItems() {
+    const { fields } = this.state
+    const { resources } = this.props
 
-    return fields.map(([id, item], idx) => (
-      <span key={id} >
-        <input
-          name={id}
-          type="number"
-          className="form-control col-2 mx-1 d-inline-block"
-          onChange={this.setSolution}
-          value={solutions[id]}
-          step={1 / Math.pow(10, fractionDigits || 0)}
-        />
-        {idx < lastIdx && <Markdown source={separator} resources={resources} className="d-inline-block" />}
-      </span>
+    return fields.map(([id, item]) => (
+      <div className="item" key={id}>
+        {item.prefix && <Markdown source={item.prefix} resources={resources} />}
+        {this.readOnly ? this.renderReadOnly(id) : this.renderNormal(id)}
+        {item.postfix && <Markdown source={item.postfix} resources={resources} />}
+      </div>
     ))
   }
 
-  renderReadOnly() {
-    const { fields, solutions } = this.state
-    const { separator, resources } = this.props
-    const lastIdx = fields.length - 1
+  renderNormal(id) {
+    return (
+      <input
+        name={id}
+        type="number"
+        className="form-control value mx-1"
+        onChange={this.setSolution}
+        value={this.state.solutions[id]}
+        step={1 / Math.pow(10, this.props.fractionDigits || 0)}
+      />
+    )
+  }
 
-    return fields.map(([id, item], idx) => (
-      <span key={id}>
-        &nbsp;
-        <span className="value">{solutions[key]}</span>
-        &nbsp;
-        {idx < lastIdx && <Markdown source={separator} resources={resources} className="d-inline-block"/>}
-      </span>
-    ))
+  renderReadOnly(id) {
+    return <span className="value mx-1">{this.state.solutions[id]}</span>
   }
 }

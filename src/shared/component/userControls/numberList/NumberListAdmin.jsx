@@ -8,6 +8,7 @@ import Button from '../../general/Button'
 import { TrashButton } from '../common/TrashButton'
 import { uid } from '../../../util/uuid'
 import { orderedListFromObj, removeFromObjById } from '../../../util/OrderedMap'
+import { abcIndex } from '../../../util/fn'
 
 export const NumberListAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
@@ -17,10 +18,10 @@ export const NumberListAdmin = connect(undefined, { openInputModal })(
       this.state = {
         prefix: pathOr(null, ['value', 'prefix'], props),
         postfix: pathOr(null, ['value', 'postfix'], props),
-        separator: pathOr(', ', ['value', 'separator'], props),
-        fields: pathOr({}, ['value', 'fields'], props),
         fractionDigits: pathOr(0, ['value', 'fractionDigits'], props),
-        acceptRandomOrder: pathOr(false, ['value', 'randomOrderAccepted'], props),
+        acceptRandomOrder: pathOr(false, ['value', 'acceptRandomOrder'], props),
+        multiLine: pathOr(false, ['value', 'multiLine'], props),
+        fields: pathOr({}, ['value', 'fields'], props),
         solution: pathOr({ options: false }, ['value', 'solution'], props)
       }
     }
@@ -31,7 +32,7 @@ export const NumberListAdmin = connect(undefined, { openInputModal })(
       }
     }
 
-    editLabel = ({ name, value }) => this.updateState(assocPath([name], value))
+    editLabel = ({ name, value }) => this.updateState(assocPath(name.split('.'), value))
 
     setFractionDigits = e => {
       const { value } = e.currentTarget
@@ -76,10 +77,18 @@ export const NumberListAdmin = connect(undefined, { openInputModal })(
     }
 
     render() {
-      const { acceptRandomOrder, prefix, separator, fields, postfix, solution, fractionDigits } = this.state
-      const orderdFields = orderedListFromObj(fields)
+      const {
+        acceptRandomOrder,
+        multiLine,
+        prefix,
+        fields,
+        postfix,
+        solution,
+        fractionDigits
+      } = this.state
+      const orderedFields = orderedListFromObj(fields)
       return (
-        <div className="user-control number-list number-list-admin">
+        <div className="user-control number-list-admin">
           <div>
             <Checkbox
               name="acceptRandomOrder"
@@ -89,20 +98,17 @@ export const NumberListAdmin = connect(undefined, { openInputModal })(
               Megoldások elfogadása tetszőleges sorrendben
             </Checkbox>
           </div>
+          <div>
+            <Checkbox name="multiLine" checked={multiLine} onChange={this.setCheckbox}>
+              Minden mező külön sorban jelenjen meg
+            </Checkbox>
+          </div>
+          <hr />
           <MarkdownField
             label="Előtag"
             name="prefix"
             value={prefix}
             placeholder="Üres"
-            onChange={this.editLabel}
-            resources={this.props.resources}
-            cleanable
-          />
-          <MarkdownField
-            label="Elválasztó"
-            name="separator"
-            value={separator}
-            placeholder=", "
             onChange={this.editLabel}
             resources={this.props.resources}
             cleanable
@@ -131,13 +137,9 @@ export const NumberListAdmin = connect(undefined, { openInputModal })(
             </div>
           </div>
 
-          <div className="form-group row">
-            <label className="col-3 col-form-label">Megoldás mezők:</label>
-            <div className="col-9">
-              <ol className="list-unstyled">
-                {orderdFields.map((item) => this.renderItem(item, solution.length < 2))}
-              </ol>
-            </div>
+          <div className="">
+            <div>Megoldás mezők:</div>
+            {orderedFields.map((item, idx) => this.renderItem(item, idx, solution.length < 2))}
           </div>
           <div className="form-group row">
             <div className="col-9 ml-auto">
@@ -154,24 +156,49 @@ export const NumberListAdmin = connect(undefined, { openInputModal })(
       )
     }
 
-    renderItem = ([key], isLast) => {
-      const {fractionDigits, solution} = this.state
+    renderItem = ([key], idx, isLast) => {
+      const { fractionDigits, solution, fields } = this.state
       return (
-        <li key={key}>
-          <div className="d-flex">
-            <input
-              key={key}
-              type="number"
-              name={key}
-              onChange={this.setSolution}
-              className="form-control mt-1"
-              value={solution.options[key]}
-              required
-              step={1 / Math.pow(10, fractionDigits || 0)}
-            />
-            {isLast ? '' : <TrashButton onAction={this.delSolution(key)} />}
+        <div key={key} className="card mb-1">
+          <div className="card-header card-header-sm d-flex justify-content-between align-items-center">
+            <span>{abcIndex(idx)})</span>
+            {!isLast && (
+              <TrashButton label="Törlés" onAction={this.delSolution(key)} />
+            )}
           </div>
-        </li>
+          <div className="card-body">
+            <div>
+              <MarkdownField
+                label="Előtag"
+                name={`fields.${key}.prefix`}
+                value={fields[key].prefix}
+                placeholder="Üres"
+                onChange={this.editLabel}
+                resources={this.props.resources}
+                cleanable
+              />
+              <MarkdownField
+                label="Utótag"
+                name={`fields.${key}.postfix`}
+                value={fields[key].postfix}
+                placeholder="Üres"
+                onChange={this.editLabel}
+                resources={this.props.resources}
+                cleanable
+              />
+              <input
+                key={key}
+                type="number"
+                name={key}
+                onChange={this.setSolution}
+                className="form-control mt-1"
+                value={solution.options[key]}
+                required
+                step={1 / Math.pow(10, fractionDigits || 0)}
+              />
+            </div>
+          </div>
+        </div>
       )
     }
   }
