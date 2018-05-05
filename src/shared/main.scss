@@ -269,3 +269,20 @@ body {
 .seq:last-child:after {
   content: none;
 }
+
+.user-control.fraction-number{
+  .input-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    input{
+      margin: 0;
+      width: 80%;
+    }
+    hr {
+      width: 100%;
+      border-top: 2px solid #333;
+    }
+  }
+}

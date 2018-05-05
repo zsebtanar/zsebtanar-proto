@@ -5,7 +5,7 @@ import { assoc } from 'ramda'
 export function FractionNumber(props) {
   const setSolution = e => {
     if (props.onChange) {
-      const {name, value} = e.currentTarget
+      const { name, value } = e.currentTarget
       props.onChange({
         name: props.name,
         value: assoc(name, value, props.value)
@@ -21,27 +21,28 @@ export function FractionNumber(props) {
       {props.readOnly ? (
         <div className="col-2 text-center">
           <strong>&nbsp;{props.value.numerator}&nbsp;</strong>
-          <hr className="my-1"/>
+          <hr className="my-1" />
           <strong>&nbsp;{props.value.denominator}&nbsp;</strong>
         </div>
       ) : (
-        <div className="col-4">
-
-        <input
-          name="numerator"
-          type="number"
-          className="form-control mx-1"
-          onChange={setSolution}
-          step="1"
-        />
-          <hr className="my-1"/>
-        <input
-          name="denominator"
-          type="number"
-          className="form-control mx-1"
-          onChange={setSolution}
-          step="1"
-        />
+        <div className="input-row col-5">
+          <input
+            name="numerator"
+            type="number"
+            className="form-control"
+            onChange={setSolution}
+            step="1"
+            placeholder="számláló"
+          />
+          <hr className="my-1" />
+          <input
+            name="denominator"
+            type="number"
+            className="form-control"
+            onChange={setSolution}
+            step="1"
+            placeholder="nevező"
+          />
         </div>
       )}
       <span className="postfix">
