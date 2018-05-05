@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink, withRouter } from 'react-router-dom'
 import MainClassificationSelector from 'public/component/MainClassificationSelector'
+import DonateButton from 'public/component/DonateButton'
 import Button from 'shared/component/general/Button'
 import { openSignInModal, openSignUpModal } from 'shared/store/actions/modal'
 import Icon from 'shared/component/general/Icon'
@@ -49,6 +50,9 @@ export default compose(withRouter,
           </div>
 
           <MainClassificationSelector />
+
+          <DonateButton />
+
         </div>
       )
     }
