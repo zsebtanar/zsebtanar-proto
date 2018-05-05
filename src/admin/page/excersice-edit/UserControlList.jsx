@@ -95,6 +95,7 @@ export default connect(mapStateToProps, { openUserControlModal })(
                 itemComponent={UserControlItem}
                 onChange={this.orderUpdate}
                 itemProps={{
+                  resources: this.props.resources,
                   editControl: this.openEditUserControl,
                   removeControl: this.openRemoveUserControl
                 }}
