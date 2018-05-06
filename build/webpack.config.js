@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const server = process.env.SERVER_ENV || 'development'
 const env = process.env.NODE_ENV || 'development'
@@ -23,6 +24,7 @@ const cssExtract = new ExtractTextPlugin({
 })
 
 module.exports = {
+  mode: isDev ? 'development' : 'production',
   entry: {
     admin: './src/admin/admin.jsx',
     public: './src/public/public.jsx'
@@ -40,7 +42,7 @@ module.exports = {
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.js', '.jsx', '.js', '.json'],
-    modules: [path.resolve(__dirname, '../src'), path.resolve(__dirname, '../node_modules')]
+    modules: [path.resolve(__dirname, '../src'), 'node_modules']
   },
 
   devServer: {
@@ -69,7 +71,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['es2015', 'react'],
+            presets: ['env', 'react'],
             plugins: [
               require('babel-plugin-ramda').default,
               require('babel-plugin-transform-object-rest-spread'),
@@ -93,9 +95,20 @@ module.exports = {
     ]
   },
 
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
+  },
+
   plugins: [
     sassExtract,
-    // new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/index.ejs'),
       alwaysWriteToDisk: false,
@@ -103,7 +116,7 @@ module.exports = {
       title: 'Zsebtanár - Tanár',
       isDev: !isProd,
       site: 'admin',
-      chunks: ['vendor', 'admin'],
+      chunks: ['vendors', 'admin'],
       hash: true,
       env: envConfig
     }),
@@ -114,21 +127,17 @@ module.exports = {
       isDev: !isProd,
       site: 'public',
       title: 'Zsebtanár',
-      chunks: ['vendor', 'public'],
+      chunks: ['vendors', 'public'],
       hash: true,
       env: envConfig
     }),
     new HtmlWebpackHarddiskPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor.bundle.min.js'
-    }),
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
       __FN_PATH__: JSON.stringify(envConfig.api),
       __ALGOLIA__: JSON.stringify(envConfig.algolia)
     })
-  ]
+  ].concat(isDev ? [] : [new UglifyJsPlugin({})])
 }
