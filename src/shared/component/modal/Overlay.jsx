@@ -6,7 +6,7 @@ import { closeModal } from 'shared/store/actions/modal'
 const mapStateToProps = state => state.app.modal
 const body = window.document.body
 
-export default connect(mapStateToProps, { closeModal })(
+export const Overlay = connect(mapStateToProps, { closeModal })(
   /**
    * @return {null|Element|XML}
    */

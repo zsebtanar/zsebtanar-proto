@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
   sideNav: state.app.sideNav
 })
 
-export default withRouter(
+export const Header = withRouter(
   connect(mapStateToProps, {
     signOut,
     openSideNav,
