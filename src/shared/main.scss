@@ -275,14 +275,15 @@ body {
 
 .user-control.number-list {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   .item {
     display: flex;
     align-items: center;
-    margin: 0 .5rem;
+    margin: .25rem;
     input{
       min-width: 6rem;
-      width: 10rem;
+      width: 6rem;
     }
   }
   .markdown {
@@ -295,6 +296,9 @@ body {
     }
     .item {
       margin: .5rem 1rem;
+      input{
+        width: 10rem;
+      }
     }
   }
 

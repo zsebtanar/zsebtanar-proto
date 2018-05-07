@@ -5,7 +5,7 @@ const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default connect(mapStateToProps)(function Profile(props) {
+export const Profile = connect(mapStateToProps)(function Profile(props) {
   const { user } = props.session
   return (
     <div className="profile-page row">
