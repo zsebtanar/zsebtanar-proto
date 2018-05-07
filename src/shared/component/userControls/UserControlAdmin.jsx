@@ -1,31 +1,28 @@
 import React from 'react'
-import {
-  SIMPLE_TEXT,
-  SINGLE_CHOICE,
-  SINGLE_NUMBER,
-  BINARY_CHOICE,
-  MULTI_CHOICE, FRACTION_NUMBER
-} from './controlTypes'
+import * as t from './controlTypes'
 import { SimpleTextAdmin } from './simpleText/SimpleTextAdmin'
 import { SingleChoiceAdmin } from './singleChoice/SingleChoiceAdmin'
 import { SingleNumberAdmin } from './singleNumber/SingleNumberAdmin'
 import { BinaryChoiceAdmin } from './binaryChoice/BinaryChoiceAdmin'
 import { MultiChoiceAdmin } from './multiChoice/MultiChoiceAdmin'
 import { FractionNumberAdmin } from './fractionNumber/FractionNumberAdmin'
+import { NumberListAdmin } from './numberList/NumberListAdmin'
 
 export function UserControlsAdmin({ controlType, controlProps, resources }) {
   switch (controlType) {
-    case SIMPLE_TEXT:
+    case t.SIMPLE_TEXT:
       return <SimpleTextAdmin {...controlProps} resources={resources} />
-    case SINGLE_NUMBER:
+    case t.SINGLE_NUMBER:
       return <SingleNumberAdmin {...controlProps} resources={resources} />
-    case FRACTION_NUMBER:
+    case t.FRACTION_NUMBER:
       return <FractionNumberAdmin {...controlProps} resources={resources} />
-    case SINGLE_CHOICE:
+    case t.NUMBER_LIST:
+      return <NumberListAdmin {...controlProps} resources={resources} />
+    case t.SINGLE_CHOICE:
       return <SingleChoiceAdmin {...controlProps} resources={resources} />
-    case BINARY_CHOICE:
+    case t.BINARY_CHOICE:
       return <BinaryChoiceAdmin {...controlProps} resources={resources} />
-    case MULTI_CHOICE:
+    case t.MULTI_CHOICE:
       return <MultiChoiceAdmin {...controlProps} resources={resources} />
     default:
       return (

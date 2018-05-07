@@ -8,7 +8,6 @@ import { TrashButton } from 'shared/component/userControls/common/TrashButton'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
 import Button from 'shared/component/general/Button'
 import Checkbox from 'shared/component/input/Checkbox'
-import RadioInput from 'shared/component/input/RadioInput'
 
 export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
