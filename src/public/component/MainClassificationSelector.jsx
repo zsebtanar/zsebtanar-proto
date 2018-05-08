@@ -1,4 +1,4 @@
-import { values } from 'ramda'
+import { values, sortBy, prop, pipe } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -18,7 +18,7 @@ export default connect(mapStateToProps)(function (props) {
     <div className="row my-4">
       <h4 className="col-md-3">Osztályok</h4>
       <div className="col-md-9">
-        {values(grade)
+        {sortBy(prop('order'))(values(grade))
           .filter(grade => grade.exercise)
           .map((g) =>
             <NavLink
@@ -31,7 +31,7 @@ export default connect(mapStateToProps)(function (props) {
       </div>
     </div>
     {
-      subjectArray
+      sortBy(prop('order'))(subjectArray)
         .filter(sub => sub.exercise)
         .map((sub, idx) =>
           <div className="tab-content" key={sub._key}>
@@ -42,7 +42,7 @@ export default connect(mapStateToProps)(function (props) {
                   {sub.name}
                 </h4>
                 <div className="col-md-9">
-                  {values(sub.topic)
+                  {sortBy(prop('name'))(values(sub.topic))
                     .filter(topic => topic.exercise)
                     .map((topic) =>
                       <NavLink
