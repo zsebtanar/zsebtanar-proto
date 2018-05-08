@@ -273,6 +273,27 @@ body {
   content: none;
 }
 
+.user-control.fraction-number {
+  .input-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 8rem;
+    margin: 0 1rem;
+
+    input {
+      margin: 0;
+      width: 80%;
+      text-align: center;
+      padding-right: 0;
+    }
+  }
+  hr {
+    width: 100%;
+    border-top: 2px solid #333;
+  }
+}
+
 .user-control.number-list {
   display: flex;
   flex-wrap: wrap;
@@ -301,5 +322,4 @@ body {
       }
     }
   }
-
 }
