@@ -19,13 +19,13 @@ export function FractionNumber(props) {
         <Markdown source={props.prefix} resources={props.resources} />
       </span>
       {props.readOnly ? (
-        <div className="col-2 text-center">
+        <div className="mx-2 text-center">
           <strong>&nbsp;{props.value.numerator}&nbsp;</strong>
           <hr className="my-1" />
           <strong>&nbsp;{props.value.denominator}&nbsp;</strong>
         </div>
       ) : (
-        <div className="input-row col-5">
+        <div className="input-row">
           <input
             name="numerator"
             type="number"
