@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactGA from 'react-ga'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Markdown } from 'shared/component/general/Markdown'
@@ -11,11 +12,11 @@ const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default connect(mapStateToProps, {})(
+export const Search = connect(mapStateToProps, {})(
   class Search extends React.Component {
     state = { list: undefined, error: undefined, loading: false, term: '' }
 
-    componentDidMount(){
+    componentDidMount() {
       const searchTerm = parseQueryParams(this.props.history.location.search, 'q')
       if (searchTerm) {
         this.searchInput.value = searchTerm
@@ -23,22 +24,23 @@ export default connect(mapStateToProps, {})(
       }
     }
 
-    onSearch = (event) => this.searchTerm(event.currentTarget.value)
+    onSearch = event => this.searchTerm(event.currentTarget.value)
 
     searchTerm = term => {
       if (term.length >= 2) {
         this.setState({ loading: true, list: undefined })
-        this.props.history.push({search: `q=${term}`})
+        this.props.history.push({ search: `q=${term}` })
+        ReactGA.event({ category: 'User', action: 'Search', value: term })
         search(term)
           .then(list => this.setState({ list, error: undefined, loading: false, term }))
           .catch(error => this.setState({ error, loading: false }))
       } else {
-        this.props.history.push({search: ``})
+        this.props.history.push({ search: `` })
         this.setState({ loading: false, list: undefined, term: '' })
       }
     }
 
-    getInputRef = (ref) => this.searchInput = ref
+    getInputRef = ref => (this.searchInput = ref)
 
     render() {
       return (

@@ -137,7 +137,8 @@ module.exports = {
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
       __FN_PATH__: JSON.stringify(envConfig.api),
-      __ALGOLIA__: JSON.stringify(envConfig.algolia)
+      __ALGOLIA__: JSON.stringify(envConfig.algolia),
+      __GA__: JSON.stringify(envConfig.ga)
     })
   ].concat(isDev ? [] : [new UglifyJsPlugin({})])
 }

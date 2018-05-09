@@ -1,3 +1,4 @@
+import { pipe } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink, withRouter } from 'react-router-dom'
@@ -7,15 +8,15 @@ import Button from 'shared/component/general/Button'
 import { openSignInModal, openSignUpModal } from 'shared/store/actions/modal'
 import Icon from 'shared/component/general/Icon'
 import debounce from 'shared/util/debounce'
-import { compose } from 'ramda'
 
 const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default compose(withRouter,
-
-  connect(mapStateToProps, { openSignInModal, openSignUpModal }))(
+export const Home = pipe(
+  connect(mapStateToProps, { openSignInModal, openSignUpModal }),
+  withRouter
+)(
   class Home extends React.Component {
     searchInput = null
 

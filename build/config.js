@@ -12,6 +12,9 @@ module.exports = {
     algolia: {
       appId: 'J8PWVF536F',
       key: '502f297f7fecf9051688c205ab391225'
+    },
+    ga: {
+      ua: 'UA-118780906-2'
     }
   },
   test: {
@@ -36,6 +39,9 @@ module.exports = {
     algolia: {
       appId: 'J8PWVF536F',
       key: '502f297f7fecf9051688c205ab391225'
+    },
+    ga: {
+      ua: 'UA-118780906-2'
     }
   },
   production: {
@@ -60,6 +66,9 @@ module.exports = {
     algolia: {
       appId: 'UE3Y6VH327',
       key: '2a69c8b49d5f77f84eaa1b90c31add4d'
+    },
+    ga: {
+      ua: 'UA-118780906-1'
     }
   }
 }
