@@ -10,7 +10,7 @@
     "firebase-functions": "^1.0.2",
     "joi": "^13.2.0",
     "markdown-it": "8.4.1",
-    "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#2.2.0",
+    "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#v2.2.0",
     "ramda": "^0.25.0"
   },
   "private": true
