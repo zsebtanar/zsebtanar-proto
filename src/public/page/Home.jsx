@@ -61,18 +61,23 @@ export default compose(withRouter,
       const { session, openSignUpModal, openSignInModal } = this.props
 
       if (session.signedIn) {
-        return <h1 className="display-4">Szia {session.user.displayName || session.user.email}</h1>
+        return (
+          <h1 className="text-center">
+            Szia {session.user.displayName || session.user.email}
+          </h1>
+        )
       } else {
         return (
           <div className="text-center">
-            <Button className="btn btn-lg btn-outline-primary my-1" onAction={openSignUpModal}>
-              Regisztrálj
-            </Button>&nbsp;
-            <Button className="btn btn-link" onAction={openSignInModal}>
-              Jelentkezz be
-            </Button>
-            <p className="text-muted my-3"><span className="or-label">vagy</span></p>
-            <p>Vesd bele magad a feladatokba</p>
+            <h1 className="main-logo"></h1>
+            <h1>
+              <strong>
+                Zsebtanár
+              </strong>
+            </h1>
+            <h5>
+              Tanulás lépésről lépésre
+            </h5>
           </div>
         )
       }
