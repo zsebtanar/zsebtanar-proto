@@ -12,6 +12,7 @@ import Button from 'shared/component/general/Button'
 import Loading from 'shared/component/general/Loading'
 
 export default class extends React.Component {
+
   state = {
     group: undefined,
     subjects: [],
@@ -21,7 +22,8 @@ export default class extends React.Component {
   addItem = () => {
     const name = window.prompt('Név')
     const group = this.state.group
-    createClassification(group, {name})
+    const order = this.state.list.length + 1
+    createClassification(group, {name, order})
       .then(() => this.loadGroup(group))
   }
   editItem = (item) => () => {
@@ -86,7 +88,7 @@ export default class extends React.Component {
           {
             this.state.list.map((item, idx) =>
               <tr key={item._key}>
-                <td>{idx + 1}</td>
+                <td>{item.order || idx + 1}</td>
                 <td>
                   {this.state.group === SUBJECT
                     ? <span onClick={() => this.setGroup({value: `${SUBJECT}.${item._key}.${TOPIC}`})}>

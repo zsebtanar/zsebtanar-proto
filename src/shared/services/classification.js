@@ -1,4 +1,4 @@
-import { pick, pipe, values } from 'ramda'
+import { pick, pipe, values, prop, sortBy } from 'ramda'
 import { resolveSnapshot } from '../util/firebase'
 
 const DB = window.firebase.database()
@@ -10,46 +10,37 @@ export const SUBJECT = 'subject'
 export const TOPIC = 'topic'
 export const TAGS = 'tags'
 
-export function getClassification (group, uid) {
-  return Classification
-    .child(group.split('.').join('/'))
+export function getClassification(group, uid) {
+  return Classification.child(group.split('.').join('/'))
     .child(uid)
     .once('value')
     .then(s => s.val())
 }
 
-export function getAllClassification () {
-  return Classification
-    .once('value')
-    .then(resolveSnapshot)
+export function getAllClassification() {
+  return Classification.once('value').then(resolveSnapshot)
 }
 
-export function getAllClassificationByGroup (group) {
-  return Classification
-    .child(group.split('.').join('/'))
+export function getAllClassificationByGroup(group) {
+  return Classification.child(group.split('.').join('/'))
     .once('value')
-    .then(pipe(resolveSnapshot, values))
+    .then(pipe(resolveSnapshot, values, sortBy(prop('order'))))
 }
 
-export function updateClassification (group, uid, data) {
-  return Classification
-    .child(group.split('.').join('/'))
+export function updateClassification(group, uid, data) {
+  return Classification.child(group.split('.').join('/'))
     .child(uid)
-    .update({...pick(['name', 'role', 'active'], data)})
+    .update({ ...pick(['name', 'role', 'active'], data) })
 }
 
-export function createClassification (group, data) {
+export function createClassification(group, data) {
   const path = group.split('.').join('/')
-  const _key = Classification
-    .child(path)
-    .push()
-    .key
+  const _key = Classification.child(path).push().key
 
-  return Classification
-    .child(path)
+  return Classification.child(path)
     .child(_key)
     .update({
-      ...pick(['name'], data),
+      ...pick(['name', 'order'], data),
       _key: _key
     })
 }
