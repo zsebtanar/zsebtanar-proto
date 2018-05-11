@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 })
 
 
-export default withRouter(
+export const SideNav = withRouter(
   connect(mapStateToProps, { signOut, openFileManager, closeSideNav })(function SideNav(props) {
 
     if (!props.session.signedIn || !props.sideNavActive) return <div />

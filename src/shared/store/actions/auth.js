@@ -1,6 +1,6 @@
+import ReactGA from 'react-ga'
 import { getUserAction, parseTokenAction } from 'shared/store/reducers/session'
 import { updateUserProfile } from 'shared/services/user'
-
 const AUTH = firebase.auth()
 
 export const SIGN_UP_ERROR = 'SIGN_UP_ERROR'
@@ -18,11 +18,13 @@ export const AUTH_NO_USER = 'AUTH_NO_USER'
 export function initAuthWatch(store) {
   AUTH.onAuthStateChanged(function(user) {
     if (user) {
+      ReactGA.set({ userId: user.uid })
       setRavenUser(user.uid)
       store.dispatch({ type: SIGN_IN_SUCCESS, payload: { user } })
       store.dispatch(getUserAction(user.uid))
       store.dispatch(parseTokenAction(user))
     } else {
+      ReactGA.set({ userId: undefined })
       setRavenUser(undefined)
       store.dispatch({ type: AUTH_NO_USER })
     }
