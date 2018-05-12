@@ -2,6 +2,7 @@ import { identity } from 'ramda'
 import AlertModal from 'shared/component/modal/AlertModal'
 import { InputModal } from 'shared/component/modal/InputModal'
 import { MarkdownHelpModal } from 'shared/component/modal/MarkdownHelpModal'
+import { EquationHelpModal } from 'shared/component/modal/EquationHelpModal'
 import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
 import FeedbackModal from 'shared/component/modal/FeedbackModal'
 import { UserControlModal } from 'shared/component/modal/UserControlModal'
@@ -52,6 +53,10 @@ export function openAlertModal(params) {
 
 export function openMarkdownHelpModal(params) {
   return openModal(MarkdownHelpModal, { onClose: identity, ...params })
+}
+
+export function openEquationHelpModal(params) {
+  return openModal(EquationHelpModal, { onClose: identity, ...params })
 }
 
 export function openProviderSignUp(params) {
