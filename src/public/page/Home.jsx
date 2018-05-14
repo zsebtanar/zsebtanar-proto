@@ -5,16 +5,17 @@ import { NavLink, withRouter } from 'react-router-dom'
 import MainClassificationSelector from 'public/component/MainClassificationSelector'
 import DonateButton from 'public/component/DonateButton'
 import Button from 'shared/component/general/Button'
-import { openSignInModal, openSignUpModal } from 'shared/store/actions/modal'
+import { openSignInModal, openSignUpModal, openCookieModal } from 'shared/store/actions/modal'
 import Icon from 'shared/component/general/Icon'
 import debounce from 'shared/util/debounce'
+import CookieConsent from 'react-cookie-consent'
 
 const mapStateToProps = state => ({
   session: state.app.session
 })
 
 export const Home = pipe(
-  connect(mapStateToProps, { openSignInModal, openSignUpModal }),
+  connect(mapStateToProps, { openSignInModal, openSignUpModal, openCookieModal }),
   withRouter
 )(
   class Home extends React.Component {
@@ -54,12 +55,17 @@ export const Home = pipe(
 
           <DonateButton />
 
+          <CookieConsent buttonText="Rendben">
+            <a href="https://firebasestorage.googleapis.com/v0/b/zsebtanar-prod.appspot.com/o/docs%2Fzsebtanar-adatvedelmi-szabalyzat-2018.pdf?alt=media&amp;token=3cd16e18-51bc-4069-af98-051df97f2fe6" target="_blank">Adatvédelmi tájékoztatónkban</a> megtalálod, hogyan gondoskodunk adataid védelméről. Oldalainkon HTTP-sütiket használunk a jobb működésért. 
+            <Button className="btn btn-link" onAction={this.props.openCookieModal}>További információ</Button>
+          </CookieConsent>
+
         </div>
       )
     }
 
     renderWelcome() {
-      const { session, openSignUpModal, openSignInModal } = this.props
+      const { session, openSignUpModal, openSignInModal, openCookieModal } = this.props
 
       if (session.signedIn) {
         return <h1 className="display-4">Szia {session.user.displayName || session.user.email}</h1>
