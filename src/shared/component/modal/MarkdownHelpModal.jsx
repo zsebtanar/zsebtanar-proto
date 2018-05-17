@@ -237,7 +237,7 @@ minta kód helye...
           </div>
         </div>
         <div className="modal-footer text-center">
-          <Button onAction={props.close}>Close</Button>
+          <Button onAction={props.close}>Bezár</Button>
         </div>
       </div>
     </div>
