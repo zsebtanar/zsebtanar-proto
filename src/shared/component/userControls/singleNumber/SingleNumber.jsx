@@ -3,6 +3,7 @@ import { Markdown } from 'shared/component/general/Markdown'
 import Icon from '../../general/Icon'
 
 export function SingleNumber(props) {
+
   const setSolution = e => {
     if (props.onChange) {
       props.onChange({
@@ -26,6 +27,7 @@ export function SingleNumber(props) {
             type="number"
             className="form-control col-4 mx-1"
             onChange={setSolution}
+            value={props.value}
             step={1 / Math.pow(10, props.fractionDigits || 0)}
           />
         )}

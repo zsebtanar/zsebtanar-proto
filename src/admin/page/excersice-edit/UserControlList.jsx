@@ -84,7 +84,19 @@ export default connect(mapStateToProps, { openUserControlModal })(
     openRemoveUserControl = key => () =>
       confirm('Biztosan, hogy törölni szeretnéd?') && this.removeUserControl(key)
 
+    addSolutionToControlProps() {
+      if ("controls" in this.props && "solutions" in this.props) {
+        const controls = this.props.controls
+        for (var key in controls) {
+          if (controls.hasOwnProperty(key)) {
+            this.props.controls[key].controlProps["value"] = this.props.solutions[key]
+          }
+        }
+      }
+    }
+
     render() {
+      this.addSolutionToControlProps()
       const controls = pairsInOrder(this.props.controls)
       return (
         <div>

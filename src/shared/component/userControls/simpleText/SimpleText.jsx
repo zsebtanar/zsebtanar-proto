@@ -24,6 +24,8 @@ export function SimpleText(props) {
           name={props.name}
           type="text"
           className="form-control col-4 mx-1"
+          value={props.value !== undefined ? (props.value.hasOwnProperty("options") ? Object.values(props.value.options).join("; ") : props.value
+          ) : undefined}
           onChange={setSolution}
         />
       )}

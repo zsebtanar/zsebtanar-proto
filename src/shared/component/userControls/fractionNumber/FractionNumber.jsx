@@ -30,6 +30,7 @@ export function FractionNumber(props) {
             name="numerator"
             type="number"
             className="form-control"
+            value={props.value !== undefined ? props.value.numerator : undefined}
             onChange={setSolution}
             step="1"
             placeholder="számláló"
@@ -39,6 +40,7 @@ export function FractionNumber(props) {
             name="denominator"
             type="number"
             className="form-control"
+            value={props.value !== undefined ? props.value.denominator : undefined}
             onChange={setSolution}
             step="1"
             placeholder="nevező"

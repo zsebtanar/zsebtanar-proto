@@ -40,7 +40,7 @@ export class MultiChoice extends React.Component {
 
     return options.map(([id, item]) => (
       <div key={id} className="">
-        <Checkbox name={id} checked={this.state[id]} onChange={this.onChange}>
+        <Checkbox name={id} checked={this.props.value !== undefined ? this.props.value[id] === true : this.state[id]} onChange={this.onChange}>
           <Markdown source={item.label} resources={this.props.resources} />
         </Checkbox>
       </div>

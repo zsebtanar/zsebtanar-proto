@@ -51,7 +51,9 @@ export class BinaryChoice extends React.Component {
             name={id}
             id={id+'-true'}
             value={'true'}
-            checked={this.state[id] === 'true'}
+            checked={this.props.value !== undefined ?
+              this.props.value[id] === true :
+              this.state[id] === 'true'}
             onChange={this.onChange}
             resources={this.props.resources}
           />
@@ -60,7 +62,9 @@ export class BinaryChoice extends React.Component {
             name={id}
             id={id+'-false'}
             value={'false'}
-            checked={this.state[id] === 'false'}
+            checked={this.props.value !== undefined ?
+              this.props.value[id] === false :
+              this.state[id] === 'false'}
             onChange={this.onChange}
             resources={this.props.resources}
           />

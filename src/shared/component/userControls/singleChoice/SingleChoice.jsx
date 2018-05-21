@@ -3,6 +3,7 @@ import React from 'react'
 import { Markdown } from 'shared/component/general/Markdown'
 import Icon from 'shared/component/general/Icon'
 import RadioInput from 'shared/component/input/RadioInput'
+import { uid } from 'shared/util/uuid'
 
 export class SingleChoice extends React.Component {
   // we need state here because: https://github.com/facebook/react/issues/10078
@@ -21,21 +22,23 @@ export class SingleChoice extends React.Component {
   }
 
   render() {
+    const key = uid()
     return (
-      <div className="user-control single-choice">
-        {this.props.readOnly ? this.renderReadOnly() : this.renderNormal()}
+      <div className="user-control single-choice" id={key} key={key}>
+        {this.props.readOnly ? this.renderReadOnly() : this.renderNormal(key)}
       </div>
     )
   }
 
-  renderNormal() {
+  renderNormal(key) {
+
     return (this.props.options || []).map(x => (
       <RadioInput {...x}
-        id={x.value.toString()}
-        key={x.value}
+        key={key+'-'+x.value}
+        id={key+'-'+x.value}
         name='random'
         onChange={this.onChange}
-        checked={this.state.checked === x.value}
+        checked={this.props.value !== undefined ? this.props.value === x.value : this.state.checked === x.value}
         resources={this.props.resources} />
     )
   )
