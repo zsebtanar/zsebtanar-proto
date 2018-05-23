@@ -58,7 +58,7 @@ export const BinaryChoiceAdmin = connect(undefined, { openInputModal })(
       this.updateState(
         evolve(
           {
-            solution: merge(__, { [name]: value === 'true' })
+            solution: merge(__, { [name]: value.toString() === 'true' })
           },
           this.state
         )

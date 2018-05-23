@@ -20,14 +20,14 @@ export function SingleNumber(props) {
           <Markdown source={props.prefix} resources={props.resources} />
         </span>
         {props.readOnly ? (
-          <strong>&nbsp;{props.value}&nbsp;</strong>
+          <strong>&nbsp;{props.value !== undefined ? props.value : undefined}&nbsp;</strong>
         ) : (
           <input
             name={props.name}
             type="number"
             className="form-control col-4 mx-1"
             onChange={setSolution}
-            value={props.value}
+            value={props.value !== undefined ? props.value : undefined}
             step={1 / Math.pow(10, props.fractionDigits || 0)}
           />
         )}

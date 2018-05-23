@@ -18,7 +18,7 @@ export function SimpleText(props) {
       </span>
 
       {props.readOnly ? (
-        <strong>&nbsp;{props.value}&nbsp;</strong>
+        <strong>&nbsp;{props.value !== undefined ? props.value : undefined}&nbsp;</strong>
       ) : (
         <input
           name={props.name}

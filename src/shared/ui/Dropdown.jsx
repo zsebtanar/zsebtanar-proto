@@ -21,7 +21,7 @@ export class Dropdown extends React.Component {
   updateMenuPosition = () => {
     if (this.state.open && this.props.dropUp) {
       const [toggle, menu] = this.menuRef.children
-      menu.style.transform = `translate3d(0, -${menu.clientHeight + toggle.clientHeight}px, 0px)`
+      // menu.style.transform = `translate3d(0, -${menu.clientHeight + toggle.clientHeight}px, 0px)`
     }
   }
 

@@ -48,14 +48,16 @@ export class MultiChoice extends React.Component {
   }
 
   renderReadOnly() {
-    const options = this.state.options
-    const value = this.props.value
+    if (this.state.options !== undefined && this.props.value !== undefined) {
+      const options = this.state.options
+      const value = this.props.value
 
-    return options.map(([id, item]) => (
-      <div key={id} className="row">
-        <Icon fa={value[id] ? 'check' : 'ban'} className="col-1" />
-        <Markdown source={item.label} resources={this.props.resources} className="col-11" />
-      </div>
-    ))
+      return options.map(([id, item]) => (
+        <div key={id} className="row">
+          <Icon fa={value[id] ? 'check' : 'ban'} className="col-1" />
+          <Markdown source={item.label} resources={this.props.resources} className="col-11" />
+        </div>
+      ))
+    }
   }
 }

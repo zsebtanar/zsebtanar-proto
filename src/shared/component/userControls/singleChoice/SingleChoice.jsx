@@ -24,7 +24,7 @@ export class SingleChoice extends React.Component {
   render() {
     const key = uid()
     return (
-      <div className="user-control single-choice" id={key} key={key}>
+      <div className="user-control single-choice" id={key}>
         {this.props.readOnly ? this.renderReadOnly() : this.renderNormal(key)}
       </div>
     )
@@ -36,7 +36,7 @@ export class SingleChoice extends React.Component {
       <RadioInput {...x}
         key={key+'-'+x.value}
         id={key+'-'+x.value}
-        name='random'
+        name={key+'-name'}
         onChange={this.onChange}
         checked={this.props.value !== undefined ? this.props.value === x.value : this.state.checked === x.value}
         resources={this.props.resources} />

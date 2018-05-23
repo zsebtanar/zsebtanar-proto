@@ -20,9 +20,9 @@ export function FractionNumber(props) {
       </span>
       {props.readOnly ? (
         <div className="mx-2 text-center">
-          <strong>&nbsp;{props.value.numerator}&nbsp;</strong>
+          <strong>&nbsp;{props.value !== undefined ? props.value.numerator : undefined}&nbsp;</strong>
           <hr className="my-1" />
-          <strong>&nbsp;{props.value.denominator}&nbsp;</strong>
+          <strong>&nbsp;{props.value !== undefined ? props.value.denominator : undefined}&nbsp;</strong>
         </div>
       ) : (
         <div className="input-row">

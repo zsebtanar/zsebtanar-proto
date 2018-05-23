@@ -52,7 +52,9 @@ export class BinaryChoice extends React.Component {
             id={id+'-true'}
             value={'true'}
             checked={this.props.value !== undefined ?
-              this.props.value[id] === true :
+              id in this.props.value ? 
+                this.props.value[id].toString() === 'true' :
+                this.state[id] === 'true' :
               this.state[id] === 'true'}
             onChange={this.onChange}
             resources={this.props.resources}
@@ -63,7 +65,9 @@ export class BinaryChoice extends React.Component {
             id={id+'-false'}
             value={'false'}
             checked={this.props.value !== undefined ?
-              this.props.value[id] === false :
+              id in this.props.value ? 
+                this.props.value[id].toString() === 'false' :
+                this.state[id] === 'false' :
               this.state[id] === 'false'}
             onChange={this.onChange}
             resources={this.props.resources}
@@ -74,19 +78,23 @@ export class BinaryChoice extends React.Component {
   }
 
   renderReadOnly() {
-    const options = this.state.options
-    const value = this.props.value
+    if (this.state.options !== undefined && this.props.value !== undefined) {
+      const options = this.state.options
+      const value = this.props.value
 
-    return options.map(([id, item]) => (
-      <div key={id} className="d-flex justify-content-between">
-        {item.label}&nbsp;<strong>
-          {value[id] === 'true' ? (
-            item.trueLabel || DEFAULT_TRUE_LABEL
-          ) : (
-            item.falseLabel || DEFAULT_FALSE_LABEL
-          )}
-        </strong>
-      </div>
-    ))
+      return options.map(([id, item]) => (
+        <div key={id} className="d-flex justify-content-between">
+          {item.label}&nbsp;<strong>
+            {id in value ? (
+              value[id] === 'true' ? (
+                item.trueLabel || DEFAULT_TRUE_LABEL
+              ) : (
+                item.falseLabel || DEFAULT_FALSE_LABEL
+              )) : 
+            undefined}
+          </strong>
+        </div>
+      ))
+    }
   }
 }
