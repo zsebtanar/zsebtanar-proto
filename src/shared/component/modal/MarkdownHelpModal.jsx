@@ -173,7 +173,7 @@ Kódblokk.
           </div>
         </div>
         <div className="modal-footer text-center">
-          <Button onAction={props.close}>Bezárás</Button>
+          <Button onAction={props.close}>Bezár</Button>
         </div>
       </div>
     </div>

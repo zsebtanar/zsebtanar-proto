@@ -8,6 +8,7 @@ import FeedbackModal from 'shared/component/modal/FeedbackModal'
 import { UserControlModal } from 'shared/component/modal/UserControlModal'
 import SignInModal from 'shared/component/modal/SignInModal'
 import SignUpModal from 'shared/component/modal/SignUpModal'
+import { CookieModal } from 'shared/component/modal/CookieModal'
 import ExerciseResultModal from 'shared/component/modal/ExerciseResultModal'
 import { ExerciseImageDialog } from 'shared/component/modal/ExerciseImageDialog'
 import { FileUploadModal } from 'shared/component/modal/FileUploadModal'
@@ -34,8 +35,16 @@ export function openSignInModal(params) {
     ...params
   })
 }
+
 export function openSignUpModal(params) {
   return openModal(SignUpModal, {
+    onClose: identity,
+    ...params
+  })
+}
+
+export function openCookieModal(params) {
+  return openModal(CookieModal, {
     onClose: identity,
     ...params
   })
@@ -52,7 +61,10 @@ export function openAlertModal(params) {
 }
 
 export function openMarkdownHelpModal(params) {
-  return openModal(MarkdownHelpModal, { onClose: identity, ...params })
+  return openModal(MarkdownHelpModal, {
+    onClose: identity,
+    ...params
+  })
 }
 
 export function openEquationHelpModal(params) {

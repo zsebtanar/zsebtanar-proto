@@ -7,44 +7,62 @@ import { getAllClassification, TAGS } from 'shared/services/classification'
 import { Markdown } from 'shared/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import Loading from 'shared/component/general/Loading'
+import { trackPage } from '../../shared/component/hoc/withTracker'
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   classification: state.classification
 })
 
-export default pipe(
-  withRouter,
-  connect(mapStateToProps)
-)(class extends React.Component {
-  state = {exercises: undefined}
+export const ExercisesByTopic = pipe(withRouter, connect(mapStateToProps))(
+  class extends React.Component {
+    state = { exercises: undefined }
 
-  componentWillMount () {
-    const {subject, topic} = this.props.match.params
-    getAllClassification().then(classification => {
-      const ids = pathOr([], ['subject', subject, 'topic', topic, 'exercise'], classification)
-      selectPublicExercisesById(ids).then(exercises => {
-        this.setState({classification, exercises})
+    componentDidMount() {
+      if (this.props.classification) {
+        this.initContent(this.props)
+      }
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if (!this.props.classification && nextProps.classification) {
+        this.initContent(nextProps)
+      }
+    }
+
+    initContent(props) {
+      const { classification, match, location } = props
+      const { subject, topic } = match.params
+      const subjectName = classification.subject[subject].name
+      const topicName = classification.subject[subject].topic[topic].name
+
+      trackPage(location.pathname, { title: `${subjectName} - ${topicName}` })
+
+      getAllClassification().then(classification => {
+        const ids = pathOr([], ['subject', subject, 'topic', topic, 'exercise'], classification)
+        selectPublicExercisesById(ids).then(exercises => {
+          this.setState({ classification, exercises })
+        })
       })
-    })
-  }
+    }
 
-  render () {
-    const {classification, match} = this.props
-    const {subject, topic} = match.params
+    render() {
+      const { classification, match } = this.props
+      const { subject, topic } = match.params
 
-    if (!classification) return (<div/>)
+      if (!classification) return <div />
 
-    return (<div>
-      <h2>{classification.subject[subject].name}
-        <small> {classification.subject[subject].topic[topic].name}</small>
-      </h2>
+      return (
+        <div>
+          <h2>
+            {classification.subject[subject].name}
+            <small> {classification.subject[subject].topic[topic].name}</small>
+          </h2>
 
-      {
-        !this.state.exercises
-          ? <Loading/>
-          : <div className="list-group col-10 mx-auto">
-            {
-              this.state.exercises.map(ex =>
+          {!this.state.exercises ? (
+            <Loading />
+          ) : (
+            <div className="list-group col-10 mx-auto">
+              {this.state.exercises.map(ex => (
                 <NavLink
                   key={ex._key}
                   to={`/exercise/${ex._key}`}
@@ -53,15 +71,19 @@ export default pipe(
                   <div className="mb-1 d-flex w-100 ">
                     <Markdown source={ex.description} resources={ex.resources} />
                   </div>
-                  <div>{
-                    ex.classification.tags.map(tag =>
-                      <span className="badge badge-secondary mx-1" key={tag}>{this.state.classification[TAGS][tag].name}</span>
-                    )}</div>
+                  <div>
+                    {ex.classification.tags.map(tag => (
+                      <span className="badge badge-secondary mx-1" key={tag}>
+                        {this.state.classification[TAGS][tag].name}
+                      </span>
+                    ))}
+                  </div>
                 </NavLink>
-              )
-            }
-          </div>
-      }
-    </div>)
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    }
   }
-})
+)

@@ -37,7 +37,7 @@ export const FractionNumberAdmin = connect(undefined, { openInputModal })(
     render() {
       const { prefix, postfix, solution } = this.state
       return (
-        <div className="user-control single-number single-number-admin">
+        <div className="user-control fraction-number-admin">
           <MarkdownField
             label="Előtag"
             name="prefix"
