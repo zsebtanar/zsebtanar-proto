@@ -78,9 +78,13 @@ export default withRouter(
               </Dropdown>
             </ul>
           </nav>
-          <NavLink exact to="/" className="logo-link">
-            <h4 className="text-muted logo" />
-          </NavLink>
+          {(props.hasOwnProperty("data") & props.data.hasOwnProperty("showLogo") & !props.data.showLogo) ? (
+            null
+          ) : (
+            <NavLink exact to="/" className="logo-link">
+              <h4 className="text-muted logo" />
+            </NavLink>
+          )}
         </div>
 
         <div className="mobile-header ">
@@ -92,10 +96,13 @@ export default withRouter(
           >
             <span className="fa fa-bars fa-lg" />
           </Button>
-
-          <NavLink exact to="/" className="logo-link float-right">
-            <h4 className="text-muted logo" />
-          </NavLink>
+          {(props.hasOwnProperty("data") & props.data.hasOwnProperty("showLogo") & !props.data.showLogo) ? (
+            props.data.showLogo = true
+          ) : (
+            <NavLink exact to="/" className="logo-link float-right">
+              <h4 className="text-muted logo" />
+            </NavLink>
+          )}
         </div>
       </div>
     )

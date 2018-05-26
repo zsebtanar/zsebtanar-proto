@@ -30,11 +30,20 @@ export default connect(mapStateToProps)(function(props) {
           </div>
         ) : (
           <div className="container">
-            <Header />
+            <Switch>
+              <Route path='/' exact render={(props) => (
+                <Header {...props} data={{ showLogo: false }}/>
+              )}/>
+              <Route render={(props) => (
+                <Header {...props} data={{ showLogo: true }}/>
+              )}/>
+            </Switch>
             <SideNav />
             <div className="content">
               <Switch>
-                <Route path="/" exact component={Home} />
+                <Route path='/' exact render={(props) => (
+                  <Home {...props} data={{ showLogo: false }}/>
+                )}/>
                 {props.session.signedIn && <Route path="/profile" component={Profile} />}
                 <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
                 <Route path="/grade/:grade" component={ExercisesByGrade} />
