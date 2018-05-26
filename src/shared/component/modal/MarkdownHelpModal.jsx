@@ -7,7 +7,7 @@ export function MarkdownHelpModal(props) {
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Szövegszerkesztő használata</h5>
+          <h3 className="modal-title">Szövegszerkesztő használata</h3>
           <button type="button" className="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden={true} onClick={props.close}>
               &times;
@@ -15,24 +15,28 @@ export function MarkdownHelpModal(props) {
           </button>
         </div>
         <div className="modal-body">
-          <p>
-            A szövegszerkesztő a <strong>markdown</strong> jelölőnyelvet használja. A legfontosabb parancsokat összegyűjtöttük Neked. Ha ez nem lenne elég, részletes angol nyelvű útmutatót <a target="_blank" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">itt találsz</a>.
-          </p>
+          <div className="row">
+            <div className="col-12">
+              <p>
+                A szövegszerkesztő a <strong>markdown</strong> jelölőnyelvet használja. A legfontosabb parancsokat összegyűjtöttük Neked. Ha ez nem lenne elég, részletes angol nyelvű útmutatót <a target="_blank" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">itt találsz</a>.
+              </p>
+            </div>
+          </div>
           <div className="row">
             <div className="col-6">
-              <h3>Ezt kell beírni:</h3>
+              <h4>Ezt kell beírni:</h4>
             </div>
             <div className="col-6">
-              <h3>Így fog kinézni:</h3>
+              <h4>Így fog kinézni:</h4>
             </div>
           </div>
           <div className="row">
             <div className="col-12">
-              <h4>Felsorolás</h4>
+              <h5><b>Felsorolás</b></h5>
             </div>
           </div>
-          <div className="row">
-            <div className="col-6">
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
               <p>Egyszerű felsorolás:</p>
               <p>- Listaelem<br />
               - Listaelem<br />
@@ -67,11 +71,11 @@ Vízszintes vonal:
           </div>
           <div className="row">
             <div className="col-12">
-              <h4>Kiemelés</h4>
+              <h5><b>Kiemelés</b></h5>
             </div>
           </div>
-          <div className="row">
-            <div className="col-6">
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
               <p>- **Félkövér** szó.<br />
               - *Dőlt* szó.<br />
               - ***Félkövér és dőlt*** szó.<br />
@@ -100,12 +104,12 @@ Kódblokk.
           </div>
           <div className="row">
             <div className="col-12">
-              <h4>Táblázat</h4>
+              <h5><b>Táblázat</b></h5>
               <p>A táblázat fejlécét az első sorban tudod megadni. A második sorban pedig balra, középre, vagy jobbra tudod igazítani az oszlopokat:</p>
             </div>
           </div>
-          <div className="row">
-            <div className="col-6">
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
               <pre>
                 | balra | középre | jobbra |<br/>
                 | :----- | :----: | ----: |<br/>
@@ -126,7 +130,7 @@ Kódblokk.
           </div>
           <div className="row">
             <div className="col-12">
-              <h4>Képek használata</h4>
+              <h5><b>Képek használata</b></h5>
               <ol>
                 <li>Kattints a <strong>Kép beszúrása</strong> gombra.</li>
                 <li>Kattints a <strong>Fájl hozzáadása</strong> gombra.</li>
@@ -137,9 +141,9 @@ Kódblokk.
               <p>Ekkor egy hasonló kód jelenik meg a szerkesztő mezőben:</p>
             </div>
           </div>
-          <div className="row">
-            <div className="col-6">
-              <p><code>@[kép neve.jpeg](6336e63799 =100x)</code></p>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>@[kép neve.jpeg](6336e63799 =100x)</p>
             </div>
             <div className="col-6">
               <img src="/assets/logo.png" alt="logó" style={{width: + '100px'}}/>
@@ -150,9 +154,9 @@ Kódblokk.
               <p>A képnek úgy tudod megadni <b>szélességét</b>, hogy átírod az <strong>x előtti</strong> számot:</p>
             </div>
           </div>
-          <div className="row">
-            <div className="col-6">
-              <p><code>@[kép neve.jpeg](6336e63799 =50x)</code></p>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>@[kép neve.jpeg](6336e63799 =<b>50x</b>)</p>
             </div>
             <div className="col-6">
               <img src="/assets/logo.png" alt="logó" style={{width: 50 + 'px'}}/>
@@ -163,9 +167,9 @@ Kódblokk.
               <p>A <b>magasságát</b> pedig úgy, hogy a számot az <strong>x után</strong> írod:</p>
             </div>
           </div>
-          <div className="row">
-            <div className="col-6">
-              <p><code>@[kép neve.jpeg](6336e63799 =x75)</code></p>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>@[kép neve.jpeg](6336e63799 =<b>x75</b>)</p>
             </div>
             <div className="col-6">
               <img src="/assets/logo.png" alt="logó" style={{height: 75 + 'px'}}/>

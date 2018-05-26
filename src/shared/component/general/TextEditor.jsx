@@ -84,13 +84,13 @@ export const TextEditor = connect(undefined, {
               </Button>
             </div>
             <div className="btn-group mr-2" role="group" aria-label="Egyéb">
-              <Button secondary onAction={this.props.openEquationHelpModal}>
-              <i className="fa fa-calculator" /> Képletszerkesztő
+              <Button info onAction={this.props.openEquationHelpModal}>
+                <i className="fa fa-calculator" /> Képletsúgó
               </Button>
             </div>
             <div className="btn-group mr-2" role="group" aria-label="Egyéb">
-              <Button secondary onAction={this.props.openMarkdownHelpModal}>
-                <i className="fa fa-question-circle" /> Súgó
+              <Button info onAction={this.props.openMarkdownHelpModal}>
+                <i className="fa fa-edit" /> Szövegsúgó
               </Button>
             </div>
           </div>

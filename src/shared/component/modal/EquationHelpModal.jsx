@@ -20,21 +20,65 @@ export function EquationHelpModal(props) {
               <p>
                 A képletszerkesztő a <strong>Katex</strong> jelölőnyelvet használja. A legfontosabb parancsokat összegyűjtöttük Neked. Ha ez nem lenne elég, részletes angol nyelvű útmutatót <a target="_blank" href="https://khan.github.io/KaTeX/function-support.html">itt találsz</a>.
               </p>
-              <h4>Matematikai módok</h4>
-              <Markdown source={`Ha egy **szövegen belül** szeretnéd használni a matematikai módot, akkor a képletet két darab \`\$\`-jel közé kell betenni. Ha például azt írod, hogy \`$x=2$\`, akkor az úgy fog kinézni, hogy $x=2$.`}/>
-              <p>Ha pedig <strong>kiemelt módot</strong> szeretnél használni, akkor írd az egyenletet új sorba, és a képlet előtt és után a kettős <code>$$</code>-jelet használd. Például ez:</p>
-              <Markdown source={`\`$$a=b+c$$\``}/>
-              <p>úgy fog kinézni, hogy:</p>
-              <Markdown source={`$$a=b+c$$`}/>
-              <p>Egy több sorból álló <strong>egyenletrendszert</strong> az <code>aligned</code> környezetben lehet használni. Itt a sorok végére (az utolsó sort kivéve) <code>\\</code> jelet kell tenni, a <code>&amp;</code>-jellel pedig az egyenleteket tudjuk egymáshoz képest igazítani. Például ez:</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-6">
+              <h4>Ezt kell beírni:</h4>
+            </div>
+            <div className="col-6">
+              <h4>Így fog kinézni:</h4>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <h5><b>Matematikai módok</b></h5>
+              <p>
+                Ha egy <b>szövegen belül</b> szeretnéd használni a matematikai módot, akkor a képletet két darab <code>$</code>-jel közé kell betenni:
+              </p>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>Az egyenlet megoldása $x=2$.</p>
+            </div>
+            <div className="col-6">
               <Markdown source={`
-\`$$\\begin{aligned}\`  
-\`a\&=b+c \\\\\`  
-\`a-c\&=b \\\\\`  
-\`0\&=b+c-a\`  
-\`\\end{aligned}$$\`  
+Az egyenlet megoldása $x=2$.
 `}/>
-              <p>úgy fog kinézni, hogy:</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <p>
+                Ha pedig <strong>kiemelt módot</strong> szeretnél használni, akkor írd az egyenletet új sorba, és a képlet előtt és után a kettős <code>$$</code>-jelet használd:
+              </p>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>$$a=b+c$$</p>
+            </div>
+            <div className="col-6">
+              <Markdown source={`$$a=b+c$$`}/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <p>
+                Egy több sorból álló <strong>egyenletrendszert</strong> az <code>aligned</code> környezetben lehet használni. Itt a sorok végére (az utolsó sort kivéve) <code>\\</code> jelet kell tenni, a <code>&amp;</code>-jellel pedig az egyenleteket tudjuk egymáshoz képest igazítani:
+              </p>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>$$\begin{'{'}aligned{'}'}<br />
+              a&amp;=b+c \\<br />
+              a-c&amp;=b \\<br />
+              0&amp;=b+c-a<br />
+              \end{'{'}aligned{'}'}$</p>
+            </div>
+            <div className="col-6">
               <Markdown source={`
 $$\\begin{aligned}
 a\&=b+c \\\\
@@ -46,7 +90,7 @@ a-c\&=b \\\\
           </div>
           <div className="row">
             <div className="col-12">
-            <h4>Szimbólumok, jelölések</h4>
+            <h5><b>Szimbólumok, jelölések</b></h5>
             <p><i>Ne felejtsd el, hogy minden matematikai kifejezés elé és után vagy <code>$</code> vagy <code>$$</code> jeleket kell tenni!</i></p>
             </div>
           </div>
