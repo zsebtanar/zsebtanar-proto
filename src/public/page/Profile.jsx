@@ -1,43 +1,80 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Button from '../../shared/component/general/Button'
+import { deleteUser } from '../../shared/store/actions/auth'
+import { openConfirmModal } from '../../shared/store/actions/modal'
+import Icon from '../../shared/component/general/Icon'
 
 const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export const Profile = connect(mapStateToProps)(function Profile(props) {
-  const { user } = props.session
-  return (
-    <div className="profile-page row">
-      <div className="col-auto picture-col">
-        <img src={user.photoURL || 'assets/logo.png'} alt={'asd'} />
-      </div>
-      <div className="col-md data-col">
-        <h2>Profil adatok</h2>
-        <hr />
-        <dl className="row">
-          <dt className="col-sm-5">Név</dt>
-          <dd className="col-sm-7">{user.displayName}</dd>
+const mapDispatchToProps = {
+  deleteUser,
+  openConfirmModal
+}
 
-          <dt className="col-sm-5">E-mail cím</dt>
-          <dd className="col-sm-7">{user.email}</dd>
+export const Profile = connect(mapStateToProps, mapDispatchToProps)(
+  class extends React.Component {
+    deleteProfile = () => {
+      const { deleteUser, openConfirmModal } = this.props
+      openConfirmModal({
+        buttonType: 'danger',
+        content: (
+          <div>
+            <div className="alert alert-danger d-flex align-items-center">
+              <Icon fa="exclamation-triangle" size="4x" />
+              <p className="ml-4 mb-0">
+                Figyelem! <br />A folyamat során visszafordíthatatlanul töröljük a felhasználói
+                adataidat és minden eddig elér eredményedet.
+              </p>
+            </div>
+            <p>Biztos törölni szeretnéd a profilod?</p>
+          </div>
+        ),
+        onSuccess: deleteUser
+      })
+    }
+    render() {
+      const { user } = this.props.session
+      return (
+        <div className="profile-page row">
+          <div className="col-auto picture-col">
+            <img src={user.photoURL || 'assets/logo.png'} alt={'asd'} />
+          </div>
+          <div className="col-md data-col">
+            <h2>Profil adatok</h2>
+            <hr />
+            <dl className="row">
+              <dt className="col-sm-5">Név</dt>
+              <dd className="col-sm-7">{user.displayName}</dd>
 
-          <dt className="col-sm-5">Regisztráció dátuma</dt>
-          <dd className="col-sm-7">{new Date(user._created).toLocaleDateString()}</dd>
-        </dl>
+              <dt className="col-sm-5">E-mail cím</dt>
+              <dd className="col-sm-7">{user.email}</dd>
 
-        <h2 className="mt-5">Statisztikák:</h2>
-        <hr />
+              <dt className="col-sm-5">Regisztráció dátuma</dt>
+              <dd className="col-sm-7">{new Date(user._created).toLocaleDateString()}</dd>
+            </dl>
 
-        <dl className="row">
-          <dt className="col-sm-5">Megoldott feladatok száma:</dt>
-          <dd className="col-sm-7">999999</dd>
+            <h2 className="mt-5">Statisztikák:</h2>
+            <hr />
 
-          <dt className="col-sm-5">Helyes megoldások aránya</dt>
-          <dd className="col-sm-7">110%</dd>
-        </dl>
-        <p>...</p>
-      </div>
-    </div>
-  )
-})
+            <dl className="row">
+              <dt className="col-sm-5">Megoldott feladatok száma:</dt>
+              <dd className="col-sm-7">999999</dd>
+
+              <dt className="col-sm-5">Helyes megoldások aránya</dt>
+              <dd className="col-sm-7">110%</dd>
+            </dl>
+            <p>...</p>
+            <p>
+              <Button className="btn-danger" onAction={this.deleteProfile} icon="trash">
+                Felhasználói fiók törlése
+              </Button>
+            </p>
+          </div>
+        </div>
+      )
+    }
+  }
+)
