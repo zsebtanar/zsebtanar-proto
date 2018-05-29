@@ -23,14 +23,6 @@ export function EquationHelpModal(props) {
             </div>
           </div>
           <div className="row">
-            <div className="col-6">
-              <h4>Ezt kell beírni:</h4>
-            </div>
-            <div className="col-6">
-              <h4>Így fog kinézni:</h4>
-            </div>
-          </div>
-          <div className="row">
             <div className="col-12">
               <h5><b>Matematikai módok</b></h5>
               <p>
