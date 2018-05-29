@@ -11,6 +11,7 @@ import { CookieModal } from 'shared/component/modal/CookieModal'
 import ExerciseResultModal from 'shared/component/modal/ExerciseResultModal'
 import { ExerciseImageDialog } from 'shared/component/modal/ExerciseImageDialog'
 import { FileUploadModal } from 'shared/component/modal/FileUploadModal'
+import { ConfirmModal } from '../../component/modal/ConfirmModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -55,6 +56,17 @@ export function openAlertModal(params) {
     text: '',
     element: undefined,
     onClose: identity,
+    ...params
+  })
+}
+
+export function openConfirmModal(params) {
+  return openModal(ConfirmModal, {
+    title: undefined,
+    content: '',
+    onClose: identity,
+    onSuccess: identity,
+    buttonType: undefined,
     ...params
   })
 }
