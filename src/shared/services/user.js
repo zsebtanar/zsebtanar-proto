@@ -24,6 +24,8 @@ export function getUserDetails(uid) {
     .then(s => s.val())
 }
 
+export const removeUserData = uid => Users.child(uid).remove()
+
 export const getAllUser = () => cloudFnGet(`user/all`, {}, { withToken: true })
 
 export const updateUserRole = (uid, newRole) =>

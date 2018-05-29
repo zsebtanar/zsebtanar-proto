@@ -1,6 +1,7 @@
 import ReactGA from 'react-ga'
 import { getUserAction, parseTokenAction } from 'shared/store/reducers/session'
 import { updateUserProfile } from 'shared/services/user'
+import { removeUserData } from '../../services/user'
 const AUTH = firebase.auth()
 
 export const SIGN_UP_ERROR = 'SIGN_UP_ERROR'
@@ -80,8 +81,7 @@ export function signOut() {
 
 export function deleteUser() {
   return () =>
-    AUTH.currentUser
-      .delete()
+    Promise.all([AUTH.currentUser.delete(), removeUserData(AUTH.currentUser.uid)])
       .then(() => window.location.replace('/'))
       .catch(ravenCapture)
 }
