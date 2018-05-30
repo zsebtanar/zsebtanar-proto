@@ -2,237 +2,169 @@ import React from 'react'
 import { Markdown } from '../general/Markdown'
 import Button from '../general/Button'
 
-export function MarkdownHelpModal (props) {
+export function MarkdownHelpModal(props) {
   return (
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Markdown súgó</h5>
+          <h3 className="modal-title">Szövegszerkesztő használata</h3>
           <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden={true} onClick={props.close}>&times;</span>
+            <span aria-hidden={true} onClick={props.close}>
+              &times;
+            </span>
           </button>
         </div>
         <div className="modal-body">
           <div className="row">
-            <div className="col-6">
-              <h3>Markdown</h3>
-
-              <h4>Címsorok</h4>
-
-              <p># h1 címsor</p>
-              <p>## h2 címsor</p>
-              <p>### h3 címsor</p>
-              <p>#### h4 címsor</p>
-              <p>##### h5 címsor</p>
-              <p>###### h6 címsor</p>
-            </div>
-            <div className="col-6">
-              <h3>Előnézet</h3>
-
-              <Markdown source={`
-#### Címsorok
-
-# h1 címsor
-## h2 címsor
-### h3 címsor
-#### h4 címsor
-##### h5 címsor
-###### h6 címsor
-`}/>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-6">
-              <h4>Vízszintes vonal</h4>
-              <p>---</p>
-              <p>***</p>
-            </div>
-            <div className="col-6">
-              <Markdown source={`
-#### Vízszintes vonal
-
----
-
-***
-`}/>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-6">
-
-              <h4>Kiemelés</h4>
-
-              <p>**félkövér**</p>
-              <p>__félkövér__</p>
-              <p>*dölt*</p>
-              <p>_dölt_</p>
-              <p>~~áthúzott~~</p>
-
-              <h4>Idézetek</h4>
-
+            <div className="col-12">
               <p>
-                > Az idézetek egymásba ágyazhatók...
+                A szövegszerkesztő a <strong>markdown</strong> jelölőnyelvet használja. A legfontosabb parancsokat összegyűjtöttük Neked. Ha ez nem lenne elég, részletes angol nyelvű útmutatót <a target="_blank" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">itt találsz</a>.
               </p>
             </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <h5><b>Felsorolás</b></h5>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>Egyszerű felsorolás:</p>
+              <p>- Listaelem<br />
+              - Listaelem<br />
+              - Listaelem</p>
+              <p>Számozott lista:</p>
+              <p>1. Egy<br />
+              2. Kettő<br />
+              3. Három</p>
+              <p>Vízszintes vonal:<br />
+              ---</p>
+            </div>
+
             <div className="col-6">
               <Markdown source={`
-#### Kiemelés
+Egyszerű felsorolás:
 
-**félkövér**
+- Listaelem
+- Listaelem
+- Listaelem
 
-__félkövér__
+Számozott lista:
 
-*dölt*
+1. Egy
+2. Kettő
+3. Három
 
-_dölt_
+Vízszintes vonal:
 
-~~áthúzott~~
-
-
-#### Idézetek
-
-
-> Az idézetek egymásba ágyazhatók...
+---
 `}/>
             </div>
           </div>
-
           <div className="row">
-            <div className="col-6">
-
-              <h4>Listák</h4>
-
-              <h5>Felsorolás</h5>
-
-              <p>+ A felsorolás kezdődhet `+`, `-`, vagy `*`</p>
-              <p>+ allista létrehozható 2 szöközös behúzással:</p>
-              <p>&nbsp;&nbsp;- Jelölő karakter váltása új listát kezd:</p>
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;* Ac tristique libero volutpat at</p>
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;+ Facilisis in pretium nisl aliquet</p>
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;- Nulla volutpat aliquam velit</p>
-              <p>+ egyszerű, ugye?</p>
-
-              <h5>Számozott felsorolás</h5>
-              <p>1. Lorem ipsum dolor sit amet</p>
-              <p>2. Consectetur adipiscing elit</p>
-              <p>3. Integer molestie lorem at massa</p>
-
-              <p>1. Lehet növekvő számokat használni...</p>
-              <p>1. ...vagy végig ugyanazt `1.`</p>
-            </div>
-            <div className="col-6">
-              <Markdown source={`
-#### Listák
-
-Felsorolás
-
-+ A felsorolás kezdődhet \`+\`, \`-\`, vagy \`*\`
-+ allista létrehozható 2 szöközös behúzással:
-  - Jelölő karakter váltása új listát kezd:
-    * Ac tristique libero volutpat at
-    + Facilisis in pretium nisl aliquet
-    - Nulla volutpat aliquam velit
-+ egyszerű, ugya?
-
-Számozott felsorolás
-
-1. Lorem ipsum dolor sit amet
-2. Consectetur adipiscing elit
-3. Integer molestie lorem at massa
-
-
-1. Lehet növekvő számokat használni...
-1. ...vagy végig ugyanazt \`1.\`
-`}/>
+            <div className="col-12">
+              <h5><b>Kiemelés</b></h5>
             </div>
           </div>
-
-          <div className="row">
-            <div className="col-6">
-              <h4>Kód</h4>
-
-              <p>`kód` soron belül</p>
-
-              <p>Kód blokk</p>
-
-              ```
-              minta kód helye...
-              ```
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>- **Félkövér** szó.<br />
+              - *Dőlt* szó.<br />
+              - ***Félkövér és dőlt*** szó.<br />
+              - Ez egy `kódrészlet`.</p>
+              <p>```<br />
+              Ez<br />
+              Egy<br />
+              Kódblokk.<br />
+              ```</p>
             </div>
             <div className="col-6">
               <Markdown source={`
-#### Kód
-
-\`kód\` soron belül
-
-
-Kód blokk
+- **Félkövér** szó.
+- *Dőlt* szó.
+- ***Félkövér és dőlt*** szó.
+- Ez egy \`kódrészlet\`.
 
 \`\`\`
-minta kód helye...
+Ez
+Egy
+Kódblokk.
 \`\`\`
+
 `}/>
             </div>
           </div>
-
           <div className="row">
-            <div className="col-6">
-              <h4>Táblázat</h4>
-
+            <div className="col-12">
+              <h5><b>Táblázat</b></h5>
+              <p>A táblázat fejlécét az első sorban tudod megadni. A második sorban pedig balra, középre, vagy jobbra tudod igazítani az oszlopokat:</p>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
               <pre>
-                | oszlop 1| oszlop 2 |<br/>
-                | -----: | ---- |<br/>
-                | A | 1 |<br/>
-                | B | 2 |<br/>
-                | C | 3 |<br/>
+                | balra | középre | jobbra |<br/>
+                | :----- | :----: | ----: |<br/>
+                | A | 1 | x |<br/>
+                | B | 2 | y |<br/>
+                | C | 3 | z |<br/>
               </pre>
             </div>
             <div className="col-6">
               <Markdown source={`
-
-#### Táblázat
-
-| oszlop 1| oszlop 2 |
-| -----: | ---- |
-| A | 1 |
-| B | 2 |
-| C | 3 |
+| balra | középre | jobbra |
+| :----- | :----: | ----: |
+| A | 1 | x |
+| B | 2 | y |
+| C | 3 | z |
 `}/>
             </div>
           </div>
-
           <div className="row">
-            <div className="col-6">
-              <h4>Linkek</h4>
-
-              [link szövege](http://link.cime.hu)
-
-              [link cimkével](http://link.cime.hu/ "Cimke szövege!")
-
-              <h4>Képek</h4>
-
-              <pre>
-![Zsebtanar](/assets/logo.png)<br/>
-![Zsebtanar](/assets/logo.png "Zsebtanár logó")
-              </pre>
+            <div className="col-12">
+              <h5><b>Képek használata</b></h5>
+              <ol>
+                <li>Kattints a <strong>Kép beszúrása</strong> gombra.</li>
+                <li>Kattints a <strong>Fájl hozzáadása</strong> gombra.</li>
+                <li>Válaszd ki a képet a számítógépen.</li>
+                <li>Több képet is kiválaszthatsz, de csak egyenként.</li>
+                <li>Miután megjelent a kép ikonja, kattints arra, amelyiket szeretnéd használni.</li>
+              </ol>
+              <p>Ekkor egy hasonló kód jelenik meg a szerkesztő mezőben:</p>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>@[kép neve.jpeg](6336e63799 =100x)</p>
             </div>
             <div className="col-6">
-              <Markdown source={`
-#### Linkek
-
-[link szövege](http://link.cime.hu)
-
-[link cimkével](http://link.cime.hu/ "Cimke szövege!")
-
-
-#### Képek
-
-![Zsebtanar](/assets/logo.png)
-![Zsebtanar](/assets/logo.png "Zsebtanár logó")
-
-`}/>
+              <img src="/assets/logo.png" alt="logó" style={{width: + '100px'}}/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <p>A képnek úgy tudod megadni <b>szélességét</b>, hogy átírod az <strong>x előtti</strong> számot:</p>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>@[kép neve.jpeg](6336e63799 =<b>50x</b>)</p>
+            </div>
+            <div className="col-6">
+              <img src="/assets/logo.png" alt="logó" style={{width: 50 + 'px'}}/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <p>A <b>magasságát</b> pedig úgy, hogy a számot az <strong>x után</strong> írod:</p>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>@[kép neve.jpeg](6336e63799 =<b>x75</b>)</p>
+            </div>
+            <div className="col-6">
+              <img src="/assets/logo.png" alt="logó" style={{height: 75 + 'px'}}/>
             </div>
           </div>
         </div>

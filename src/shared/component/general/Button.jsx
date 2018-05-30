@@ -13,7 +13,7 @@ export default function Button (props) {
 
   return (<button
     type={props.submit ? 'submit' : 'button'}
-    className={`btn ${props.className || (props.primary ? 'btn-primary' : 'btn-secondary')}`}
+    className={`btn ${props.className || (props.primary ? 'btn-primary' : (props.info ?  'btn-warning' : 'btn-secondary'))}`}
     onClick={onClick}
     tabIndex={props.tabIndex}
     title={props.title}

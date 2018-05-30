@@ -1,12 +1,14 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { openExerciseImageDialog, openMarkdownHelpModal } from 'shared/store/actions/modal'
+import { openExerciseImageDialog, openMarkdownHelpModal, openEquationHelpModal } from 'shared/store/actions/modal'
 import { Markdown } from 'shared/component/general/Markdown'
+import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
 import Button from 'shared/component/general/Button'
 
 export const TextEditor = connect(undefined, {
   openExerciseImageDialog,
-  openMarkdownHelpModal
+  openMarkdownHelpModal,
+  openEquationHelpModal
 })(
   class extends React.Component {
     constructor(props) {
@@ -82,11 +84,19 @@ export const TextEditor = connect(undefined, {
                 <i className="fa fa-image" /> Kép beszúrása
               </Button>
             </div>
-            <div className="btn-group mr-2" role="group" aria-label="Egyéb">
-              <Button secondary onAction={this.props.openMarkdownHelpModal}>
-                <i className="fa fa-question-circle" />
-              </Button>
-            </div>
+            <Dropdown className="btn-group mr-2" role="group" aria-label="Link">
+              <DropdownToggle className="btn btn-secondary text-light">
+                <i className="fa fa-question-circle" /> Súgó
+              </DropdownToggle>
+              <DropdownMenu>
+                <Button className="btn btn-link text-dark" onAction={this.props.openEquationHelpModal} icon="calculator">
+                  Képletszerkesztő
+                </Button>
+                <Button className="btn btn-link text-dark" onAction={this.props.openMarkdownHelpModal} icon="edit">
+                  Szövegszerkesztő
+                </Button>
+              </DropdownMenu>
+            </Dropdown>
           </div>
           <textarea
             className="form-control"
