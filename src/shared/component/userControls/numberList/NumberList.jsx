@@ -1,12 +1,12 @@
 import React from 'react'
-import { mapObjIndexed } from 'ramda'
+import { mapObjIndexed, pathOr } from 'ramda'
 import { pairsInOrder } from '../../../util/fn'
 import { Markdown } from 'shared/component/general/Markdown'
 
 export class NumberList extends React.Component {
   constructor(props) {
     super(props)
-    
+
     this.state = {
       fields: pairsInOrder(props.fields),
       solutions: props.value || mapObjIndexed(() => '', props.fields)
@@ -51,14 +51,13 @@ export class NumberList extends React.Component {
   }
 
   renderNormal(id) {
-    this.setSolution
     return (
       <input
         name={id}
         type="number"
         className="form-control value mx-1"
         onChange={this.setSolution}
-        value={this.props.value !== undefined ? ("options" in this.props.value ? this.props.value.options[id] : this.state.solutions[id])  : this.state.solutions[id]}
+        value={pathOr(this.state.solutions, ['props', 'value', 'options'], this)[id]}
         step={1 / Math.pow(10, this.props.fractionDigits || 0)}
       />
     )

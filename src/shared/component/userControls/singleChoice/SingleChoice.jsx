@@ -31,17 +31,18 @@ export class SingleChoice extends React.Component {
   }
 
   renderNormal(key) {
-
-    return (this.props.options || []).map(x => (
-      <RadioInput {...x}
-        key={key+'-'+x.value}
-        id={key+'-'+x.value}
-        name={key+'-name'}
+    const { options, value, resources } = this.props
+    return (options || []).map(item => (
+      <RadioInput
+        {...item}
+        key={key + '-' + item.value}
+        id={key + '-' + item.value}
+        name={key + '-name'}
         onChange={this.onChange}
-        checked={this.props.value !== undefined ? this.props.value === x.value : this.state.checked === x.value}
-        resources={this.props.resources} />
-    )
-  )
+        checked={(value !== undefined ? value : this.state.checked) === item.value}
+        resources={resources}
+      />
+    ))
   }
 
   renderReadOnly() {

@@ -3,13 +3,9 @@ import { Markdown } from 'shared/component/general/Markdown'
 import Icon from '../../general/Icon'
 
 export function SingleNumber(props) {
-
   const setSolution = e => {
     if (props.onChange) {
-      props.onChange({
-        name: props.name,
-        value: e.currentTarget.value
-      })
+      props.onChange({ name: props.name, value: e.currentTarget.value })
     }
   }
 
@@ -20,14 +16,14 @@ export function SingleNumber(props) {
           <Markdown source={props.prefix} resources={props.resources} />
         </span>
         {props.readOnly ? (
-          <strong>&nbsp;{props.value !== undefined ? props.value : undefined}&nbsp;</strong>
+          <strong>&nbsp;{props.value}&nbsp;</strong>
         ) : (
           <input
             name={props.name}
             type="number"
             className="form-control col-4 mx-1"
             onChange={setSolution}
-            value={props.value !== undefined ? props.value : undefined}
+            value={props.value}
             step={1 / Math.pow(10, props.fractionDigits || 0)}
           />
         )}
@@ -37,7 +33,8 @@ export function SingleNumber(props) {
       </div>
       {props.fractionDigits > 0 && (
         <small className="form-text text-warning">
-          <Icon fa="exclamation-triangle"/> Kérlek, {props.fractionDigits} tizedesjegy pontossággal add meg a megoldást.
+          <Icon fa="exclamation-triangle" /> Kérlek, {props.fractionDigits} tizedesjegy pontossággal
+          add meg a megoldást.
         </small>
       )}
     </div>

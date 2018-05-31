@@ -20,9 +20,9 @@ export function FractionNumber(props) {
       </span>
       {props.readOnly ? (
         <div className="mx-2 text-center">
-          <strong>&nbsp;{props.value !== undefined ? props.value.numerator : undefined}&nbsp;</strong>
+          <strong>&nbsp;{props.value && props.value.numerator}&nbsp;</strong>
           <hr className="my-1" />
-          <strong>&nbsp;{props.value !== undefined ? props.value.denominator : undefined}&nbsp;</strong>
+          <strong>&nbsp;{props.value && props.value.denominator}&nbsp;</strong>
         </div>
       ) : (
         <div className="input-row">
@@ -30,7 +30,7 @@ export function FractionNumber(props) {
             name="numerator"
             type="number"
             className="form-control"
-            value={props.value !== undefined ? props.value.numerator : undefined}
+            value={props.value && props.value.numerator}
             onChange={setSolution}
             step="1"
             placeholder="számláló"
@@ -40,7 +40,7 @@ export function FractionNumber(props) {
             name="denominator"
             type="number"
             className="form-control"
-            value={props.value !== undefined ? props.value.denominator : undefined}
+            value={props.value && props.value.denominator}
             onChange={setSolution}
             step="1"
             placeholder="nevező"

@@ -1,6 +1,5 @@
-import { keys } from 'ramda'
+import { keys, pathOr } from 'ramda'
 import React from 'react'
-import { Markdown } from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
 import RadioInput from 'shared/component/input/RadioInput'
 
@@ -49,26 +48,22 @@ export class BinaryChoice extends React.Component {
           <RadioInput
             label={item.trueLabel || DEFAULT_TRUE_LABEL}
             name={id}
-            id={id+'-true'}
+            id={id + '-true'}
             value={'true'}
-            checked={this.props.value !== undefined ?
-              id in this.props.value ? 
-                this.props.value[id].toString() === 'true' :
-                this.state[id] === 'true' :
-              this.state[id] === 'true'}
+            checked={
+              pathOr(this.state[id] || '', ['props', 'value', id], this).toString() === 'true'
+            }
             onChange={this.onChange}
             resources={this.props.resources}
           />
           <RadioInput
             label={item.falseLabel || DEFAULT_FALSE_LABEL}
             name={id}
-            id={id+'-false'}
+            id={id + '-false'}
             value={'false'}
-            checked={this.props.value !== undefined ?
-              id in this.props.value ? 
-                this.props.value[id].toString() === 'false' :
-                this.state[id] === 'false' :
-              this.state[id] === 'false'}
+            checked={
+              pathOr(this.state[id] || '', ['props', 'value', id], this).toString() === 'false'
+            }
             onChange={this.onChange}
             resources={this.props.resources}
           />
@@ -78,23 +73,19 @@ export class BinaryChoice extends React.Component {
   }
 
   renderReadOnly() {
-    if (this.state.options !== undefined && this.props.value !== undefined) {
-      const options = this.state.options
-      const value = this.props.value
+    const options = this.state.options
+    const value = this.props.value
 
-      return options.map(([id, item]) => (
-        <div key={id} className="d-flex justify-content-between">
-          {item.label}&nbsp;<strong>
-            {id in value ? (
-              value[id] === 'true' ? (
-                item.trueLabel || DEFAULT_TRUE_LABEL
-              ) : (
-                item.falseLabel || DEFAULT_FALSE_LABEL
-              )) : 
-            undefined}
-          </strong>
-        </div>
-      ))
-    }
+    return options.map(([id, item]) => (
+      <div key={id} className="d-flex justify-content-between">
+        {item.label}&nbsp;<strong>
+          {id in value
+            ? value[id] === 'true'
+              ? item.trueLabel || DEFAULT_TRUE_LABEL
+              : item.falseLabel || DEFAULT_FALSE_LABEL
+            : undefined}
+        </strong>
+      </div>
+    ))
   }
 }

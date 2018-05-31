@@ -64,24 +64,39 @@
     "devstart": "npm run prebuild",
     "dev": "webpack-dev-server --progress --config ./build/webpack.config.js",
     "start": "npm run dev",
-    "build-functions": "babel --presets=es2015 --plugins=babel-plugin-transform-object-rest-spread 'functions' --out-dir 'bin/functions' --presets=es2015 --copy-files --ignore 'node_modules'",
+    "build-functions":
+      "babel --presets=es2015 --plugins=babel-plugin-transform-object-rest-spread 'functions' --out-dir 'bin/functions' --presets=es2015 --copy-files --ignore 'node_modules'",
     "install-functions-deps": "cd bin/functions && npm --production=false install",
     "build-app": "webpack -p --config ./build/webpack.config.js",
     "prebuild": "node build/pre-build",
     "build": "NODE_ENV=production npm run build-app && npm run build-functions",
     "postbuild": "node build/post-build && npm run install-functions-deps",
     "predeploy": "npm run test",
-    "serv-functions": "npm run build-functions && npm run install-functions-deps && node bin/functions/local-server.js",
+    "serv-functions":
+      "npm run build-functions && npm run install-functions-deps && node bin/functions/local-server.js",
     "deploy": "npm run build && firebase --project=test deploy",
-    "deploy-functions": "npm run build-functions && npm run install-functions-deps && ./node_modules/.bin/firebase --project=test deploy --only functions",
+    "deploy-functions":
+      "npm run build-functions && npm run install-functions-deps && ./node_modules/.bin/firebase --project=test deploy --only functions",
     "precommit": "lint-staged",
-    "local-server": "babel-node --presets es2015 --plugins transform-object-rest-spread ./functions/local-server.js"
+    "local-server":
+      "babel-node --presets es2015 --plugins transform-object-rest-spread ./functions/local-server.js"
   },
   "jest": {
-    "roots": [
-      "src",
-      "functions",
-      "test"
+    "roots": ["src", "functions", "test"]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "printWidth": 100,
+    "overrides": [
+      {
+        "files": "*.css",
+        "options": {
+          "semi": true,
+          "printWidth": 120
+        }
+      }
     ]
   },
   "lint-staged": {
@@ -89,9 +104,6 @@
       "prettier --write --single-quote --trailing-comma=none --no-semi false --print-width 100",
       "git add"
     ],
-    "*.{css}": [
-      "prettier --write --print-width 120",
-      "git add"
-    ]
+    "*.{css}": ["prettier --write --print-width 120", "git add"]
   }
 }
