@@ -1,9 +1,9 @@
-import { findIndex, map, pick, propEq, update } from 'ramda'
 import React from 'react'
+import { findIndex, map, pick, propEq, update } from 'ramda'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
-import Button from 'shared/component/general/Button'
-import RadioInput from 'shared/component/input/RadioInput'
+import { Button } from 'shared/component/general/Button'
+import { RadioInput } from 'shared/component/input/RadioInput'
 
 export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {

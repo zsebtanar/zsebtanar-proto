@@ -4,14 +4,17 @@ import rootReducer from './reducers'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export default function configureStore (initialState) {
+export default function configureStore(initialState) {
   const middlewareList = [thunk]
   if (__DEV__) {
-    const logger = require(`redux-logger`).createLogger({collapsed: true})
+    const logger = require(`redux-logger`).createLogger({ collapsed: true })
     middlewareList.push(logger)
   }
 
-  const store = composeEnhancers(applyMiddleware(...middlewareList))(createStore)(rootReducer, initialState)
+  const store = composeEnhancers(applyMiddleware(...middlewareList))(createStore)(
+    rootReducer,
+    initialState
+  )
 
   if (typeof module !== 'undefined' && module.hot) {
     // Enable Webpack hot module replacement for reducers

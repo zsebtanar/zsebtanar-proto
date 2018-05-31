@@ -1,18 +1,18 @@
 import * as React from 'react'
+import strings from 'shared/strings'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import { facebookSignIn, googleSignIn, signUp } from 'shared/store/actions/auth'
-import Button from 'shared/component/general/Button'
+import { Button } from 'shared/component/general/Button'
+import { Loading } from 'shared/component/general/Loading'
 import { openProviderSignUp } from 'shared/store/actions/modal'
-import strings from 'shared/strings'
-import Loading from '../general/Loading'
+import { facebookSignIn, googleSignIn, signUp } from 'shared/store/actions/auth'
 
 const mapStateToProps = state => ({
   auth: state.auth,
   session: state.app.session
 })
 
-export default withRouter(
+export const SignUpModal = withRouter(
   connect(mapStateToProps, {
     signUp,
     googleSignIn,

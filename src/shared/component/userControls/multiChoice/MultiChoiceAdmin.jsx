@@ -1,13 +1,13 @@
-import { __, evolve, merge, dissoc, assocPath, keys, propOr } from 'ramda'
 import React from 'react'
+import { __, assocPath, dissoc, evolve, keys, merge, propOr } from 'ramda'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
 import { uid } from 'shared/util/uuid'
 import { abcIndex, pairsInOrder } from 'shared/util/fn'
 import { TrashButton } from 'shared/component/userControls/common/TrashButton'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
-import Button from 'shared/component/general/Button'
-import Checkbox from 'shared/component/input/Checkbox'
+import { Button } from 'shared/component/general/Button'
+import { Checkbox } from 'shared/component/input/Checkbox'
 
 export const MultiChoiceAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {

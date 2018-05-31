@@ -1,14 +1,14 @@
 import * as Joi from 'joi'
-import { filter, identity, map, toPairs, pipe } from 'ramda'
+import { filter, identity, map, pipe, toPairs } from 'ramda'
 
 /**
- * Validate request parameters with Joi 
- * 
+ * Validate request parameters with Joi
+ *
  * You can validate any req param with similar schema parameter:
- * 
+ *
  *    { query: Joi..., params: Joi...}
- * 
- * @param schema  {object|Joi} Joi schema(s) 
+ *
+ * @param schema  {object|Joi} Joi schema(s)
  * @param [options={}] {Object}  Joi options
  * @returns {validatorMiddleware}
  */

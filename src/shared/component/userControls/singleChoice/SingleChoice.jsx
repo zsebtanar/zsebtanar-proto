@@ -1,8 +1,8 @@
-import { find, propEq } from 'ramda'
 import React from 'react'
+import { find, propEq } from 'ramda'
 import { Markdown } from 'shared/component/general/Markdown'
-import Icon from 'shared/component/general/Icon'
-import RadioInput from 'shared/component/input/RadioInput'
+import { Icon } from 'shared/component/general/Icon'
+import { RadioInput } from 'shared/component/input/RadioInput'
 import { uid } from 'shared/util/uuid'
 
 export class SingleChoice extends React.Component {
@@ -46,12 +46,13 @@ export class SingleChoice extends React.Component {
   }
 
   renderReadOnly() {
-    const data = find(propEq('value', this.props.value), this.props.options)
+    const {value, options, resources} = this.props
+    const data = find(propEq('value', value), options) || {}
 
     return (
       <div className="row">
         <Icon fa="check" className="col-1" />
-        <Markdown source={data.label} resources={this.props.resources} className="col-11" />
+        <Markdown source={data.label} resources={resources} className="col-11" />
       </div>
     )
   }

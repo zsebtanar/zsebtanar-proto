@@ -1,39 +1,38 @@
-import { evolve, map, pathOr, values } from 'ramda'
 import React from 'react'
+import { evolve, map, pathOr, values } from 'ramda'
 import { NavLink } from 'react-router-dom'
 import { getAllClassification, GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 import { getAllPrivateExercises } from 'shared/services/exercise'
-import Loading from 'shared/component/general/Loading'
-import ExerciseState from '../components/ExerciseState'
-import Icon from 'shared/component/general/Icon'
+import { Loading } from 'shared/component/general/Loading'
+import { ExerciseState } from '../components/ExerciseState'
+import { Icon } from 'shared/component/general/Icon'
 
-export default class extends React.Component {
+export class ExerciseList extends React.Component {
   state = {
     exercises: null
   }
 
   loadList = () => {
-    Promise.all([
-      getAllClassification(),
-      getAllPrivateExercises()
-    ]).then(([classifications, list]) => {
-      const topics = values(classifications[SUBJECT]).reduce(
-        (acc, sub) => Object.assign(acc, sub[TOPIC]),
-        {}
-      )
-      this.setState({
-        exercises: list.map(
-          evolve({
-            classification: {
-              grade: map(key => pathOr(key, [GRADE, key, 'name'], classifications)),
-              subject: map(key => pathOr(key, [SUBJECT, key, 'name'], classifications)),
-              topic: map(key => pathOr(key, [key, 'name'], topics)),
-              tags: map(key => pathOr(key, [TAGS, key, 'name'], classifications))
-            }
-          })
+    Promise.all([getAllClassification(), getAllPrivateExercises()]).then(
+      ([classifications, list]) => {
+        const topics = values(classifications[SUBJECT]).reduce(
+          (acc, sub) => Object.assign(acc, sub[TOPIC]),
+          {}
         )
-      })
-    })
+        this.setState({
+          exercises: list.map(
+            evolve({
+              classification: {
+                grade: map(key => pathOr(key, [GRADE, key, 'name'], classifications)),
+                subject: map(key => pathOr(key, [SUBJECT, key, 'name'], classifications)),
+                topic: map(key => pathOr(key, [key, 'name'], topics)),
+                tags: map(key => pathOr(key, [TAGS, key, 'name'], classifications))
+              }
+            })
+          )
+        })
+      }
+    )
   }
 
   componentWillMount() {
@@ -82,12 +81,29 @@ export default class extends React.Component {
           <ExerciseState value={ex._state} short />
         </td>
         <td className="grade-column">
-          {pathOr([], ['classification', 'grade'], ex).map(x => <span className="seq" key={x}> {x}</span>)}
+          {pathOr([], ['classification', 'grade'], ex).map(x => (
+            <span className="seq" key={x}>
+              {' '}
+              {x}
+            </span>
+          ))}
         </td>
         <td>
-          {pathOr([], ['classification', 'subject'], ex).map(x => <span className="seq" key={x}> {x}</span>)}
+          {pathOr([], ['classification', 'subject'], ex).map(x => (
+            <span className="seq" key={x}>
+              {' '}
+              {x}
+            </span>
+          ))}
         </td>
-        <td>{pathOr([], ['classification', 'topic'], ex).map(x => <span className="seq" key={x}> {x}</span>)}</td>
+        <td>
+          {pathOr([], ['classification', 'topic'], ex).map(x => (
+            <span className="seq" key={x}>
+              {' '}
+              {x}
+            </span>
+          ))}
+        </td>
         <td>{ex.title}</td>
         <td>
           {pathOr([], ['classification', 'tags'], ex).map(tag => (

@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { openExerciseImageDialog, openMarkdownHelpModal, openEquationHelpModal } from 'shared/store/actions/modal'
 import { Markdown } from 'shared/component/general/Markdown'
+import { Button } from 'shared/component/general/Button'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
-import Button from 'shared/component/general/Button'
+import { openEquationHelpModal, openExerciseImageDialog, openMarkdownHelpModal } from 'shared/store/actions/modal'
 
 export const TextEditor = connect(undefined, {
   openExerciseImageDialog,

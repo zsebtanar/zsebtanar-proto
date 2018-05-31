@@ -1,5 +1,5 @@
-import { pipe, identity } from 'ramda'
 import React from 'react'
+import { identity, pipe } from 'ramda'
 import { connect } from 'react-redux'
 import { closeModal } from 'shared/store/actions/modal'
 

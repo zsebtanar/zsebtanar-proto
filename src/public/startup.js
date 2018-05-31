@@ -7,7 +7,7 @@ import ReactGA from 'react-ga'
 ReactGA.initialize(__GA__.ua, { debug: __DEV__ })
 ReactGA.pageview(window.location.pathname + window.location.search)
 
-export default function() {
+export function startup() {
   const initialState = window.__INITIAL_STATE__ || {}
   const store = configureStore(initialState)
   const history = initHistory('/', store)

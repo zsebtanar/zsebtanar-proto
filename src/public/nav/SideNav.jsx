@@ -1,11 +1,10 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
-
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { signOut } from 'shared/store/actions/auth'
 import { openFileManager } from 'shared/store/actions/modal'
 import { closeSideNav } from 'shared/store/reducers/sideNav'
-import SideNavLink from 'shared/component/general/SideNavLink'
+import { SideNavLink } from 'shared/component/general/SideNavLink'
 import { isAdmin } from 'shared/services/user'
 
 const mapStateToProps = state => ({
@@ -14,10 +13,8 @@ const mapStateToProps = state => ({
   sideNavActive: state.app.sideNav.active
 })
 
-
 export const SideNav = withRouter(
-  connect(mapStateToProps, { signOut, openFileManager, closeSideNav })(function SideNav(props) {
-
+  connect(mapStateToProps, { signOut, openFileManager, closeSideNav })(function SideNavComp(props) {
     if (!props.session.signedIn || !props.sideNavActive) return <div />
 
     return (
@@ -46,28 +43,26 @@ export const SideNav = withRouter(
               ) : (
                 ''
               )}
-              {props.session.signedIn ? (
-                [
-                  <li className="nav-item" key="sing-out">
-                    <a href="#" className="nav-link" onClick={props.signOut}>
-                      Kijelentkezés
-                    </a>
-                  </li>
-                ]
-              ) : (
-                [
-                  <li className="nav-item" key="sign-up">
-                    <SideNavLink activeClassName="active" className="nav-link" to="/sign-up">
-                      <i className="fa fa-plus" /> Regisztráció
-                    </SideNavLink>
-                  </li>,
-                  <li className="nav-item" key="sign-in">
-                    <SideNavLink activeClassName="active" className="nav-link" to="/sign-in">
-                      <i className="fa fa-sign-in" /> Belépés
-                    </SideNavLink>
-                  </li>
-                ]
-              )}
+              {props.session.signedIn
+                ? [
+                    <li className="nav-item" key="sing-out">
+                      <a href="#" className="nav-link" onClick={props.signOut}>
+                        Kijelentkezés
+                      </a>
+                    </li>
+                  ]
+                : [
+                    <li className="nav-item" key="sign-up">
+                      <SideNavLink activeClassName="active" className="nav-link" to="/sign-up">
+                        <i className="fa fa-plus" /> Regisztráció
+                      </SideNavLink>
+                    </li>,
+                    <li className="nav-item" key="sign-in">
+                      <SideNavLink activeClassName="active" className="nav-link" to="/sign-in">
+                        <i className="fa fa-sign-in" /> Belépés
+                      </SideNavLink>
+                    </li>
+                  ]}
             </ul>
           </nav>
         </div>

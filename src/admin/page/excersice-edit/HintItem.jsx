@@ -1,7 +1,7 @@
-import { pipe } from 'ramda'
 import React from 'react'
-import Button from 'shared/component/general/Button'
-import Icon from '../../../shared/component/general/Icon'
+import { pipe } from 'ramda'
+import { Button } from 'shared/component/general/Button'
+import { Icon } from 'shared/component/general/Icon'
 import { Markdown } from 'shared/component/general/Markdown'
 
 export class HintItem extends React.Component {
@@ -27,7 +27,9 @@ export class HintItem extends React.Component {
         style={{ opacity }}
       >
         <div className="d-flex w-100 justify-content-between">
-          <div className="mb-1"><span className="badge badge-pill badge-secondary">{index + 1}.</span></div>
+          <div className="mb-1">
+            <span className="badge badge-pill badge-secondary">{index + 1}.</span>
+          </div>
           <div>
             <Button
               className="btn-sm btn-link text-danger"

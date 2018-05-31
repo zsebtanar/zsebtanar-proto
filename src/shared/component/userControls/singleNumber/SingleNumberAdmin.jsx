@@ -1,8 +1,8 @@
-import { pathOr } from 'ramda'
 import React from 'react'
+import { pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
-import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
+import { MarkdownField } from '../common/MarkdownField'
 
 export const SingleNumberAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {

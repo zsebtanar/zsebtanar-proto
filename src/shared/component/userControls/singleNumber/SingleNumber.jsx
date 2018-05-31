@@ -1,6 +1,6 @@
 import React from 'react'
 import { Markdown } from 'shared/component/general/Markdown'
-import Icon from '../../general/Icon'
+import { Icon } from '../../general/Icon'
 
 export function SingleNumber(props) {
   const setSolution = e => {

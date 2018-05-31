@@ -1,16 +1,16 @@
-import { compose, pathOr } from 'ramda'
 import React from 'react'
+import { compose, pathOr } from 'ramda'
 import { connect } from 'react-redux'
-import { withRouter, NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 import { abcIndex, pairsInOrder } from 'shared/util/fn'
 import { Markdown } from 'shared/component/general/Markdown'
 import { openExerciseResultModal } from 'shared/store/actions/modal'
-import Loading from 'shared/component/general/Loading'
+import { Loading } from 'shared/component/general/Loading'
 import { SubTask } from 'shared/page/exercise/SubTask'
 import {
   getPublicExerciseAction,
-  unloadExerciseAction,
-  TASK_STATUS_WAITING
+  TASK_STATUS_WAITING,
+  unloadExerciseAction
 } from 'shared/store/exercise'
 import { ProgressBar } from 'shared/ui/Progress'
 
@@ -120,9 +120,7 @@ export const Exercise = compose(
         <div className="col-10 mx-auto">
           <div className="alert alert-danger  my-4">
             <h3>Sajnos nem várt hiba történt :(</h3>
-            <div className="text-muted m-3">
-              {error.message || JSON.stringify(error, null, 3)}
-            </div>
+            <div className="text-muted m-3">{error.message || JSON.stringify(error, null, 3)}</div>
           </div>
           <NavLink exact to="/" className="btn btn-secondary">
             Vissza a főoldalra

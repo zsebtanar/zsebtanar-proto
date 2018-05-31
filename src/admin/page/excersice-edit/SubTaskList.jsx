@@ -1,9 +1,9 @@
+import React from 'react'
 import { __, assocPath, dissoc, evolve, fromPairs, merge, pipe, values } from 'ramda'
 import { uid } from 'shared/util/uuid'
 import { pairsInOrder, indexedMap } from 'shared/util/fn'
-import React from 'react'
-import Button from 'shared/component/general/Button'
-import Icon from 'shared/component/general/Icon'
+import { Button } from 'shared/component/general/Button'
+import { Icon } from 'shared/component/general/Icon'
 import { Sortable } from 'shared/component/general/Sortable'
 import { SubTask } from 'admin/page/excersice-edit/SubTask'
 
@@ -18,7 +18,7 @@ function fixSubTaskTitleAndOrder(subTasksObj) {
   return pipe(pairsInOrder, indexedMap(updateOrderAndTitle), fromPairs)(subTasksObj)
 }
 
-export default (class SubTaskList extends React.Component {
+export class SubTaskList extends React.Component {
   state = {
     activeTabIndex: 0,
     subTasks: []
@@ -112,7 +112,7 @@ export default (class SubTaskList extends React.Component {
       return <SubTask key={key} value={item} onChange={this.updateSubTask(key)} />
     }
   }
-})
+}
 
 class SubTaskTab extends React.Component {
   render() {
@@ -134,9 +134,9 @@ class SubTaskTab extends React.Component {
     return pipe(connectDropTarget, connectDragPreview)(
       <li className="nav-item" style={{ opacity }}>
         <div
-          className={`nav-link d-flex w-100 justify-content-between ${activeTabIndex === index
-            ? 'active'
-            : ''}`}
+          className={`nav-link d-flex w-100 justify-content-between ${
+            activeTabIndex === index ? 'active' : ''
+          }`}
           onClick={onSelect(index)}
         >
           <div>{itemData.title || subTaskTitle(index)}</div>

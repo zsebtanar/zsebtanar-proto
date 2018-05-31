@@ -1,7 +1,7 @@
+import React from 'react'
 import { __, all, contains, filter, invoker, lte, map, pipe, prop, propEq } from 'ramda'
 import { connect } from 'react-redux'
-import React from 'react'
-import { getFileUrl, imageUpload } from 'shared/services/images'
+import { imageUpload } from 'shared/services/images'
 import { isAdvancedUploadSupported } from 'shared/util/check'
 import { DnDOverlay } from 'shared/component/modal/utils/DnDOverlay'
 import { pairsInNameOrder } from 'shared/util/fn'
@@ -108,7 +108,8 @@ export const ExerciseImageDialog = connect(mapStateToProps, mapDispatcherToProps
                     </div>
                   </div>
                   <small id="passwordHelpInline" className="text-muted">
-                    csak <code>jpg</code>, <code>png</code>, <code>gif</code> és <code>webp</code> tölthető fel,<br />a maximális képmáret 3Mb
+                    csak <code>jpg</code>, <code>png</code>, <code>gif</code> és <code>webp</code>{' '}
+                    tölthető fel,<br />a maximális képmáret 3Mb
                   </small>
                 </div>
               </div>
@@ -134,7 +135,7 @@ export const ExerciseImageDialog = connect(mapStateToProps, mapDispatcherToProps
           key={id}
           className="m-1 float-left btn btn-light"
           title={file.name}
-          onClick={this.selectImage({id, file})}
+          onClick={this.selectImage({ id, file })}
         >
           <figure className="figure">
             <div className="img" style={{ backgroundImage: `url(${file.url})` }} />

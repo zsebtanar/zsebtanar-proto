@@ -1,6 +1,6 @@
 import { pipe } from 'ramda'
 import React from 'react'
-import Button from 'shared/component/general/Button'
+import {Button} from 'shared/component/general/Button'
 import { UserControls } from 'shared/component/userControls/UserControl'
 import { NAMES as CONTROL_TYPES } from 'shared/component/userControls/controlTypes'
 

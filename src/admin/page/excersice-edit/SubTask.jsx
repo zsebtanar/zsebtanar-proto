@@ -1,11 +1,11 @@
-import { assocPath, pathOr, pipe } from 'ramda'
 import React from 'react'
+import { assocPath, pathOr, pipe } from 'ramda'
 import { connect } from 'react-redux'
 
 import { Tab, TabNav } from 'shared/component/general/TabNav'
 import { TextEditor } from 'shared/component/general/TextEditor'
 import { HintList } from 'admin/page/excersice-edit/HintList'
-import UserControlList from 'admin/page/excersice-edit/UserControlList'
+import {UserControlList} from 'admin/page/excersice-edit/UserControlList'
 import { openExerciseImageDialog } from 'shared/store/actions/modal'
 
 const TABS = ['Leírás', 'Megoldások', 'Útmutatók']

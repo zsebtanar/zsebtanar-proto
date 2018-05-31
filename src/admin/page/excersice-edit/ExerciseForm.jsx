@@ -5,6 +5,7 @@ import {
   difference,
   evolve,
   filter,
+  keys,
   last,
   map,
   not,
@@ -13,14 +14,13 @@ import {
   pipe,
   prop,
   union,
-  values,
-  keys
+  values
 } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import Select from 'react-select'
-import Button from 'shared/component/general/Button'
+import { Button } from 'shared/component/general/Button'
 import {
   changeState,
   EXERCISE_ACTIVE,
@@ -31,21 +31,21 @@ import {
 import { openExerciseImageDialog } from 'shared/store/actions/modal'
 import { GRADE, SUBJECT, TAGS, TOPIC } from 'shared/services/classification'
 import { ExercisePreview } from '../ExercisePreview'
-import Loading from 'shared/component/general/Loading'
+import { Loading } from 'shared/component/general/Loading'
 import { Tab, TabNav } from 'shared/component/general/TabNav'
 import { TextEditor } from 'shared/component/general/TextEditor'
-import ExerciseState from 'admin/components/ExerciseState'
-import FormGroup from 'shared/component/general/FormGroup'
-import SubTaskList from 'admin/page/excersice-edit/SubTaskList'
+import { ExerciseState } from 'admin/components/ExerciseState'
+import { FormGroup } from 'shared/component/general/FormGroup'
+import { SubTaskList } from 'admin/page/excersice-edit/SubTaskList'
 import { getClassifications } from 'shared/store/classifications'
 import {
   cloneExercise,
   loadExercise,
   newExercise,
-  updateContent,
-  saveExercise
+  saveExercise,
+  updateContent
 } from 'admin/store/exerciseEdit'
-import Icon from 'shared/component/general/Icon'
+import { Icon } from 'shared/component/general/Icon'
 import { isAdmin } from '../../../shared/services/user'
 import { Dropdown, DropdownMenu, DropdownToggle } from '../../../shared/ui/Dropdown'
 
@@ -82,7 +82,7 @@ const mapDispatchToProps = {
   openExerciseImageDialog
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export const ExerciseForm = connect(mapStateToProps, mapDispatchToProps)(
   class ExerciseForm extends React.Component {
     componentWillMount() {
       this.props.getClassifications().then(() => this.loadExercise())
@@ -254,35 +254,35 @@ export default connect(mapStateToProps, mapDispatchToProps)(
               </DropdownToggle>
               <DropdownMenu>
                 {notNew &&
-                exState === EXERCISE_ACTIVE && (
-                  <Button
-                    className="btn btn-link text-dark"
-                    onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}
-                    icon="archive"
-                  >
-                    Archiválás
-                  </Button>
-                )}{' '}
+                  exState === EXERCISE_ACTIVE && (
+                    <Button
+                      className="btn btn-link text-dark"
+                      onAction={this.changeExerciseState(EXERCISE_ARCHIVE)}
+                      icon="archive"
+                    >
+                      Archiválás
+                    </Button>
+                  )}{' '}
                 {notNew &&
-                (exState === EXERCISE_DRAFT || exState === EXERCISE_ARCHIVE) && (
-                  <Button
-                    className="btn btn-link text-success"
-                    onAction={this.changeExerciseState(EXERCISE_ACTIVE)}
-                    icon="check"
-                  >
-                    Aktiválás
-                  </Button>
-                )}{' '}
+                  (exState === EXERCISE_DRAFT || exState === EXERCISE_ARCHIVE) && (
+                    <Button
+                      className="btn btn-link text-success"
+                      onAction={this.changeExerciseState(EXERCISE_ACTIVE)}
+                      icon="check"
+                    >
+                      Aktiválás
+                    </Button>
+                  )}{' '}
                 {notNew &&
-                isAdmin(this.props.session.token) && (
-                  <Button
-                    className="btn btn-link text-danger"
-                    onAction={this.changeExerciseState(EXERCISE_REMOVE)}
-                    icon="trash"
-                  >
-                    Törlés
-                  </Button>
-                )}{' '}
+                  isAdmin(this.props.session.token) && (
+                    <Button
+                      className="btn btn-link text-danger"
+                      onAction={this.changeExerciseState(EXERCISE_REMOVE)}
+                      icon="trash"
+                    >
+                      Törlés
+                    </Button>
+                  )}{' '}
               </DropdownMenu>
             </Dropdown>
 

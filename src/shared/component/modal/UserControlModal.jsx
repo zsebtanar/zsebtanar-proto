@@ -1,8 +1,8 @@
 import React from 'react'
-import Button from '../general/Button'
-
-import { UserControlsAdmin } from 'shared/component/userControls/UserControlAdmin'
 import { connect } from 'react-redux'
+import { Button } from '../general/Button'
+import { UserControlsAdmin } from 'shared/component/userControls/UserControlAdmin'
+
 function mapStateToProps(state) {
   return {
     resources: state.exerciseEdit.resources
@@ -55,7 +55,11 @@ export const UserControlModal = connect(mapStateToProps)(
               </div>
 
               <div className="modal-body">
-                <UserControlsAdmin controlType={props.controlType} controlProps={controlProps} resources={this.props.resources} />
+                <UserControlsAdmin
+                  controlType={props.controlType}
+                  controlProps={controlProps}
+                  resources={this.props.resources}
+                />
               </div>
 
               <div className="modal-footer text-center">

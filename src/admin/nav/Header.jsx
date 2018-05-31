@@ -7,16 +7,16 @@ import { openFileManager } from 'shared/store/actions/modal'
 import { openSideNav } from 'shared/store/reducers/sideNav'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
 import { isAdmin } from 'shared/services/user'
-import Button from 'shared/component/general/Button'
-import Icon from 'shared/component/general/Icon'
+import { Button } from 'shared/component/general/Button'
+import { Icon } from 'shared/component/general/Icon'
 
 const mapStateToProps = state => ({
   session: state.app.session,
   sideNav: state.app.sideNav
 })
 
-export default withRouter(
-  connect(mapStateToProps, { signOut, openFileManager, openSideNav })(function Header(props) {
+export const Header = withRouter(
+  connect(mapStateToProps, { signOut, openFileManager, openSideNav })(function HeaderComp(props) {
     const openFileManager = e => {
       e.preventDefault()
       props.openFileManager()
@@ -39,13 +39,13 @@ export default withRouter(
                   <DropdownToggle>Rendszer</DropdownToggle>
                   <DropdownMenu>
                     <NavLink activeClassName="active" className="dropdown-item" to="/user">
-                      <Icon fa="users"/> Felhasználók
+                      <Icon fa="users" /> Felhasználók
                     </NavLink>
                     <NavLink activeClassName="active" className="dropdown-item" to="/feedback">
-                      <Icon fa="commenting-o"/> Visszajelzések
+                      <Icon fa="commenting-o" /> Visszajelzések
                     </NavLink>
                     <NavLink activeClassName="active" className="dropdown-item" to="/utilities">
-                      <Icon fa="exclamation-triangle"/> Gépház
+                      <Icon fa="exclamation-triangle" /> Gépház
                     </NavLink>
                   </DropdownMenu>
                 </Dropdown>
@@ -55,10 +55,10 @@ export default withRouter(
                 <DropdownToggle>Tartalom</DropdownToggle>
                 <DropdownMenu>
                   <NavLink activeClassName="active" className="dropdown-item" to="/exercise">
-                    <Icon fa="tasks"/> Feladatok
+                    <Icon fa="tasks" /> Feladatok
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/classification">
-                    <Icon fa="folder"/> Kategóriák
+                    <Icon fa="folder" /> Kategóriák
                   </NavLink>
                 </DropdownMenu>
               </Dropdown>
@@ -72,7 +72,7 @@ export default withRouter(
                 </DropdownToggle>
                 <DropdownMenu>
                   <a href="#" className="dropdown-item" onClick={props.signOut}>
-                    <Icon fa="power-off"/> Kijelentkezés
+                    <Icon fa="power-off" /> Kijelentkezés
                   </a>
                 </DropdownMenu>
               </Dropdown>

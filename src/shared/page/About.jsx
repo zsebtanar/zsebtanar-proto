@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const About = (function AboutPage() {
+export const About = function AboutPage() {
   return (
     <div className="col-10 mx-auto">
       <h2 className="mb-4">Rólunk</h2>
@@ -42,4 +42,4 @@ export const About = (function AboutPage() {
       </div>
     </div>
   )
-})
+}

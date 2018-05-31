@@ -1,4 +1,5 @@
-
 import * as React from 'react'
 
-export default (props) => (<i className="text-muted">{props.children}</i>)
+export function Muted(props) {
+  return <i className="text-muted">{props.children}</i>
+}

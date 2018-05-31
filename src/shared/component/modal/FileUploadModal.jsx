@@ -1,8 +1,8 @@
 import React from 'react'
-import Button from '../general/Button'
 import { reduceP } from 'shared/util/fn'
 import { imageUpload } from 'shared/services/images'
-import Icon from 'shared/component/general/Icon'
+import { Button } from 'shared/component/general/Button'
+import { Icon } from 'shared/component/general/Icon'
 
 export class FileUploadModal extends React.Component {
   state = {}
@@ -57,18 +57,18 @@ export class FileUploadModal extends React.Component {
           {state === undefined && <Icon fa="clock-o" />}
           {state === 'done' && <Icon fa="check" />}
           {state >= 0 &&
-          state <= 100 && (
-            <div className="progress" style={{height: '20px'}}>
-              <div
-                className="progress-bar"
-                role="progressbar"
-                style={{ width: `${state}%` }}
-                aria-valuenow={state}
-                aria-valuemin="0"
-                aria-valuemax="100"
-              />
-            </div>
-          )}
+            state <= 100 && (
+              <div className="progress" style={{ height: '20px' }}>
+                <div
+                  className="progress-bar"
+                  role="progressbar"
+                  style={{ width: `${state}%` }}
+                  aria-valuenow={state}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                />
+              </div>
+            )}
         </div>
       </li>
     )
@@ -80,7 +80,6 @@ export class FileUploadModal extends React.Component {
         <div>
           <div className="alert alert-success my-3">Sikeres fájl feltöltés</div>
           <div className="text-center">
-
             <Button onAction={this.success}>Szerkesztés folytatása</Button>
           </div>
         </div>

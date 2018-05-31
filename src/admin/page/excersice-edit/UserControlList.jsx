@@ -1,9 +1,9 @@
+import React from 'react'
 import { __, assocPath, dissoc, dissocPath, evolve, keys, merge, path, pathOr, values } from 'ramda'
 import { uid } from 'shared/util/uuid'
 import { pairsInOrder } from 'shared/util/fn'
-import React from 'react'
 import { connect } from 'react-redux'
-import Icon from 'shared/component/general/Icon'
+import { Icon } from 'shared/component/general/Icon'
 import { openUserControlModal } from 'shared/store/actions/modal'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
 import { NAMES as CONTROL_TYPES } from 'shared/component/userControls/controlTypes'
@@ -19,7 +19,7 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { openUserControlModal })(
+export const UserControlList = connect(mapStateToProps, { openUserControlModal })(
   class UserControlList extends React.Component {
     addUserControl = value => {
       const key = uid()

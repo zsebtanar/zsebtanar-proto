@@ -1,7 +1,7 @@
-import { keys, pathOr } from 'ramda'
 import React from 'react'
+import { keys, pathOr } from 'ramda'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
-import RadioInput from 'shared/component/input/RadioInput'
+import { RadioInput } from 'shared/component/input/RadioInput'
 
 export const DEFAULT_TRUE_LABEL = 'Igaz'
 export const DEFAULT_FALSE_LABEL = 'Hamis'

@@ -3,7 +3,7 @@ import { pickBy, startsWith } from 'ramda'
 
 const pickArea = pickBy((v, k) => startsWith('area-', k))
 
-export default function Link (props) {
+export function Link (props) {
   const onClick = (event) => {
     if (props.onAction) {
       event.preventDefault()

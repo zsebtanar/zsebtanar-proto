@@ -9,7 +9,7 @@ const initialState = {
 const getModal = pick(['modal', 'parameters'])
 const idNotEq = curry(pipe(propEq('id'), not))
 
-export default function modal (state = initialState, action) {
+export default function modal(state = initialState, action) {
   switch (action.type) {
     case OPEN_MODAL:
       return {
@@ -22,7 +22,7 @@ export default function modal (state = initialState, action) {
         ]
       }
     case CLOSE_MODAL:
-      return {modals: state.modals.filter(idNotEq(action.payload))}
+      return { modals: state.modals.filter(idNotEq(action.payload)) }
     default:
       return state
   }

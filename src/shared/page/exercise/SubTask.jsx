@@ -1,17 +1,17 @@
-import { propOr, last, assocPath } from 'ramda'
 import React from 'react'
+import { connect } from 'react-redux'
+import { assocPath, last, propOr } from 'ramda'
 import { pairsInOrder } from 'shared/util/fn'
 import { UserControls } from 'shared/component/userControls/UserControl'
 import { Markdown } from 'shared/component/general/Markdown'
-import { connect } from 'react-redux'
 import {
   checkSolutionAction,
   getHintAction,
   TASK_STATUS_DONE,
   TASK_STATUS_PREVIEW
 } from 'shared/store/exercise'
-import Button from 'shared/component/general/Button'
-import Icon from 'shared/component/general/Icon'
+import { Button } from 'shared/component/general/Button'
+import { Icon } from 'shared/component/general/Icon'
 
 export const SubTask = connect(undefined, { getHintAction, checkSolutionAction })(
   class SubTaskComponent extends React.Component {
@@ -49,26 +49,25 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
       const controls = pairsInOrder(task.details.controls)
 
       return (
-        <div>
+        <div className="exercise-page">
           {this.renderDescription()}
-
-          <div className="form-group">
-            {hints && <ol>{hints.map(this.renderHint)}</ol>}
-
-            {!isDone &&
-            task.hintsLeft > 0 && (
-              <div className="form-group">
-                <Button
-                  className="btn-link"
-                  onAction={this.getHint}
-                  loading={loadingHint}
-                  disabled={loadingCheck}
-                >
-                  Következő tipp (még {task.hintsLeft})
-                </Button>
-              </div>
-            )}
-          </div>
+          {!isDone && (
+            <div className="form-group">
+              {hints && <ol>{hints.map(this.renderHint)}</ol>}
+              {task.hintsLeft > 0 && (
+                <div className="form-group">
+                  <Button
+                    className="btn-link"
+                    onAction={this.getHint}
+                    loading={loadingHint}
+                    disabled={loadingCheck}
+                  >
+                    Következő tipp (még {task.hintsLeft})
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
 
           <form onSubmit={this.checkSolution}>
             {controls.map(this.renderControl)}
@@ -95,6 +94,7 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
 
       const props = {
         controlType,
+        value,
         controlProps: {
           ...controlProps,
           name: ctrlId,
@@ -105,17 +105,15 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
 
       if (isDone) {
         return (
-          <div className="form-group row" key={ctrlId}>
+          <div className="form-group row user-control-row" key={ctrlId}>
             <UserControls {...props} resources={this.props.resources} />
           </div>
         )
       } else {
         return (
-          <div className="form-group row" key={ctrlId}>
-            <div className="col-1">{this.resultIcon(ctrlId)}</div>
-            <div className="col-11">
-              <UserControls {...props} resources={this.props.resources} />
-            </div>
+          <div className="form-group row user-control-row" key={ctrlId}>
+            {this.resultIcon(ctrlId)}
+            <UserControls {...props} resources={this.props.resources} />
           </div>
         )
       }

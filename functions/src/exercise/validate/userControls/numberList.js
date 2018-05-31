@@ -1,4 +1,4 @@
-import { all, equals, identity, pipe, pathOr, toPairs, zipWith, values, keys } from 'ramda'
+import { all, equals, identity, keys, pathOr, pipe, toPairs, values, zipWith } from 'ramda'
 
 export function numberList(control, solution, userInput) {
   const acceptRandomOrder = pathOr(false, ['controlProps', 'acceptRandomOrder'], control)

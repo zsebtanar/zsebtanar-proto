@@ -1,14 +1,14 @@
-import { pipe } from 'ramda'
 import React from 'react'
-import { connect } from 'react-redux'
-import { NavLink, withRouter } from 'react-router-dom'
-import MainClassificationSelector from 'public/component/MainClassificationSelector'
-import DonateButton from 'public/component/DonateButton'
-import Button from 'shared/component/general/Button'
-import { openSignInModal, openSignUpModal, openCookieModal } from 'shared/store/actions/modal'
-import Icon from 'shared/component/general/Icon'
 import debounce from 'shared/util/debounce'
 import CookieConsent from 'react-cookie-consent'
+import { pipe } from 'ramda'
+import { connect } from 'react-redux'
+import { NavLink, withRouter } from 'react-router-dom'
+import { MainClassificationSelector } from 'public/component/MainClassificationSelector'
+import { DonateButton } from 'public/component/DonateButton'
+import { Button } from 'shared/component/general/Button'
+import { openCookieModal, openSignInModal, openSignUpModal } from 'shared/store/actions/modal'
+import { Icon } from 'shared/component/general/Icon'
 
 const mapStateToProps = state => ({
   session: state.app.session

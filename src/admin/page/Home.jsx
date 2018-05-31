@@ -5,7 +5,7 @@ const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default connect(mapStateToProps)(function Home(props) {
+export const Home = connect(mapStateToProps)(function Home(props) {
   const { signedIn, user } = props.session
   return (
     <div className="msg-block">

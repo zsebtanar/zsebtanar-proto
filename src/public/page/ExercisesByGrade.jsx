@@ -1,12 +1,12 @@
-import { pathOr, pipe } from 'ramda'
 import React from 'react'
+import { pathOr, pipe } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { selectPublicExercisesById } from 'shared/services/exercise'
 import { getAllClassification, TAGS } from 'shared/services/classification'
 import { Markdown } from 'shared/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
-import Loading from 'shared/component/general/Loading'
+import { Loading } from 'shared/component/general/Loading'
 import { trackPage } from '../../shared/component/hoc/withTracker'
 
 const mapStateToProps = state => ({

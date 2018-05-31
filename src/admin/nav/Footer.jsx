@@ -1,10 +1,10 @@
 import React from 'react'
-import Link from 'shared/component/general/Link'
-import { openFeedbackModal } from 'shared/store/actions/modal'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { Link } from 'shared/component/general/Link'
+import { openFeedbackModal } from 'shared/store/actions/modal'
 
-export default connect(undefined, { openFeedbackModal })(function Footer(props) {
+export const Footer = connect(undefined, { openFeedbackModal })(function FooterComp(props) {
   return (
     <footer className="footer">
       <p>

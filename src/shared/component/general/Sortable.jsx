@@ -1,6 +1,6 @@
 import React from 'react'
-import { DragDropContext, DropTarget, DragSource } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import { DragDropContext, DragSource, DropTarget } from 'react-dnd'
 import { insert, pipe, prop, remove } from 'ramda'
 import { findDOMNode } from 'react-dom'
 import { uid } from '../../util/uuid'

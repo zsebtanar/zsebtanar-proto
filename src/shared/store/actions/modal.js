@@ -1,15 +1,15 @@
 import { identity } from 'ramda'
-import AlertModal from 'shared/component/modal/AlertModal'
+import { AlertModal } from 'shared/component/modal/AlertModal'
 import { InputModal } from 'shared/component/modal/InputModal'
+import { FeedbackModal } from 'shared/component/modal/FeedbackModal'
+import { ProviderSignUp } from 'shared/component/modal/ProviderSignUp'
 import { MarkdownHelpModal } from 'shared/component/modal/MarkdownHelpModal'
 import { EquationHelpModal } from 'shared/component/modal/EquationHelpModal'
-import ProviderSignUp from 'shared/component/modal/ProviderSignUp'
-import FeedbackModal from 'shared/component/modal/FeedbackModal'
 import { UserControlModal } from 'shared/component/modal/UserControlModal'
-import SignInModal from 'shared/component/modal/SignInModal'
-import SignUpModal from 'shared/component/modal/SignUpModal'
+import { SignInModal } from 'shared/component/modal/SignInModal'
+import { SignUpModal } from 'shared/component/modal/SignUpModal'
 import { CookieModal } from 'shared/component/modal/CookieModal'
-import ExerciseResultModal from 'shared/component/modal/ExerciseResultModal'
+import { ExerciseModal } from 'shared/component/modal/ExerciseResultModal'
 import { ExerciseImageDialog } from 'shared/component/modal/ExerciseImageDialog'
 import { FileUploadModal } from 'shared/component/modal/FileUploadModal'
 import { ConfirmModal } from '../../component/modal/ConfirmModal'
@@ -131,7 +131,7 @@ export function openUserControlModal(params) {
 }
 
 export function openExerciseResultModal(params) {
-  return openModal(ExerciseResultModal, {
+  return openModal(ExerciseModal, {
     onClose: identity,
     success: false,
     ...params
