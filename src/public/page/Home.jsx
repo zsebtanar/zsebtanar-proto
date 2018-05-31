@@ -30,7 +30,7 @@ export const Home = pipe(
         <div>
           <div className="jumbotron mb-5">
             {this.renderWelcome()}
-            <div className="my-5">
+            <div className="my-5 col-11 mx-auto">
               <NavLink to="/search">
                 <div className="search-input-group ">
                   <label className="search-label" htmlFor="search-input">
@@ -68,21 +68,22 @@ export const Home = pipe(
       const { session, openSignUpModal, openSignInModal, openCookieModal } = this.props
 
       if (session.signedIn) {
-        return <h1 className="display-4">Szia {session.user.displayName || session.user.email}</h1>
+        return (
+          <h1 className="text-center">
+            Szia {session.user.displayName || session.user.email}
+          </h1>
+        )
       } else {
         return (
           <div className="text-center">
-            <p className="text-muted">Regisztrálj</p>
-            <Button className="btn btn-lg btn-outline-primary my-1" onAction={openSignUpModal}>
-              Diák vagyok
-            </Button>&nbsp;
-            <Button className="btn btn-lg btn-outline-primary my-1" onAction={openSignUpModal}>
-              Tanár vagyok
-            </Button>
-            <p className="text-muted my-3">--- vagy ---</p>
-            <Button className="btn btn-link" onAction={openSignInModal}>
-              Jelentkezz be
-            </Button>
+            <h1>
+              <strong>
+                Zsebtanár
+              </strong>
+            </h1>
+            <h4>
+              Tanulás lépésről lépésre
+            </h4>
           </div>
         )
       }

@@ -1,6 +1,7 @@
 import ReactGA from 'react-ga'
 import { getUserAction, parseTokenAction } from 'shared/store/reducers/session'
 import { updateUserProfile } from 'shared/services/user'
+import { removeUserData } from '../../services/user'
 const AUTH = firebase.auth()
 
 export const SIGN_UP_ERROR = 'SIGN_UP_ERROR'
@@ -14,6 +15,7 @@ export const SIGN_IN_START = 'SIGN_IN_START'
 export const SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS'
 export const SIGN_OUT_ERROR = 'SIGN_OUT_ERROR'
 export const AUTH_NO_USER = 'AUTH_NO_USER'
+export const DELETE_USER_ERROR = 'DELETE_USER_ERROR'
 
 export function initAuthWatch(store) {
   AUTH.onAuthStateChanged(function(user) {
@@ -77,6 +79,15 @@ export function signOut() {
       .catch(handleError(SIGN_OUT_ERROR, dispatch))
 }
 
+export function deleteUser() {
+  return () =>
+    Promise.all([AUTH.currentUser.delete(), removeUserData(AUTH.currentUser.uid)])
+      .then(() => window.location.replace('/'))
+      .catch(ravenCapture)
+}
+
 const setRavenUser = id => (typeof Raven !== 'undefined' ? Raven.setUserContext({ id }) : undefined)
+const ravenCapture = error =>
+  typeof Raven !== 'undefined' ? Raven.captureException(error) : undefined
 
 const handleError = (type, dispatch) => error => dispatch({ type, payload: error, error: true })
