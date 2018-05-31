@@ -69,15 +69,14 @@ export default compose(withRouter,
       } else {
         return (
           <div className="text-center">
-            <h1 className="main-logo"></h1>
             <h1>
               <strong>
                 Zsebtanár
               </strong>
             </h1>
-            <h5>
+            <h4>
               Tanulás lépésről lépésre
-            </h5>
+            </h4>
           </div>
         )
       }
