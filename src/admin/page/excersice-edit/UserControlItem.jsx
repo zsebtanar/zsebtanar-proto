@@ -14,7 +14,9 @@ export class UserControlItem extends React.Component {
       connectDragPreview,
       connectDragSource,
       connectDropTarget,
-      isDragging
+      isDragging,
+      resources,
+      solutions
     } = this.props
     const [id, itemData] = data
 
@@ -40,7 +42,7 @@ export class UserControlItem extends React.Component {
             </Button>
           </div>
         </div>
-        <UserControls {...itemData} resources={this.props.resources} />
+        <UserControls {...itemData} value={solutions && solutions[id]} resources={resources} />
       </div>
     )
   }

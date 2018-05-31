@@ -1,4 +1,4 @@
-import { __, assocPath, dissoc, evolve, keys, merge, propOr } from 'ramda'
+import { __, assocPath, dissoc, evolve, keys, merge, pathOr, propOr } from 'ramda'
 import { pairsInOrder } from 'shared/util/fn'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -58,7 +58,7 @@ export const BinaryChoiceAdmin = connect(undefined, { openInputModal })(
       this.updateState(
         evolve(
           {
-            solution: merge(__, { [name]: value === 'true' })
+            solution: merge(__, { [name]: value.toString() === 'true' })
           },
           this.state
         )
@@ -160,7 +160,7 @@ export const BinaryChoiceAdmin = connect(undefined, { openInputModal })(
                   name={item.id}
                   className="form-control"
                   required
-                  defaultValue={propOr(false, ['solution', 'options', item.id], this.state)}
+                  defaultValue={pathOr(false, ['solution', item.id], this.state).toString()}
                   onChange={this.selectSolution}
                 >
                   <option value="false">{item.falseLabel || DEFAULT_FALSE_LABEL}</option>

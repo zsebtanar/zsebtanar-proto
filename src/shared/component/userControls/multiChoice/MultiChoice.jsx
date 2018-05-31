@@ -40,7 +40,11 @@ export class MultiChoice extends React.Component {
 
     return options.map(([id, item]) => (
       <div key={id} className="">
-        <Checkbox name={id} checked={this.state[id]} onChange={this.onChange}>
+        <Checkbox
+          name={id}
+          checked={this.props.value !== undefined ? this.props.value[id] === true : this.state[id]}
+          onChange={this.onChange}
+        >
           <Markdown source={item.label} resources={this.props.resources} />
         </Checkbox>
       </div>
@@ -48,13 +52,13 @@ export class MultiChoice extends React.Component {
   }
 
   renderReadOnly() {
-    const options = this.state.options
-    const value = this.props.value
+    const { resources } = this.props
+    const { options } = this.state
 
     return options.map(([id, item]) => (
       <div key={id} className="row">
         <Icon fa={value[id] ? 'check' : 'ban'} className="col-1" />
-        <Markdown source={item.label} resources={this.props.resources} className="col-11" />
+        <Markdown source={item.label} resources={resources} className="col-11" />
       </div>
     ))
   }

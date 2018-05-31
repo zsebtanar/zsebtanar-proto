@@ -98,7 +98,6 @@ export const SubTask = connect(undefined, { getHintAction, checkSolutionAction }
         controlProps: {
           ...controlProps,
           name: ctrlId,
-          value,
           readOnly,
           onChange: this.onChange
         }

@@ -97,7 +97,8 @@ export default connect(mapStateToProps, { openUserControlModal })(
                 itemProps={{
                   resources: this.props.resources,
                   editControl: this.openEditUserControl,
-                  removeControl: this.openRemoveUserControl
+                  removeControl: this.openRemoveUserControl,
+                  solutions: this.props.solutions
                 }}
               />
             ) : (

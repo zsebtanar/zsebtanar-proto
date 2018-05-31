@@ -8,22 +8,22 @@ import { MultiChoice } from './multiChoice/MultiChoice'
 import { FractionNumber } from './fractionNumber/FractionNumber'
 import { NumberList } from './numberList/NumberList'
 
-export function UserControls({ controlType, controlProps, resources }) {
+export function UserControls({ controlType, controlProps, value, resources }) {
   switch (controlType) {
     case t.SIMPLE_TEXT:
-      return <SimpleText {...controlProps} resources={resources} />
+      return <SimpleText {...controlProps} value={value} resources={resources} />
     case t.SINGLE_NUMBER:
-      return <SingleNumber {...controlProps} resources={resources} />
+      return <SingleNumber {...controlProps} value={value} resources={resources} />
     case t.FRACTION_NUMBER:
-      return <FractionNumber {...controlProps} resources={resources} />
+      return <FractionNumber {...controlProps} value={value} resources={resources} />
     case t.NUMBER_LIST:
-      return <NumberList {...controlProps} resources={resources} />
+      return <NumberList {...controlProps} value={value} resources={resources} />
     case t.SINGLE_CHOICE:
-      return <SingleChoice {...controlProps} resources={resources} />
+      return <SingleChoice {...controlProps} value={value} resources={resources} />
     case t.BINARY_CHOICE:
-      return <BinaryChoice {...controlProps} resources={resources} />
+      return <BinaryChoice {...controlProps} value={value} resources={resources} />
     case t.MULTI_CHOICE:
-      return <MultiChoice {...controlProps} resources={resources} />
+      return <MultiChoice {...controlProps} value={value} resources={resources} />
     default:
       return <div className="alert alert-danger">Not implemented control type "{controlType}"</div>
   }

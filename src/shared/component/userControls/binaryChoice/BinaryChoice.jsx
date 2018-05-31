@@ -1,6 +1,5 @@
-import { keys } from 'ramda'
+import { keys, pathOr } from 'ramda'
 import React from 'react'
-import { Markdown } from 'shared/component/general/Markdown'
 import { pairsInOrder, shuffle } from 'shared/util/fn'
 import RadioInput from 'shared/component/input/RadioInput'
 
@@ -49,18 +48,22 @@ export class BinaryChoice extends React.Component {
           <RadioInput
             label={item.trueLabel || DEFAULT_TRUE_LABEL}
             name={id}
-            id={id+'-true'}
+            id={id + '-true'}
             value={'true'}
-            checked={this.state[id] === 'true'}
+            checked={
+              pathOr(this.state[id] || '', ['props', 'value', id], this).toString() === 'true'
+            }
             onChange={this.onChange}
             resources={this.props.resources}
           />
           <RadioInput
             label={item.falseLabel || DEFAULT_FALSE_LABEL}
             name={id}
-            id={id+'-false'}
+            id={id + '-false'}
             value={'false'}
-            checked={this.state[id] === 'false'}
+            checked={
+              pathOr(this.state[id] || '', ['props', 'value', id], this).toString() === 'false'
+            }
             onChange={this.onChange}
             resources={this.props.resources}
           />
@@ -76,11 +79,11 @@ export class BinaryChoice extends React.Component {
     return options.map(([id, item]) => (
       <div key={id} className="d-flex justify-content-between">
         {item.label}&nbsp;<strong>
-          {value[id] === 'true' ? (
-            item.trueLabel || DEFAULT_TRUE_LABEL
-          ) : (
-            item.falseLabel || DEFAULT_FALSE_LABEL
-          )}
+          {id in value
+            ? value[id] === 'true'
+              ? item.trueLabel || DEFAULT_TRUE_LABEL
+              : item.falseLabel || DEFAULT_FALSE_LABEL
+            : undefined}
         </strong>
       </div>
     ))
