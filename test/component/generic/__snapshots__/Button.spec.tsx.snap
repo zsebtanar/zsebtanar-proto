@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button renders correctly the default 1`] = `
+<button
+  className="btn btn-secondary"
+  onClick={[Function]}
+  type="button"
+>
+  button text
+</button>
+`;
+
+exports[`Button renders correctly the primary 1`] = `
+<button
+  className="btn btn-primary"
+  onClick={[Function]}
+  type="button"
+>
+  button text
+</button>
+`;
+
+exports[`Button renders correctly the submit 1`] = `
+<button
+  className="btn btn-secondary"
+  onClick={[Function]}
+  type="submit"
+>
+  button text
+</button>
+`;
