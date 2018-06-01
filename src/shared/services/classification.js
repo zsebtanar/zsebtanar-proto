@@ -1,4 +1,4 @@
-import { pick, pipe, values, prop, sortBy } from 'ramda'
+import { pick, pipe, prop, sortBy, values } from 'ramda'
 import { resolveSnapshot } from '../util/firebase'
 
 const DB = window.firebase.database()

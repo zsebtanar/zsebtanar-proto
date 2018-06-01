@@ -3,10 +3,10 @@ import ReactGA from 'react-ga'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Markdown } from 'shared/component/general/Markdown'
-import Loading from 'shared/component/general/Loading'
-import Icon from 'shared/component/general/Icon'
-import { parseQueryParams } from 'shared/util/url'
+import { Loading } from 'shared/component/general/Loading'
+import { Icon } from 'shared/component/general/Icon'
 import { search } from 'shared/services/search'
+import { parseQueryParams } from 'shared/util/url'
 
 const mapStateToProps = state => ({
   session: state.app.session

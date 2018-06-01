@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Router, Switch } from 'react-router-dom'
 import { withTracker } from '../shared/component/hoc/withTracker'
-import Loading from 'shared/component/general/Loading'
+import { Loading } from 'shared/component/general/Loading'
 import { Overlay } from 'shared/component/modal/Overlay'
 
 import { Header } from './nav/Header'
@@ -21,7 +21,7 @@ const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default connect(mapStateToProps)(function(props) {
+export const Routes = connect(mapStateToProps)(function(props) {
   return (
     <Router history={props.history}>
       <div className="app">

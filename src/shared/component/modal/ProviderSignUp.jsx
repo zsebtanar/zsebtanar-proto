@@ -1,10 +1,10 @@
 import React from 'react'
-import Button from '../general/Button'
 import { keys } from 'ramda'
+import { Button } from '../general/Button'
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-export default (class ProviderSignUp extends React.Component {
+export class ProviderSignUp extends React.Component {
   state = {
     errors: {}
   }
@@ -36,13 +36,15 @@ export default (class ProviderSignUp extends React.Component {
     else if (!EMAIL_REGEX.test(email)) errors.email = 'Érvénytelen e-mail cím!'
 
     if (!name) errors.name = 'Kérlek, add meg a felhasználóneved!'
-    else if (name.length < 3) errors.name = 'A felhasználónévnek legalább 3 karakter hosszúnak kell lennie!'
+    else if (name.length < 3)
+      errors.name = 'A felhasználónévnek legalább 3 karakter hosszúnak kell lennie!'
 
     if (passwordReq) {
       const pw1 = this.pwField.value
 
       if (!pw1) errors.password = 'Kérlek, adj meg egy jelszót!'
-      else if (pw1.length < 6) errors.password = 'A jelszónak legalább 6 karakter hosszúnak kell lennie!'
+      else if (pw1.length < 6)
+        errors.password = 'A jelszónak legalább 6 karakter hosszúnak kell lennie!'
     }
     this.setState({ errors })
     return keys(errors).length === 0
@@ -133,4 +135,4 @@ export default (class ProviderSignUp extends React.Component {
       return <div className="invalid-feedback">{err}</div>
     }
   }
-})
+}

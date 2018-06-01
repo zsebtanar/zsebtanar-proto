@@ -1,4 +1,4 @@
-import { pick, keys, pipe, evolve, mapObjIndexed, toPairs, fromPairs, map } from 'ramda'
+import { evolve, fromPairs, keys, map, mapObjIndexed, pick, pipe, toPairs } from 'ramda'
 import { admin } from '../utils/fb-utils'
 import * as Joi from 'joi'
 

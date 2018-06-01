@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Button from '../../shared/component/general/Button'
-import { deleteUser } from '../../shared/store/actions/auth'
-import { openConfirmModal } from '../../shared/store/actions/modal'
-import Icon from '../../shared/component/general/Icon'
+import { Button } from 'shared/component/general/Button'
+import { deleteUser } from 'shared/store/actions/auth'
+import { openConfirmModal } from 'shared/store/actions/modal'
+import { Icon } from 'shared/component/general/Icon'
 
 const mapStateToProps = state => ({
   session: state.app.session

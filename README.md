@@ -2,7 +2,6 @@
 
 [![Join the chat at https://gitter.im/zsebtanar-dev/Lobby](https://badges.gitter.im/zsebtanar-dev/Lobby.svg)](https://gitter.im/zsebtanar-dev/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![CircleCI](https://circleci.com/gh/zsebtanar/zsebtanar-proto.svg?style=shield)](https://circleci.com/gh/zsebtanar/zsebtanar-proto)
-![Dependecies](https://david-dm.org/zsebtanar/zsebtanar-proto.svg)
 
 ...
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../general/Button'
+import { Button } from '../general/Button'
 import { Dialog } from './base/Dialog'
 import { DialogHeader } from './base/DialogHeader'
 import { DialogBody } from './base/DialogBody'

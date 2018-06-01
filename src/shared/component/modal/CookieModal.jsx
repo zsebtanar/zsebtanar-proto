@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../general/Button'
+import { Button } from '../general/Button'
 
 export function CookieModal (props) {
   return (

@@ -2,14 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { pathOr, prop, propEq } from 'ramda'
 import { createFeedback } from 'shared/services/feedback'
-import Loading from 'shared/component/general/Loading'
-import Button from 'shared/component/general/Button'
+import { Loading } from 'shared/component/general/Loading'
+import { Button } from 'shared/component/general/Button'
 
 const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default connect(mapStateToProps)(
+export const FeedbackModal = connect(mapStateToProps)(
   class FeedbackModal extends React.Component {
     state = {
       state: 'init'

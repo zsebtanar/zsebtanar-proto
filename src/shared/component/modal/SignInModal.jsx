@@ -1,15 +1,15 @@
 import * as React from 'react'
+import strings from 'shared/strings'
 import { connect } from 'react-redux'
 import { facebookSignIn, googleSignIn, signIn } from 'shared/store/actions/auth'
 import { withRouter } from 'react-router-dom'
-import Button from 'shared/component/general/Button'
-import strings from 'shared/strings'
+import { Button } from 'shared/component/general/Button'
 
 const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default withRouter(
+export const SignInModal = withRouter(
   connect(mapStateToProps, { signIn, googleSignIn, facebookSignIn })(function(props) {
     let emailField
     let pwField

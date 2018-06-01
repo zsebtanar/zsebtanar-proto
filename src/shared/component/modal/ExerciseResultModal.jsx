@@ -1,7 +1,7 @@
 import React from 'react'
-import Button from '../general/Button'
+import { Button } from '../general/Button'
 
-export default (function ExerciseModal(props) {
+export function ExerciseModal(props) {
   return (
     <div className={`modal-dialog`} role="document">
       <div className="modal-content">
@@ -43,4 +43,4 @@ export default (function ExerciseModal(props) {
       </div>
     </div>
   )
-})
+}

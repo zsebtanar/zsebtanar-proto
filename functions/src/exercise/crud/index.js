@@ -3,16 +3,16 @@ import preFetch from '../../middlewares/preFetchDB'
 import { onlyEditors } from '../../utils/authorization'
 import { indexExercise } from './search'
 import {
+  exerciseSchema,
+  getExerciseState,
   newPrivateExerciseKey,
   savePrivateExercise,
-  getExerciseState,
   savePublicExercise
 } from '../model'
 import { updateAllClassification } from './utils'
 import { EXERCISE_ACTIVE, EXERCISE_DRAFT, STATE_KEY } from '../state'
 import getToken from '../../middlewares/firebaseToken'
 import requestValidator from '../../middlewares/requestValidator'
-import { exerciseSchema } from '../model'
 
 export const route = express.Router()
 

@@ -24,7 +24,7 @@ export function SimpleText(props) {
           name={props.name}
           type="text"
           className="form-control col-4 mx-1"
-          value={(props.value && values(props.value.options) || [props.value]).join('; ')}
+          value={((props.value && values(props.value.options)) || [props.value]).join('; ')}
           onChange={setSolution}
         />
       )}

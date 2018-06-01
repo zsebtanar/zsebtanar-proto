@@ -1,7 +1,7 @@
 import { assocPath, concat, dissoc, evolve, pickBy, pipe, toPairs } from 'ramda'
-import { createExercise, getPrivateExercise, updateExercise } from 'shared/services/exercise'
 import { uid } from 'shared/util/uuid'
 import { openFileUpload } from 'shared/store/actions/modal'
+import { createExercise, getPrivateExercise, updateExercise } from 'shared/services/exercise'
 
 export const EXERCISE_LOADING = 'admin/EXERCISE_LOADING'
 export const EXERCISE_NEW = 'admin/EXERCISE_NEW'

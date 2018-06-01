@@ -10,7 +10,7 @@ export class Dropdown extends React.Component {
     return this.props.children.filter(propEq('type', type))
   }
 
-  toggleDropdown = (open) => {
+  toggleDropdown = open => {
     this.setState({ open }, this.updateMenuPosition)
   }
 
@@ -24,17 +24,16 @@ export class Dropdown extends React.Component {
     }
   }
 
-  getMenuRef = (ref) => this.menuRef = ref
-
+  getMenuRef = ref => (this.menuRef = ref)
 
   render() {
     const { dropUp, className } = this.props
     const Elm = this.props.elementType || 'div'
     return (
       <Elm
-        className={`nav-item ${dropUp ? 'dropup' : 'dropdown'} ${className || ''} ${this.state.open
-          ? 'show'
-          : ''}`}
+        className={`nav-item ${dropUp ? 'dropup' : 'dropdown'} ${className || ''} ${
+          this.state.open ? 'show' : ''
+        }`}
         ref={this.getMenuRef}
         onMouseEnter={this.show}
         onMouseLeave={this.hide}

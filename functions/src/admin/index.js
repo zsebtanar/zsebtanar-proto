@@ -1,7 +1,7 @@
 import * as express from 'express'
 import getToken from '../middlewares/firebaseToken'
 import { onlyAdmin } from '../utils/authorization'
-import { savePublicExercise, getAllPrivateExercise } from '../exercise/model'
+import { getAllPrivateExercise, savePublicExercise } from '../exercise/model'
 import { EXERCISE_ACTIVE } from '../exercise/state'
 
 export const route = express.Router()

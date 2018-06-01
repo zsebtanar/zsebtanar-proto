@@ -1,7 +1,7 @@
 import React from 'react'
 import { uid } from 'shared/util/uuid'
 
-export default function FormGroup(props) {
+export function FormGroup(props) {
   const col = props.col || 4
   const colAlt = 12 - col
   const id = `fg-${uid()}`

@@ -1,5 +1,5 @@
-import { assocPath, pathOr } from 'ramda'
 import React from 'react'
+import { assocPath, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'

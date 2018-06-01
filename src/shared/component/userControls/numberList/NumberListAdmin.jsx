@@ -1,14 +1,14 @@
-import { assocPath, dissocPath, evolve, keys, pathOr } from 'ramda'
 import React from 'react'
+import { assocPath, dissocPath, evolve, keys, pathOr } from 'ramda'
 import { connect } from 'react-redux'
+import { abcIndex } from '../../../util/fn'
+import { uid } from '../../../util/uuid'
 import { openInputModal } from 'shared/store/actions/modal'
 import { MarkdownField } from 'shared/component/userControls/common/MarkdownField'
-import Checkbox from '../../input/Checkbox'
-import Button from '../../general/Button'
+import { Checkbox } from '../../input/Checkbox'
+import { Button } from '../../general/Button'
 import { TrashButton } from '../common/TrashButton'
-import { uid } from '../../../util/uuid'
 import { orderedListFromObj, removeFromObjById } from '../../../util/OrderedMap'
-import { abcIndex } from '../../../util/fn'
 
 export const NumberListAdmin = connect(undefined, { openInputModal })(
   class extends React.Component {
@@ -162,9 +162,7 @@ export const NumberListAdmin = connect(undefined, { openInputModal })(
         <div key={key} className="card mb-1">
           <div className="card-header card-header-sm d-flex justify-content-between align-items-center">
             <span>{abcIndex(idx)})</span>
-            {!isLast && (
-              <TrashButton label="Törlés" onAction={this.delSolution(key)} />
-            )}
+            {!isLast && <TrashButton label="Törlés" onAction={this.delSolution(key)} />}
           </div>
           <div className="card-body">
             <div>

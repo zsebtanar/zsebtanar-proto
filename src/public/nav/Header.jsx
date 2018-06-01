@@ -1,13 +1,12 @@
 import React from 'react'
-import { NavLink, withRouter } from 'react-router-dom'
-
 import { connect } from 'react-redux'
-import { signOut } from '../../shared/store/actions/auth'
+import { NavLink, withRouter } from 'react-router-dom'
+import { signOut } from 'shared/store/actions/auth'
 import { isAdmin } from 'shared/services/user'
-import Button from 'shared/component/general/Button'
+import { Button } from 'shared/component/general/Button'
 import { openSideNav } from 'shared/store/reducers/sideNav'
+import { Link } from 'shared/component/general/Link'
 import { openSignInModal, openSignUpModal } from 'shared/store/actions/modal'
-import Link from 'shared/component/general/Link'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'shared/ui/Dropdown'
 
 const mapStateToProps = state => ({
@@ -21,7 +20,7 @@ export const Header = withRouter(
     openSideNav,
     openSignInModal,
     openSignUpModal
-  })(function Header(props) {
+  })(function HeaderComp(props) {
     const { signedIn, token } = props.session
     return (
       <div className="header clearfix">
@@ -37,39 +36,37 @@ export const Header = withRouter(
               ) : (
                 ''
               )}
-              {signedIn ? (
-                [
-                  <Dropdown elementType="li" className="user-menu" right key="user-menu">
-                    <DropdownToggle>
-                      <span className="fa-stack fa">
-                        <i className="fa fa-circle fa-stack-2x" />
-                        <i className="fa fa-user fa-stack-1x fa-inverse" />
-                      </span>
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <NavLink exact to="/profile" className="dropdown-item">
-                        Profile
-                      </NavLink>
-                      <a href="#" className="dropdown-item" onClick={props.signOut}>
-                        Kijelentkezés
-                      </a>
-                    </DropdownMenu>
-                  </Dropdown>
-                ]
-              ) : (
-                [
-                  <li className="nav-item" key="sign-up">
-                    <Link className="nav-link" onAction={props.openSignUpModal}>
-                      <i className="fa fa-plus" /> Regisztráció
-                    </Link>
-                  </li>,
-                  <li className="nav-item" key="sign-in">
-                    <Link className="nav-link" onAction={props.openSignInModal}>
-                      <i className="fa fa-sign-in" /> Belépés
-                    </Link>
-                  </li>
-                ]
-              )}
+              {signedIn
+                ? [
+                    <Dropdown elementType="li" className="user-menu" right key="user-menu">
+                      <DropdownToggle>
+                        <span className="fa-stack fa">
+                          <i className="fa fa-circle fa-stack-2x" />
+                          <i className="fa fa-user fa-stack-1x fa-inverse" />
+                        </span>
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <NavLink exact to="/profile" className="dropdown-item">
+                          Profile
+                        </NavLink>
+                        <a href="#" className="dropdown-item" onClick={props.signOut}>
+                          Kijelentkezés
+                        </a>
+                      </DropdownMenu>
+                    </Dropdown>
+                  ]
+                : [
+                    <li className="nav-item" key="sign-up">
+                      <Link className="nav-link" onAction={props.openSignUpModal}>
+                        <i className="fa fa-plus" /> Regisztráció
+                      </Link>
+                    </li>,
+                    <li className="nav-item" key="sign-in">
+                      <Link className="nav-link" onAction={props.openSignInModal}>
+                        <i className="fa fa-sign-in" /> Belépés
+                      </Link>
+                    </li>
+                  ]}
             </ul>
           </nav>
           <NavLink exact to="/">

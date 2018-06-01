@@ -1,6 +1,6 @@
 import React from 'react'
 import { Markdown } from '../general/Markdown'
-import Button from '../general/Button'
+import { Button } from '../general/Button'
 
 export function MarkdownHelpModal(props) {
   return (

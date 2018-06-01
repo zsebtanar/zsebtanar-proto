@@ -1,11 +1,11 @@
+import * as React from 'react'
 import { evolve, mapObjIndexed, pathOr } from 'ramda'
 import { pairsInOrder } from 'shared/util/fn'
-import * as React from 'react'
 import { Exercise } from 'shared/page/exercise/Exercise'
 import { TASK_STATUS_PREVIEW } from 'shared/store/exercise'
 import { getPrivateExercise } from 'shared/services/exercise'
-import Loading from 'shared/component/general/Loading'
-import Icon from 'shared/component/general/Icon'
+import { Loading } from 'shared/component/general/Loading'
+import { Icon } from 'shared/component/general/Icon'
 
 export class ExercisePreview extends React.Component {
   state = {
@@ -31,7 +31,11 @@ export class ExercisePreview extends React.Component {
       <div>
         <div className="my-4">{this.renderExercise()}</div>
         <hr />
-        {__DEV__ ? <pre className="text-muted">{JSON.stringify(this.state.exercise, null, 3)}</pre> : ''}
+        {__DEV__ ? (
+          <pre className="text-muted">{JSON.stringify(this.state.exercise, null, 3)}</pre>
+        ) : (
+          ''
+        )}
       </div>
     )
   }
@@ -43,23 +47,25 @@ export class ExercisePreview extends React.Component {
     } else if (exercise === undefined) {
       return <div className="alert alert-danger">A feladat nemtalálható</div>
     } else {
-
-      return <div>
-        <div className="col-10 mx-auto my-4 alert alert-info row">
-          <div className="col-1">
-            <Icon fa="info-circle" size="2x" />
+      return (
+        <div>
+          <div className="col-10 mx-auto my-4 alert alert-info row">
+            <div className="col-1">
+              <Icon fa="info-circle" size="2x" />
+            </div>
+            <div className="col-11">
+              <small>
+                A feladat előnézete csak tájékoztató jellegű. A következőkben tér az éles
+                megjelenítéstől:
+                <ul>
+                  <li>Minden részfeladatot és útmutatót egyszerre jelenik meg</li>
+                </ul>
+              </small>
+            </div>
           </div>
-          <div className="col-11">
-            <small>
-              A feladat előnézete csak tájékoztató jellegű. A következőkben tér az éles megjelenítéstől:
-              <ul>
-                <li>Minden részfeladatot és útmutatót egyszerre jelenik meg</li>
-              </ul>
-            </small>
-          </div>
+          <Exercise previewMode exercise={exercise} />
         </div>
-        <Exercise previewMode exercise={exercise} />
-      </div>
+      )
     }
   }
 }
@@ -69,7 +75,7 @@ const prepareExercise = evolve({
     details: task,
     order: task.order,
     status: TASK_STATUS_PREVIEW,
-    hints: pairsInOrder(task.hints).map(([key, hint]) => ({key, hint})),
+    hints: pairsInOrder(task.hints).map(([key, hint]) => ({ key, hint })),
     hintsLeft: 0,
     validity: {}
   }))

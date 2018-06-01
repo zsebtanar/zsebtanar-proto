@@ -1,5 +1,5 @@
-import { pathOr } from 'ramda'
 import React from 'react'
+import { pathOr } from 'ramda'
 import {
   getAllUser,
   ROLE_ADMIN,
@@ -7,9 +7,9 @@ import {
   ROLE_USER,
   updateUserRole
 } from 'shared/services/user'
-import Loading from 'shared/component/general/Loading'
+import { Loading } from 'shared/component/general/Loading'
 
-export default class extends React.Component {
+export class UserList extends React.Component {
   state = {
     userList: undefined
   }

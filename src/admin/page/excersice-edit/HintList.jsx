@@ -1,14 +1,13 @@
+import React from 'react'
 import { __, assocPath, dissoc, evolve, merge, pathOr, values } from 'ramda'
 import { uid } from 'shared/util/uuid'
-import { pairsInOrder } from 'shared/util/fn'
-import React from 'react'
+import { listToOrderedObject, pairsInOrder } from 'shared/util/fn'
 import { connect } from 'react-redux'
 import { openInputModal } from 'shared/store/actions/modal'
 import { Sortable } from 'shared/component/general/Sortable'
-import Button from 'shared/component/general/Button'
-import Icon from 'shared/component/general/Icon'
+import { Button } from 'shared/component/general/Button'
+import { Icon } from 'shared/component/general/Icon'
 import { HintItem } from './HintItem'
-import { listToOrderedObject } from '../../../shared/util/fn'
 
 function mapStateToProps(state) {
   return {

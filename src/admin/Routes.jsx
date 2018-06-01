@@ -2,20 +2,20 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { Route, Router, Switch } from 'react-router-dom'
-import Loading from 'shared/component/general/Loading'
+import { Loading } from 'shared/component/general/Loading'
 
-import Header from './nav/Header'
-import SideNav from './nav/SideNav'
-import Home from './page/Home'
-import ExerciseList from './page/ExerciseList'
-import ExerciseForm from './page/excersice-edit/ExerciseForm'
+import { Header } from './nav/Header'
+import { SideNav } from './nav/SideNav'
+import { Home } from './page/Home'
+import { ExerciseList } from './page/ExerciseList'
+import { ExerciseForm } from './page/excersice-edit/ExerciseForm'
 import { Page404 } from 'shared/page/Page404'
 import { Overlay } from 'shared/component/modal/Overlay'
-import UserList from './page/user/UserList'
-import ClassificationList from './page/classification/ClassificationList'
-import FeedbackList from 'admin/page/FeedbackList'
+import { UserList } from './page/user/UserList'
+import { ClassificationList } from './page/classification/ClassificationList'
+import { FeedbackList } from 'admin/page/FeedbackList'
 import { About } from 'shared/page/About'
-import Footer from 'admin/nav/Footer'
+import { Footer } from 'admin/nav/Footer'
 import { AdminUtils } from 'admin/page/AdminUtils'
 import { ExercisePreview } from 'admin/page/ExercisePreview'
 
@@ -23,7 +23,7 @@ const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export default connect(mapStateToProps)(function(props) {
+export const Routes = connect(mapStateToProps)(function(props) {
   return (
     <Router history={props.history}>
       <div className="app">

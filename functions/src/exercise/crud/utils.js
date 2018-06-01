@@ -3,17 +3,17 @@ import {
   curry,
   defaultTo,
   difference,
+  evolve,
   juxt,
   lensProp,
   mapObjIndexed,
   mergeAll,
   omit,
   over,
+  pathOr,
   pick,
   pipe,
-  union,
-  pathOr,
-  evolve
+  union
 } from 'ramda'
 
 const exerciseL = lensProp('exercise')

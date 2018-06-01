@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Button from '../general/Button'
+import { Button } from '../general/Button'
 import { Markdown } from '../general/Markdown'
 import { openExerciseImageDialog, openMarkdownHelpModal } from 'shared/store/actions/modal'
 

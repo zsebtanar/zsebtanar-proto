@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { uid } from 'shared/util/uuid'
 
-export default props => {
+export function Checkbox(props) {
   const id = `cc-${uid()}`
   return (
     <div className={`custom-control custom-checkbox ${props.className}`}>
