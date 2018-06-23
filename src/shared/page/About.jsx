@@ -7,8 +7,7 @@ export const About = function AboutPage() {
       <hr />
       <h3>Mi a Zsebtanár?</h3>
       <p>
-        A Zsebtanár egy interaktív feladatgyűjtemény, aminek a célja, hogy ingyenes segítséget
-        nyújtson a tanulásban, főként a középszintű matematika érettségire való felkészítésben.
+        A Zsebtanár egy interaktív feladatgyűjtemény, amely ingyenes és hatékony segítséget nyújt a tanulásban.
       </p>
 
       <h3 className="mt-4">Kiknek készült?</h3>
