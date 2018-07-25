@@ -1,0 +1,1 @@
+export const uidPattern = /^[a-f0-9]+$/
