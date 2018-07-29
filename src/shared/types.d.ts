@@ -15,6 +15,7 @@ declare namespace state {
 
   interface App {
     session: Session
+    sideNav: SideNav
   }
 
   interface Task {
@@ -252,7 +253,7 @@ declare interface Ordered {
   order: number
 }
 
-declare type ObjectMap<T> = { [key: string]: T }
+declare interface ObjectMap<T> { [key: string]: T }
 
 declare type Buttontype =
   | 'primary'

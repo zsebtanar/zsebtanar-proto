@@ -27,6 +27,7 @@ export const listToOrderedObject = pipe(
   fromPairs
 )
 
+// tslint:disable-next-line:no-console
 export const log = (...args) => console.log(...args) || args[0]
 
 export const assert = curry((predicate, message, value) => {

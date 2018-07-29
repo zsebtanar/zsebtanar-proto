@@ -5,26 +5,47 @@ import { connect } from 'react-redux'
 import { NavLink, withRouter } from 'react-router-dom'
 import { Button } from 'client-common/component/general/Button'
 import { Icon } from 'client-common/component/general/Icon'
-import { openCookieModal, openSignInModal, openSignUpModal } from 'client-common/store/actions/modal'
+import {
+  openCookieModal,
+  openSignInModal,
+  openSignUpModal
+} from 'client-common/store/actions/modal'
 import debounce from 'client-common/util/debounce'
 import { DonateButton } from '../component/DonateButton'
 import { MainClassificationSelector } from '../component/MainClassificationSelector'
+import { RouteComponentProps } from 'react-router'
 
-const mapStateToProps = state => ({
+interface HomeStateProps {
+  session: state.Session
+}
+
+interface HomeDispatchProps {
+  openSignInModal: typeof openSignInModal
+  openSignUpModal: typeof openSignUpModal
+  openCookieModal: typeof openCookieModal
+}
+
+const mapStateToProps = (state: state.Root) => ({
   session: state.app.session
 })
 
+const GDPR_PDF_URL = 'https://firebasestorage.googleapis.com/v0/b/zsebtanar-prod.appspot.com' +
+  '/o/docs%2Fzsebtanar-adatvedelmi-szabalyzat-2018.pdf?alt=media&amp;token=3cd16e18-51bc-4069-af98-051df97f2fe6'
+
 export const Home = pipe(
-  connect(
+  withRouter,
+  connect<HomeStateProps, HomeDispatchProps, RouteComponentProps<{}>>(
     mapStateToProps,
     { openSignInModal, openSignUpModal, openCookieModal }
-  ),
-  withRouter
+  )
 )(
-  class Home extends React.Component<any, any> {
-    searchInput = null
+  class HomeComponent extends React.Component<
+    HomeStateProps & HomeDispatchProps & RouteComponentProps<{}>,
+    {}
+  > {
+    private searchInput = null
 
-    searchInputChange = debounce(() => {
+    private searchInputChange = debounce(() => {
       this.props.history.push({ pathname: '/search', search: `?q=${this.searchInput.value}` })
     }, 800)
 
@@ -60,7 +81,7 @@ export const Home = pipe(
 
           <CookieConsent buttonText="Rendben">
             <a
-              href="https://firebasestorage.googleapis.com/v0/b/zsebtanar-prod.appspot.com/o/docs%2Fzsebtanar-adatvedelmi-szabalyzat-2018.pdf?alt=media&amp;token=3cd16e18-51bc-4069-af98-051df97f2fe6"
+              href={GDPR_PDF_URL}
               target="_blank"
             >
               Adatvédelmi tájékoztatónkban
@@ -75,7 +96,7 @@ export const Home = pipe(
       )
     }
 
-    renderWelcome() {
+    private renderWelcome() {
       const { session } = this.props
 
       if (session.signedIn) {
