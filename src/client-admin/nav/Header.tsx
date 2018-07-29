@@ -1,26 +1,41 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { RouteComponentProps } from 'react-router'
 import { NavLink, withRouter } from 'react-router-dom'
 import { Button } from 'client-common/component/general/Button'
 import { Icon } from 'client-common/component/general/Icon'
 import { isAdmin } from 'client-common/services/user'
 import { signOut } from 'client-common/store/actions/auth'
 import { openSideNav } from 'client-common/store/reducers/sideNav'
-import { Dropdown} from 'client-common/component/general/dropdown/Dropdown'
+import { Dropdown } from 'client-common/component/general/dropdown/Dropdown'
 import { DropdownMenu } from 'client-common/component/general/dropdown/DropdownMenu'
 import { DropdownToggle } from 'client-common/component/general/dropdown/DropdownToggle'
 
-const mapStateToProps = state => ({
+interface HeaderProps extends RouteComponentProps<{}> {}
+
+interface HeaderStateProps {
+  session: state.Session
+  sideNav: state.SideNav
+}
+
+interface HeaderDispatchProps {
+  signOut: typeof signOut
+  openSideNav: typeof openSideNav
+}
+
+const mapStateToProps = (state: state.Root) => ({
   session: state.app.session,
   sideNav: state.app.sideNav
 })
 
 export const Header = withRouter(
-  connect(
+  connect<HeaderStateProps, HeaderDispatchProps, HeaderProps>(
     mapStateToProps,
     { signOut, openSideNav }
-  )(function HeaderComp(props) {
-    if (!props.session.signedIn) return <div />
+  )(function HeaderComp(props: HeaderStateProps & HeaderDispatchProps & HeaderProps) {
+    if (!props.session.signedIn) {
+      return <div />
+    }
 
     return (
       <div className="header clearfix">
@@ -37,13 +52,13 @@ export const Header = withRouter(
                   <DropdownToggle>Rendszer</DropdownToggle>
                   <DropdownMenu>
                     <NavLink activeClassName="active" className="dropdown-item" to="/user">
-                      <Icon fa="users"/> Felhasználók
+                      <Icon fa="users" /> Felhasználók
                     </NavLink>
                     <NavLink activeClassName="active" className="dropdown-item" to="/feedback">
-                      <Icon fa="commenting-o"/> Visszajelzések
+                      <Icon fa="commenting-o" /> Visszajelzések
                     </NavLink>
                     <NavLink activeClassName="active" className="dropdown-item" to="/utilities">
-                      <Icon fa="exclamation-triangle"/> Gépház
+                      <Icon fa="exclamation-triangle" /> Gépház
                     </NavLink>
                   </DropdownMenu>
                 </Dropdown>
@@ -53,10 +68,10 @@ export const Header = withRouter(
                 <DropdownToggle>Tartalom</DropdownToggle>
                 <DropdownMenu>
                   <NavLink activeClassName="active" className="dropdown-item" to="/exercise">
-                    <Icon fa="tasks"/> Feladatok
+                    <Icon fa="tasks" /> Feladatok
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/classification">
-                    <Icon fa="folder"/> Kategóriák
+                    <Icon fa="folder" /> Kategóriák
                   </NavLink>
                 </DropdownMenu>
               </Dropdown>
@@ -64,20 +79,20 @@ export const Header = withRouter(
               <Dropdown elementType="li" right className="user-menu">
                 <DropdownToggle>
                   <span className="fa-stack fa">
-                    <i className="fa fa-circle fa-stack-2x"/>
-                    <i className="fa fa-user fa-stack-1x fa-inverse"/>
+                    <i className="fa fa-circle fa-stack-2x" />
+                    <i className="fa fa-user fa-stack-1x fa-inverse" />
                   </span>
                 </DropdownToggle>
                 <DropdownMenu>
                   <a href="#" className="dropdown-item" onClick={props.signOut}>
-                    <Icon fa="power-off"/> Kijelentkezés
+                    <Icon fa="power-off" /> Kijelentkezés
                   </a>
                 </DropdownMenu>
               </Dropdown>
             </ul>
           </nav>
           <NavLink exact to="/" className="logo-link">
-            <h4 className="text-muted logo"/>
+            <h4 className="text-muted logo" />
           </NavLink>
         </div>
 
@@ -88,11 +103,11 @@ export const Header = withRouter(
             aria-expanded={props.sideNav.active}
             aria-label="Menü megnyitása"
           >
-            <span className="fa fa-bars fa-lg"/>
+            <span className="fa fa-bars fa-lg" />
           </Button>
 
           <NavLink exact to="/" className="logo-link float-right">
-            <h4 className="text-muted logo"/>
+            <h4 className="text-muted logo" />
           </NavLink>
         </div>
       </div>

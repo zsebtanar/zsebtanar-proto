@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { History } from 'history'
 
 import { Route, Router, Switch } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
@@ -20,7 +21,7 @@ import { AdminUtils } from './page/AdminUtils'
 import { ExercisePreview } from './page/ExercisePreview'
 
 interface RoutesProps {
-  history: any
+  history: History
 }
 interface RoutesStateProps {
   session: state.Session
@@ -30,41 +31,59 @@ const mapStateToProps = (state: state.Root) => ({
   session: state.app.session
 })
 
-export const Routes = connect<RoutesStateProps, {}, RoutesProps>(mapStateToProps)(function(
-  props: RoutesStateProps & RoutesProps
-) {
+export const Routes = connect<RoutesStateProps, {}, RoutesProps>(mapStateToProps)(RoutesComponent)
+
+function RoutesComponent(props: RoutesStateProps & RoutesProps) {
   return (
-    <Router history={props.history}>
-      <div className="app">
-        {props.session.waitingForUser ? (
-          <div>
-            <Loading />
-          </div>
-        ) : (
-          <div className="container">
-            <Header />
-            <SideNav />
-            <div className="content">
-              <Switch>
-                <Route path="/" exact component={Home} />
-                <Route path="/user" exact component={UserList} />
-                <Route path="/classification" exact component={ClassificationList} />
-                <Route path="/exercise" exact component={ExerciseList} />
-                <Route path="/exercise/add/:clone" component={ExerciseForm} />
-                <Route path="/exercise/add/" component={ExerciseForm} />
-                <Route path="/exercise/edit/:key" component={ExerciseForm} />
-                <Route path="/exercise/view/:key" component={ExercisePreview} />
-                <Route path="/feedback" component={FeedbackList} />
-                <Route path="/utilities" component={AdminUtils} />
-                <Route path="/about" component={About} />
-                <Route component={Page404} />
-              </Switch>
-            </div>
-            <Footer />
-          </div>
-        )}
-        <Overlay />
-      </div>
-    </Router>
+    <div className="app">
+      <RouteContent {...props} />
+      <Overlay />
+    </div>
   )
-})
+}
+
+function RouteContent(props: RoutesStateProps & RoutesProps) {
+  if (props.session.waitingForUser) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    )
+  }
+  if (props.session.signedIn) {
+    return (
+      <Router history={props.history}>
+        <AdminRoutes />
+      </Router>
+    )
+  }
+
+  props.history.push('/')
+  return <Home/>
+}
+
+function AdminRoutes() {
+  return (
+    <div className="container">
+      <Header />
+      <SideNav />
+      <div className="content">
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/user" exact component={UserList} />
+          <Route path="/classification" exact component={ClassificationList} />
+          <Route path="/exercise" exact component={ExerciseList} />
+          <Route path="/exercise/add/:clone" component={ExerciseForm} />
+          <Route path="/exercise/add/" component={ExerciseForm} />
+          <Route path="/exercise/edit/:key" component={ExerciseForm} />
+          <Route path="/exercise/view/:key" component={ExercisePreview} />
+          <Route path="/feedback" component={FeedbackList} />
+          <Route path="/utilities" component={AdminUtils} />
+          <Route path="/about" component={About} />
+          <Route component={Page404} />
+        </Switch>
+      </div>
+      <Footer />
+    </div>
+  )
+}

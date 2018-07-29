@@ -1,12 +1,13 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { Route, Router, Switch } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
 import { withTracker } from 'client-common/component/hoc/withTracker'
 import { Overlay } from 'client-common/component/modal/Overlay'
 import { About } from 'client-common/page/About'
 import { Exercise } from 'client-common/page/exercise/Exercise'
 import { Page404 } from 'client-common/page/Page404'
+import { History } from 'history'
+import * as React from 'react'
+import { connect } from 'react-redux'
+import { Route, Router, Switch } from 'react-router-dom'
 import { Footer } from './nav/Footer'
 
 import { Header } from './nav/Header'
@@ -18,7 +19,7 @@ import { Profile } from './page/Profile'
 import { Search } from './page/Search'
 
 interface RoutersProps {
-  history: unknown
+  history: History
 }
 
 interface RoutersStateProps {
