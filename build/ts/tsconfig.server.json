@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../bin/functions",
+    "baseUrl": "../../",
+    "rootDirs": [
+      "./src/server",
+      "./src/shared"
+    ],
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "noEmitHelpers": false,
+    "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "shared/*": ["./src/shared/*"]
+    }
+  },
+  "include": [
+    "../../src/shared/**/*.ts",
+    "../../src/server/**/*.ts"
+  ]
+}

@@ -1,0 +1,26 @@
+import * as React from 'react'
+import { Icon } from 'client-common/component/general/Icon'
+
+export const ExerciseState = props => {
+  switch (props.value) {
+    case 'active':
+      return (
+        <span className="badge badge-pill badge-success" title="Aktív">
+          {props.short ? <Icon fa="check" /> : 'Aktív'}
+        </span>
+      )
+    case 'archive':
+      return (
+        <span className="badge badge-pill badge-dark" title="Arhivált">
+          {props.short ? <Icon fa="archive" /> : 'Archivált'}
+        </span>
+      )
+    case 'draft':
+    default:
+      return (
+        <span className="badge badge-pill badge-warning" title="Vázlat">
+          {props.short ? <Icon fa="pencil" /> : 'Vázlat'}
+        </span>
+      )
+  }
+}
