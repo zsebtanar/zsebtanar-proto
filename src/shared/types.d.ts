@@ -1,3 +1,4 @@
+
 declare const __DEV__: boolean
 declare const __FN_PATH__: string
 declare const __FB__: any
@@ -7,6 +8,7 @@ declare const __INITIAL_STATE__: any
 declare const __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
 
 declare const Raven: any
+
 
 declare namespace state {
   interface Root {
@@ -267,4 +269,9 @@ declare type Buttontype =
 declare interface BaseModalParams {
   onClose?: () => void
   disableBackdropClose?: boolean
+}
+
+interface FractionNumber {
+  numerator: number
+  denominator: number
 }
