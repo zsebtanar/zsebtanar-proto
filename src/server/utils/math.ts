@@ -1,8 +1,3 @@
-interface FractionNumber {
-  numerator: number
-  denominator: number
-}
-
 export const INVALID_FRACTION_NUMBER: FractionNumber = { numerator: NaN, denominator: NaN }
 
 export function fractionNum(
