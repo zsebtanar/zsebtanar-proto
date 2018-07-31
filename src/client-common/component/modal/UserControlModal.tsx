@@ -75,3 +75,6 @@ export const UserControlModal = connect(mapStateToProps)(
     }
   }
 )
+
+// default export for dynamic import
+export default UserControlModal

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Button } from '../general/Button'
 
-export function ExerciseModal(props) {
+export function ExerciseResultModal(props) {
   return (
     <div className={`modal-dialog`} role="document">
       <div className="modal-content">
@@ -44,3 +44,6 @@ export function ExerciseModal(props) {
     </div>
   )
 }
+
+// default export for dynamic import
+export default ExerciseResultModal

@@ -140,3 +140,6 @@ export class ProviderSignUp extends React.Component<any, any> {
     }
   }
 }
+
+// default export for dynamic import
+export default ProviderSignUp

@@ -175,3 +175,6 @@ Kódblokk.
     </div>
   )
 }
+
+// default export for dynamic import
+export default MarkdownHelpModal

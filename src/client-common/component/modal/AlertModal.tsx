@@ -7,7 +7,7 @@ import { DialogFooter } from './base/DialogFooter'
 
 interface AlertModalProps extends ui.ModalProps {
   buttonType?: Buttontype
-  content:   React.ReactNode
+  content: React.ReactNode
 }
 
 export function AlertModal(props: AlertModalProps) {
@@ -23,3 +23,6 @@ export function AlertModal(props: AlertModalProps) {
     </Dialog>
   )
 }
+
+// default export for dynamic import
+export default AlertModal

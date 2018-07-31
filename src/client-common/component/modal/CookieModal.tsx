@@ -51,3 +51,6 @@ export function CookieModal(props: CookieModalProps) {
     />
   )
 }
+
+// default export for dynamic import
+export default CookieModal

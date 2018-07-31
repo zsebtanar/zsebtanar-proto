@@ -164,3 +164,6 @@ export const FeedbackModal = connect(mapStateToProps)(
     }
   }
 )
+
+// default export for dynamic import
+export default FeedbackModal

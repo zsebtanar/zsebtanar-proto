@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as MD from 'markdown-it'
 import * as katex from 'markdown-it-katex'
-import { imageInit } from '../../../shared/markdown/image-resource/index'
+import { imageInit } from 'shared/markdown/image-resource/index'
 
 interface MarkdownProps {
   className?: string
