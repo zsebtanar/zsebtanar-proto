@@ -107,3 +107,6 @@ export class FileUploadModal extends React.Component<any, any> {
     }
   }
 }
+
+// default export for dynamic import
+export default FileUploadModal

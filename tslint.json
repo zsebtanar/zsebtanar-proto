@@ -17,7 +17,8 @@
     "jsx-no-multiline-js": false,
     "member-access": false,
     "no-string-literal": false,
-    "no-namespace": false
+    "no-namespace": false,
+    "member-ordering": false
   },
   "rulesDirectory": []
 }

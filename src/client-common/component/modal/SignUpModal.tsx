@@ -139,3 +139,6 @@ export const SignUpModal = withRouter(
     }
   )
 )
+
+// default export for dynamic import
+export default SignUpModal

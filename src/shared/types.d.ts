@@ -18,6 +18,7 @@ declare namespace state {
   interface App {
     session: Session
     sideNav: SideNav
+    modal: AppModal
   }
 
   interface Task {
@@ -57,6 +58,17 @@ declare namespace state {
     hints: [{ item: DB.Hint }]
     hintsLeft: number
     validity?: boolean
+  }
+
+  interface AppModal {
+    modals: Modal[]
+    closeModal: (id: string) => void
+  }
+
+  interface Modal {
+    id: string
+    modalComponent: () => Promise<any>
+    parameters: any
   }
 }
 

@@ -413,3 +413,6 @@ a-c\&=b \\\\
     </div>
   )
 }
+
+// default export for dynamic import
+export default EquationHelpModal

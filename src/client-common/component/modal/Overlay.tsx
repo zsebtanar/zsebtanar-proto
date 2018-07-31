@@ -1,49 +1,60 @@
 import * as React from 'react'
-import { identity, pipe } from 'ramda'
 import { connect } from 'react-redux'
 import { closeModal } from 'client-common/store/actions/modal'
+import { Component } from 'react'
+import { DynamicComponent } from '../util/DynamicComponent'
 
-const mapStateToProps = state => state.app.modal
+interface OverlayStateProps extends state.AppModal {}
+
 const body = window.document.body
 
-export const Overlay = connect(
+const mapStateToProps = (state: state.Root) => state.app.modal
+
+export const Overlay = connect<OverlayStateProps, {}, {}>(
   mapStateToProps,
   { closeModal }
 )(
-  /**
-   * @return {null|Element|XML}
-   */
-  function Overlay({ modals, closeModal }) {
-    if (!modals.length) {
-      body.classList.remove('modal-open')
-      return null
-    } else {
-      body.classList.add('modal-open')
-      return (
-        <div>
-          <div className="modal-backdrop fade show" />
-          {modals.map(({ modal: Modal, id, parameters }, idx) => {
-            const close = pipe(
-              parameters.onClose,
-              () => closeModal(id)
-            ) as () => void
-            const hasBackdropClose = !parameters.disableBackdropClose
-            const activeModal = modals.length - 1 === idx ? 'active-modal' : ''
-            const handler = hasBackdropClose
-              ? e => e.target === e.currentTarget && close()
-              : identity
+  class Overlay extends Component<OverlayStateProps> {
+    private backDropClose = (modal: state.Modal) => {
+      const hasBackdropClose = !modal.parameters.disableBackdropClose
+      if (hasBackdropClose) {
+        return event => event.target === event.currentTarget && this.closeModal(modal)
+      }
+    }
 
-            return (
-              <div
-                key={id}
-                className={`d-block modal fade show ${activeModal}`}
-                role="dialog"
-                onClick={handler}
-              >
-                <Modal {...parameters} close={close} />
-              </div>
-            )
-          })}
+    private closeModal = (modal: state.Modal) => () => {
+      modal.parameters.onClose()
+      this.props.closeModal(modal.id)
+    }
+
+    render() {
+      const { modals } = this.props
+      body.classList.toggle('modal-open', !!modals.length)
+      if (modals.length) {
+        return (
+          <div>
+            <div className="modal-backdrop fade show" />
+            {modals.map(this.renderModal)}
+          </div>
+        )
+      }
+      return null
+    }
+
+    private renderModal = (modal, idx) => {
+      const { modals } = this.props
+      const { modalComponent, id, parameters } = modal
+      const close = this.closeModal(modal)
+      const activeModal = modals.length - 1 === idx ? 'active-modal' : ''
+
+      return (
+        <div
+          key={id}
+          className={`d-block modal fade show ${activeModal}`}
+          role="dialog"
+          onClick={this.backDropClose(modal)}
+        >
+          <DynamicComponent comp={modalComponent} props={{ ...parameters, close }} />
         </div>
       )
     }

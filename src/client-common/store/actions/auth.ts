@@ -1,9 +1,8 @@
 import { fireApp } from '../../fireApp'
 import * as ReactGA from 'react-ga'
-import * as firebase from 'firebase'
 import { getUserAction, parseTokenAction } from 'client-common/store/reducers/session'
-import { updateUserProfile } from '../../services/user'
-import { removeUserData } from '../../services/user'
+import { removeUserData, updateUserProfile } from '../../services/user'
+import firebase = require('firebase')
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider
 import FacebookAuthProvider = firebase.auth.FacebookAuthProvider
 
@@ -55,6 +54,10 @@ export function signIn(email, password): any {
       handleError(SIGN_IN_ERROR, dispatch)
     )
   }
+}
+
+export function forgotPassword(email: string): Promise<any> {
+  return AUTH.sendPasswordResetEmail(email, { url: window.location.href })
 }
 
 export function googleSignIn(): any {

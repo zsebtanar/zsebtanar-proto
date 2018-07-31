@@ -6,7 +6,7 @@ const initialState = {
   modals: []
 }
 
-const getModal = pick(['modal', 'parameters'])
+const getModal = pick(['modalComponent', 'parameters'])
 const idNotEq = curry(pipe(propEq('id'), not))
 
 export default function modal(state = initialState, action) {
