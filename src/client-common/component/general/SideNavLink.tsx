@@ -6,12 +6,13 @@ import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router-dom'
 
 interface SideNavLinkProps {
-  to: string
   exact?: boolean
   className?: string
   activeClassName?: string
   isActive?: () => boolean
   children: React.ReactNode
+  to?: string
+  onAction?: () => void
 }
 
 interface SideNavLinkStateProps {
@@ -40,7 +41,12 @@ export const SideNavLink = pipe(
   const linkTo = e => {
     e.preventDefault()
     props.closeSideNav()
-    props.history.push(props.to)
+    if (props.to) {
+      props.history.push(props.to)
+    }
+    if (props.onAction){
+      props.onAction()
+    }
   }
 
   return (

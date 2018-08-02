@@ -7,6 +7,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router-dom'
+import { openSignInModal, openSignUpModal } from '../../client-common/store/actions/modal'
 
 interface SideNavStateProps {
   session: state.Session
@@ -16,6 +17,8 @@ interface SideNavStateProps {
 interface SideNavDispatchProps {
   signOut: typeof signOut
   closeSideNav: typeof closeSideNav
+  openSignInModal: typeof openSignInModal
+  openSignUpModal: typeof openSignUpModal
 }
 
 const mapStateToProps = (state: state.Root) => ({
@@ -27,10 +30,10 @@ export const SideNav = pipe(
   withRouter,
   connect(
     mapStateToProps,
-    { signOut, closeSideNav }
+    { signOut, closeSideNav, openSignInModal, openSignUpModal }
   )
 )(function SideNavComp(props: SideNavStateProps & SideNavDispatchProps & RouteComponentProps<{}>) {
-  if (!props.session.signedIn || !props.sideNavActive) {
+  if (!props.sideNavActive) {
     return <div />
   }
 
@@ -70,12 +73,12 @@ export const SideNav = pipe(
                 ]
               : [
                   <li className="nav-item" key="sign-up">
-                    <SideNavLink activeClassName="active" className="nav-link" to="/sign-up">
+                    <SideNavLink activeClassName="active" className="nav-link" onAction={props.openSignUpModal}>
                       <i className="fa fa-plus" /> Regisztráció
                     </SideNavLink>
                   </li>,
                   <li className="nav-item" key="sign-in">
-                    <SideNavLink activeClassName="active" className="nav-link" to="/sign-in">
+                    <SideNavLink activeClassName="active" className="nav-link" onAction={props.openSignInModal}>
                       <i className="fa fa-sign-in" /> Belépés
                     </SideNavLink>
                   </li>
