@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./bin",
+    "sourceMap": true,
+    "skipDefaultLibCheck": true,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "pretty": true,
+    "lib": ["esnext", "dom"],
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "react"
+  },
+  "typeRoots": ["node_modules/@types"],
+  "exclude": ["node_modules"]
+}

@@ -23,7 +23,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v4-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
+          - v4-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v4-dependencies-
 
@@ -39,7 +39,7 @@ jobs:
           paths:
             - node_modules
             - bin/function/node_modules
-          key: v4-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
+          key: v4-dependencies-{{ checksum "package.json" }}
 
       - deploy:
           name: Deploy on Test
@@ -65,7 +65,7 @@ jobs:
        # Download and cache dependencies
       - restore_cache:
           keys:
-          - v4-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
+          - v4-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v4-dependencies-
 
@@ -81,12 +81,37 @@ jobs:
           paths:
             - node_modules
             - bin/function/node_modules
-          key: v4-dependencies-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
+          key: v4-dependencies-{{ checksum "package.json" }}
 
       - deploy:
           name: Deploy on Producetion
           command: |
             ./node_modules/.bin/firebase deploy --project=prod --token=$PROD_FIREBASE_DEPLOY_TOKEN
+
+  build-ci:
+    docker:
+    - image: circleci/node:8.5
+    environment:
+      NODE_ENV: test
+      SERVER_ENV: test
+
+    working_directory: ~/repo
+
+    steps:
+    - checkout
+
+    # Download and cache dependencies
+    - restore_cache:
+        keys:
+        - v4-dependencies-{{ checksum "package.json" }}
+        # fallback to using the latest cache if no exact match is found
+        - v4-dependencies-
+
+    - run: npm install
+
+    - run: npm rebuild node-sass
+
+    - run: npm test
 
 workflows:
   version: 2
@@ -100,3 +125,9 @@ workflows:
           filters:
            branches:
               only: master
+      - build-ci:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - master
