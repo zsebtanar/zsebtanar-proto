@@ -16,6 +16,7 @@ export function DropdownToggle(props: DropdownToggle) {
       aria-haspopup="true"
       aria-expanded={props.active}
       title={props.title}
+      href="#"
     >
       {props.children}
     </a>
