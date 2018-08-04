@@ -19,6 +19,7 @@ import { About } from 'client-common/page/About'
 import { Footer } from './nav/Footer'
 import { AdminUtils } from './page/AdminUtils'
 import { ExercisePreview } from './page/ExercisePreview'
+import { isAdmin } from '../client-common/services/user'
 
 interface RoutesProps {
   history: History
@@ -50,7 +51,7 @@ function RouteContent(props: RoutesStateProps & RoutesProps) {
       </div>
     )
   }
-  if (props.session.signedIn) {
+  if (props.session.signedIn && isAdmin(props.session.token)) {
     return (
       <Router history={props.history}>
         <AdminRoutes />

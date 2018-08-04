@@ -39,9 +39,18 @@ export const SignInModal = pipe(
   let emailField
   let pwField
 
-  console.log(props)
-  const onSubmit = e => {
-    e.preventDefault()
+  const googleSignIn = () => {
+    props.googleSignIn()
+    props.close()
+  }
+
+  const facebookSignIn = () => {
+    props.facebookSignIn()
+    props.close()
+  }
+
+  const onSubmit = event => {
+    event.preventDefault()
     // TODO: remove promise return and use redux store
     props.signIn(emailField.value, pwField.value).then(({ error }) => {
       if (!error) {
@@ -91,15 +100,12 @@ export const SignInModal = pipe(
           <div className="col-10 mx-auto my-5">
             <ul className="list-unstyled">
               <li className="my-1">
-                <Button onAction={props.googleSignIn} className="btn btn-outline-primary btn-block">
+                <Button onAction={googleSignIn} className="btn btn-outline-primary btn-block">
                   <i className="fa fa-lg fa-google" /> Google fiókkal
                 </Button>
               </li>
               <li className="my-1">
-                <Button
-                  onAction={props.facebookSignIn}
-                  className="btn btn-outline-primary btn-block"
-                >
+                <Button onAction={facebookSignIn} className="btn btn-outline-primary btn-block">
                   <i className="fa fa-lg fa-facebook" /> Facebook fiókkal
                 </Button>
               </li>
