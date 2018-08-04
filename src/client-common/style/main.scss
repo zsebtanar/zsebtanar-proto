@@ -222,17 +222,9 @@ body {
 }
 
 .desktop-header .user-menu {
-  .nav-link:focus,
-  .nav-link:active,
-  .nav-link:hover {
-    background: transparent !important;
-    .fa-stack:first-child {
-      color: $primary !important;
-    }
-  }
   .dropdown-menu {
     position: absolute;
-    transform: translate3d(-98px, 44px, 0px);
+    transform: translate3d(-80px, 44px, 0px);
     top: 0;
     left: 0;
     will-change: transform;
@@ -343,4 +335,8 @@ body {
   .user-control-row .user-control {
     width: 100%;
   }
+}
+
+.fa-stack {
+  color: $body-color;
 }
