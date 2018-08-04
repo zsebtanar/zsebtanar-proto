@@ -61,6 +61,7 @@ export const FractionNumberAdmin = connect(undefined, { openInputModal })(
             <div className="col-7">
               <input
                 type="number"
+                inputMode="numeric"
                 name="numerator"
                 onChange={this.setSolution}
                 className="form-control"
@@ -74,6 +75,7 @@ export const FractionNumberAdmin = connect(undefined, { openInputModal })(
             <div className="col-7">
               <input
                 type="number"
+                inputMode="numeric"
                 name="denominator"
                 onChange={this.setSolution}
                 className="form-control"

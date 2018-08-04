@@ -57,6 +57,7 @@ export class NumberList extends React.Component<any, any> {
       <input
         name={id}
         type="number"
+        inputMode="numeric"
         className="form-control value mx-1"
         onChange={this.setSolution}
         value={pathOr(this.state.solutions, ['props', 'value', 'options'], this)[id]}
