@@ -64,7 +64,7 @@ export const SingleNumberAdmin = connect(undefined, { openInputModal })(
             <div className="col-7">
               <input
                 type="number"
-                inputMode="numeric"
+                inputMode="decimal"
                 onChange={this.setFractionDigits}
                 className="form-control"
                 value={fractionDigits}
@@ -79,7 +79,7 @@ export const SingleNumberAdmin = connect(undefined, { openInputModal })(
             <div className="col-7">
               <input
                 type="number"
-                inputMode="numeric"
+                inputMode="decimal"
                 onChange={this.setSolution}
                 className="form-control"
                 value={solution}

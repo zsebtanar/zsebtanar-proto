@@ -44,7 +44,7 @@ export class FractionNumberComponent extends React.Component<FractionNumberProps
             <input
               name="numerator"
               type="number"
-              inputMode="numeric"
+              inputMode="decimal"
               className="form-control"
               value={this.props.value && this.props.value.numerator}
               onChange={this.setSolution}
@@ -56,7 +56,7 @@ export class FractionNumberComponent extends React.Component<FractionNumberProps
             <input
               name="denominator"
               type="number"
-              inputMode="numeric"
+              inputMode="decimal"
               className="form-control"
               value={this.props.value && this.props.value.denominator}
               onChange={this.setSolution}
