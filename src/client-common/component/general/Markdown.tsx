@@ -28,7 +28,7 @@ export const Markdown = class extends React.PureComponent<MarkdownProps, {}> {
   }
 
   private initMark(){
-    this.markRE = new RegExp(`(${matchAllHunVowel(this.props.mark)})`, 'gi')
+    this.markRE = this.props.mark && new RegExp(`(${matchAllHunVowel(this.props.mark)})`, 'gi')
   }
 
   private initMD(options, resources) {
