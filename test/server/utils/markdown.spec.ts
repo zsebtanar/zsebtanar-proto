@@ -38,5 +38,16 @@ Tehát a másik megoldás $-4$.`
         'szorozzuk meg mindkét oldalt vonjunk ki mindkét oldalból tehát a másik megoldás'
       expect(unTokeniseMarkdown(text)).toBe(result)
     })
+
+    it('should clean complex text 2', () => {
+      const text = `Adott a valós számok halmazán értelmezett $f$ függvény:
+
+$$f:x\\mapsto(x-1)^2-4.$$
+
+- Számítsa ki az $f$ függvény $x=-5$ helyen felvett helyettesítési értékét!`
+      const result =
+        'adott a valós számok halmazán értelmezett függvény számítsa ki az függvény helyen felvett helyettesítési értékét'
+      expect(unTokeniseMarkdown(text)).toBe(result)
+    })
   })
 })
