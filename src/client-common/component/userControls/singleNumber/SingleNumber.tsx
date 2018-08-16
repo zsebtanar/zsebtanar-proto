@@ -21,6 +21,7 @@ export function SingleNumber(props) {
           <input
             name={props.name}
             type="number"
+            inputMode="decimal"
             className="form-control col-4 mx-1"
             onChange={setSolution}
             value={props.value}

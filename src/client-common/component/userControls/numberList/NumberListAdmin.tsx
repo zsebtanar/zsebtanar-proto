@@ -130,6 +130,7 @@ export const NumberListAdmin = connect(
             <div className="col-7">
               <input
                 type="number"
+                inputMode="decimal"
                 onChange={this.setFractionDigits}
                 className="form-control"
                 value={fractionDigits}
@@ -192,6 +193,7 @@ export const NumberListAdmin = connect(
               <input
                 key={key}
                 type="number"
+                inputMode="decimal"
                 name={key}
                 onChange={this.setSolution}
                 className="form-control mt-1"
