@@ -16,7 +16,7 @@ export const cloudFnRequest = (method, path, params, data, options) => {
   const opt = Object.assign({}, options)
 
   return Promise.resolve({
-    baseURL: `${__FN_PATH__}/${path}`,
+    baseURL: `${__CONFIG__.api}/${path}`,
     method,
     path,
     data,

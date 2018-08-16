@@ -4,16 +4,27 @@ import { openFeedbackModal } from 'client-common/store/actions/modal'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
-export const Footer = connect(undefined, { openFeedbackModal })(function FooterComp(props) {
-  return (
-    <footer className="footer">
-      <p>
-        &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
-        {' - '}
-        <Link onAction={props.openFeedbackModal}>Visszajelzés</Link>
-        {' - '}
-        <NavLink to="/about">Rólunk</NavLink>
-      </p>
-    </footer>
-  )
-})
+interface FooterDispatchProps {
+  openFeedbackModal: typeof openFeedbackModal
+}
+
+export const Footer = connect<{}, FooterDispatchProps, {}>(
+  undefined,
+  { openFeedbackModal }
+)(
+  class FooterComp extends React.PureComponent<FooterDispatchProps> {
+    render() {
+      return (
+        <footer className="footer">
+          <p>
+            &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
+            {' - '}
+            <Link onAction={this.props.openFeedbackModal}>Visszajelzés</Link>
+            {' - '}
+            <NavLink to="/about">Rólunk</NavLink>
+          </p>
+        </footer>
+      )
+    }
+  }
+)
