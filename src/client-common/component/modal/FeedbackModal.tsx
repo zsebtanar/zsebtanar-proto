@@ -115,7 +115,7 @@ export const FeedbackModal = connect(mapStateToProps)(
                   this.feedbackNoteField = inp
                 }}
               />
-              <label className="custom-control-label">Megjegyzés</label>
+              <label className="custom-control-label" htmlFor="id-feedback-type-1">Megjegyzés</label>
             </div>
             <div className="custom-control custom-radio">
               <input
@@ -130,7 +130,7 @@ export const FeedbackModal = connect(mapStateToProps)(
                   this.feedbackErrorField = inp
                 }}
               />
-              <label className="custom-control-label">Hibabejelentés</label>
+              <label className="custom-control-label" htmlFor="id-feedback-type-2">Hibabejelentés</label>
             </div>
           </div>
           <div className="form-group">

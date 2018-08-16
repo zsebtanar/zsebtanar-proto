@@ -17,6 +17,7 @@ import { ExercisesByTopic } from './page/ExercisesByTopic'
 import { Home } from './page/Home'
 import { Profile } from './page/Profile'
 import { Search } from './page/Search'
+import { Workarounds } from '../client-common/page/Workarounds'
 
 interface RoutersProps {
   history: History
@@ -55,6 +56,7 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
                 <Route path="/exercise/:key" component={withTracker(Exercise)} />
                 <Route path="/search" component={withTracker(Search)} />
                 <Route path="/about" component={withTracker(About)} />
+                <Route path="/support" component={withTracker(Workarounds)} />
                 <Route component={withTracker(Page404)} />
               </Switch>
             </div>
