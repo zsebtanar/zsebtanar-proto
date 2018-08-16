@@ -8,19 +8,23 @@ interface FooterDispatchProps {
   openFeedbackModal: typeof openFeedbackModal
 }
 
-export const Footer = connect<{}, FooterDispatchProps, {}>(
+export const Footer = connect<any, FooterDispatchProps>(
   undefined,
   { openFeedbackModal }
-)(function FooterComp(props: FooterDispatchProps) {
-  return (
-    <footer className="footer">
-      <p>
-        &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
-        {' - '}
-        <Link onAction={props.openFeedbackModal}>Visszajelzés</Link>
-        {' - '}
-        <NavLink to="/about">Rólunk</NavLink>
-      </p>
-    </footer>
-  )
-})
+)(
+  class FooterComp extends React.PureComponent<FooterDispatchProps> {
+    render() {
+      return (
+        <footer className="footer">
+          <p>
+            &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
+            {' - '}
+            <Link onAction={this.props.openFeedbackModal}>Visszajelzés</Link>
+            {' - '}
+            <NavLink to="/about">Rólunk</NavLink>
+          </p>
+        </footer>
+      )
+    }
+  }
+)

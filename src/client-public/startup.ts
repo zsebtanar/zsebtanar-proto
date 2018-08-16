@@ -5,7 +5,7 @@ import { initClassifications } from './store/classification'
 import { initAuthWatch } from 'client-common/store/actions/auth'
 import { initHistory } from 'client-common/history'
 
-ReactGA.initialize(__GA__.ua, { debug: __DEV__ })
+ReactGA.initialize(__CONFIG__.ga.ua, { debug: __DEV__ })
 ReactGA.pageview(window.location.pathname + window.location.search)
 
 export function startup() {

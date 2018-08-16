@@ -36,6 +36,7 @@ CI kulcs generálás:
 Cloud function konfigurálása
 
     firebase --project=... functions:config:set algolia.app_id="AppId" algolia.api_key="AdminApiKey"
+    firebase --project=... functions:config:set recaptcha.secret_key="SecretKey"
  
 ### Service account credentials Firebase storage-hez
 

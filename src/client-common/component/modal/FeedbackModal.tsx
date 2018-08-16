@@ -1,19 +1,37 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import ReCAPTCHA from 'react-google-recaptcha'
 import { pathOr, prop, propEq } from 'ramda'
 import { createFeedback } from 'client-common/services/feedback'
 import { Loading } from 'client-common/component/general/Loading'
 import { Button } from 'client-common/component/general/Button'
+import { DialogHeader } from './base/DialogHeader'
+import { DialogBody } from './base/DialogBody'
+import { DialogFooter } from './base/DialogFooter'
+import { Dialog } from './base/Dialog'
+
+interface FeedbackModalProps {
+  session: state.Session
+}
+
+interface FeedbackModalState {
+  state: 'init' | 'loading' | 'finished' | 'error'
+  capthca?: string
+}
 
 const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export const FeedbackModal = connect(mapStateToProps)(
-  class FeedbackModal extends React.Component<any, any> {
+export const FeedbackModal = connect<{}, FeedbackModalProps, ui.ModalProps>(mapStateToProps)(
+  class FeedbackModal extends React.Component<
+    FeedbackModalProps & ui.ModalProps,
+    FeedbackModalState
+  > {
     state = {
-      state: 'init'
-    }
+      state: 'init',
+      capthca: undefined
+    } as FeedbackModalState
 
     private feedbackErrorField
     private feedbackNoteField
@@ -28,32 +46,29 @@ export const FeedbackModal = connect(mapStateToProps)(
       createFeedback({
         type: types.filter(propEq('checked', true)).map(prop('value'))[0],
         site: defaultSite,
+        pathname: window.location.pathname,
         email: this.emailField.value,
-        description: this.descriptionField.value
-      }).then(() => this.setState({ state: 'finished' }))
+        description: this.descriptionField.value,
+        'g-recaptcha-response': this.state.capthca
+      })
+        .then(() => this.setState({ state: 'finished' }))
+        .catch(() => this.setState({ state: 'error' }))
+    }
+
+    private captchaUpdate = capthca => {
+      this.setState({ capthca })
     }
 
     render() {
       const props = this.props
       return (
-        <div className="modal-dialog" role="document">
+        <Dialog className="feedback">
+          <DialogHeader onClose={props.close}>Visszajelzés</DialogHeader>
           <form onSubmit={this.saveDetails}>
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Visszajelzés</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-                  <span aria-hidden={true} onClick={props.close}>
-                    &times;
-                  </span>
-                </button>
-              </div>
-
-              <div className="modal-body">{this.renderContent()}</div>
-
-              <div className="modal-footer text-center">{this.renderFooter()}</div>
-            </div>
+            <DialogBody>{this.renderContent()}</DialogBody>
+            <DialogFooter>{this.renderFooter()}</DialogFooter>
           </form>
-        </div>
+        </Dialog>
       )
     }
 
@@ -69,6 +84,13 @@ export const FeedbackModal = connect(mapStateToProps)(
           )
         case 'finished':
           return <div className="msg-block">Köszönjük a visszajelzést.</div>
+        case 'error':
+          return (
+            <div className="msg-block text-danger">
+              Nem várt hiba törtétn.
+              <br /> Kérlek próbáld újra később
+            </div>
+          )
       }
     }
 
@@ -77,8 +99,9 @@ export const FeedbackModal = connect(mapStateToProps)(
         case 'init':
           return (
             <div>
-              <Button onAction={this.props.close}>Mégsem</Button>&nbsp;
-              <Button submit primary>
+              <Button onAction={this.props.close}>Mégsem</Button>
+              &nbsp;
+              <Button submit primary disabled={!this.state.capthca}>
                 Küldés
               </Button>
             </div>
@@ -137,6 +160,7 @@ export const FeedbackModal = connect(mapStateToProps)(
             <input
               type="mail"
               id="id-feedback-email"
+              name="email"
               className="form-control"
               placeholder="E-mail cím"
               defaultValue={email !== false ? email : ''}
@@ -153,12 +177,15 @@ export const FeedbackModal = connect(mapStateToProps)(
               id="id-feedback-txt"
               className="form-control"
               required
+              name="description"
               rows={10}
+              maxLength={1024}
               ref={inp => {
                 this.descriptionField = inp
               }}
             />
           </div>
+          <ReCAPTCHA sitekey={__CONFIG__.recaptcha.siteKey} onChange={this.captchaUpdate} />
         </div>
       )
     }

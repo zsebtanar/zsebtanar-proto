@@ -148,10 +148,7 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
-      __FN_PATH__: JSON.stringify(envConfig.api),
-      __ALGOLIA__: JSON.stringify(envConfig.algolia),
-      __FB__: JSON.stringify(envConfig.firebase),
-      __GA__: JSON.stringify(envConfig.ga)
+      __CONFIG__: JSON.stringify(envConfig)
     })
   ].concat(
     isDev
