@@ -19,9 +19,11 @@ export const Footer = connect<{}, FooterDispatchProps, {}>(
           <p>
             &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
             {' - '}
+            <NavLink to="/about">Rólunk</NavLink>
+            {' - '}
             <Link onAction={this.props.openFeedbackModal}>Visszajelzés</Link>
             {' - '}
-            <NavLink to="/about">Rólunk</NavLink>
+            <NavLink to="/support">Hibaelhárítás</NavLink>
           </p>
         </footer>
       )
