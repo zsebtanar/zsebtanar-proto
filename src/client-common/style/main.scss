@@ -1,9 +1,10 @@
-@import '../../../node_modules/bootstrap/scss/bootstrap';
+@import "bootstrap";
 
 /* Space out content a bit */
 html,
 body,
 #root,
+#root > div,
 .app,
 .container {
   height: 100%;
@@ -14,14 +15,13 @@ body {
   padding-bottom: 1.5rem;
 }
 
-.app {
-  .container {
+.app-container {
     display: flex;
     flex-flow: column;
-    .content {
+    .app-content {
       flex: 1 0 auto;
     }
-  }
+
 }
 
 .logo {
@@ -209,6 +209,8 @@ body {
   z-index: 10;
 }
 .sidebar .sidebar-content {
+  position: absolute;
+  right: 0;
   z-index: 10;
   background: white;
   width: 90%;
@@ -331,11 +333,6 @@ body {
   }
 }
 
-.exercise-page {
-  .user-control-row .user-control {
-    width: 100%;
-  }
-}
 
 .fa-stack {
   color: $body-color;

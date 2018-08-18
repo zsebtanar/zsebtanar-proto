@@ -91,18 +91,18 @@ export const Header = connect<HeaderStateProps, HeaderDispatchProps, {}>(
       </div>
 
       <div className="mobile-header ">
+        <NavLink exact to="/" className="logo-link float-left">
+          <h4 className="text-muted logo" />
+        </NavLink>
+
         <Button
-          className="navbar-toggler float-left"
+          className="navbar-toggler float-right"
           onAction={props.openSideNav}
           aria-expanded={props.sideNav.active}
           aria-label="Menü megnyitása"
         >
           <span className="fa fa-bars fa-lg" />
         </Button>
-
-        <NavLink exact to="/" className="logo-link float-right">
-          <h4 className="text-muted logo" />
-        </NavLink>
       </div>
     </div>
   )

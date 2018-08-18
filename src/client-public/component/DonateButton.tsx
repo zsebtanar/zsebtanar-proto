@@ -2,7 +2,7 @@ import * as React from 'react'
 
 export function DonateButton() {
   return (
-    <div className="text-center" style={{ padding: 60 + 'px' }}>
+    <div className="text-center pt-5">
       <p>
         <i>Tetszik az oldal? Támogasd munkánkat, hogy még jobb legyen!</i>
       </p>

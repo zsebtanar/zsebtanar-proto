@@ -3,6 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="keywords" content="matematika, érettségi, tanulás, gyakorlás, felkészülés"/>
+    <meta name="description" content="A Zsebtanár egy interaktív feladatgyűjtemény, aminek a célja, hogy ingyenes segítséget nyújtson a tanulásban, főként a középszintű matematika érettségire való felkészítésben."/>
+    <meta name="subject" content="Zsebtanár">
+    <meta name="copyright" content="Zsebtanár Nonprofit Alapítvány">
+    <meta name="language" content="HU">
+    <meta name="Classification" content="Education">
+    <meta name="url" content="https://www.zsebtanar.hu">
+
+    <meta name="og:title" content="Zsebtanár"/>
+    <meta name="og:type" content="website"/>
+    <meta name="og:url" content="https://www.zsebtanar.hu"/>
+    <meta name="og:image" content="https://www.zsebtanar.hu/assets/icons/logo-192.png"/>
+    <meta name="og:site_name" content="Zsebtanár"/>
+
     <link rel="icon" href="/favicon.ico?v=2">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin />
@@ -11,7 +26,17 @@
     <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-<div id="root"></div>
+<noscript>
+    <div class="container">
+        <h1 class="my-5">Üdv a Zsebtanár oldalon!</h1>
+        <p class="alert alert-warning">
+            Az oldal megfelelő működéséhez JavaScript futtatására alkalmas böngészőre van szükséged.
+        </p>
+    </div>
+</noscript>
+<div id="root">
+    <div class="app"><div><div class="text-center my-5"><span><i class="fa fa-cog fa-spin fa-2x fa-fw"></i>&nbsp;Kis türelmet ...</span></div></div></div>
+</div>
 
 <% if (htmlWebpackPlugin.options.env.sentry) { %>
     <!-- Load Sentry -->
