@@ -1,0 +1,340 @@
+@import "shard";
+@import "bootstrap-admin";
+
+/* Space out content a bit */
+html,
+body,
+#root,
+#root > div,
+.app,
+.container {
+  height: 100%;
+}
+
+body {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.app-container {
+    display: flex;
+    flex-flow: column;
+    .app-content {
+      flex: 1 0 auto;
+    }
+
+}
+
+.logo {
+  background: url('/assets/logo.png') no-repeat left center;
+  background-size: contain;
+  padding-left: 2.5em;
+  height: 2em;
+  line-height: 2em;
+}
+
+.header,
+.footer {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 0.05rem solid #e5e5e5;
+}
+/* Custom page footer */
+.footer {
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  color: #777;
+  border-top: 0.05rem solid #e5e5e5;
+}
+.modal.show .modal-dialog {
+  z-index: 1100;
+}
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 48em) {
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+/* Space out the masthead */
+.header {
+  margin-bottom: 2rem;
+}
+
+.single-number input {
+  width: 100px;
+}
+.single-number-admin input {
+  width: 100%;
+}
+.user-control span > p {
+  margin: 0;
+}
+
+.exercise-list-table .action-column {
+  width: 12em;
+}
+.exercise-list-table .grade-column {
+  width: 7em;
+}
+.jumbotron {
+  background: transparent;
+
+  .or-label {
+    display: inline-flex;
+    align-items: center;
+
+    &:after,
+    &:before {
+      content: '';
+      width: 3rem;
+      height: 1px;
+      background: $text-muted;
+      display: inline-block;
+      margin: 0 0.5rem;
+    }
+  }
+}
+
+.markdown {
+  width: 100%;
+}
+.markdown.d-inline-block {
+  width: auto;
+}
+
+.msg-block {
+  min-height: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  resize: vertical;
+  overflow: auto;
+  text-align: center;
+}
+
+.msg-block .block-item {
+  margin: auto;
+}
+
+.file-manager .modal-body {
+  min-height: 20rem;
+}
+.file-manager figure {
+  margin: 0;
+  width: 100px;
+}
+.file-manager figure .img {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.dnd-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(221, 221, 221, 0.5);
+  border: 0.5rem dashed #007bff;
+  border-radius: 0.5em;
+  z-index: 10000;
+}
+
+.dnd-overlay .msg-block {
+  background: white;
+  width: 50%;
+  margin: auto;
+  border-radius: 2rem;
+  min-width: 25rem;
+  max-width: 100%;
+}
+
+.is-dragover .dnd-overlay {
+  display: flex;
+}
+
+.upload-thumbnail {
+  max-width: 100px;
+}
+
+.modal.fade {
+  pointer-events: none;
+  filter: contrast(30%);
+}
+.modal.fade.active-modal {
+  pointer-events: auto;
+  filter: none;
+}
+
+.header .desktop-header {
+  display: none;
+}
+.mobile-header {
+  position: relative;
+  margin: 0 -1rem;
+}
+.mobile-header .logo {
+  height: 2rem;
+  padding-left: 2rem;
+}
+
+@media (min-width: 768px) {
+  .header .desktop-header {
+    display: block;
+  }
+  .header .mobile-header,
+  .sidebar {
+    display: none;
+  }
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+.sidebar .sidebar-content {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  background: white;
+  width: 90%;
+  max-width: 20rem;
+  height: 100%;
+}
+
+.mn-left-side {
+  position: absolute;
+  left: 0;
+}
+
+.desktop-header .user-menu {
+  .dropdown-menu {
+    position: absolute;
+    transform: translate3d(-80px, 44px, 0px);
+    top: 0;
+    left: 0;
+    will-change: transform;
+  }
+}
+
+.desktop-header .dropdown-menu {
+  top: 85%;
+}
+
+.search-input-group {
+  position: relative;
+  .search-label {
+    position: absolute;
+    top: 0.5em;
+    left: 0.75em;
+  }
+  input {
+    padding-left: 2.5em;
+  }
+}
+.algolia-logo {
+  height: 1.5em;
+}
+
+.profile-page {
+  .picture-col {
+    padding: 1rem;
+  }
+  .data-col {
+    padding: 1rem;
+    border-left: 1px solid #eee;
+  }
+}
+
+.card-header-sm {
+  padding: 0.25rem 1rem;
+}
+
+.add-file-to-exercise {
+  .custom-file-label::after {
+    width: 100%;
+    text-align: center;
+    content: none;
+  }
+}
+
+.seq:after {
+  content: ',';
+}
+.seq:last-child:after {
+  content: none;
+}
+
+.user-control.fraction-number {
+  .input-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 8rem;
+    margin: 0 1rem;
+
+    input {
+      margin: 0;
+      width: 80%;
+      text-align: center;
+      padding-right: 0;
+    }
+  }
+  hr {
+    width: 100%;
+    border-top: 2px solid #333;
+  }
+}
+
+.user-control.number-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  .item {
+    display: flex;
+    align-items: center;
+    margin: 0.25rem;
+    input {
+      min-width: 6rem;
+      width: 6rem;
+    }
+  }
+  .markdown {
+    width: auto;
+  }
+  &.multiline {
+    display: block;
+    .prefix,
+    .postfix {
+      display: block;
+    }
+    .item {
+      margin: 0.5rem 1rem;
+      input {
+        width: 10rem;
+      }
+    }
+  }
+}
+
+
+.fa-stack {
+  color: $body-color;
+}
