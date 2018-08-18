@@ -7,12 +7,20 @@ import { Loading } from 'client-common/component/general/Loading'
 import { Icon } from 'client-common/component/general/Icon'
 import { search } from 'client-common/services/search'
 import { getQueryParams } from 'client-common/util/url'
+import { withTracker } from '../../client-common/component/hoc/withTracker'
+import { pipe } from 'ramda'
 
 const mapStateToProps = state => ({
   session: state.app.session
 })
 
-export const Search = connect(mapStateToProps, {})(
+export const Search = pipe(
+  withTracker,
+  connect(
+    mapStateToProps,
+    {}
+  )
+)(
   class Search extends React.Component<any, any> {
     state = { list: undefined, error: undefined, loading: false, term: '' }
 

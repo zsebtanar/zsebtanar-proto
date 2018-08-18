@@ -96,7 +96,7 @@ export const ExercisesByTopic = pipe(
       )
     }
 
-    private renderListItem(ex) {
+    private renderListItem = (ex) => {
       return (
         <NavLink
           key={ex._key}
@@ -111,7 +111,7 @@ export const ExercisesByTopic = pipe(
       )
     }
 
-    private renderTag(tag) {
+    private renderTag = (tag) => {
       return (
         <span className="badge badge-secondary mx-1" key={tag}>
           {this.state.classification[TAGS][tag].name}

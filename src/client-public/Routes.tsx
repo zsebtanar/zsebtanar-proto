@@ -43,7 +43,7 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
           </div>
         ) : (
           <Switch>
-            <Route exact path="/exercise/:key" component={withTracker(Exercise)} />
+            <Route exact path="/exercise/:key" component={Exercise} />
             <Route component={App(props)} />
           </Switch>
         )}
@@ -64,7 +64,7 @@ const App = props => () => {
           {props.session.signedIn && <Route path="/profile" component={withTracker(Profile)} />}
           <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
           <Route path="/grade/:grade" component={ExercisesByGrade} />
-          <Route path="/search" component={withTracker(Search)} />
+          <Route path="/search" component={Search} />
           <Route path="/about" component={withTracker(About)} />
           <Route path="/support" component={withTracker(Workarounds)} />
           <Route component={withTracker(Page404)} />

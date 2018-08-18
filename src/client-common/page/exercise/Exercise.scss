@@ -43,7 +43,7 @@
     height: 7rem;
     width: 100%;
     left: 0;
-    background: white;
+    background: theme-color-level("secondary", $alert-bg-level);
     box-shadow: 0 0 2rem 1rem white;
     z-index: 10;
 

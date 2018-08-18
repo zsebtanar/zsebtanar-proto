@@ -15,6 +15,7 @@ import { Icon } from 'client-common/component/general/Icon'
 
 interface SubTaskProps {
   id: string
+  isFirst: boolean
   exerciseId: string
   task: state.SubTask
   resources: MarkdownResources
@@ -95,7 +96,10 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
     private onChange = ({ name, value }) => this.setState(assocPath(['solutions', name], value))
 
     private registerRef = ref => {
-      ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+      console.log('xxx', this.props.isFirst)
+      if (!this.props.isFirst && ref) {
+        ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+      }
     }
 
     render() {
