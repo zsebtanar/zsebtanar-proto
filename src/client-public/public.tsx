@@ -9,12 +9,14 @@ import 'bootstrap/scss/bootstrap.scss'
 import 'client-common/style/main.scss'
 
 startup().then(({ store, history }) => {
+  const root = document.getElementById('root')
+  root.innerHTML = ''
   render(
     <Provider store={store}>
       <Recaptcha>
         <Routes history={history} />
       </Recaptcha>
     </Provider>,
-    document.getElementById('root')
+    root
   )
 })

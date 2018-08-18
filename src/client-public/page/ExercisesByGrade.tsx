@@ -51,13 +51,13 @@ export const ExercisesByGrade = pipe(withRouter, connect(mapStateToProps))(
       if (!classification) return <div />
 
       return (
-        <div>
-          <h2>{classification.grade[grade].name}</h2>
+        <div className="row">
+          <h2 className="col-12 my-4">{classification.grade[grade].name}</h2>
 
           {!this.state.exercises ? (
             <Loading />
           ) : (
-            <div className="list-group col-10 mx-auto">
+            <div className="list-group col-md-10 col-sm -12 mx-auto">
               {this.state.exercises.map(ex => (
                 <NavLink
                   key={ex._key}

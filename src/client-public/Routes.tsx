@@ -42,29 +42,35 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
             <Loading />
           </div>
         ) : (
-          <div className="container">
-            <Header />
-            <SideNav />
-            <div className="content">
-              <Switch>
-                <Route path="/" exact component={withTracker(Home)} />
-                {props.session.signedIn && (
-                  <Route path="/profile" component={withTracker(Profile)} />
-                )}
-                <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
-                <Route path="/grade/:grade" component={ExercisesByGrade} />
-                <Route path="/exercise/:key" component={withTracker(Exercise)} />
-                <Route path="/search" component={withTracker(Search)} />
-                <Route path="/about" component={withTracker(About)} />
-                <Route path="/support" component={withTracker(Workarounds)} />
-                <Route component={withTracker(Page404)} />
-              </Switch>
-            </div>
-            <Footer />
-          </div>
+          <Switch>
+            <Route exact path="/exercise/:key" component={withTracker(Exercise)} />
+            <Route component={App(props)} />
+          </Switch>
         )}
         <Overlay />
       </div>
     </Router>
   )
 })
+
+const App = props => () => {
+  return (
+    <div className="container app-container">
+      <Header />
+      <SideNav />
+      <div className="content app-content">
+        <Switch>
+          <Route path="/" exact component={withTracker(Home)} />
+          {props.session.signedIn && <Route path="/profile" component={withTracker(Profile)} />}
+          <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
+          <Route path="/grade/:grade" component={ExercisesByGrade} />
+          <Route path="/search" component={withTracker(Search)} />
+          <Route path="/about" component={withTracker(About)} />
+          <Route path="/support" component={withTracker(Workarounds)} />
+          <Route component={withTracker(Page404)} />
+        </Switch>
+      </div>
+      <Footer />
+    </div>
+  )
+}

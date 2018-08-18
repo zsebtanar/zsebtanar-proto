@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { pathOr, pipe } from 'ramda'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { selectPublicExercisesById } from 'client-common/services/exercise'
 import { getAllClassification, TAGS } from 'client-common/services/classification'
 import { Markdown } from 'client-common/component/general/Markdown'
@@ -9,12 +9,29 @@ import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
 import { trackPage } from 'client-common/component/hoc/withTracker'
 
+interface ExercisesByTopicProps extends RouteComponentProps<{ subject: string; topic: string }> {}
+
+interface ExercisesByTopicStateProps {
+  classification: any
+}
+
+interface ExercisesByTopicState {
+  exercises: any
+  classification: any
+}
+
 const mapStateToProps = state => ({
   classification: state.classification
 })
 
-export const ExercisesByTopic = pipe(withRouter, connect(mapStateToProps))(
-  class extends React.Component<any, any> {
+export const ExercisesByTopic = pipe(
+  withRouter,
+  connect<ExercisesByTopicStateProps, {}, ExercisesByTopicProps>(mapStateToProps)
+)(
+  class extends React.Component<
+    ExercisesByTopicProps & ExercisesByTopicStateProps,
+    ExercisesByTopicState
+  > {
     state = { exercises: undefined, classification: undefined }
 
     componentDidMount() {
@@ -29,7 +46,7 @@ export const ExercisesByTopic = pipe(withRouter, connect(mapStateToProps))(
       }
     }
 
-    initContent(props) {
+    private initContent(props) {
       const { classification, match, location } = props
       const { subject, topic } = match.params
       const subjectName = classification.subject[subject].name
@@ -52,37 +69,53 @@ export const ExercisesByTopic = pipe(withRouter, connect(mapStateToProps))(
       if (!classification) return <div />
 
       return (
-        <div>
-          <h2>
+        <div className="row">
+          <h2 className="col-12 my-4">
             {classification.subject[subject].name}
             <small> {classification.subject[subject].topic[topic].name}</small>
           </h2>
 
-          {!this.state.exercises ? (
-            <Loading />
-          ) : (
-            <div className="list-group col-10 mx-auto">
-              {this.state.exercises.map(ex => (
-                <NavLink
-                  key={ex._key}
-                  to={`/exercise/${ex._key}`}
-                  className="list-group-item list-group-item-action d-flex flex-column align-items-start"
-                >
-                  <div className="mb-1 d-flex w-100 ">
-                    <Markdown source={ex.description} resources={ex.resources} />
-                  </div>
-                  <div>
-                    {ex.classification.tags.map(tag => (
-                      <span className="badge badge-secondary mx-1" key={tag}>
-                        {this.state.classification[TAGS][tag].name}
-                      </span>
-                    ))}
-                  </div>
-                </NavLink>
-              ))}
-            </div>
-          )}
+          {this.renderContent()}
         </div>
+      )
+    }
+
+    private renderContent() {
+      if (this.state.exercises) {
+        return this.renderList()
+      } else {
+        return <Loading />
+      }
+    }
+
+    private renderList() {
+      return (
+        <div className="list-group col-md-10 col-sm -12 mx-auto">
+          {this.state.exercises.map(this.renderListItem)}
+        </div>
+      )
+    }
+
+    private renderListItem(ex) {
+      return (
+        <NavLink
+          key={ex._key}
+          to={`/exercise/${ex._key}`}
+          className="list-group-item list-group-item-action d-flex flex-column align-items-start"
+        >
+          <div className="mb-1 d-flex w-100 ">
+            <Markdown source={ex.description} resources={ex.resources} />
+          </div>
+          <div>{ex.classification.tags.map(this.renderTag)}</div>
+        </NavLink>
+      )
+    }
+
+    private renderTag(tag) {
+      return (
+        <span className="badge badge-secondary mx-1" key={tag}>
+          {this.state.classification[TAGS][tag].name}
+        </span>
       )
     }
   }

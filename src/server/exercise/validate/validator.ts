@@ -7,7 +7,7 @@ const types = {
   'number-list': require('./userControls/numberList').numberList,
   'single-choice': require('./userControls/singleChoice').singleChoice,
   'binary-choice': require('./userControls/binaryChoice').binaryChoiceCheck,
-  'multi-choice': require('./userControls/multiChoice').binaryChoiceCheck
+  'multi-choice': require('./userControls/multiChoice').multiChoiceCheck
 }
 
 type ValidatorFn = (
