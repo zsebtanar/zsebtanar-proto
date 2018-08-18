@@ -37,7 +37,8 @@ interface SubTaskState {
 
 function mapStateToProps(state, ownProps) {
   return {
-    isDone: ownProps.task.status === TASK_STATUS_DONE || ownProps.task.status === TASK_STATUS_PREVIEW
+    isDone:
+      ownProps.task.status === TASK_STATUS_DONE || ownProps.task.status === TASK_STATUS_PREVIEW
   }
 }
 
@@ -63,7 +64,6 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
     }
 
     componentWillUnmount() {
-      console.log('XX remove', this.props.task.details.description)
       document.removeEventListener('keypress', this.onKeyPress)
     }
 
@@ -94,6 +94,10 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
 
     private onChange = ({ name, value }) => this.setState(assocPath(['solutions', name], value))
 
+    private registerRef = ref => {
+      ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+    }
+
     render() {
       const { task, isDone } = this.props
       const { loadingHint, loadingCheck } = this.state
@@ -102,11 +106,9 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
       const className = `exercise-sub-task ${isDone ? 'finished' : ''}`
 
       return (
-        <div className={className}>
+        <div className={className} ref={this.registerRef}>
           {this.renderDescription()}
-          {!isDone && (
-            <div className="form-group hints">{hints && hints.map(this.renderHint)}</div>
-          )}
+          {!isDone && <div className="form-group hints">{hints && hints.map(this.renderHint)}</div>}
 
           <form onSubmit={this.checkSolution}>
             {controls.map(this.renderControl)}
@@ -114,16 +116,17 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
             {!isDone && (
               <div className="exercise-footer">
                 <div className="container ">
-                  {this.state.checkCounter > 0 && task.hintsLeft > 0 && (
-                    <Button
-                      className="btn-link"
-                      onAction={this.getHint}
-                      loading={loadingHint}
-                      disabled={loadingCheck}
-                    >
-                      Kérek segítséget ({task.hintsLeft} maradt)
-                    </Button>
-                  )}
+                  {this.state.checkCounter > 0 &&
+                    task.hintsLeft > 0 && (
+                      <Button
+                        className="btn-link"
+                        onAction={this.getHint}
+                        loading={loadingHint}
+                        disabled={loadingCheck}
+                      >
+                        Kérek segítséget ({task.hintsLeft} maradt)
+                      </Button>
+                    )}
 
                   <Button
                     submit

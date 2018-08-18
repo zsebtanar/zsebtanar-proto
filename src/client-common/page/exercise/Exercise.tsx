@@ -36,7 +36,7 @@ const mapDispatchToProps = {
 
 const isFinished = pathOr(false, ['exercise', 'isFinished'])
 
-export const Exercise: any = pipe(
+export const Exercise = pipe(
   connect(
     mapStateToProps,
     mapDispatchToProps
