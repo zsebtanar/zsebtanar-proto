@@ -15,6 +15,9 @@ module.exports = {
     },
     ga: {
       ua: 'UA-118780906-2'
+    },
+    recaptcha: {
+      siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
     }
   },
   test: {
@@ -42,6 +45,9 @@ module.exports = {
     },
     ga: {
       ua: 'UA-118780906-2'
+    },
+    recaptcha: {
+      siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
     }
   },
   production: {
@@ -69,6 +75,9 @@ module.exports = {
     },
     ga: {
       ua: 'UA-118780906-1'
+    },
+    recaptcha: {
+      siteKey: '6Lf0J2oUAAAAAOmgqlipFG3TqlM4KSpcSngVgNut'
     }
   }
 }
