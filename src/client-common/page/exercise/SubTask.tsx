@@ -96,7 +96,6 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
     private onChange = ({ name, value }) => this.setState(assocPath(['solutions', name], value))
 
     private registerRef = ref => {
-      console.log('xxx', this.props.isFirst)
       if (!this.props.isFirst && ref) {
         ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
       }

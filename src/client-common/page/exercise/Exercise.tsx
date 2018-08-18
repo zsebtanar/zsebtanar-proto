@@ -115,7 +115,6 @@ export const Exercise = pipe(
     }
 
     private renderSubTask(idx, exId, taskId, task, isSingleTask, resources) {
-      console.log('xxx', idx, exId, taskId)
       return (
         <div className="row" key={taskId}>
           <div className="sub-task-index col-md-1 mb-1 font-weight-bold">
