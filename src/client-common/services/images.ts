@@ -1,15 +1,13 @@
-import { fireApp } from '../fireApp'
 import { identity } from 'ramda'
+import { fireApp} from '../fireApp'
+import * as storage from 'firebase/storage'
 import { resolveSnapshot } from 'client-common/util/firebase'
-import { storage } from 'firebase'
-import TaskEvent = storage.TaskEvent
-import UploadTaskSnapshot = storage.UploadTaskSnapshot
 
 const storageRef = fireApp.storage().ref()
 const DB = fireApp.database()
 const Storage = DB.ref('storage')
 
-const STATE_CHANGED = TaskEvent.STATE_CHANGED
+const STATE_CHANGED = storage.TaskEvent.STATE_CHANGED
 
 type UploadProgress = { bytesTransferred: number; totalBytes: number }
 
@@ -26,7 +24,7 @@ export function imageUpload(path, file, progressCb: (ss: UploadProgress) => void
       () => resolve(uploadTask.snapshot)
     )
   )
-    .then((file: UploadTaskSnapshot) =>
+    .then((file: firebase.storage.UploadTaskSnapshot) =>
       getFileUrl(file.metadata.fullPath).then(url => ({ file, url }))
     )
     .then(({ file, url }) => ({

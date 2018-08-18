@@ -127,14 +127,6 @@ export function openUserControlModal(params?) {
   })
 }
 
-export function openExerciseResultModal(params?) {
-  return openModal(() => import('client-common/component/modal/ExerciseResultModal'), {
-    onClose: identity,
-    success: false,
-    ...params
-  })
-}
-
 export function openExerciseImageDialog(params?) {
   return openModal(() => import('client-common/component/modal/ExerciseImageDialog'), {
     onClose: identity,

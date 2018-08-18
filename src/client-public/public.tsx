@@ -5,8 +5,7 @@ import { Recaptcha } from 'client-common/component/util/Recaptcha'
 import { Routes } from './Routes'
 import { startup } from './startup'
 
-import 'bootstrap/scss/bootstrap.scss'
-import 'client-common/style/main.scss'
+import 'client-common/style/public.scss'
 
 startup().then(({ store, history }) => {
   render(

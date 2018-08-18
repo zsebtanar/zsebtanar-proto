@@ -1,10 +1,7 @@
-import { fireApp } from '../../fireApp'
+import { fireApp, auth } from '../../fireApp'
 import * as ReactGA from 'react-ga'
 import { getUserAction, parseTokenAction } from 'client-common/store/reducers/session'
 import { removeUserData, updateUserProfile } from '../../services/user'
-import firebase = require('firebase')
-import GoogleAuthProvider = firebase.auth.GoogleAuthProvider
-import FacebookAuthProvider = firebase.auth.FacebookAuthProvider
 
 const AUTH = fireApp.auth()
 
@@ -63,7 +60,7 @@ export function forgotPassword(email: string): Promise<any> {
 export function googleSignIn(): any {
   return dispatch => {
     dispatch({ type: SSO_SIGN_IN_START })
-    const provider = new GoogleAuthProvider()
+    const provider = new auth.GoogleAuthProvider()
     provider.addScope('email')
     provider.addScope('profile')
     return AUTH.signInWithPopup(provider).catch(handleError(SSO_SIGN_IN_ERROR, dispatch))
@@ -73,7 +70,7 @@ export function googleSignIn(): any {
 export function facebookSignIn(): any {
   return dispatch => {
     dispatch({ type: SSO_SIGN_IN_START })
-    const provider = new FacebookAuthProvider()
+    const provider = new auth.FacebookAuthProvider()
     provider.addScope('email')
     provider.addScope('public_profile')
     return AUTH.signInWithPopup(provider).catch(handleError(SSO_SIGN_IN_ERROR, dispatch))

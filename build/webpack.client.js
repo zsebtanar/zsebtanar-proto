@@ -35,7 +35,7 @@ module.exports = {
     public: path.join(SRC_PATH, 'client-public/public.tsx')
   },
   output: {
-    filename: '[name].js',
+    filename: '[name]-[hash:8].js',
     publicPath: '/',
     path: TARGET_PATH
   },
@@ -96,26 +96,8 @@ module.exports = {
   },
 
   optimization: {
-    removeAvailableModules: true,
-    removeEmptyChunks: true,
-    mergeDuplicateChunks: true,
-    providedExports: true,
-    namedModules: isDev,
-    namedChunks: isDev,
-    flagIncludedChunks: isProd,
-    occurrenceOrder: isProd,
-    usedExports: isProd,
-    sideEffects: isProd,
-    concatenateModules: isProd,
-    minimize: isProd,
     splitChunks: {
-      cacheGroups: {
-        commons: {
-          name: 'commons',
-          chunks: 'initial',
-          minChunks: 2
-        }
-      }
+      chunks: 'all'
     }
   },
 
@@ -128,7 +110,7 @@ module.exports = {
       title: 'Zsebtanár - Tanár',
       isDev: !isProd,
       site: 'admin',
-      chunks: ['commons', 'admin'],
+      chunks: ['admin', 'admin~public', 'vendors~admin', 'vendors~admin~public'],
       hash: true,
       env: envConfig
     }),
@@ -139,7 +121,7 @@ module.exports = {
       isDev: !isProd,
       site: 'public',
       title: 'Zsebtanár',
-      chunks: ['commons', 'public'],
+      chunks: ['public', 'admin~public', 'vendors~public', 'vendors~admin~public'],
       hash: true,
       env: envConfig
     }),
@@ -154,8 +136,8 @@ module.exports = {
     isDev
       ? []
       : [
-          new UglifyJsPlugin({})
-          // new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true })
+          new UglifyJsPlugin({}),
+          new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true })
         ]
   )
 }

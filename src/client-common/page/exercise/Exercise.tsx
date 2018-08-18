@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { NavLink, withRouter } from 'react-router-dom'
 import { abcIndex, pairsInOrder } from 'shared/util/fn'
 import { Markdown } from 'client-common/component/general/Markdown'
-import { openExerciseResultModal } from 'client-common/store/actions/modal'
 import { Loading } from 'client-common/component/general/Loading'
 import { SubTask } from 'client-common/page/exercise/SubTask'
 import { getPublicExerciseAction, TASK_STATUS_WAITING, unloadExerciseAction } from 'client-common/store/exercise'
@@ -26,7 +25,6 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-  openExerciseResultModal,
   getPublicExerciseAction,
   unloadExerciseAction
 }
