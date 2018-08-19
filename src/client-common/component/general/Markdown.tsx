@@ -22,6 +22,10 @@ const katexOptions = {
 export const Markdown = class extends React.PureComponent<MarkdownProps, MarkdownState> {
   private markRE?: RegExp
 
+  state = {
+    md: undefined
+  }
+
   constructor(props) {
     super(props)
     this.initMark()
