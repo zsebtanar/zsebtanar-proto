@@ -8,12 +8,17 @@ import { Markdown } from 'client-common/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
 import { trackPage } from 'client-common/component/hoc/withTracker'
+import { withTracker } from '../../client-common/component/hoc/withTracker'
 
 const mapStateToProps = state => ({
   classification: state.classification
 })
 
-export const ExercisesByGrade = pipe(withRouter, connect(mapStateToProps))(
+export const ExercisesByGrade = pipe(
+  withTracker,
+  withRouter,
+  connect(mapStateToProps)
+)(
   class extends React.Component<any, any> {
     state = { exercises: undefined, classification: undefined }
 

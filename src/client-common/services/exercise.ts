@@ -1,9 +1,9 @@
 import { isNil, not, path, pipe, values } from 'ramda'
 import { cloudFnGet, cloudFnPost, resolveSnapshot } from '../util/firebase'
 import { assert, excludeMetaKeys } from '../../shared/util/fn'
-import { fireApp } from '../fireApp'
+import { app } from '../fireApp'
 
-const DB = fireApp.database()
+const DB = app.database()
 const Exercises = DB.ref('exercise')
 
 export const STATE_KEY = '_state'

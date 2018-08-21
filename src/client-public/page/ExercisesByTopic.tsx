@@ -8,6 +8,7 @@ import { Markdown } from 'client-common/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
 import { trackPage } from 'client-common/component/hoc/withTracker'
+import { withTracker } from '../../client-common/component/hoc/withTracker'
 
 interface ExercisesByTopicProps extends RouteComponentProps<{ subject: string; topic: string }> {}
 
@@ -25,6 +26,7 @@ const mapStateToProps = state => ({
 })
 
 export const ExercisesByTopic = pipe(
+  withTracker,
   withRouter,
   connect<ExercisesByTopicStateProps, {}, ExercisesByTopicProps>(mapStateToProps)
 )(

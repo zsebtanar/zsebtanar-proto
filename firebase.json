@@ -3,7 +3,13 @@
     "cleanUrls": true,
     "trailingSlash": false,
     "public": "bin/app",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/package-lock.json", "**/yarn.lock"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/package-lock.json",
+      "**/yarn.lock"
+    ],
     "headers": [
       {
         "source": "manifest.json",
@@ -11,6 +17,24 @@
           {
             "key": "Content-Type",
             "value": "application/manifest+json"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css|gif|png)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=30672000"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|json)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=604800"
           }
         ]
       }
