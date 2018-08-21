@@ -1,4 +1,10 @@
 module.exports = {
+  common: {
+    links: {
+      policy:
+        'https://firebasestorage.googleapis.com/v0/b/zsebtanar-prod.appspot.com/o/docs%2Fzsebtanar-adatvedelmi-szabalyzat-2018.pdf?alt=media&amp;token=3cd16e18-51bc-4069-af98-051df97f2fe6'
+    }
+  },
   development: {
     api: 'https://zsebtanar-test.firebaseapp.com/api',
     firebase: {
@@ -18,6 +24,9 @@ module.exports = {
     },
     recaptcha: {
       siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
+    },
+    sentry: {
+      dsn: 'https://51329885b5704f2d8b19d4c29cad3e9a@sentry.io/275144'
     }
   },
   test: {

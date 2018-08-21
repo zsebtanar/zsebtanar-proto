@@ -3,6 +3,7 @@ import { Link } from 'client-common/component/general/Link'
 import { openFeedbackModal } from 'client-common/store/actions/modal'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { ExternalLink } from '../../client-common/component/general/ExternalLink'
 
 interface FooterDispatchProps {
   openFeedbackModal: typeof openFeedbackModal
@@ -20,6 +21,8 @@ export const Footer = connect<{}, FooterDispatchProps, {}>(
             &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
             {' - '}
             <NavLink to="/about">Rólunk</NavLink>
+            {' - '}
+            <ExternalLink href={__CONFIG__.links.policy}>Adatvédelem</ExternalLink>
             {' - '}
             <Link onAction={this.props.openFeedbackModal}>Visszajelzés</Link>
             {' - '}

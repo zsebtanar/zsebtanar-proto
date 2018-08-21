@@ -4,6 +4,8 @@ import { Button } from 'client-common/component/general/Button'
 import { deleteUser } from 'client-common/store/actions/auth'
 import { openConfirmModal } from 'client-common/store/actions/modal'
 import { Icon } from 'client-common/component/general/Icon'
+import { withTracker } from 'client-common/component/hoc/withTracker'
+import { pipe } from 'ramda'
 
 const mapStateToProps = state => ({
   session: state.app.session
@@ -14,7 +16,13 @@ const mapDispatchToProps = {
   openConfirmModal
 }
 
-export const Profile = connect(mapStateToProps, mapDispatchToProps)(
+export const Profile = pipe(
+  withTracker,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(
   class extends React.Component<any, any> {
     deleteProfile = () => {
       const { deleteUser, openConfirmModal } = this.props

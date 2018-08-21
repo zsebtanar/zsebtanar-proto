@@ -1,4 +1,4 @@
-@import './shard';
+@import 'shared';
 @import './bootstrap-public';
 
 /* Space out content a bit */
@@ -337,4 +337,16 @@ body {
 
 .fa-stack {
   color: $body-color;
+}
+
+.cookie-consent{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: theme-color-level("dark", 0);
 }

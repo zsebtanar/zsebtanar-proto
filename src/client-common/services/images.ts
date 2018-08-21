@@ -1,13 +1,12 @@
 import { identity } from 'ramda'
-import { fireApp} from '../fireApp'
-import * as storage from 'firebase/storage'
+import { app, firebase } from '../fireApp'
+import 'firebase/storage'
 import { resolveSnapshot } from 'client-common/util/firebase'
 
-const storageRef = fireApp.storage().ref()
-const DB = fireApp.database()
+const storageRef = app.storage().ref()
+const DB = app.database()
 const Storage = DB.ref('storage')
-
-const STATE_CHANGED = storage.TaskEvent.STATE_CHANGED
+const STATE_CHANGED = firebase.storage.TaskEvent.STATE_CHANGED
 
 type UploadProgress = { bytesTransferred: number; totalBytes: number }
 

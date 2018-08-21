@@ -1,5 +1,7 @@
 const ENV_CONFIG = require('./config')
 
+//const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin')
+
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -13,7 +15,8 @@ const env = process.env.NODE_ENV || 'development'
 const isDev = env === 'development'
 const isProd = env === 'production'
 
-const envConfig = ENV_CONFIG[server]
+const envCommonConfig = ENV_CONFIG.common
+const envConfig = { ...envCommonConfig, ...ENV_CONFIG[server] }
 
 const sassExtract = new ExtractTextPlugin({
   filename: '[name].css',
@@ -35,14 +38,17 @@ module.exports = {
     public: path.join(SRC_PATH, 'client-public/public.tsx')
   },
   output: {
-    filename: '[name]-[hash:8].js',
+    path: TARGET_PATH,
+    filename: `[name]-${isProd ? '[hash:8]' : ''}.js`,
     publicPath: '/',
-    path: TARGET_PATH
+    pathinfo: false
   },
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: !isProd && 'source-map',
-
+  cache: !isProd,
+  bail: isProd,
+  parallelism: Math.ceil(require('os').cpus().length / 2),
   target: 'web',
   resolve: {
     alias: {
@@ -96,11 +102,63 @@ module.exports = {
   },
 
   optimization: {
+    minimizer: !!isDev
+      ? [
+          new UglifyJsPlugin({
+            parallel: 2,
+            uglifyOptions: {
+              compress: {
+                warnings: false,
+                drop_console: true
+              },
+              output: {
+                comments: false
+              }
+            }
+          })
+        ]
+      : [],
     splitChunks: {
-      chunks: 'all'
+      minSize: 10000, // doesn't seem enforced...
+      maxInitialRequests: 3, // only app and libs
+      maxAsyncRequests: 2,
+      cacheGroups: {
+        default: false,
+        vendors: false,
+        firebase: {
+          test: /[\\/]node_modules[\\/]@firebase[\\/]/,
+          name: 'firebase',
+          chunks: 'initial',
+          minSize: 1,
+          priority: 3
+        },
+        admin: {
+          test: /[\\/]src[\\/]clint-admin[\\/]/,
+          name: 'admin',
+          chunks: 'initial',
+          minSize: 1000,
+          priority: 1
+        },
+        public: {
+          test: /[\\/]src[\\/]clint-public[\\/]/,
+          name: 'public',
+          chunks: 'initial',
+          minSize: 1000,
+          priority: 1
+        },
+        common: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'common',
+          chunks: 'initial',
+          minSize: 10000,
+          priority: -100
+        }
+      }
+    },
+    runtimeChunk: {
+      name: 'manifest'
     }
   },
-
   plugins: [
     sassExtract,
     new HtmlWebpackPlugin({
@@ -110,9 +168,10 @@ module.exports = {
       title: 'Zsebtanár - Tanár',
       isDev: !isProd,
       site: 'admin',
-      chunks: ['admin', 'admin~public', 'vendors~admin', 'vendors~admin~public'],
+      excludeChunks: ['public', 'public-modal'],
       hash: true,
-      env: envConfig
+      env: envConfig,
+      chunksSortMode: 'none'
     }),
     new HtmlWebpackPlugin({
       template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
@@ -121,10 +180,14 @@ module.exports = {
       isDev: !isProd,
       site: 'public',
       title: 'Zsebtanár',
-      chunks: ['public', 'admin~public', 'vendors~public', 'vendors~admin~public'],
+      excludeChunks: ['admin', 'admin-modal'],
       hash: true,
-      env: envConfig
+      env: envConfig,
+      chunksSortMode: 'none'
     }),
+    // new InlineChunkManifestHtmlWebpackPlugin({
+    //   dropAsset: true
+    // }),
     new HtmlWebpackHarddiskPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
@@ -136,8 +199,7 @@ module.exports = {
     isDev
       ? []
       : [
-          new UglifyJsPlugin({}),
-          new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true })
+          // new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true })
         ]
   )
 }

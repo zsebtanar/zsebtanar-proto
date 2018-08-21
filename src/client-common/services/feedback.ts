@@ -1,8 +1,8 @@
-import { fireApp } from '../fireApp'
+import { app } from '../fireApp'
 import { resolveSnapshot } from '../util/firebase'
 import { cloudFnPost } from '../util/firebase'
 
-const DB = fireApp.database()
+const DB = app.database()
 const Feedback = DB.ref('feedback')
 
 export function getAllFeedback() {

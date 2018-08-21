@@ -1,6 +1,17 @@
 {
   "name": "zsebtanar-firebase",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "keywords": [
+    "teaching",
+    "mathematics",
+    "students",
+    "open-source",
+    "non-profit",
+    "hungarian"
+  ],
+  "description": "Zsebtanár egy matematika oktatást segítő interaktív weboldal magyar diákok számára",
+  "homepage": "https://zsebtanar.hu",
+  "bugs": "https://github.com/zsebtanar/zsebtanar-proto/issues",
   "private": true,
   "config": {
     "firebaseFunctionDepencies": [
@@ -35,7 +46,6 @@
     "ramda": "0.25.0",
     "react": "16.4.2",
     "react-async-script": "^0.11.1",
-    "react-cookie-consent": "1.7.0",
     "react-dnd": "5.0.0",
     "react-dnd-html5-backend": "5.0.1",
     "react-dom": "16.4.2",
@@ -70,6 +80,7 @@
     "html-webpack-harddisk-plugin": "0.2.0",
     "html-webpack-plugin": "3.2.0",
     "husky": "0.14.3",
+    "inline-chunk-manifest-html-webpack-plugin": "^2.0.0",
     "jest": "^23.5.0",
     "lint-staged": "7.2.2",
     "mock-require": "3.0.2",
