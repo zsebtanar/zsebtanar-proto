@@ -102,7 +102,7 @@ module.exports = {
   },
 
   optimization: {
-    minimizer: !!isDev
+    minimizer: !!isProd
       ? [
           new UglifyJsPlugin({
             parallel: 2,
