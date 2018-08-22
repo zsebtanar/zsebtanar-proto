@@ -20,10 +20,6 @@ const katexOptions = {
 }
 
 export const Markdown = class extends React.PureComponent<MarkdownProps, MarkdownState> {
-  state = {
-    md: null
-  }
-
   private markRE?: RegExp
 
   state = {
@@ -32,6 +28,9 @@ export const Markdown = class extends React.PureComponent<MarkdownProps, Markdow
 
   constructor(props) {
     super(props)
+    this.state = {
+      md: null
+    }
     this.initMark()
   }
 
@@ -41,10 +40,10 @@ export const Markdown = class extends React.PureComponent<MarkdownProps, Markdow
 
   private initMD(options, resources) {
     Promise.all([
-      import(/* webpackChunkName: 'markdown' */'markdown-it'),
-      import(/* webpackChunkName: 'markdown' */'markdown-it-katex') as Promise<any>,
-      import(/* webpackChunkName: 'markdown' */'shared/markdown/image-resource/index')
-    ]).then(([{default: MD}, {default: katex}, { imageInit }]) => {
+      import(/* webpackChunkName: 'markdown' */ 'markdown-it'),
+      import(/* webpackChunkName: 'markdown' */ 'markdown-it-katex') as Promise<any>,
+      import(/* webpackChunkName: 'markdown' */ 'shared/markdown/image-resource/index')
+    ]).then(([{ default: MD }, { default: katex }, { imageInit }]) => {
       const md = new MD(options).use(katex, katexOptions).use(imageInit(resources || {}))
       this.setState({ md })
     })
