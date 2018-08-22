@@ -38,6 +38,14 @@ export const assert = curry((predicate, message, value) => {
   }
 })
 
+export const assertP = curry((predicate, message, value) => {
+  if (predicate(value)) {
+    return Promise.resolve(value)
+  } else {
+    return Promise.reject(message)
+  }
+})
+
 export function shuffle(ary) {
   const array = [...ary]
   for (let i = array.length - 1; i > 0; i--) {
