@@ -95,10 +95,14 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
 
     private onChange = ({ name, value }) => this.setState(assocPath(['solutions', name], value))
 
-    private registerRef = ref => {
+    private scrollToSubTask = ref => {
       if (!this.props.isFirst && ref) {
         ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
       }
+    }
+
+    private scrollToHint = ref => {
+      ref && ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
     }
 
     render() {
@@ -109,7 +113,7 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
       const className = `exercise-sub-task ${isDone ? 'finished' : ''}`
 
       return (
-        <div className={className} ref={this.registerRef}>
+        <div className={className} ref={this.scrollToSubTask}>
           {this.renderDescription()}
           {!isDone && <div className="form-group hints">{hints && hints.map(this.renderHint)}</div>}
 
@@ -185,7 +189,7 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
     }
 
     private renderHint = item => (
-      <div className="mb-2" key={item.key}>
+      <div className="mb-2" key={item.key} ref={this.scrollToHint}>
         <Markdown source={item.hint.text} resources={this.props.resources} />
       </div>
     )
