@@ -38,7 +38,7 @@ export const Header = withRouter(
     }
 
     return (
-      <div className="header clearfix">
+      <header className="header clearfix">
         <div className="desktop-header">
           <nav>
             <ul className="nav nav-pills float-right">
@@ -91,26 +91,26 @@ export const Header = withRouter(
               </Dropdown>
             </ul>
           </nav>
-          <NavLink exact to="/" className="logo-link">
+          <NavLink exact to="/" className="logo-link" aria-label="Főoldal">
             <h4 className="text-muted logo" />
           </NavLink>
         </div>
 
         <div className="mobile-header ">
           <Button
-            className="navbar-toggler float-left"
+            className="navbar-toggle float-left"
             onAction={props.openSideNav}
             aria-expanded={props.sideNav.active}
-            aria-label="Menü megnyitása"
+            title="Menü megnyitása"
           >
             <span className="fa fa-bars fa-lg" />
           </Button>
 
-          <NavLink exact to="/" className="logo-link float-right">
+          <NavLink exact to="/" className="logo-link float-right" aria-label="Főoldal">
             <h4 className="text-muted logo" />
           </NavLink>
         </div>
-      </div>
+      </header>
     )
   })
 )

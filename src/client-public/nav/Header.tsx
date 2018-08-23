@@ -39,7 +39,7 @@ export const Header = connect<HeaderStateProps, HeaderDispatchProps, {}>(
 )(function HeaderComp(props: HeaderStateProps & HeaderDispatchProps) {
   const { signedIn, token } = props.session
   return (
-    <div className="header clearfix">
+    <header className="header clearfix">
       <div className="desktop-header">
         <nav>
           <ul className="nav nav-pills float-right">
@@ -91,19 +91,19 @@ export const Header = connect<HeaderStateProps, HeaderDispatchProps, {}>(
       </div>
 
       <div className="mobile-header ">
-        <NavLink exact to="/" className="logo-link float-left">
+        <NavLink exact to="/" className="logo-link float-left" aria-label="Főoldal">
           <h4 className="text-muted logo" />
         </NavLink>
 
         <Button
-          className="navbar-toggler float-right"
+          className="navbar-toggle float-right"
           onAction={props.openSideNav}
           aria-expanded={props.sideNav.active}
-          aria-label="Menü megnyitása"
+          title="Menü megnyitása"
         >
           <span className="fa fa-bars fa-lg" />
         </Button>
       </div>
-    </div>
+    </header>
   )
 })
