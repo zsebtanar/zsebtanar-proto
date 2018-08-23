@@ -186,6 +186,10 @@ export const FeedbackModal = connect<{}, FeedbackModalProps, ui.ModalProps>(mapS
             />
           </div>
           <ReCAPTCHA sitekey={__CONFIG__.recaptcha.siteKey} onChange={this.captchaUpdate} />
+          <p className="text-muted"><small>
+            A visszejelzés űrlapot reCAPTCHA védi a Google <a href="https://www.google.com/policies/privacy/">adatvédelmi</a> és <a
+            href="https://www.google.com/policies/terms/">általáos szerződési feltételi</a> szerint
+          </small></p>
         </div>
       )
     }

@@ -15,6 +15,9 @@ declare const __CONFIG__: {
   }
   recaptcha: {
     siteKey: string
+  },
+  links: {
+    policy: string
   }
 }
 declare const __INITIAL_STATE__: any

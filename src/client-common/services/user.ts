@@ -1,7 +1,7 @@
 import { cloudFnGet, cloudFnPost } from 'client-common/util/firebase'
-import { fireApp } from '../fireApp'
+import { app } from '../fireApp'
 
-const DB = fireApp.database()
+const DB = app.database()
 
 const Users = DB.ref('users')
 

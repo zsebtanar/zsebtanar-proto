@@ -1,7 +1,7 @@
-import { initializeApp } from 'firebase/app'
+import * as fb from 'firebase/app'
 
 import 'firebase/auth'
 import 'firebase/database'
-import 'firebase/storage'
 
-export const fireApp = initializeApp(__CONFIG__.firebase)
+export const app = fb.initializeApp(__CONFIG__.firebase)
+export const firebase = fb

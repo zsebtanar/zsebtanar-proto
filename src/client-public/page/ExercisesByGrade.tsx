@@ -8,12 +8,17 @@ import { Markdown } from 'client-common/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
 import { trackPage } from 'client-common/component/hoc/withTracker'
+import { withTracker } from '../../client-common/component/hoc/withTracker'
 
 const mapStateToProps = state => ({
   classification: state.classification
 })
 
-export const ExercisesByGrade = pipe(withRouter, connect(mapStateToProps))(
+export const ExercisesByGrade = pipe(
+  withTracker,
+  withRouter,
+  connect(mapStateToProps)
+)(
   class extends React.Component<any, any> {
     state = { exercises: undefined, classification: undefined }
 
@@ -51,13 +56,13 @@ export const ExercisesByGrade = pipe(withRouter, connect(mapStateToProps))(
       if (!classification) return <div />
 
       return (
-        <div>
-          <h2>{classification.grade[grade].name}</h2>
+        <div className="row">
+          <h2 className="col-12 my-4">{classification.grade[grade].name}</h2>
 
           {!this.state.exercises ? (
             <Loading />
           ) : (
-            <div className="list-group col-10 mx-auto">
+            <div className="list-group col-md-10 col-sm -12 mx-auto">
               {this.state.exercises.map(ex => (
                 <NavLink
                   key={ex._key}
