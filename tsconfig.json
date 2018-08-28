@@ -9,8 +9,10 @@
     "importHelpers": true,
     "skipLibCheck": true,
     "pretty": true,
+    "forceConsistentCasingInFileNames": true,
     "lib": ["esnext", "dom"],
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "node",
     "target": "es5",
     "jsx": "react"
   },

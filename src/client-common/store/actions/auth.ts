@@ -1,13 +1,8 @@
-import { fireApp } from '../../fireApp'
-import * as ReactGA from 'react-ga'
-import * as firebase from 'firebase'
+import { app, firebase } from '../../fireApp'
 import { getUserAction, parseTokenAction } from 'client-common/store/reducers/session'
-import { updateUserProfile } from '../../services/user'
-import { removeUserData } from '../../services/user'
-import GoogleAuthProvider = firebase.auth.GoogleAuthProvider
-import FacebookAuthProvider = firebase.auth.FacebookAuthProvider
+import { removeUserData, updateUserProfile } from '../../services/user'
 
-const AUTH = fireApp.auth()
+const AUTH = app.auth()
 
 export const SIGN_UP_ERROR = 'SIGN_UP_ERROR'
 export const SIGN_UP_START = 'SIGN_UP_START'
@@ -25,14 +20,10 @@ export const DELETE_USER_ERROR = 'DELETE_USER_ERROR'
 export function initAuthWatch(store) {
   AUTH.onAuthStateChanged(function(user) {
     if (user) {
-      ReactGA.set({ userId: user.uid })
-      setRavenUser(user.uid)
       store.dispatch({ type: SIGN_IN_SUCCESS, payload: { user } })
       store.dispatch(getUserAction(user.uid))
       store.dispatch(parseTokenAction(user))
     } else {
-      ReactGA.set({ userId: undefined })
-      setRavenUser(undefined)
       store.dispatch({ type: AUTH_NO_USER })
     }
   })
@@ -57,10 +48,14 @@ export function signIn(email, password): any {
   }
 }
 
+export function forgotPassword(email: string): Promise<any> {
+  return AUTH.sendPasswordResetEmail(email, { url: window.location.href })
+}
+
 export function googleSignIn(): any {
   return dispatch => {
     dispatch({ type: SSO_SIGN_IN_START })
-    const provider = new GoogleAuthProvider()
+    const provider = new firebase.auth.GoogleAuthProvider()
     provider.addScope('email')
     provider.addScope('profile')
     return AUTH.signInWithPopup(provider).catch(handleError(SSO_SIGN_IN_ERROR, dispatch))
@@ -70,7 +65,7 @@ export function googleSignIn(): any {
 export function facebookSignIn(): any {
   return dispatch => {
     dispatch({ type: SSO_SIGN_IN_START })
-    const provider = new FacebookAuthProvider()
+    const provider = new firebase.auth.FacebookAuthProvider()
     provider.addScope('email')
     provider.addScope('public_profile')
     return AUTH.signInWithPopup(provider).catch(handleError(SSO_SIGN_IN_ERROR, dispatch))
@@ -91,7 +86,6 @@ export function deleteUser() {
       .catch(ravenCapture)
 }
 
-const setRavenUser = id => (typeof Raven !== 'undefined' ? Raven.setUserContext({ id }) : undefined)
 const ravenCapture = error =>
   typeof Raven !== 'undefined' ? Raven.captureException(error) : undefined
 

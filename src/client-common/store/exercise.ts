@@ -49,7 +49,7 @@ export function unloadExerciseAction() {
   return dispatch => dispatch({ type: EXERCISE_INIT })
 }
 
-export function checkSolutionAction(exerciseId, subTaskId, solutions):any {
+export function checkSolutionAction(exerciseId, subTaskId, solutions): any {
   return (dispatch, getState) =>
     checkSolution(exerciseId, subTaskId, solutions)
       .then(({ data }) => {

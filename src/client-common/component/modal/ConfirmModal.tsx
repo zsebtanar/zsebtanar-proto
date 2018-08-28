@@ -5,7 +5,6 @@ import { DialogBody } from './base/DialogBody'
 import { DialogHeader } from './base/DialogHeader'
 import { DialogFooter } from './base/DialogFooter'
 
-
 interface ConfirmModalProps extends ui.ModalProps {
   onSuccess: () => void
   buttonType?: Buttontype
@@ -33,3 +32,6 @@ export function ConfirmModal(props: ConfirmModalProps) {
     </Dialog>
   )
 }
+
+// default export for dynamic import
+export default ConfirmModal

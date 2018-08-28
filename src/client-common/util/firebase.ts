@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { merge } from 'ramda'
-import { fireApp } from '../fireApp'
+import { app } from '../fireApp'
 
 export function resolveSnapshot(snapshot) {
   return snapshot.val()
 }
 
 const getTokenHeader = (): Promise<any> =>
-  fireApp
+  app
     .auth()
     .currentUser.getIdToken()
     .then(token => ({ headers: { Authorization: `Bearer ${token}` } }))
@@ -16,7 +16,7 @@ export const cloudFnRequest = (method, path, params, data, options) => {
   const opt = Object.assign({}, options)
 
   return Promise.resolve({
-    baseURL: `${__FN_PATH__}/${path}`,
+    baseURL: `${__CONFIG__.api}/${path}`,
     method,
     path,
     data,

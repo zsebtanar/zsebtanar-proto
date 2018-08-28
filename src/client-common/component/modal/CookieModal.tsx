@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { AlertModal } from './AlertModal'
+import { ExternalLink } from '../general/ExternalLink'
 
 interface CookieModalProps extends ui.ModalProps {}
 
@@ -39,15 +40,16 @@ export function CookieModal(props: CookieModalProps) {
             törölheted, illetve beállíthatod a böngésződ úgy, hogy a cookiek alkalmazását tiltsa. A
             cookiek alkalmazásának tiltásával azonban tudomásul veszed, hogy cookie nélkül az oldal
             működése nem lesz teljes értékű. A cookiek alkalmazásáról tájékozódhatsz az{' '}
-            <a
-              href="https://firebasestorage.googleapis.com/v0/b/zsebtanar-prod.appspot.com/o/docs%2Fzsebtanar-adatvedelmi-szabalyzat-2018.pdf?alt=media&amp;token=3cd16e18-51bc-4069-af98-051df97f2fe6"
-              target="_blank"
-            >
+            <ExternalLink href={__CONFIG__.links.policy}>
               adatkezelési szabályzatban
-            </a>.
+            </ExternalLink>
+
           </p>
         </div>
       }
     />
   )
 }
+
+// default export for dynamic import
+export default CookieModal

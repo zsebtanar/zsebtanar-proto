@@ -1,8 +1,8 @@
 import { pick, pipe, prop, sortBy, values } from 'ramda'
 import { resolveSnapshot } from '../util/firebase'
-import { fireApp } from '../fireApp'
+import { app } from '../fireApp'
 
-const DB = fireApp.database()
+const DB = app.database()
 
 const Classification = DB.ref('classifications')
 

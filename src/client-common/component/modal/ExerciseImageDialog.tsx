@@ -167,3 +167,6 @@ export const ExerciseImageDialog = connect(
     }
   }
 )
+
+// default export for dynamic import
+export default ExerciseImageDialog

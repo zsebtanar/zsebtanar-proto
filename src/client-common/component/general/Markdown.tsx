@@ -1,7 +1,5 @@
 import * as React from 'react'
-import * as MD from 'markdown-it'
-import * as katex from 'markdown-it-katex'
-import { imageInit } from '../../../shared/markdown/image-resource/index'
+import { matchAllHunVowel, TAG_REGEXP } from 'shared/util/string'
 
 interface MarkdownProps {
   className?: string
@@ -12,21 +10,61 @@ interface MarkdownProps {
   options?: any
 }
 
+interface MarkdownState {
+  md: any
+}
+
 const katexOptions = {
   displayMode: false,
   unicodeTextInMathMode: true
 }
 
-export const Markdown = class extends React.PureComponent<MarkdownProps, {}> {
-  private md
+export const Markdown = class extends React.PureComponent<MarkdownProps, MarkdownState> {
+  private markRE?: RegExp
+
+  state = {
+    md: undefined
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      md: null
+    }
+    this.initMark()
+  }
+
+  private initMark() {
+    this.markRE = this.props.mark && new RegExp(`(${matchAllHunVowel(this.props.mark)})`, 'gi')
+  }
+
   private initMD(options, resources) {
-    this.md = new MD(options).use(katex, katexOptions).use(imageInit(resources || {}))
+    Promise.all([
+      import(/* webpackChunkName: 'markdown' */ 'markdown-it'),
+      import(/* webpackChunkName: 'markdown' */ 'markdown-it-katex') as Promise<any>,
+      import(/* webpackChunkName: 'markdown' */ 'shared/markdown/image-resource/index')
+    ]).then(([{ default: MD }, { default: katex }, { imageInit }]) => {
+      const md = new MD(options).use(katex, katexOptions).use(imageInit(resources || {}))
+      this.setState({ md })
+    })
+  }
+
+  private markText(text) {
+    const markRE = this.markRE
+    if (markRE) {
+      return text
+        .split(TAG_REGEXP)
+        .map(txt => (txt && txt[0] !== '<' ? txt.replace(markRE, '<mark>$1</mark>') : txt))
+        .join('')
+    }
+    return text
   }
 
   componentWillUpdate(nextProps) {
     if (nextProps.options !== this.props.options || nextProps.resources !== this.props.resources) {
       this.initMD(nextProps.options, nextProps.resources)
     }
+    this.initMark()
   }
 
   render() {
@@ -46,17 +84,11 @@ export const Markdown = class extends React.PureComponent<MarkdownProps, {}> {
   }
 
   private renderMarkdown(source) {
-    if (!this.md) {
+    if (!this.state.md) {
       this.initMD(this.props.options, this.props.resources)
+      return ''
+    } else {
+      return this.state.md.render(source)
     }
-    return this.md.render(source)
-  }
-
-  private markText(text) {
-    const mark = this.props.mark
-    if (mark) {
-      return text.replace(new RegExp(`(${mark})`, 'gi'), `<mark>$1</mark>`)
-    }
-    return text
   }
 }

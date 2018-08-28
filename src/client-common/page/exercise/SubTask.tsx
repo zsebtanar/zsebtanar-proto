@@ -15,9 +15,13 @@ import { Icon } from 'client-common/component/general/Icon'
 
 interface SubTaskProps {
   id: string
+  isFirst: boolean
   exerciseId: string
   task: state.SubTask
   resources: MarkdownResources
+}
+interface SubTaskStateProps {
+  isDone: boolean
 }
 
 interface SubTaskDispatchProps {
@@ -28,24 +32,49 @@ interface SubTaskDispatchProps {
 interface SubTaskState {
   loadingHint: boolean
   loadingCheck: boolean
+  checkCounter: number
   solutions: DB.UserControlSolution
 }
 
-export const SubTask = connect<{}, SubTaskDispatchProps, SubTaskProps>(
-  undefined,
-  {getHintAction, checkSolutionAction}
+function mapStateToProps(state, ownProps) {
+  return {
+    isDone:
+      ownProps.task.status === TASK_STATUS_DONE || ownProps.task.status === TASK_STATUS_PREVIEW
+  }
+}
+
+export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskProps>(
+  mapStateToProps,
+  { getHintAction, checkSolutionAction }
 )(
   class SubTaskComponent extends React.Component<
-    SubTaskProps & SubTaskDispatchProps,
+    SubTaskProps & SubTaskStateProps & SubTaskDispatchProps,
     SubTaskState
   > {
     state = {
       loadingHint: false,
       loadingCheck: false,
+      checkCounter: 0,
       solutions: {}
     }
 
-    getHint = () => {
+    componentDidMount() {
+      if (!this.props.isDone) {
+        document.addEventListener('keypress', this.onKeyPress)
+      }
+    }
+
+    componentWillUnmount() {
+      document.removeEventListener('keypress', this.onKeyPress)
+    }
+
+    private onKeyPress = event => {
+      if (!this.props.isDone && event.keyCode === 13) {
+        this.checkSolution(event)
+      }
+    }
+
+    private getHint = () => {
       const { exerciseId, id, getHintAction, task } = this.props
       this.setState({ loadingHint: true })
       // TODO: remove promise return and use redux store
@@ -54,65 +83,80 @@ export const SubTask = connect<{}, SubTaskDispatchProps, SubTaskProps>(
       )
     }
 
-    checkSolution = e => {
+    private checkSolution = e => {
       e.preventDefault()
 
       const { exerciseId, id, checkSolutionAction } = this.props
       this.setState({ loadingCheck: true })
       checkSolutionAction(exerciseId, id, this.state.solutions).then(() =>
-        this.setState({ loadingCheck: false })
+        this.setState({ loadingCheck: false, checkCounter: this.state.checkCounter + 1 })
       )
     }
 
-    onChange = ({ name, value }) => this.setState(assocPath(['solutions', name], value))
+    private onChange = ({ name, value }) => this.setState(assocPath(['solutions', name], value))
+
+    private scrollToSubTask = ref => {
+      if (!this.props.isFirst && ref) {
+        ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+      }
+    }
+
+    private scrollToHint = ref => {
+      ref && ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+    }
 
     render() {
-      const { task } = this.props
+      const { task, isDone } = this.props
       const { loadingHint, loadingCheck } = this.state
-      const isDone = task.status === TASK_STATUS_DONE || task.status === TASK_STATUS_PREVIEW
       const hints = task.hints
       const controls = pairsInOrder(task.details.controls)
+      const className = `exercise-sub-task ${isDone ? 'finished' : ''}`
 
       return (
-        <div className="exercise-page">
+        <div className={className} ref={this.scrollToSubTask}>
           {this.renderDescription()}
-          {!isDone && (
-            <div className="form-group">
-              {hints && <ol>{hints.map(this.renderHint)}</ol>}
-              {task.hintsLeft > 0 && (
-                <div className="form-group">
-                  <Button
-                    className="btn-link"
-                    onAction={this.getHint}
-                    loading={loadingHint}
-                    disabled={loadingCheck}
-                  >
-                    Következő tipp (még {task.hintsLeft})
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
+          {!isDone && <div className="form-group hints">{hints && hints.map(this.renderHint)}</div>}
 
           <form onSubmit={this.checkSolution}>
             {controls.map(this.renderControl)}
 
             {!isDone && (
-              <Button submit loading={loadingCheck} disabled={loadingHint}>
-                <Icon fa="check" /> Ellenőrzés
-              </Button>
+              <div className="exercise-footer">
+                <div className="container ">
+                  {this.state.checkCounter > 0 &&
+                    task.hintsLeft > 0 && (
+                      <Button
+                        className="btn-link"
+                        onAction={this.getHint}
+                        loading={loadingHint}
+                        disabled={loadingCheck}
+                      >
+                        Kérek segítséget ({task.hintsLeft} maradt)
+                      </Button>
+                    )}
+
+                  <Button
+                    submit
+                    loading={loadingCheck}
+                    disabled={loadingHint}
+                    className="btn btn-secondary btn-lg"
+                  >
+                    <Icon fa="check" /> Ellenőrzés
+                  </Button>
+                </div>
+              </div>
             )}
           </form>
         </div>
       )
     }
 
-    renderDescription() {
+    private renderDescription() {
       const desc = this.props.task.details.description
-      return desc && <Markdown source={desc} resources={this.props.resources} />
+      return desc && <Markdown className="" source={desc} resources={this.props.resources} />
     }
 
-    renderControl = ([ctrlId, { controlType, controlProps }]) => {
+    private renderControl = ([ctrlId, { controlType, controlProps }]) => {
       const value = this.state.solutions[ctrlId]
       const readOnly = this.props.task.validity[ctrlId]
       const isDone = this.props.task.status === TASK_STATUS_DONE
@@ -130,13 +174,13 @@ export const SubTask = connect<{}, SubTaskDispatchProps, SubTaskProps>(
 
       if (isDone) {
         return (
-          <div className="form-group row user-control-row" key={ctrlId}>
+          <div className="form-group user-control-row" key={ctrlId}>
             <UserControls {...props} resources={this.props.resources} />
           </div>
         )
       } else {
         return (
-          <div className="form-group row user-control-row" key={ctrlId}>
+          <div className="form-group user-control-row" key={ctrlId}>
             {this.resultIcon(ctrlId)}
             <UserControls {...props} resources={this.props.resources} />
           </div>
@@ -144,23 +188,23 @@ export const SubTask = connect<{}, SubTaskDispatchProps, SubTaskProps>(
       }
     }
 
-    renderHint = item => (
-      <li key={item.key}>
+    private renderHint = item => (
+      <div className="mb-2" key={item.key} ref={this.scrollToHint}>
         <Markdown source={item.hint.text} resources={this.props.resources} />
-      </li>
+      </div>
     )
 
-    resultIcon = ctrlId => {
+    private resultIcon = ctrlId => {
       const validity = this.props.task.validity[ctrlId]
       if (validity === true)
         return (
-          <span className="text-success">
+          <span className="text-success float-right">
             <Icon fa="check" size="2x" />
           </span>
         )
       if (validity === false)
         return (
-          <span className="text-danger">
+          <span className="text-danger float-right">
             <Icon fa="times" size="2x" />
           </span>
         )

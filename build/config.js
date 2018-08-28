@@ -1,4 +1,10 @@
 module.exports = {
+  common: {
+    links: {
+      policy:
+        'https://firebasestorage.googleapis.com/v0/b/zsebtanar-prod.appspot.com/o/docs%2Fzsebtanar-adatvedelmi-szabalyzat-2018.pdf?alt=media&amp;token=3cd16e18-51bc-4069-af98-051df97f2fe6'
+    }
+  },
   development: {
     api: 'https://zsebtanar-test.firebaseapp.com/api',
     firebase: {
@@ -15,6 +21,9 @@ module.exports = {
     },
     ga: {
       ua: 'UA-118780906-2'
+    },
+    recaptcha: {
+      siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
     }
   },
   test: {
@@ -42,6 +51,9 @@ module.exports = {
     },
     ga: {
       ua: 'UA-118780906-2'
+    },
+    recaptcha: {
+      siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
     }
   },
   production: {
@@ -69,6 +81,9 @@ module.exports = {
     },
     ga: {
       ua: 'UA-118780906-1'
+    },
+    recaptcha: {
+      siteKey: '6Lf0J2oUAAAAAOmgqlipFG3TqlM4KSpcSngVgNut'
     }
   }
 }

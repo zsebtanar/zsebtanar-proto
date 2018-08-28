@@ -29,7 +29,8 @@
       }
     },
     "feedback": {
-      ".write": "auth.token.role === 1000",
+      ".read": "auth.token.role > 0",
+      ".write": false,
       "$feedbackId": {
         "description": {
           ".validate": "newData.isString() && newData.val().length < 1024"

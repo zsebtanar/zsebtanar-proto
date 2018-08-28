@@ -23,9 +23,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v4-dependencies-{{ checksum "package.json" }}
+          - v5-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v4-dependencies-
+          - v5-dependencies-
 
       - run: npm install
 
@@ -39,7 +39,7 @@ jobs:
           paths:
             - node_modules
             - bin/function/node_modules
-          key: v4-dependencies-{{ checksum "package.json" }}
+          key: v5-dependencies-{{ checksum "package.json" }}
 
       - deploy:
           name: Deploy on Test
@@ -65,9 +65,9 @@ jobs:
        # Download and cache dependencies
       - restore_cache:
           keys:
-          - v4-dependencies-{{ checksum "package.json" }}
+          - v5-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v4-dependencies-
+          - v5-dependencies-
 
       - run: npm install
 
@@ -81,7 +81,7 @@ jobs:
           paths:
             - node_modules
             - bin/function/node_modules
-          key: v4-dependencies-{{ checksum "package.json" }}
+          key: v5-dependencies-{{ checksum "package.json" }}
 
       - deploy:
           name: Deploy on Producetion
@@ -103,15 +103,17 @@ jobs:
     # Download and cache dependencies
     - restore_cache:
         keys:
-        - v4-dependencies-{{ checksum "package.json" }}
+        - v5-dependencies-{{ checksum "package.json" }}
         # fallback to using the latest cache if no exact match is found
-        - v4-dependencies-
+        - v5-dependencies-
 
     - run: npm install
 
     - run: npm rebuild node-sass
 
     - run: npm test
+
+    - run: NODE_ENV=production npm run build
 
 workflows:
   version: 2

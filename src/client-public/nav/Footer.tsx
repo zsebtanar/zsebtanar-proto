@@ -3,17 +3,33 @@ import { Link } from 'client-common/component/general/Link'
 import { openFeedbackModal } from 'client-common/store/actions/modal'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { ExternalLink } from '../../client-common/component/general/ExternalLink'
 
-export const Footer = connect(undefined, { openFeedbackModal })(function FooterComp(props) {
-  return (
-    <footer className="footer">
-      <p>
-        &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
-        {' - '}
-        <Link onAction={props.openFeedbackModal}>Visszajelzés</Link>
-        {' - '}
-        <NavLink to="/about">Rólunk</NavLink>
-      </p>
-    </footer>
-  )
-})
+interface FooterDispatchProps {
+  openFeedbackModal: typeof openFeedbackModal
+}
+
+export const Footer = connect<{}, FooterDispatchProps, {}>(
+  undefined,
+  { openFeedbackModal }
+)(
+  class FooterComp extends React.PureComponent<FooterDispatchProps> {
+    render() {
+      return (
+        <footer className="footer">
+          <p>
+            &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
+            {' - '}
+            <NavLink to="/about">Rólunk</NavLink>
+            {' - '}
+            <ExternalLink href={__CONFIG__.links.policy}>Adatvédelem</ExternalLink>
+            {' - '}
+            <Link onAction={this.props.openFeedbackModal}>Visszajelzés</Link>
+            {' - '}
+            <NavLink to="/support">Hibaelhárítás</NavLink>
+          </p>
+        </footer>
+      )
+    }
+  }
+)

@@ -1,12 +1,12 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { Route, Router, Switch } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
-import { withTracker } from 'client-common/component/hoc/withTracker'
 import { Overlay } from 'client-common/component/modal/Overlay'
 import { About } from 'client-common/page/About'
 import { Exercise } from 'client-common/page/exercise/Exercise'
 import { Page404 } from 'client-common/page/Page404'
+import { History } from 'history'
+import * as React from 'react'
+import { connect } from 'react-redux'
+import { Route, Router, Switch } from 'react-router-dom'
 import { Footer } from './nav/Footer'
 
 import { Header } from './nav/Header'
@@ -16,9 +16,11 @@ import { ExercisesByTopic } from './page/ExercisesByTopic'
 import { Home } from './page/Home'
 import { Profile } from './page/Profile'
 import { Search } from './page/Search'
+import { Workarounds } from '../client-common/page/Workarounds'
+import { CookieConsent } from './component/CookieConsent'
 
 interface RoutersProps {
-  history: unknown
+  history: History
 }
 
 interface RoutersStateProps {
@@ -40,28 +42,36 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
             <Loading />
           </div>
         ) : (
-          <div className="container">
-            <Header />
-            <SideNav />
-            <div className="content">
-              <Switch>
-                <Route path="/" exact component={withTracker(Home)} />
-                {props.session.signedIn && (
-                  <Route path="/profile" component={withTracker(Profile)} />
-                )}
-                <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
-                <Route path="/grade/:grade" component={ExercisesByGrade} />
-                <Route path="/exercise/:key" component={withTracker(Exercise)} />
-                <Route path="/search" component={withTracker(Search)} />
-                <Route path="/about" component={withTracker(About)} />
-                <Route component={withTracker(Page404)} />
-              </Switch>
-            </div>
-            <Footer />
-          </div>
+          <Switch>
+            <Route exact path="/exercise/:key" component={Exercise} />
+            <Route component={App(props)} />
+          </Switch>
         )}
         <Overlay />
+        <CookieConsent />
       </div>
     </Router>
   )
 })
+
+const App = props => () => {
+  return (
+    <div className="container app-container">
+      <Header />
+      <SideNav />
+      <div className="content app-content">
+        <Switch>
+          <Route path="/" exact component={Home} />
+          {props.session.signedIn && <Route path="/profile" component={Profile} />}
+          <Route path="/subject/:subject/:topic" component={ExercisesByTopic} />
+          <Route path="/grade/:grade" component={ExercisesByGrade} />
+          <Route path="/search" component={Search} />
+          <Route path="/about" component={About} />
+          <Route path="/support" component={Workarounds} />
+          <Route component={Page404} />
+        </Switch>
+      </div>
+      <Footer />
+    </div>
+  )
+}

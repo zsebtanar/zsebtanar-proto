@@ -25,6 +25,7 @@ route.get('/re-publish-all-exercise', [getToken, onlyAdmin], (req, res) => {
     })
     .then(() => res.status(204).send())
     .catch(error => {
+      // tslint:disable-next-line:no-console
       console.error(error)
       res.status(500).send('Unexpected error')
     })

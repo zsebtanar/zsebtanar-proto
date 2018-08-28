@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as ReactGa from 'react-ga'
+import { RouteComponentProps } from 'react-router'
 
 export const trackPage = (page, options = {}) => {
   ReactGa.set({
@@ -10,7 +11,7 @@ export const trackPage = (page, options = {}) => {
 }
 
 export const withTracker = (WrappedComponent, options = {}) => {
-  return class extends React.Component<any, any> {
+  return class extends React.PureComponent<RouteComponentProps<{}>> {
     componentDidMount() {
       const page = this.props.location.pathname
       trackPage(page, options)

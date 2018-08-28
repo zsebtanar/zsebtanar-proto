@@ -1,10 +1,28 @@
 declare const __DEV__: boolean
-declare const __FN_PATH__: string
-declare const __FB__: any
-declare const __GA__: { ua: string }
-declare const __ALGOLIA__: { appId: string; key: string }
+declare const __PRODUCTION__: boolean
+declare const __CONFIG__: {
+  api: string
+  firebase: any
+  sentry: {
+    dsn: string
+  }
+  algolia: {
+    appId: string
+    key: string
+  }
+  ga: {
+    ua: 'string'
+  }
+  recaptcha: {
+    siteKey: string
+  },
+  links: {
+    policy: string
+  }
+}
 declare const __INITIAL_STATE__: any
 declare const __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
+declare const grecaptcha: any
 
 declare const Raven: any
 
@@ -15,6 +33,8 @@ declare namespace state {
 
   interface App {
     session: Session
+    sideNav: SideNav
+    modal: AppModal
   }
 
   interface Task {
@@ -54,6 +74,17 @@ declare namespace state {
     hints: [{ item: DB.Hint }]
     hintsLeft: number
     validity?: boolean
+  }
+
+  interface AppModal {
+    modals: Modal[]
+    closeModal: (id: string) => void
+  }
+
+  interface Modal {
+    id: string
+    modalComponent: () => Promise<any>
+    parameters: any
   }
 }
 
@@ -252,7 +283,9 @@ declare interface Ordered {
   order: number
 }
 
-declare type ObjectMap<T> = { [key: string]: T }
+declare interface ObjectMap<T> {
+  [key: string]: T
+}
 
 declare type Buttontype =
   | 'primary'
@@ -266,4 +299,9 @@ declare type Buttontype =
 declare interface BaseModalParams {
   onClose?: () => void
   disableBackdropClose?: boolean
+}
+
+interface FractionNumber {
+  numerator: number
+  denominator: number
 }

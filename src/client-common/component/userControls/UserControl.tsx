@@ -5,7 +5,7 @@ import { SingleNumber } from './singleNumber/SingleNumber'
 import { SimpleText } from './simpleText/SimpleText'
 import { BinaryChoice } from './binaryChoice/BinaryChoice'
 import { MultiChoice } from './multiChoice/MultiChoice'
-import { FractionNumber } from './fractionNumber/FractionNumber'
+import { FractionNumberComponent } from './fractionNumber/FractionNumberComponent'
 import { NumberList } from './numberList/NumberList'
 
 export function UserControls({ controlType, controlProps, value, resources }) {
@@ -15,7 +15,7 @@ export function UserControls({ controlType, controlProps, value, resources }) {
     case t.SINGLE_NUMBER:
       return <SingleNumber {...controlProps} value={value} resources={resources} />
     case t.FRACTION_NUMBER:
-      return <FractionNumber {...controlProps} value={value} resources={resources} />
+      return <FractionNumberComponent {...controlProps} value={value} resources={resources} />
     case t.NUMBER_LIST:
       return <NumberList {...controlProps} value={value} resources={resources} />
     case t.SINGLE_CHOICE:

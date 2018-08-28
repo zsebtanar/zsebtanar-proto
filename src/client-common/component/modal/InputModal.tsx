@@ -109,3 +109,6 @@ export const InputModal = connect(mapStateToProps, {
     }
   }
 )
+
+// default export for dynamic import
+export default InputModal

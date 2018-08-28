@@ -1,9 +1,10 @@
 import { isNil, not, path, pipe, values } from 'ramda'
 import { cloudFnGet, cloudFnPost, resolveSnapshot } from '../util/firebase'
-import { assert, excludeMetaKeys } from '../../shared/util/fn'
-import { fireApp } from '../fireApp'
+import { assertP, excludeMetaKeys } from '../../shared/util/fn'
+import { app } from '../fireApp'
+import { NotFoundError } from '../util/error'
 
-const DB = fireApp.database()
+const DB = app.database()
 const Exercises = DB.ref('exercise')
 
 export const STATE_KEY = '_state'
@@ -13,12 +14,12 @@ export const EXERCISE_ARCHIVE = 'archive'
 export const EXERCISE_REMOVE = 'remove'
 
 const notFound = uid =>
-  assert(
+  assertP(
     pipe(
       isNil,
       not
     ),
-    `A kért feladat nem létezik: ${uid}.`
+    new NotFoundError(`A kért feladat nem létezik: "${uid}".`)
   )
 
 export function getPublicExercise(exerciseId) {
