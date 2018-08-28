@@ -41,11 +41,11 @@ export const CookieConsent = connect<{}, CookieConsentDispatchProps, {}>(
               </ExternalLink>{' '}
               megtalálod, hogyan gondoskodunk adataid védelméről. Oldalunkon HTTP-sütiket használunk
               a jobb működésért.
-              <Button className="btn btn-link" onAction={this.props.openCookieModal}>
+              <a onClick={this.props.openCookieModal} href="#">
                 További információk
-              </Button>
+              </a>
             </div>
-            <Button className="btn btn-warning mx-2" onAction={this.accept}>
+            <Button className="btn btn-warning mx-4" onAction={this.accept}>
               Rendben
             </Button>
           </div>

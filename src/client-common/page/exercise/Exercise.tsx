@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { pathOr, pipe } from 'ramda'
 import { connect } from 'react-redux'
-import { NavLink, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { abcIndex, pairsInOrder } from 'shared/util/fn'
 import { Markdown } from 'client-common/component/general/Markdown'
 import { Loading } from 'client-common/component/general/Loading'
@@ -10,6 +10,7 @@ import { getPublicExerciseAction, TASK_STATUS_WAITING, unloadExerciseAction } fr
 import { ProgressBar } from 'client-common/component/general/Progress'
 import { Button } from '../../component/general/Button'
 import { withTracker } from '../../component/hoc/withTracker'
+import { ShowError } from '../../component/error/ShwoError'
 
 import './Exercise.scss'
 
@@ -134,17 +135,7 @@ export const Exercise = pipe(
     private renderError() {
       const error = this.props.exerciseError
 
-      return (
-        <div className="col-10 mx-auto">
-          <div className="alert alert-danger  my-4">
-            <h3>Sajnos nem várt hiba történt :(</h3>
-            <div className="text-muted m-3">{error.message || JSON.stringify(error, null, 3)}</div>
-          </div>
-          <NavLink exact to="/" className="btn btn-secondary">
-            Vissza a főoldalra
-          </NavLink>
-        </div>
-      )
+      return (<ShowError error={error} showMenu/>)
     }
 
     private renderResult() {

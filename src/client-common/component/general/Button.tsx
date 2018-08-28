@@ -34,6 +34,7 @@ export function Button(props: ButtonProps) {
       onClick={onClick}
       tabIndex={props.tabIndex}
       title={props.title}
+      aria-label={props['aria-label'] || props.title}
       disabled={props.disabled || props.loading}
       {...pickArea(props)}
     >
