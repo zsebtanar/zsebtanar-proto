@@ -5,7 +5,8 @@ import { NavLink, withRouter } from 'react-router-dom'
 import { Icon } from 'client-common/component/general/Icon'
 import { openSignInModal, openSignUpModal } from 'client-common/store/actions/modal'
 import debounce from 'client-common/util/debounce'
-import { DonateButton } from '../component/DonateButton'
+import { PaypalButton } from '../component/PaypalButton'
+import { PatreonButton } from '../component/PatreonButton'
 import { MainClassificationSelector } from '../component/MainClassificationSelector'
 import { RouteComponentProps } from 'react-router'
 import { withTracker } from 'client-common/component/hoc/withTracker'
@@ -69,7 +70,21 @@ export const Home = pipe(
 
           <MainClassificationSelector />
 
-          <DonateButton />
+          <div className="text-center pt-5">
+            <p>
+              <i>Tetszik az oldal? Támogasd munkánkat, hogy még jobb legyen!</i>
+            </p>
+            <div className="row">
+              <div className="col-md-2"></div>
+              <div className="col-md-4">
+                <PaypalButton />
+              </div>
+              <div className="col-md-4">
+                <PatreonButton />
+              </div>
+              <div className="col-md-2"></div>
+            </div>
+          </div>
         </div>
       )
     }
