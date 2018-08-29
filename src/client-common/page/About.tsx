@@ -49,7 +49,7 @@ export const About = withTracker(function AboutPage() {
             />
             <h4 className="mt-4">A Kódmester</h4>
             <p>
-              Laci vagyok, jelenleg Angliában dolgozom programozóként. Szabadidőmben a honlap fejlesztésével foglalkozom. Ha ismersz valakit, aki szívesen csatlakozna, csak szólj! ;)
+              Laci vagyok, webfejlesztőként dolgozom. Én ezzel az alkalmazással szeretnék hozzájárulni az oktatás javulásához. Ha ismersz valakit, aki szívesen csatlakozna, csak szólj! ;)
             </p>
           </div>
           <div className="col-md">
