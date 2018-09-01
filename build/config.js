@@ -60,7 +60,7 @@ module.exports = {
     api: '/api',
     firebase: {
       apiKey: 'AIzaSyAqJ6qUZfiB586kHXHZdagx-i0vzHMrqMU',
-      authDomain: 'zsebtanar-prod.firebaseapp.com',
+      authDomain: 'auth.zsebtanar.hu',
       databaseURL: 'https://zsebtanar-prod.firebaseio.com',
       projectId: 'zsebtanar-prod',
       storageBucket: 'zsebtanar-prod.appspot.com',
