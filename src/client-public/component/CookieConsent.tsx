@@ -40,7 +40,7 @@ export const CookieConsent = connect<{}, CookieConsentDispatchProps, {}>(
                 Adatvédelmi tájékoztatónkban
               </ExternalLink>{' '}
               megtalálod, hogyan gondoskodunk adataid védelméről. Oldalunkon HTTP-sütiket használunk
-              a jobb működésért.
+              a jobb működésért.{' '}
               <a onClick={this.props.openCookieModal} href="#">
                 További információk
               </a>
