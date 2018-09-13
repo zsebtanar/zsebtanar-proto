@@ -86,7 +86,13 @@ export function deleteUser() {
       .catch(ravenCapture)
 }
 
-const ravenCapture = error =>
-  typeof Raven !== 'undefined' ? Raven.captureException(error) : undefined
+const ravenCapture = error => {
+  try {
+    typeof Raven !== 'undefined' ? Raven.captureException(error) : undefined
+  } catch (e) { /* ignore */ }
+}
 
-const handleError = (type, dispatch) => error => dispatch({ type, payload: error, error: true })
+const handleError = (type, dispatch) => error => {
+  ravenCapture(error)
+  dispatch({ type, payload: error, error: true })
+}
