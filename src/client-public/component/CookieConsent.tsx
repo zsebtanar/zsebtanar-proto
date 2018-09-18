@@ -35,19 +35,25 @@ export const CookieConsent = connect<{}, CookieConsentDispatchProps, {}>(
       if (this.state.active) {
         return (
           <div className="cookie-consent p-2">
-            <div>
-              <ExternalLink href={__CONFIG__.links.policy}>
-                Adatvédelmi tájékoztatónkban
-              </ExternalLink>{' '}
-              megtalálod, hogyan gondoskodunk adataid védelméről. Oldalunkon HTTP-sütiket használunk
-              a jobb működésért.{' '}
-              <a onClick={this.props.openCookieModal} href="#">
-                További információk
-              </a>
+            <div className="container">
+              <div className="row">
+                <div className="col-md-9 col-sm-12 mb-2">
+                  <ExternalLink href={__CONFIG__.links.policy}>
+                    Adatvédelmi tájékoztatónkban
+                  </ExternalLink>{' '}
+                  megtalálod, hogyan gondoskodunk adataid védelméről. Oldalunkon HTTP-sütiket használunk
+                  a jobb működésért.{' '}
+                  <a onClick={this.props.openCookieModal} href="#">
+                    További információk
+                  </a>
+                </div>
+                <div className="col-md-3 col-sm-10 offset-sm-1 offset-md-0">
+                  <Button className="btn btn-warning w-100" onAction={this.accept}>
+                    Rendben
+                  </Button>
+                </div>
+              </div>
             </div>
-            <Button className="btn btn-warning mx-4" onAction={this.accept}>
-              Rendben
-            </Button>
           </div>
         )
       } else {

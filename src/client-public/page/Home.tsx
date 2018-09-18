@@ -70,19 +70,19 @@ export const Home = pipe(
 
           <MainClassificationSelector />
 
-          <div className="text-center pt-5">
+          <div className="text-center pt-5 my-5">
             <p>
               <i>Tetszik az oldal? Támogasd munkánkat, hogy még jobb legyen!</i>
             </p>
             <div className="row">
-              <div className="col-md-2"></div>
-              <div className="col-md-4">
+              <div className="col-8 mx-auto row">
+              <div className="col-md-6 mb-1">
                 <PaypalButton />
               </div>
-              <div className="col-md-4">
+              <div className="col-md-6">
                 <PatreonButton />
               </div>
-              <div className="col-md-2"></div>
+              </div>
             </div>
           </div>
         </div>
