@@ -27,6 +27,10 @@ export const Footer = connect<{}, FooterDispatchProps, {}>(
             <Link onAction={this.props.openFeedbackModal}>Visszajelzés</Link>
             {' - '}
             <NavLink to="/support">Hibaelhárítás</NavLink>
+            {' - '}
+            <ExternalLink href="https://www.facebook.com/zsebtanar">Facebook</ExternalLink>
+            {' - '}
+            <ExternalLink href="http://v1.zsebtanar.hu/" title="Zsebtanár 1.0">Régi oldal</ExternalLink>
           </p>
         </footer>
       )
