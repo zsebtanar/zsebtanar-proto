@@ -32,8 +32,9 @@ export const About = withTracker(function AboutPage() {
         <div className="row">
           <div className="col-md">
             <img
+              className="about-pic"
               width="90%"
-              src="/assets/images/zst_gergo.png"
+              src="/assets/images/zst_gergo.jpg"
               alt="Gergő"
             />
             <h4 className="mt-4">Az Elnök</h4>
@@ -43,8 +44,9 @@ export const About = withTracker(function AboutPage() {
           </div>
           <div className="col-md">
             <img
+              className="about-pic"
               width="90%"
-              src="/assets/images/zst_laci.png"
+              src="/assets/images/zst_laci.jpg"
               alt="Laci"
             />
             <h4 className="mt-4">A Kódmester</h4>
@@ -54,8 +56,9 @@ export const About = withTracker(function AboutPage() {
           </div>
           <div className="col-md">
             <img
+              className="about-pic"
               width="90%"
-              src="/assets/images/zst_viktor.png"
+              src="/assets/images/zst_viktor.jpg"
               alt="Viktor"
             />
             <h4 className="mt-4">Az Ötletgazda</h4>
