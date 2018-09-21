@@ -38,8 +38,7 @@
     <link rel="icon" href="/favicon.ico?v=2">
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/fonts/KaTeX_AMS-Regular.woff2" as="font">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/contrib/copy-tex.min.css" integrity="sha256-ofG8Yf5+1UL/JI4H1FYe7LBfbvCaTy+3OqX39TRpgkg=" crossorigin="anonymous" />
 </head>
 <body>
 <noscript>
@@ -58,7 +57,7 @@
 
 <% if (htmlWebpackPlugin.options.env.sentry) { %>
     <!-- Load Sentry -->
-    <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raven.js/3.26.2/raven.min.js" integrity="sha256-SwNT3bdv1zGK2V0mAEIMIdSEhIR+HbhYHLMkmR6U7D8=" crossorigin="anonymous"></script>
     <script>
       Raven.config(<%= JSON.stringify(htmlWebpackPlugin.options.env.sentry.dsn) %>, {
         environment: 'prototype',

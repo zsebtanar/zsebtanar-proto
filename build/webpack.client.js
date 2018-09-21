@@ -1,4 +1,4 @@
-const ENV_CONFIG = require('./config')
+const getConfig = require('./config').getConfig
 
 //const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin')
 
@@ -10,13 +10,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-const server = process.env.SERVER_ENV || 'development'
 const env = process.env.NODE_ENV || 'development'
 const isDev = env === 'development'
 const isProd = env === 'production'
 
-const envCommonConfig = ENV_CONFIG.common
-const envConfig = { ...envCommonConfig, ...ENV_CONFIG[server] }
+const envConfig = getConfig()
 
 const sassExtract = new ExtractTextPlugin({
   filename: '[name].css',
@@ -74,6 +72,9 @@ module.exports = {
         { from: /^\/admin/, to: '/admin.html' },
         { from: /^\//, to: '/index.html' }
       ]
+    },
+    headers: {
+      'Content-Security-Policy': envConfig.csp.join('; ')
     }
   },
   module: {
