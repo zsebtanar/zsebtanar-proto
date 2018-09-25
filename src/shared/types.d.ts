@@ -24,8 +24,6 @@ declare const __INITIAL_STATE__: any
 declare const __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
 declare const grecaptcha: any
 
-declare const Raven: any
-
 declare namespace state {
   interface Root {
     app: App

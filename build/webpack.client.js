@@ -1,4 +1,5 @@
-const getConfig = require('./config').getConfig
+const { injectJS, injectCSS } = require('./utils')
+const { getConfig } = require('./config')
 
 //const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin')
 
@@ -28,6 +29,19 @@ const cssExtract = new ExtractTextPlugin({
 const ROOT_PATH = path.join(__dirname, '..')
 const SRC_PATH = path.join(ROOT_PATH, 'src')
 const TARGET_PATH = path.join(ROOT_PATH, 'bin/app')
+
+const commonHtmlWebpackPluginOptions = {
+  template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
+  alwaysWriteToDisk: false,
+  isDev: !isProd,
+  hash: true,
+  env: envConfig,
+  chunksSortMode: 'none',
+  inject: false,
+  inlineCSSRegex: isDev ? [] : ['.css$'],
+  injectJS,
+  injectCSS
+}
 
 module.exports = {
   mode: isDev ? 'development' : 'production',
@@ -163,28 +177,18 @@ module.exports = {
   plugins: [
     sassExtract,
     new HtmlWebpackPlugin({
-      template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
-      alwaysWriteToDisk: false,
+      ...commonHtmlWebpackPluginOptions,
       filename: 'admin.html',
       title: 'Zsebtanár - Tanár',
-      isDev: !isProd,
       site: 'admin',
-      excludeChunks: ['public', 'public-modal'],
-      hash: true,
-      env: envConfig,
-      chunksSortMode: 'none'
+      excludeChunks: ['public', 'public-modal']
     }),
     new HtmlWebpackPlugin({
-      template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
-      alwaysWriteToDisk: false,
+      ...commonHtmlWebpackPluginOptions,
       filename: 'index.html',
-      isDev: !isProd,
       site: 'public',
       title: 'Zsebtanár',
-      excludeChunks: ['admin', 'admin-modal'],
-      hash: true,
-      env: envConfig,
-      chunksSortMode: 'none'
+      excludeChunks: ['admin', 'admin-modal']
     }),
     // new InlineChunkManifestHtmlWebpackPlugin({
     //   dropAsset: true

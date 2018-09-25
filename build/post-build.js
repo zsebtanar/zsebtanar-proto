@@ -15,10 +15,20 @@ const reportOnly = true
 const firebaseConfigFile = path.join(__dirname, '../firebase.json')
 const firebaseConfig = require(firebaseConfigFile)
 
-const htmlConfig = firebaseConfig.hosting.headers.find(x => x.source === '**/*.html')
+const htmlConfig = firebaseConfig.hosting.headers.find(x => x.source === '**')
+
+htmlConfig.headers = htmlConfig.headers.filter(h => !h.key.startsWith('Content-Security-Policy'))
+
 htmlConfig.headers.push({
-  key: reportOnly ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy',
-  value: getCSPConfig(reportOnly)
+  key: 'Content-Security-Policy-Report-Only',
+  value: getCSPConfig(true)
 })
+
+if (!reportOnly) {
+  htmlConfig.headers.push({
+    key: 'Content-Security-Policy',
+    value: getCSPConfig(false)
+  })
+}
 
 fs.writeFileSync(firebaseConfigFile, JSON.stringify(firebaseConfig, null, 3), 'utf8')
