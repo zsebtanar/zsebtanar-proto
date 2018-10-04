@@ -86,10 +86,10 @@ module.exports = {
         { from: /^\/admin/, to: '/admin.html' },
         { from: /^\//, to: '/index.html' }
       ]
-    },
-    headers: {
-      'Content-Security-Policy': envConfig.csp.join('; ')
     }
+    // headers: {
+    //   'Content-Security-Policy': envConfig.csp.join('; ')
+    // }
   },
   module: {
     rules: [
