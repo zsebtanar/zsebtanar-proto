@@ -11,7 +11,8 @@
 ### A projekt futtatásához szükséged lesz:
  - [nodejs 8+](https://nodejs.org/en/)
 
-### Hasznos parancsok
+### Futtatás
  
 - Függőségek telepítése: `npm install`
 - Oldal futtatása fejlesztői módban: `npm run start`
+- Nyisd meg az app-t a böngészőben (http://localhost:8080)[http://localhost:8080]
