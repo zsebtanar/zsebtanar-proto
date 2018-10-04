@@ -50,7 +50,8 @@ const envConfig = {
     },
     recaptcha: {
       siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
-    }
+    },
+    sentry: {}
   },
   test: {
     api: '/api',
