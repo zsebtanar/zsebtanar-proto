@@ -9,7 +9,7 @@
 ## Fejlesztőknek:
 
 ### A projekt futtatásához szükséged lesz:
- - [nodejs 6+](https://nodejs.org/en/)
+ - [nodejs 8+](https://nodejs.org/en/)
 
 ### Hasznos parancsok
  
@@ -17,5 +17,4 @@
 - Oldal futtatása fejlesztői módban: `npm run dev`
 - Éles verzió létrehozása: `npm run build`
 - Éles verzió létrehozása és telepítése: `npm run deploy`
-
-*telepítéshez Firebase konzol hozzáférésre van szükség*
+   *telepítéshez Firebase konzol hozzáférésre van szükség*
