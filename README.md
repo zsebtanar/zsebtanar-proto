@@ -14,7 +14,4 @@
 ### Hasznos parancsok
  
 - Függőségek telepítése: `npm install`
-- Oldal futtatása fejlesztői módban: `npm run dev`
-- Éles verzió létrehozása: `npm run build`
-- Éles verzió létrehozása és telepítése: `npm run deploy`
-   *telepítéshez Firebase konzol hozzáférésre van szükség*
+- Oldal futtatása fejlesztői módban: `npm run start`
