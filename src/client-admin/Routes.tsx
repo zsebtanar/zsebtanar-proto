@@ -16,6 +16,7 @@ import { UserList } from './page/user/UserList'
 import { ClassificationList } from './page/classification/ClassificationList'
 import { FeedbackList } from './page/FeedbackList'
 import { About } from 'client-common/page/About'
+import { Join } from 'client-common/page/Join'
 import { Footer } from './nav/Footer'
 import { AdminUtils } from './page/AdminUtils'
 import { ExercisePreview } from './page/ExercisePreview'
@@ -81,6 +82,7 @@ function AdminRoutes() {
           <Route path="/feedback" component={FeedbackList} />
           <Route path="/utilities" component={AdminUtils} />
           <Route path="/about" component={About} />
+          <Route path="/join" component={Join} />
           <Route component={Page404} />
         </Switch>
       </div>

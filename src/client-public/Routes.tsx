@@ -1,6 +1,7 @@
 import { Loading } from 'client-common/component/general/Loading'
 import { Overlay } from 'client-common/component/modal/Overlay'
 import { About } from 'client-common/page/About'
+import { Join } from 'client-common/page/Join'
 import { Exercise } from 'client-common/page/exercise/Exercise'
 import { Page404 } from 'client-common/page/Page404'
 import { History } from 'history'
@@ -67,6 +68,7 @@ const App = props => () => {
           <Route path="/grade/:grade" component={ExercisesByGrade} />
           <Route path="/search" component={Search} />
           <Route path="/about" component={About} />
+          <Route path="/join" component={Join} />
           <Route path="/support" component={Workarounds} />
           <Route component={Page404} />
         </Switch>
