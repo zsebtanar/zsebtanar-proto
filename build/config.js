@@ -20,6 +20,7 @@ const commonConfig = {
       'img-src',
       "'self'",
       'https://firebasestorage.googleapis.com',
+      'https://www.google-analytics.com',
       'https://www.paypalobjects.com',
       'https://www.algolia.com',
       'data:' // bootstrap alternative checkbox es radio
