@@ -28,6 +28,8 @@
     ]
   },
   "dependencies": {
+    "@sentry/browser": "^4.0.5",
+    "@sentry/types": "^4.0.1",
     "@types/react-redux": "^6.0.6",
     "@types/react-router": "^4.0.30",
     "algoliasearch": "3.30.0",

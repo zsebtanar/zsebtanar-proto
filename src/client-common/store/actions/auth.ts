@@ -1,6 +1,7 @@
 import { app, firebase } from '../../fireApp'
 import { getUserAction, parseTokenAction } from 'client-common/store/reducers/session'
 import { removeUserData, updateUserProfile } from '../../services/user'
+import { logException } from '../../util/logger'
 
 const AUTH = app.auth()
 
@@ -86,7 +87,13 @@ export function deleteUser() {
       .catch(ravenCapture)
 }
 
-const ravenCapture = error =>
-  typeof Raven !== 'undefined' ? Raven.captureException(error) : undefined
+const ravenCapture = error => {
+  try {
+    typeof logException(error)
+  } catch (e) { /* ignore */ }
+}
 
-const handleError = (type, dispatch) => error => dispatch({ type, payload: error, error: true })
+const handleError = (type, dispatch) => error => {
+  ravenCapture(error)
+  dispatch({ type, payload: error, error: true })
+}

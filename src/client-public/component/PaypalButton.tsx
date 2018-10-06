@@ -1,11 +1,8 @@
 import * as React from 'react'
 
-export function DonateButton() {
+export function PaypalButton() {
   return (
-    <div className="text-center pt-5">
-      <p>
-        <i>Tetszik az oldal? Támogasd munkánkat, hogy még jobb legyen!</i>
-      </p>
+    <div className="text-center">
       <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
         <input type="hidden" name="cmd" value="_s-xclick" />
         <input type="hidden" name="hosted_button_id" value="Y389SASDEHF9A" />
@@ -17,7 +14,7 @@ export function DonateButton() {
         />
         <img
           alt=""
-          src="https://www.paypalobjects.com/hu_HU/i/scr/pixel.gif"
+          src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
           width="1"
           height="1"
         />
