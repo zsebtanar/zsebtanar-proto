@@ -1,1 +1,0 @@
-Lásd a [Fejlesztőknek](https://github.com/zsebtanar/zsebtanar-proto/wiki/Fejleszt%C5%91knek) szóló Wiki oldalunkat
