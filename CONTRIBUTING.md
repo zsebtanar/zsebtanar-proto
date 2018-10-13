@@ -1,4 +1,4 @@
-# Hozzájárulás
+# Közreműködés
 
 Segíteni szeretnél? Rengeteg lehetőséged van, hogy részt vegyél a munkában.
 

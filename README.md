@@ -22,6 +22,14 @@ A honlapot a Zsebtanár Nonprofit Alapítvány fejleszti önkéntesek segítség
 
 További információ a [wiki oldalon][wiki]
 
+## Közreműködés
+
+A Zsebtanár egy igyenes és nyíltforráskódú projet. Hálásak vagyunk minden nemá hozzájárulásért - legyen az hibajavítás, dokumentáció frissítése vagy új funkció javaslata. További részletekért olvased el a [közreműködési][contributing] doksit.
+
+
+## [Közreműködők Magatartási Kódexe][coc]
+
+Kérünk vedd figyelembe, hogy a projekt a [Közreműködők Magatartási Kódexet][coc] követi. Amennyiben résztveszel a projektben neked is be kell tartanod a bennfoglaltakat.
 
 ## [License][license]
 
@@ -38,3 +46,5 @@ A Zsebtanár kódja a [GPL License, 2.0-s változata][license] alá tartozik.
 [circleci-shield]: https://circleci.com/gh/zsebtanar/zsebtanar-proto.svg?style=shield
 [circleci-link]: https://circleci.com/gh/zsebtanar/zsebtanar-proto
 [license]: LICENSE
+[coc]: CODE_OF_CONDUCT.md
+[contributing]: CONTRIBUTING.md

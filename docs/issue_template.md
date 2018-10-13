@@ -1,5 +1,3 @@
-*[Olvass el](https://github.com/zsebtanar/zsebtanar-proto/wiki/Fejleszt%C5%91knek#hibabejelent%C3%A9s)*
-
 ### Elvárt viselkedés
 
 
