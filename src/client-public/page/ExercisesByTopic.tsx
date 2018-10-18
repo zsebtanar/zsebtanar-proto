@@ -7,10 +7,9 @@ import { getAllClassification, TAGS } from 'client-common/services/classificatio
 import { Markdown } from 'client-common/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
-import { trackPage } from 'client-common/component/hoc/withTracker'
-import { withTracker } from '../../client-common/component/hoc/withTracker'
 import { ShowError } from '../../client-common/component/error/ShwoError'
 import { NotFoundError } from '../../client-common/util/error'
+import { setupPage, trackPage } from '../../client-common/component/hoc/setupPage'
 
 interface ExercisesByTopicProps extends RouteComponentProps<{ subject: string; topic: string }> {}
 
@@ -29,7 +28,7 @@ const mapStateToProps = state => ({
 })
 
 export const ExercisesByTopic = pipe(
-  withTracker,
+  setupPage(),
   withRouter,
   connect<ExercisesByTopicStateProps, {}, ExercisesByTopicProps>(mapStateToProps)
 )(

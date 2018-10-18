@@ -7,7 +7,7 @@ import { Loading } from 'client-common/component/general/Loading'
 import { Icon } from 'client-common/component/general/Icon'
 import { search } from 'client-common/services/search'
 import { getQueryParams } from 'client-common/util/url'
-import { withTracker } from '../../client-common/component/hoc/withTracker'
+import { setupPage } from 'client-common/component/hoc/setupPage'
 import { pipe } from 'ramda'
 
 const mapStateToProps = state => ({
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 })
 
 export const Search = pipe(
-  withTracker,
+  setupPage({ storePosition: false }),
   connect(
     mapStateToProps,
     {}

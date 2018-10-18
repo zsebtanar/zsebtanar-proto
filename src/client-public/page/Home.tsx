@@ -9,7 +9,7 @@ import { PaypalButton } from '../component/PaypalButton'
 import { PatreonButton } from '../component/PatreonButton'
 import { MainClassificationSelector } from '../component/MainClassificationSelector'
 import { RouteComponentProps } from 'react-router'
-import { withTracker } from 'client-common/component/hoc/withTracker'
+import { setupPage } from 'client-common/component/hoc/setupPage'
 
 interface HomeStateProps {
   session: state.Session
@@ -25,7 +25,7 @@ const mapStateToProps = (state: state.Root) => ({
 })
 
 export const Home = pipe(
-  withTracker,
+  setupPage(),
   withRouter,
   connect<HomeStateProps, HomeDispatchProps, RouteComponentProps<{}>>(
     mapStateToProps,
@@ -76,12 +76,12 @@ export const Home = pipe(
             </p>
             <div className="row">
               <div className="col-8 mx-auto row">
-              <div className="col-md-6 mb-1">
-                <PaypalButton />
-              </div>
-              <div className="col-md-6">
-                <PatreonButton />
-              </div>
+                <div className="col-md-6 mb-1">
+                  <PaypalButton />
+                </div>
+                <div className="col-md-6">
+                  <PatreonButton />
+                </div>
               </div>
             </div>
           </div>

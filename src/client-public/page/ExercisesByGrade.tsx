@@ -7,8 +7,7 @@ import { getAllClassification, TAGS } from 'client-common/services/classificatio
 import { Markdown } from 'client-common/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
-import { trackPage } from 'client-common/component/hoc/withTracker'
-import { withTracker } from '../../client-common/component/hoc/withTracker'
+import { setupPage, trackPage } from '../../client-common/component/hoc/setupPage'
 import { ShowError } from '../../client-common/component/error/ShwoError'
 import { NotFoundError } from '../../client-common/util/error'
 
@@ -17,7 +16,7 @@ const mapStateToProps = state => ({
 })
 
 export const ExercisesByGrade = pipe(
-  withTracker,
+  setupPage(),
   withRouter,
   connect(mapStateToProps)
 )(

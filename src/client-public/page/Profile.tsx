@@ -4,8 +4,8 @@ import { Button } from 'client-common/component/general/Button'
 import { deleteUser } from 'client-common/store/actions/auth'
 import { openConfirmModal } from 'client-common/store/actions/modal'
 import { Icon } from 'client-common/component/general/Icon'
-import { withTracker } from 'client-common/component/hoc/withTracker'
 import { pipe } from 'ramda'
+import { setupPage } from '../../client-common/component/hoc/setupPage'
 
 const mapStateToProps = state => ({
   session: state.app.session
@@ -17,7 +17,7 @@ const mapDispatchToProps = {
 }
 
 export const Profile = pipe(
-  withTracker,
+  setupPage(),
   connect(
     mapStateToProps,
     mapDispatchToProps
