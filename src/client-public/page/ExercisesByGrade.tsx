@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { pathOr, pipe } from 'ramda'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { selectPublicExercisesById } from 'client-common/services/exercise'
 import { getAllClassification, TAGS } from 'client-common/services/classification'
 import { Markdown } from 'client-common/component/general/Markdown'
@@ -11,6 +11,18 @@ import { setupPage, trackPage } from '../../client-common/component/hoc/setupPag
 import { ShowError } from '../../client-common/component/error/ShwoError'
 import { NotFoundError } from '../../client-common/util/error'
 
+interface StoreProps {
+  classification: state.Classifications
+}
+
+interface State {
+  exercises?: DB.Exercise[]
+  classification?: DB.Classifications
+  error?: any
+}
+
+type RouteProps = RouteComponentProps<{ grade: string }>
+
 const mapStateToProps = state => ({
   classification: state.classification
 })
@@ -18,10 +30,14 @@ const mapStateToProps = state => ({
 export const ExercisesByGrade = pipe(
   setupPage(),
   withRouter,
-  connect(mapStateToProps)
+  connect<StoreProps, RouteProps>(mapStateToProps)
 )(
-  class extends React.Component<any, any> {
-    state = { exercises: undefined, classification: undefined, error: undefined }
+  class extends React.Component<StoreProps & RouteProps, State> {
+    state = {
+      exercises: undefined,
+      classification: undefined,
+      error: undefined
+    }
 
     componentDidMount() {
       if (this.props.classification) {

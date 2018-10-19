@@ -11,14 +11,16 @@ import { MainClassificationSelector } from '../component/MainClassificationSelec
 import { RouteComponentProps } from 'react-router'
 import { setupPage } from 'client-common/component/hoc/setupPage'
 
-interface HomeStateProps {
+interface StoreProps {
   session: state.Session
 }
 
-interface HomeDispatchProps {
+interface DispatchProps {
   openSignInModal: typeof openSignInModal
   openSignUpModal: typeof openSignUpModal
 }
+
+type AllProps = StoreProps & DispatchProps & RouteComponentProps<{}>
 
 const mapStateToProps = (state: state.Root) => ({
   session: state.app.session
@@ -27,15 +29,12 @@ const mapStateToProps = (state: state.Root) => ({
 export const Home = pipe(
   setupPage(),
   withRouter,
-  connect<HomeStateProps, HomeDispatchProps, RouteComponentProps<{}>>(
+  connect<StoreProps, DispatchProps, RouteComponentProps<{}>>(
     mapStateToProps,
     { openSignInModal, openSignUpModal }
   )
 )(
-  class HomeComponent extends React.Component<
-    HomeStateProps & HomeDispatchProps & RouteComponentProps<{}>,
-    {}
-  > {
+  class HomeComponent extends React.PureComponent<AllProps> {
     private searchInput = null
 
     private searchInputChange = debounce(() => {

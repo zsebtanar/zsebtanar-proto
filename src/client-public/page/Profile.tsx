@@ -7,6 +7,15 @@ import { Icon } from 'client-common/component/general/Icon'
 import { pipe } from 'ramda'
 import { setupPage } from '../../client-common/component/hoc/setupPage'
 
+interface StateProps {
+  session: state.Session
+}
+
+interface DispatchProps {
+  deleteUser: typeof deleteUser
+  openConfirmModal: typeof openConfirmModal
+}
+
 const mapStateToProps = state => ({
   session: state.app.session
 })
@@ -18,13 +27,13 @@ const mapDispatchToProps = {
 
 export const Profile = pipe(
   setupPage(),
-  connect(
+  connect<StateProps, DispatchProps>(
     mapStateToProps,
     mapDispatchToProps
   )
 )(
-  class extends React.Component<any, any> {
-    deleteProfile = () => {
+  class extends React.PureComponent<StateProps & DispatchProps> {
+    private deleteProfile = () => {
       const { deleteUser, openConfirmModal } = this.props
       openConfirmModal({
         buttonType: 'danger',
@@ -43,6 +52,7 @@ export const Profile = pipe(
         onSuccess: deleteUser
       })
     }
+
     render() {
       const { user } = this.props.session
       return (

@@ -6,18 +6,18 @@ import { pipe } from 'ramda'
 import { ExternalLink } from '../component/general/ExternalLink'
 import { setupPage } from '../component/hoc/setupPage'
 
-interface WorkaroundsProps {
+interface DispatchProps {
   openFeedbackModal: typeof openFeedbackModal
 }
 
 export const Workarounds = pipe(
   setupPage(),
-  connect(
+  connect<void, DispatchProps, void>(
     undefined,
     { openFeedbackModal }
   )
 )(
-  class WorkaroundsPage extends React.PureComponent<WorkaroundsProps> {
+  class WorkaroundsPage extends React.PureComponent<DispatchProps> {
     render() {
       return (
         <div className="col-10 mx-auto">
