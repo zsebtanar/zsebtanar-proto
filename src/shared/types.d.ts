@@ -33,6 +33,7 @@ declare namespace state {
     session: Session
     sideNav: SideNav
     modal: AppModal
+    classifications: Classifications
   }
 
   interface Task {
@@ -48,6 +49,8 @@ declare namespace state {
   }
 
   interface Auth {}
+
+  type Classifications = db.Classifications
 
   interface Session {
     waitingForUser: boolean

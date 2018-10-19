@@ -7,37 +7,37 @@ import { getAllClassification, TAGS } from 'client-common/services/classificatio
 import { Markdown } from 'client-common/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
-import { trackPage } from 'client-common/component/hoc/withTracker'
-import { withTracker } from '../../client-common/component/hoc/withTracker'
 import { ShowError } from '../../client-common/component/error/ShwoError'
 import { NotFoundError } from '../../client-common/util/error'
+import { setupPage, trackPage } from '../../client-common/component/hoc/setupPage'
 
-interface ExercisesByTopicProps extends RouteComponentProps<{ subject: string; topic: string }> {}
-
-interface ExercisesByTopicStateProps {
-  classification: any
+interface StoreProps {
+  classification: state.Classifications
 }
 
-interface ExercisesByTopicState {
-  exercises: any
-  classification: any
-  error: any
+interface State {
+  exercises?: DB.Exercise[]
+  classification?: DB.Classifications
+  error?: any
 }
+
+type RouteProps = RouteComponentProps<{ subject: string; topic: string }>
 
 const mapStateToProps = state => ({
   classification: state.classification
 })
 
 export const ExercisesByTopic = pipe(
-  withTracker,
+  setupPage(),
   withRouter,
-  connect<ExercisesByTopicStateProps, {}, ExercisesByTopicProps>(mapStateToProps)
+  connect<StoreProps, void, RouteProps>(mapStateToProps)
 )(
-  class extends React.Component<
-    ExercisesByTopicProps & ExercisesByTopicStateProps,
-    ExercisesByTopicState
-  > {
-    state = { exercises: undefined, classification: undefined, error: undefined }
+  class extends React.Component<StoreProps & RouteProps, State> {
+    state = {
+      exercises: undefined,
+      classification: undefined,
+      error: undefined
+    }
 
     componentDidMount() {
       if (this.props.classification) {
