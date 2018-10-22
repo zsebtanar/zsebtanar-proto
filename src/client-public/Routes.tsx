@@ -3,6 +3,7 @@ import { Overlay } from 'client-common/component/modal/Overlay'
 import { About } from 'client-common/page/About'
 import { Exercise } from 'client-common/page/exercise/Exercise'
 import { Page404 } from 'client-common/page/Page404'
+import { AppNotifications } from 'client-common/component/general/AppNotifications'
 import { History } from 'history'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -49,6 +50,7 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
         )}
         <Overlay />
         <CookieConsent />
+        <AppNotifications />
       </div>
     </Router>
   )

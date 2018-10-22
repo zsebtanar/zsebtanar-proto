@@ -2,6 +2,7 @@ import { app, firebase } from '../../fireApp'
 import { getUserAction, parseTokenAction } from 'client-common/store/reducers/session'
 import { removeUserData, updateUserProfile } from '../../services/user'
 import { logException } from '../../util/logger'
+import { addNotification } from '../notifications'
 
 const AUTH = app.auth()
 
@@ -22,6 +23,9 @@ export function initAuthWatch(store) {
   AUTH.onAuthStateChanged(function(user) {
     if (user) {
       store.dispatch({ type: SIGN_IN_SUCCESS, payload: { user } })
+      store.dispatch(
+        addNotification(NotificationType.Success, 'Sikeres bejelentkezés.', { timeout: 3 })
+      )
       store.dispatch(getUserAction(user.uid))
       store.dispatch(parseTokenAction(user))
     } else {
@@ -84,16 +88,10 @@ export function deleteUser() {
   return () =>
     Promise.all([AUTH.currentUser.delete(), removeUserData(AUTH.currentUser.uid)])
       .then(() => window.location.replace('/'))
-      .catch(ravenCapture)
-}
-
-const ravenCapture = error => {
-  try {
-    typeof logException(error)
-  } catch (e) { /* ignore */ }
+      .catch(logException)
 }
 
 const handleError = (type, dispatch) => error => {
-  ravenCapture(error)
+  logException(error)
   dispatch({ type, payload: error, error: true })
 }

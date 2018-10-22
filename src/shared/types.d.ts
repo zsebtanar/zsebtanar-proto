@@ -32,7 +32,8 @@ declare namespace state {
   interface App {
     session: Session
     sideNav: SideNav
-    modal: AppModal
+    modal: AppModal,
+    notifications: Notifications
   }
 
   interface Task {
@@ -83,6 +84,17 @@ declare namespace state {
     id: string
     modalComponent: () => Promise<any>
     parameters: any
+  }
+
+  interface Notifications {
+    list: Notification[]
+  }
+
+  interface Notification {
+    id: string
+    type: NotificationType
+    message: string,
+    options: NotificationOptions
   }
 }
 
@@ -302,4 +314,20 @@ declare interface BaseModalParams {
 interface FractionNumber {
   numerator: number
   denominator: number
+}
+
+declare const enum NotificationType {
+  Primary,
+  Secondary,
+  Success,
+  Danger,
+  Warning,
+  Info,
+  Light,
+  Dark
+}
+
+declare interface NotificationOptions {
+  timeout?: number
+  description?: string
 }

@@ -10,7 +10,7 @@ import {
   pipe,
   sortBy,
   toPairs,
-  merge
+  merge, propEq, not
 } from 'ramda'
 
 export const indexedMap = addIndex(map)
@@ -76,3 +76,5 @@ export const reduceP = curry(function reducePF(fn, init, arr) {
 })
 
 export const fMerge = flip(merge)
+
+export const idNotEq = curry(pipe(propEq('id'), not))
