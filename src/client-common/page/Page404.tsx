@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { withTracker } from '../component/hoc/withTracker'
 import { ShowError } from '../component/error/ShwoError'
+import { setupPage } from '../component/hoc/setupPage'
 
-export const Page404 = withTracker(function Page404() {
+export const Page404 = setupPage()(function Page404() {
   return <ShowError />
 })

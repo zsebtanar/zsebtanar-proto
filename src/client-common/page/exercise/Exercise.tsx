@@ -6,11 +6,15 @@ import { abcIndex, pairsInOrder } from 'shared/util/fn'
 import { Markdown } from 'client-common/component/general/Markdown'
 import { Loading } from 'client-common/component/general/Loading'
 import { SubTask } from 'client-common/page/exercise/SubTask'
-import { getPublicExerciseAction, TASK_STATUS_WAITING, unloadExerciseAction } from 'client-common/store/exercise'
+import {
+  getPublicExerciseAction,
+  TASK_STATUS_WAITING,
+  unloadExerciseAction
+} from 'client-common/store/exercise'
 import { ProgressBar } from 'client-common/component/general/Progress'
 import { Button } from '../../component/general/Button'
-import { withTracker } from '../../component/hoc/withTracker'
 import { ShowError } from '../../component/error/ShwoError'
+import { setupPage } from '../../component/hoc/setupPage'
 
 import './Exercise.scss'
 
@@ -33,7 +37,7 @@ const mapDispatchToProps = {
 const isFinished = pathOr(false, ['exercise', 'isFinished'])
 
 export const Exercise = pipe(
-  withTracker,
+  setupPage({ storePosition: false }),
   withRouter,
   connect(
     mapStateToProps,
@@ -135,7 +139,7 @@ export const Exercise = pipe(
     private renderError() {
       const error = this.props.exerciseError
 
-      return (<ShowError error={error} showMenu/>)
+      return <ShowError error={error} showMenu />
     }
 
     private renderResult() {

@@ -4,8 +4,17 @@ import { Button } from 'client-common/component/general/Button'
 import { deleteUser } from 'client-common/store/actions/auth'
 import { openConfirmModal } from 'client-common/store/actions/modal'
 import { Icon } from 'client-common/component/general/Icon'
-import { withTracker } from 'client-common/component/hoc/withTracker'
 import { pipe } from 'ramda'
+import { setupPage } from '../../client-common/component/hoc/setupPage'
+
+interface StateProps {
+  session: state.Session
+}
+
+interface DispatchProps {
+  deleteUser: typeof deleteUser
+  openConfirmModal: typeof openConfirmModal
+}
 
 const mapStateToProps = state => ({
   session: state.app.session
@@ -17,14 +26,14 @@ const mapDispatchToProps = {
 }
 
 export const Profile = pipe(
-  withTracker,
-  connect(
+  setupPage(),
+  connect<StateProps, DispatchProps>(
     mapStateToProps,
     mapDispatchToProps
   )
 )(
-  class extends React.Component<any, any> {
-    deleteProfile = () => {
+  class extends React.PureComponent<StateProps & DispatchProps> {
+    private deleteProfile = () => {
       const { deleteUser, openConfirmModal } = this.props
       openConfirmModal({
         buttonType: 'danger',
@@ -43,6 +52,7 @@ export const Profile = pipe(
         onSuccess: deleteUser
       })
     }
+
     render() {
       const { user } = this.props.session
       return (

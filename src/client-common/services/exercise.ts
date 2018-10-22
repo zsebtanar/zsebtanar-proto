@@ -22,7 +22,7 @@ const notFound = uid =>
     new NotFoundError(`A kért feladat nem létezik: "${uid}".`)
   )
 
-export function getPublicExercise(exerciseId) {
+export function getPublicExercise(exerciseId): Promise<DB.Exercise> {
   return Exercises.child(`public/${exerciseId}`)
     .once('value')
     .then(
@@ -55,7 +55,7 @@ export function getAllPrivateExercises(): Promise<any> {
     )
 }
 
-export function selectPublicExercisesById(exerciseIds) {
+export function selectPublicExercisesById(exerciseIds: string[]): Promise<DB.Exercise[]> {
   return Promise.all(exerciseIds.map(getPublicExercise))
 }
 

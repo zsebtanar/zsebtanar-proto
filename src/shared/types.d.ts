@@ -32,7 +32,8 @@ declare namespace state {
   interface App {
     session: Session
     sideNav: SideNav
-    modal: AppModal,
+    modal: AppModal
+    classifications: Classifications
     notifications: Notifications
   }
 
@@ -49,6 +50,8 @@ declare namespace state {
   }
 
   interface Auth {}
+
+  type Classifications = db.Classifications
 
   interface Session {
     waitingForUser: boolean
