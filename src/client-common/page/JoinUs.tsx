@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { withTracker } from '../component/hoc/withTracker'
 import { ExternalLink } from '../component/general/ExternalLink'
+import { setupPage } from '../component/hoc/setupPage'
 
-export const JoinUs = withTracker(function JoinUsPage() {
+export const JoinUs = setupPage()(function JoinUsPage() {
   return (
     <div className="col-10 mx-auto">
       <h2 className="mb-4">Csatlakozz!</h2>

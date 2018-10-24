@@ -34,6 +34,7 @@
     "@types/react-router": "^4.0.30",
     "algoliasearch": "3.30.0",
     "axios": "0.18.0",
+    "classnames": "^2.2.6",
     "cookie-parser": "1.4.3",
     "cors": "2.8.4",
     "express": "4.16.3",
