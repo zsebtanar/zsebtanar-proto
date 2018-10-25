@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Button } from '../general/Button'
+import { CloseButton } from '../general/CloseButton'
 import { Markdown } from '../general/Markdown'
 import { openExerciseImageDialog, openMarkdownHelpModal } from 'client-common/store/actions/modal'
 
@@ -50,11 +51,7 @@ export const InputModal = connect(mapStateToProps, {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">{props.title}</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-                  <span aria-hidden={true} onClick={props.close}>
-                    &times;
-                  </span>
-                </button>
+                <CloseButton onClick={props.close}/>
               </div>
 
               <div className="modal-body">

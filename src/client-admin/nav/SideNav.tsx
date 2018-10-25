@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { signOut } from 'client-common/store/actions/auth'
 import { closeSideNav } from 'client-common/store/reducers/sideNav'
 import { SideNavLink } from 'client-common/component/general/SideNavLink'
+import { CloseButton } from '../../client-common/component/general/CloseButton'
 
 interface SideNavStateProps {
   session: state.Session
@@ -45,11 +46,7 @@ export const SideNav = pipe(
               <span className="text-danger">Zsebtanár</span>
             </SideNavLink>
           </h4>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Menü bezárás">
-            <span aria-hidden={true} onClick={props.closeSideNav}>
-              &times;
-            </span>
-          </button>
+          <CloseButton onClick={props.closeSideNav} aria-label="Menü bezárása"/>
         </div>
         <nav className="mobile-nav">
           <ul className="nav nav-pills flex-column">

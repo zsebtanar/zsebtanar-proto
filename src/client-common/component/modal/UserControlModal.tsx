@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Button } from '../general/Button'
 import { UserControlsAdmin } from 'client-common/component/userControls/UserControlAdmin'
+import { CloseButton } from '../general/CloseButton'
 
 function mapStateToProps(state) {
   return {
@@ -47,11 +48,7 @@ export const UserControlModal = connect(mapStateToProps)(
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Beviteli mező szerkesztése</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-                  <span aria-hidden={true} onClick={props.close}>
-                    &times;
-                  </span>
-                </button>
+                <CloseButton onClick={props.close} aria-label="Bezárás"/>
               </div>
 
               <div className="modal-body">

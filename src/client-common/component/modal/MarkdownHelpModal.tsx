@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { CloseButton } from '../general/CloseButton'
 import { Markdown } from '../general/Markdown'
 import { Button } from '../general/Button'
 import { ExternalLink } from '../general/ExternalLink'
@@ -9,11 +10,7 @@ export function MarkdownHelpModal(props) {
       <div className="modal-content">
         <div className="modal-header">
           <h3 className="modal-title">Szövegszerkesztő használata</h3>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden={true} onClick={props.close}>
-              &times;
-            </span>
-          </button>
+          <CloseButton onClick={props.close} />
         </div>
         <div className="modal-body">
           <div className="row">
@@ -181,7 +178,7 @@ Kódblokk.
               <p>@[kép neve.jpeg](6336e63799 =100x)</p>
             </div>
             <div className="col-6">
-              <img src="/assets/logo.png" alt="logó" style={{ width: +'100px' }} />
+              <img src={'/assets/logo.png'} alt="logó" style={{ width: '100px' }} />
             </div>
           </div>
           <div className="row">
@@ -199,7 +196,7 @@ Kódblokk.
               </p>
             </div>
             <div className="col-6">
-              <img src="/assets/logo.png" alt="logó" style={{ width: 50 + 'px' }} />
+              <img src={'/assets/logo.png'} alt="logó" style={{ width: '50px' }} />
             </div>
           </div>
           <div className="row">
@@ -216,7 +213,7 @@ Kódblokk.
               </p>
             </div>
             <div className="col-6">
-              <img src="/assets/logo.png" alt="logó" style={{ height: 75 + 'px' }} />
+              <img src={'/assets/logo.png'} alt="logó" style={{ height: '75px' }} />
             </div>
           </div>
         </div>
