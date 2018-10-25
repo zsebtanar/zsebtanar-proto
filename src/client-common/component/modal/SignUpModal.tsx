@@ -6,6 +6,7 @@ import { Button } from 'client-common/component/general/Button'
 import { Loading } from 'client-common/component/general/Loading'
 import { openProviderSignUp } from 'client-common/store/actions/modal'
 import { facebookSignIn, googleSignIn, signUp } from 'client-common/store/actions/auth'
+import { CloseButton } from '../general/CloseButton'
 
 interface SignUpModalProps extends RouteComponentProps<{}>, ui.ModalProps {}
 interface SignUpModalStateProps {
@@ -66,15 +67,7 @@ export const SignUpModal = withRouter(
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Regisztráció</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Bezárás"
-                  onClick={close}
-                >
-                  <span aria-hidden={true}>&times;</span>
-                </button>
+                <CloseButton onClick={close} aria-label="Bezárás"/>
               </div>
               <div className="modal-body">{this.renderContent()}</div>
             </div>

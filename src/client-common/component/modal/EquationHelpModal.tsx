@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { CloseButton } from '../general/CloseButton'
 import { Markdown } from '../general/Markdown'
 import { Button } from '../general/Button'
 
@@ -8,11 +9,7 @@ export function EquationHelpModal(props) {
       <div className="modal-content">
         <div className="modal-header">
           <h3 className="modal-title">Képletszerkesztő használata</h3>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden={true} onClick={props.close}>
-              &times;
-            </span>
-          </button>
+          <CloseButton onClick={props.close}/>
         </div>
         <div className="modal-body">
           <div className="row">

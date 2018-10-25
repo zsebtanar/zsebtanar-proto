@@ -62,7 +62,7 @@ const App = props => () => {
     <div className="container app-container">
       <Header />
       <SideNav />
-      <div className="content app-content">
+      <main className="content app-content">
         <Switch>
           <Route path="/" exact component={Home} />
           {props.session.signedIn && <Route path="/profile" component={Profile} />}
@@ -74,7 +74,7 @@ const App = props => () => {
           <Route path="/support" component={Workarounds} />
           <Route component={Page404} />
         </Switch>
-      </div>
+      </main>
       <Footer />
     </div>
   )
