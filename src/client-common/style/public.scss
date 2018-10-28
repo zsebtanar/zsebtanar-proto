@@ -11,12 +11,20 @@ body,
   height: 100%;
 }
 
-.app-container {
+.page-container {
   margin-top: 4rem;
   display: flex;
   flex-flow: column;
-  .app-content {
+  .main-content {
     flex: 1 0 auto;
+  }
+
+  .page {
+    margin: 3rem 0;
+
+    .list-group {
+      padding-left:  ($grid-gutter-width / 2);
+    }
   }
 }
 
@@ -152,7 +160,6 @@ body,
   pointer-events: auto;
   filter: none;
 }
-
 
 .mn-left-side {
   position: absolute;

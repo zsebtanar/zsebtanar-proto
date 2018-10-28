@@ -1,12 +1,14 @@
 import * as React from 'react'
+import * as ReactGa from 'react-ga'
+import * as cx from 'classnames'
 import { RouteComponentProps } from 'react-router'
 import { getScrollPos, storeScrollPos } from '../util/localStore'
-import * as ReactGa from 'react-ga'
 
 interface PageOptions {
   storePosition?: boolean
   track?: boolean
   trackOptions?: any
+  pageClassName?: string
 }
 
 const defaultOptions: PageOptions = {
@@ -22,22 +24,23 @@ export const trackPage = (page, options = {}) => {
   ReactGa.pageview(page)
 }
 
-export const setupPage = (options: PageOptions = defaultOptions) => WrappedComponent => {
+export const setupPage = (options: PageOptions = {}) => WrappedComponent => {
+  const opt = {...defaultOptions, ...options}
   return class extends React.PureComponent<RouteComponentProps<{}>> {
     private pageName: string
 
     componentDidMount() {
       this.pageName = this.getPageName()
 
-      document.documentElement.scrollTop = options.storePosition ? getScrollPos(this.pageName) : 0
+      document.documentElement.scrollTop = opt.storePosition ? getScrollPos(this.pageName) : 0
 
-      if (options.track) {
-        trackPage(this.pageName, options.trackOptions)
+      if (opt.track) {
+        trackPage(this.pageName, opt.trackOptions)
       }
     }
 
     componentWillUnmount(): void {
-      if (options.storePosition) {
+      if (opt.storePosition) {
         storeScrollPos(this.pageName, document.documentElement.scrollTop)
       }
     }
@@ -47,7 +50,13 @@ export const setupPage = (options: PageOptions = defaultOptions) => WrappedCompo
     }
 
     render() {
-      return <WrappedComponent {...this.props} />
+      const pageClassName = opt.pageClassName || WrappedComponent.name
+      console.log(pageClassName, opt)
+      return (
+        <div className={cx('page', pageClassName)}>
+          <WrappedComponent {...this.props} />
+        </div>
+      )
     }
   }
 }
