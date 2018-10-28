@@ -74,7 +74,7 @@ export const Home = pipe(
               <i>Tetszik az oldal? Támogasd munkánkat, hogy még jobb legyen!</i>
             </p>
             <div className="row">
-              <div className="col-8 mx-auto row">
+              <div className="col-md-8 mx-auto row">
                 <div className="col-md-6 mb-1">
                   <PaypalButton />
                 </div>
