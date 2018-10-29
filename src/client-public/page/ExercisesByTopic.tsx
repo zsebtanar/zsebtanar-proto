@@ -7,9 +7,9 @@ import { getAllClassification, TAGS } from 'client-common/services/classificatio
 import { Markdown } from 'client-common/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
-import { ShowError } from '../../client-common/component/error/ShwoError'
-import { NotFoundError } from '../../client-common/util/error'
-import { setupPage, trackPage } from '../../client-common/component/hoc/setupPage'
+import { ShowError } from 'client-common/component/error/ShwoError'
+import { NotFoundError } from 'client-common/util/error'
+import { setupPage, trackPage } from 'client-common/component/hoc/setupPage'
 
 interface StoreProps {
   classification: state.Classifications
@@ -65,7 +65,7 @@ export const ExercisesByTopic = pipe(
         getAllClassification()
           .then(classification => {
             const ids = pathOr([], ['subject', subject, 'topic', topic, 'exercise'], classification)
-            selectPublicExercisesById(ids).then(exercises => {
+            return selectPublicExercisesById(ids).then(exercises => {
               this.setState({ classification, exercises })
             })
           })

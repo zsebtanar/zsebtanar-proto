@@ -64,7 +64,7 @@ export const ExercisesByGrade = pipe(
         getAllClassification()
           .then(classification => {
             const ids = pathOr([], ['grade', grade, 'exercise'], classification)
-            selectPublicExercisesById(ids).then(exercises => {
+            return selectPublicExercisesById(ids).then(exercises => {
               this.setState({ classification, exercises })
             })
           })

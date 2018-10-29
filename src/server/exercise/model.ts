@@ -15,7 +15,7 @@ const PUBLIC_EXERCISE_PROPS = [
 const PUBLIC_SUB_TASK_PROPS = ['controls', 'order', 'description']
 const DB = admin.database()
 const PrivateExercise = DB.ref('exercise/private')
-const PublicExercise = DB.ref('exercise/client-public')
+const PublicExercise = DB.ref('exercise/public')
 const storageRef = admin.storage().bucket()
 
 export const newPrivateExerciseKey = () => PrivateExercise.push().key
