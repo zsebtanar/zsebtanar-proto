@@ -5,6 +5,7 @@ import { imageUpload } from 'client-common/services/images'
 import { isAdvancedUploadSupported } from 'client-common/util/browser'
 import { pairsInNameOrder } from 'shared/util/fn'
 import { addResource } from '../../../client-admin/store/exerciseEdit'
+import { CloseButton } from '../general/CloseButton'
 import { DnDOverlay } from './utils/DnDOverlay'
 
 const validFileTypes = ['image/gif', 'image/png', 'image/jpeg', 'image/webp']
@@ -105,11 +106,7 @@ export const ExerciseImageDialog = connect(
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Képek</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-                  <span aria-hidden={true} onClick={props.close}>
-                    &times;
-                  </span>
-                </button>
+                <CloseButton onClick={props.close}/>
               </div>
               <div className="modal-body">{this.renderContent()}</div>
               <div className="modal-footer">

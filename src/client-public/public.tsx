@@ -13,13 +13,7 @@ if (__CONFIG__.sentry.dsn) {
     dsn: __CONFIG__.sentry.dsn,
     environment: 'prototype',
     maxBreadcrumbs: 10,
-    ignoreErrors: [
-      'top.GLOBALS',
-      'originalCreateNotification',
-      'canvas.contentDocument',
-      'fb_xd_fragment',
-      'bmi_SafeAddOnload'
-    ]
+    ignoreErrors: ['top.GLOBALS']
   })
 }
 

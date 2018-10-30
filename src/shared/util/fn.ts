@@ -10,18 +10,24 @@ import {
   pipe,
   sortBy,
   toPairs,
-  merge, propEq, not
+  merge,
+  propEq,
+  not,
+  isNil
 } from 'ramda'
 
 export const indexedMap = addIndex(map)
+
 export const pairsInOrder = pipe(
   toPairs,
   sortBy(path([1, 'order']))
 )
+
 export const pairsInNameOrder = pipe(
   toPairs,
   sortBy(path([1, 'name']))
 )
+
 export const listToOrderedObject = pipe(
   indexedMap(flip(assocPath([1, 'order']))),
   fromPairs
@@ -77,4 +83,12 @@ export const reduceP = curry(function reducePF(fn, init, arr) {
 
 export const fMerge = flip(merge)
 
-export const idNotEq = curry(pipe(propEq('id'), not))
+export const idNotEq = curry(
+  pipe(
+    propEq('id'),
+    not
+  )
+)
+
+// tslint:disable-next-line:variable-name
+export const isNotNil: (any) => boolean = pipe(isNil, not)

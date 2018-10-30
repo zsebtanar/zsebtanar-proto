@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { keys } from 'ramda'
 import { Button } from '../general/Button'
+import { CloseButton } from '../general/CloseButton'
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -64,11 +65,7 @@ export class ProviderSignUp extends React.Component<any, any> {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Regisztrációs adatok</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Bezárás">
-                <span aria-hidden={true} onClick={close}>
-                  &times;
-                </span>
-              </button>
+              <CloseButton onClick={close}/>
             </div>
 
             <div className="modal-body">

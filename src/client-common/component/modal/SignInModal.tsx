@@ -6,6 +6,7 @@ import { openResetPasswordModal } from 'client-common/store/actions/modal'
 import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router-dom'
 import { Button } from 'client-common/component/general/Button'
+import { CloseButton } from '../general/CloseButton'
 import { Link } from '../general/Link'
 import { pipe } from 'ramda'
 
@@ -74,15 +75,7 @@ export const SignInModal = pipe(
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">Belépés</h5>
-          <button
-            type="button"
-            className="close"
-            data-dismiss="modal"
-            aria-label="Bezárás"
-            onClick={props.close}
-          >
-            <span aria-hidden={true}>&times;</span>
-          </button>
+          <CloseButton onClick={props.close} aria-label="Bezárás"/>
         </div>
         <div className="modal-body">
           {props.message && (

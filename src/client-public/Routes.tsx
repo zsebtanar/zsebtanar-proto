@@ -59,10 +59,10 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
 
 const App = props => () => {
   return (
-    <div className="container app-container">
+    <div className="container page-container">
       <Header />
       <SideNav />
-      <div className="content app-content">
+      <main className="main-content">
         <Switch>
           <Route path="/" exact component={Home} />
           {props.session.signedIn && <Route path="/profile" component={Profile} />}
@@ -74,7 +74,7 @@ const App = props => () => {
           <Route path="/support" component={Workarounds} />
           <Route component={Page404} />
         </Switch>
-      </div>
+      </main>
       <Footer />
     </div>
   )
