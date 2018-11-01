@@ -24,6 +24,7 @@
       "joi",
       "markdown-it",
       "markdown-it-katex",
+      "markdown-it-kbd",
       "ramda"
     ]
   },
