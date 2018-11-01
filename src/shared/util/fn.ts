@@ -90,4 +90,5 @@ export const idNotEq = curry(
   )
 )
 
+// tslint:disable-next-line:variable-name
 export const isNotNil: (any) => boolean = pipe(isNil, not)

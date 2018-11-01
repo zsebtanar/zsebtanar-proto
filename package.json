@@ -24,6 +24,7 @@
       "joi",
       "markdown-it",
       "markdown-it-katex",
+      "markdown-it-kbd",
       "ramda"
     ]
   },
@@ -45,6 +46,7 @@
     "joi": "13.6.0",
     "markdown-it": "8.4.2",
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#v2.2.0",
+    "markdown-it-kbd": "^1.1.1",
     "prop-types": "15.6.2",
     "ramda": "0.25.0",
     "react": "16.4.2",
