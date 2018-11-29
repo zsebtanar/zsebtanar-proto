@@ -42,9 +42,10 @@ export const Markdown = class extends React.PureComponent<MarkdownProps, Markdow
     Promise.all([
       import(/* webpackChunkName: 'markdown' */ 'markdown-it'),
       import(/* webpackChunkName: 'markdown' */ 'markdown-it-katex') as Promise<any>,
+      import(/* webpackChunkName: 'markdown' */ 'markdown-it-kbd'),
       import(/* webpackChunkName: 'markdown' */ 'shared/markdown/image-resource/index')
-    ]).then(([{ default: MD }, { default: katex }, { imageInit }]) => {
-      const md = new MD(options).use(katex, katexOptions).use(imageInit(resources || {}))
+    ]).then(([{ default: MD }, { default: katex }, { default: kbd }, { imageInit }]) => {
+      const md = new MD(options).use(katex, katexOptions).use(kbd).use(imageInit(resources || {}))
       this.setState({ md })
     })
   }
