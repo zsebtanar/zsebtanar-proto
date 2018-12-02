@@ -90,4 +90,13 @@ export const idNotEq = curry(
   )
 )
 
-export const isNotNil: (any) => boolean = pipe(isNil, not)
+export const isNotNil: (any) => boolean = pipe(
+  isNil,
+  not
+)
+
+export const reduceToObj = (fn, array: any[], init: any = undefined) =>
+  array.reduce((obj, key) => {
+    obj[key] = fn(key)
+    return obj
+  }, init || Object.create(null))

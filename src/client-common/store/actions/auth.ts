@@ -24,7 +24,7 @@ export function initAuthWatch(store) {
     if (user) {
       store.dispatch({ type: SIGN_IN_SUCCESS, payload: { user } })
       store.dispatch(
-        addNotification(NotificationType.Success, 'Sikeres bejelentkezés.', { timeout: 3 })
+        addNotification('success', 'Sikeres bejelentkezés.', { timeout: 3 })
       )
       store.dispatch(getUserAction(user.uid))
       store.dispatch(parseTokenAction(user))

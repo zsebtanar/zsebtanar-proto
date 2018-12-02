@@ -107,7 +107,7 @@ const INIT_STATE = {
   error: undefined
 }
 
-export function exerciseEditReducer(state = INIT_STATE, action) {
+export function exerciseFormReducer(state = INIT_STATE, action) {
   switch (action.type) {
     case EXERCISE_LOADING:
       return { ...INIT_STATE }

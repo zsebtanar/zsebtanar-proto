@@ -8,15 +8,17 @@ export const REMOVE_NOTIFICATION = 'common/REMOVE_NOTIFICATION'
 ///
 
 export function addNotification(
-  type: NotificationType,
+  type: AlertType,
   message: string,
   options: NotificationOptions = {}
 ) {
   return dispatch => {
     const id = uid()
 
-    if (isPositiveInt(options.timeout)) {
-      setTimeout(() => dispatch(removeNotification(id)), options.timeout * 1000)
+    const timeout = !options.timeout === undefined ? 3 : options.timeout
+
+    if (isPositiveInt(timeout)) {
+      setTimeout(() => dispatch(removeNotification(id)), timeout * 1000)
     }
 
     dispatch({

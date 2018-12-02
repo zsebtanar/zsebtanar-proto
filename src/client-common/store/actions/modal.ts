@@ -149,3 +149,15 @@ export function openFileUpload(params?) {
     ...params
   })
 }
+
+interface ExerciseSearchParams extends BaseModalParams{
+  onSuccess?:(id: string) => void
+}
+export function openExerciseSearch(params?: ExerciseSearchParams) {
+  return openModal(() => import(/* webpackChunkName: 'admin-modal' */'client-common/component/modal/ExerciseSearchModal'), {
+    onClose: identity,
+    onSuccess: identity,
+    disableBackdropClose: true,
+    ...params
+  })
+}

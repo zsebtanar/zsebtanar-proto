@@ -1,13 +1,21 @@
 import * as React from 'react'
 import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContext, DragSource, DropTarget } from 'react-dnd'
+import { DragDropContext, DragSource, DragSourceConnector, DropTarget, DropTargetConnector } from 'react-dnd'
 import { insert, pipe, prop, remove } from 'ramda'
 import { findDOMNode } from 'react-dom'
 import { uid } from '../../util/uuid'
 
-interface SortableListItem {
+export interface SortableListItem {
   id: string
   data: any
+}
+
+export interface SortableListItemProps extends SortableListItem {
+  index: number
+  connectDragPreview: ReturnType<DragSourceConnector["dragPreview"]>,
+  connectDragSource: ReturnType<DragSourceConnector["dragSource"]>
+  connectDropTarget: ReturnType<DropTargetConnector["dropTarget"]>
+  isDragging: () => boolean
 }
 
 interface SortableProps {
@@ -35,6 +43,7 @@ function itemSource(ctx) {
   return {
     beginDrag(props) {
       return {
+        id: props.id,
         index: props.index,
         originalIndex: props.index
       }

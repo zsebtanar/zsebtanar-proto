@@ -7,7 +7,7 @@ import { DialogFooter } from './base/DialogFooter'
 
 interface ConfirmModalProps extends ui.ModalProps {
   onSuccess: () => void
-  buttonType?: Buttontype
+  buttonType?: ButtonType
   content: React.ReactNode
 }
 

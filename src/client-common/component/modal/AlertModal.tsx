@@ -6,7 +6,7 @@ import { DialogHeader } from './base/DialogHeader'
 import { DialogFooter } from './base/DialogFooter'
 
 interface AlertModalProps extends ui.ModalProps {
-  buttonType?: Buttontype
+  buttonType?: ButtonType
   content: React.ReactNode
 }
 
