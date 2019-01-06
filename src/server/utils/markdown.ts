@@ -1,6 +1,7 @@
 import * as Markdown from 'markdown-it'
 import * as katex from 'markdown-it-katex'
 import * as kbd from 'markdown-it-kbd'
+import * as centertext from 'markdown-it-center-text'
 import { imageInit } from 'shared/markdown/image-resource'
 
 export const unTokeniseMarkdown = description =>
@@ -12,7 +13,7 @@ export const unTokeniseMarkdown = description =>
     .toLowerCase()
     .trim()
 
-const initMarkdown = () => new Markdown({}).use(katex).use(kbd).use(imageInit({}))
+const initMarkdown = () => new Markdown({}).use(katex).use(kbd).use(centertext).use(imageInit({}))
 
 const reduceTokenList = tokenList =>
   tokenList.reduce((acc, i) => {

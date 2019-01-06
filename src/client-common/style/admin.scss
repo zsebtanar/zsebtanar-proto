@@ -110,6 +110,11 @@ body {
   width: auto;
 }
 
+/* markdown-it-center-text plugin-hez kell */
+.text-align-center {
+  text-align: center;
+}
+
 .msg-block {
   min-height: 20rem;
   display: flex;
