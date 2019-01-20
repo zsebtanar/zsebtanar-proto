@@ -9,7 +9,7 @@ interface Props extends SortableListItemProps {
   openRemoveExercise: (key: string) => () => void
 }
 
-export class ExerciseListItem extends React.Component<Props, void> {
+export class ExerciseSheetItem extends React.Component<Props, void> {
   render(): React.ReactNode {
     const {
       data,
@@ -39,12 +39,12 @@ export class ExerciseListItem extends React.Component<Props, void> {
             <Button
               className="btn-sm btn-link text-danger"
               icon="trash"
-              onAction={openRemoveExercise("1")}
+              onAction={openRemoveExercise(data._key)}
             />
             {connectDragSource(<i className="fa fa-arrows" aria-hidden="true" />)}
           </div>
         </div>
-        <div key={data.id} className="d-flex flex-column align-items-start">
+        <div key={data._key} className="d-flex flex-column align-items-start">
           <div className="mb-1 d-flex w-100 ">
             <Markdown source={data.description} />
           </div>

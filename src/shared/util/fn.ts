@@ -13,8 +13,13 @@ import {
   merge,
   propEq,
   not,
-  isNil
+  isNil,
+  lens,
+  pathOr,
+  Lens
 } from 'ramda'
+
+export const idEq = propEq('id')
 
 export const indexedMap = addIndex(map)
 
@@ -83,11 +88,14 @@ export const reduceP = curry(function reducePF(fn, init, arr) {
 
 export const fMerge = flip(merge)
 
-export const idNotEq = curry(
+export const idNotEq = curry<string, any, boolean>(
   pipe(
-    propEq('id'),
+    idEq,
     not
   )
+)
+export const propNotEq = curry<string, any, any, boolean>(
+  pipe(propEq, not)
 )
 
 export const isNotNil: (any) => boolean = pipe(
@@ -100,3 +108,5 @@ export const reduceToObj = (fn, array: any[], init: any = undefined) =>
     obj[key] = fn(key)
     return obj
   }, init || Object.create(null))
+
+export const lensPathOr = curry<any, string[], Lens>((defVal, p) =>  lens(pathOr(defVal, p), assocPath(p)))

@@ -38,7 +38,7 @@ export class FeedbackList extends React.Component<any, any> {
           <h3>Visszajelzések</h3>
         </div>
         {this.state.feedbackList ? (
-          <table className="table table-hover table mt-3 exercise-list-table">
+          <table className="table table-hover mt-3 exercise-list-table">
             <thead>
               <tr>
                 <th>#</th>

@@ -1,12 +1,17 @@
-import { pickBy } from 'ramda'
+import { curry, pickBy, pipe, reduce, invoker } from 'ramda'
 import { app } from '../fireApp'
 
 ///
 
-type DocRef = firebase.firestore.DocumentReference
+export type DocRef = firebase.firestore.DocumentReference
+export type Query = firebase.firestore.Query
 
 export interface BaseModel {
   id?: string
+}
+
+interface StoreOptions {
+  subCollections?: string[]
 }
 
 ///
@@ -18,35 +23,35 @@ db.settings({
   timestampsInSnapshots: true
 })
 
-export class Service<T extends BaseModel> {
+export class Service<T extends BaseModel>{
   private readonly collectionName: string
 
   constructor(collectionName: string) {
     this.collectionName = collectionName
   }
 
-  public async create(data: T, subCollections: string[] = []): Promise<DocRef> {
+  public async create(data: T, options?: StoreOptions): Promise<DocRef> {
     const doc = await db.collection(this.collectionName).add(omitInvalidFields(data))
-    await this.storeSubCollection(doc, data, subCollections)
+    await this.storeSubCollection(doc, data, options)
 
     this.log('CREATE', doc.id, data)
     return doc
   }
 
-  public async update(data: T, subCollections: string[] = []): Promise<DocRef> {
+  public async update(data: T, options?: StoreOptions): Promise<DocRef> {
     const doc = db.collection(this.collectionName).doc(data.id)
 
     await Promise.all([
       doc.set(omitInvalidFields(data) as any),
-      this.storeSubCollection(doc, data, subCollections)
+      this.storeSubCollection(doc, data, options)
     ])
 
     this.log('UPDATE', doc.id, data)
     return doc
   }
 
-  public async store(data: T, subCollections: string[] = []): Promise<DocRef> {
-    return data.id ? this.update(data, subCollections) : this.create(data, subCollections)
+  public async store(data: T, options?: StoreOptions): Promise<DocRef> {
+    return data.id ? this.update(data, options) : this.create(data, options)
   }
 
   public async storeAll(data: T[]): Promise<DocRef[]> {
@@ -70,28 +75,49 @@ export class Service<T extends BaseModel> {
     return data
   }
 
-  public async getAll(): Promise<T[]> {
-    const res = await db.collection(this.collectionName).get()
+  public async getList(options?: GridFilterOptions) {
+    const collection = db.collection(this.collectionName)
+    let res
 
-    const list: T[] = []
-    res.forEach(doc => list.push({ id: doc.id, ...doc.data() } as T))
+    if (options) {
+      const query = pipe(qReduce(options.where, (q, [prop, op, val]) => q.where(prop, op, val)))(
+        collection
+      )
+      res = await query.get()
+    } else {
+      res = await collection.get()
+    }
 
-    this.log('GET list', '', list)
-    return list
+    this.log('GET list with filter', options, res)
+
+    return res
+  }
+
+  public async delete(id: string): Promise<void> {
+    return await db
+      .collection(this.collectionName)
+      .doc(id)
+      .delete()
+  }
+
+  public async deleteAll(ids: string[]): Promise<void> {
+    const coll = db.collection(this.collectionName)
+    await Promise.all(ids.map(id => coll.doc(id).delete()))
   }
 
   private async populate(id, populate): Promise<Partial<T>> {
     const collections = {}
     await Promise.all(
       populate.map(async collection => {
-        const res = await new Service(`${this.collectionName}/${id}/${collection}`).getAll()
-        collections[collection] = res || []
+        const res = await new Service(`${this.collectionName}/${id}/${collection}`).getList()
+        collections[collection] = res.docs.map(invoker(0, 'data'))
       })
     )
     return collections
   }
 
-  private async storeSubCollection(doc: DocRef, data: T, subCollections: string[]) {
+  private async storeSubCollection(doc: DocRef, data: T, options?: StoreOptions) {
+    const subCollections = options.subCollections || []
     return await Promise.all(
       subCollections.map(collection =>
         new Service(`${this.collectionName}/${doc.id}/${collection}`).storeAll(data[collection])
@@ -99,10 +125,14 @@ export class Service<T extends BaseModel> {
     )
   }
 
-  private log(op: string, id: string, data: any) {
+  private log(op: string, id: any, data: any) {
     if (__DEV__) {
-      const groupLabel = `${op.toUpperCase()} - ${this.collectionName}/${id || ''}`
-      console.groupCollapsed(groupLabel)
+      const lightText = 'color: gray; font-weight: lighter;'
+      const boldText = 'color: black; font-weight: bold;'
+      const groupLabel = `%c firestore %c${op.toUpperCase()} %c${
+        this.collectionName
+      }/${JSON.stringify(id) || ''}`
+      console.groupCollapsed(groupLabel, lightText, boldText, lightText)
       console.log(data)
       console.groupEnd()
     }
@@ -110,3 +140,7 @@ export class Service<T extends BaseModel> {
 }
 
 const omitInvalidFields = pickBy((val: any, key: string) => val !== undefined && key !== 'id')
+
+const qReduce = curry<any[], (q: Query, val: any) => Query, Query, Query>((list, fn, acc) =>
+  reduce(fn, acc, list)
+)

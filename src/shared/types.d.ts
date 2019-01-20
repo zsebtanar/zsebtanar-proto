@@ -32,7 +32,7 @@ declare namespace state {
   }
 
   interface AdminRoot extends Root {
-    exerciseList: AdminExerciseList
+    exerciseSheet: AdminExerciseSheet
   }
 
   interface App {
@@ -107,12 +107,13 @@ declare namespace state {
   }
 
 
-  interface AdminExerciseList {
+  interface AdminExerciseSheet {
     loading: boolean
     mode: FormMode
     changed: boolean
     saving: boolean
-    data: ExerciseList
+    data: ExerciseSheet
+    removedExercises: string[]
     error: any
   }
 }
@@ -337,4 +338,16 @@ interface FractionNumber {
 declare interface NotificationOptions {
   timeout?: number
   description?: string
+}
+
+declare interface GridFilterOptions {
+  where?: [string | FieldPath, WhereFilterOp, any][]
+  orderBy?: [string | FieldPath, OrderByDirection]
+}
+
+declare interface GridDataSource<T> {
+  size: number
+  refresh()
+  loadList(options?: GridFilterOptions): Promise<QuerySnapshot>
+  getPage(pageNumber: number, limit: number): Promise<T[]>
 }

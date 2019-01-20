@@ -10,19 +10,18 @@ import { connect } from 'react-redux'
 import { Route, Router, Switch } from 'react-router-dom'
 import { AppNotifications } from '../client-common/component/general/AppNotifications'
 import { isAdmin } from '../client-common/services/user'
-import { Footer } from './nav/Footer'
 
 import { Header } from './nav/Header'
 import { SideNav } from './nav/SideNav'
 import { AdminUtils } from './page/AdminUtils'
 import { ClassificationList } from './page/classification/ClassificationList'
-import { ExerciseListForm } from './page/excerciseList/form/ExerciseListForm'
-import { ExerciseListsGrid } from './page/excerciseList/grid/ExerciseListsGrid'
+import { ExerciseSheetForm } from './page/exerciseSheet/form/ExerciseSheetForm'
 import { ExerciseForm } from './page/exerciseEdit/ExerciseForm'
 import { ExercisePreview } from './page/ExercisePreview'
 import { Exercises } from './page/Exercises'
 import { FeedbackList } from './page/FeedbackList'
 import { Home } from './page/Home'
+import { ExerciseSheetGrid } from './page/exerciseSheet/grid/ExerciseSheetGrid'
 import { UserList } from './page/user/UserList'
 
 interface RoutesProps {
@@ -82,9 +81,9 @@ function AdminRoutes() {
             <Route path="/exercise/add/" component={ExerciseForm} />
             <Route path="/exercise/edit/:key" component={ExerciseForm} />
             <Route path="/exercise/view/:key" component={ExercisePreview} />
-            <Route path="/exercise-list" exact component={ExerciseListsGrid} />
-            <Route path="/exercise-list/add" component={ExerciseListForm} />
-            <Route path="/exercise-list/edit/:key" component={ExerciseListForm} />
+            <Route path="/exercise-list" exact component={ExerciseSheetGrid} />
+            <Route path="/exercise-list/add" component={ExerciseSheetForm} />
+            <Route path="/exercise-list/edit/:key" component={ExerciseSheetForm} />
             <Route path="/feedback" component={FeedbackList} />
             <Route path="/utilities" component={AdminUtils} />
             <Route path="/about" component={About} />
@@ -92,7 +91,6 @@ function AdminRoutes() {
             <Route component={Page404} />
           </Switch>
         </div>
-        <Footer />
       </div>
       <AppNotifications />
     </div>
