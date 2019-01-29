@@ -25,6 +25,7 @@
       "markdown-it",
       "markdown-it-katex",
       "markdown-it-kbd",
+      "markdown-it-center-text",
       "ramda"
     ]
   },
