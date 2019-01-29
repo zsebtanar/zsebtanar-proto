@@ -1,5 +1,3 @@
-*[Olvass el](./contribution.md#feladatletrehozas)*
-
 ### Elvárt viselkedés
 
 

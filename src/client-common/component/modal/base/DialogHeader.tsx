@@ -1,16 +1,16 @@
 import * as React from 'react'
-import { DialogClose } from './DialogClose'
+import { CloseButton } from '../../general/CloseButton'
 
 interface DialogHeaderProps {
   onClose: () => void
   children?: React.ReactNode
 }
 
-export function DialogHeader(props: DialogHeaderProps) {
+export function DialogHeader({onClose, children}: DialogHeaderProps) {
   return (
     <div className="modal-header">
-      <h5 className="modal-title">{props.children}</h5>
-      <DialogClose onClose={props.onClose} />
+      <h5 className="modal-title">{children}</h5>
+      <CloseButton onClick={onClose}/>
     </div>
   )
 }

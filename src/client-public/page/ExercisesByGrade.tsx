@@ -1,28 +1,43 @@
 import * as React from 'react'
 import { pathOr, pipe } from 'ramda'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { selectPublicExercisesById } from 'client-common/services/exercise'
 import { getAllClassification, TAGS } from 'client-common/services/classification'
 import { Markdown } from 'client-common/component/general/Markdown'
 import { NavLink } from 'react-router-dom'
 import { Loading } from 'client-common/component/general/Loading'
-import { trackPage } from 'client-common/component/hoc/withTracker'
-import { withTracker } from '../../client-common/component/hoc/withTracker'
+import { setupPage, trackPage } from '../../client-common/component/hoc/setupPage'
 import { ShowError } from '../../client-common/component/error/ShwoError'
 import { NotFoundError } from '../../client-common/util/error'
+
+interface StoreProps {
+  classification: state.Classifications
+}
+
+interface State {
+  exercises?: DB.Exercise[]
+  classification?: DB.Classifications
+  error?: any
+}
+
+type RouteProps = RouteComponentProps<{ grade: string }>
 
 const mapStateToProps = state => ({
   classification: state.classification
 })
 
 export const ExercisesByGrade = pipe(
-  withTracker,
+  setupPage(),
   withRouter,
-  connect(mapStateToProps)
+  connect<StoreProps, RouteProps>(mapStateToProps)
 )(
-  class extends React.Component<any, any> {
-    state = { exercises: undefined, classification: undefined, error: undefined }
+  class extends React.Component<StoreProps & RouteProps, State> {
+    state = {
+      exercises: undefined,
+      classification: undefined,
+      error: undefined
+    }
 
     componentDidMount() {
       if (this.props.classification) {
@@ -49,7 +64,7 @@ export const ExercisesByGrade = pipe(
         getAllClassification()
           .then(classification => {
             const ids = pathOr([], ['grade', grade, 'exercise'], classification)
-            selectPublicExercisesById(ids).then(exercises => {
+            return selectPublicExercisesById(ids).then(exercises => {
               this.setState({ classification, exercises })
             })
           })

@@ -1,28 +1,45 @@
 import * as React from 'react'
 import * as ReactGA from 'react-ga'
+import * as algoliasearch from 'algoliasearch'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
 import { Markdown } from 'client-common/component/general/Markdown'
 import { Loading } from 'client-common/component/general/Loading'
 import { Icon } from 'client-common/component/general/Icon'
 import { search } from 'client-common/services/search'
 import { getQueryParams } from 'client-common/util/url'
-import { withTracker } from '../../client-common/component/hoc/withTracker'
+import { setupPage } from 'client-common/component/hoc/setupPage'
 import { pipe } from 'ramda'
+
+interface StoreProps {
+  session: state.Session
+}
+
+interface State {
+  loading: boolean
+  term: string
+  list?: algoliasearch.Response
+  error?: any
+}
+
+type RouteProps = RouteComponentProps<{ search: string }>
 
 const mapStateToProps = state => ({
   session: state.app.session
 })
 
 export const Search = pipe(
-  withTracker,
-  connect(
-    mapStateToProps,
-    {}
-  )
+  setupPage({ storePosition: false }),
+  withRouter,
+  connect<StoreProps, RouteProps>(mapStateToProps)
 )(
-  class Search extends React.Component<any, any> {
-    state = { list: undefined, error: undefined, loading: false, term: '' }
+  class Search extends React.Component<StoreProps & RouteProps, State> {
+    state = {
+      list: undefined,
+      error: undefined,
+      loading: false,
+      term: ''
+    }
 
     private searchInput
 
@@ -40,7 +57,9 @@ export const Search = pipe(
       if (term.length >= 2) {
         this.setState({ loading: true, list: undefined })
         this.props.history.push({ search: `q=${term}` })
+
         ReactGA.event({ category: 'User', action: 'Search', value: term })
+
         search(term)
           .then(list => this.setState({ list, error: undefined, loading: false, term }))
           .catch(error => this.setState({ error, loading: false }))
@@ -72,99 +91,94 @@ export const Search = pipe(
               />
             </div>
           </div>
-
-          {this.state.loading && <Loading />}
-          {this.renderResult()}
-          {this.renderEmpty()}
-          {this.renderInfo()}
-          {this.renderError()}
+          {this.renderContent()}
         </div>
       )
     }
 
-    renderResult() {
-      const { list, loading, error, term } = this.state
+    private renderContent() {
+      const { list, loading, error } = this.state
+
+      if (loading) return <Loading />
+      if (error) return this.renderError()
+      if (list) {
+        if (list.nbHits > 0) return this.renderResult()
+        return Search.renderEmpty
+      }
+      return Search.renderInfo()
+    }
+
+    private renderResult() {
+      const { list, term } = this.state
       return (
-        list &&
-        list.nbHits > 0 &&
-        !loading &&
-        !error && (
-          <div className="list-group col-md-10 mx-auto">
-            <div className="mb-4 text-muted d-flex justify-content-between px-4">
-              <div>
-                <b>{list.nbHits}</b> találat
-              </div>
-              <div>
-                <img
-                  className="algolia-logo"
-                  src="https://www.algolia.com/static_assets/images/press/downloads/algolia-logo-light.svg"
-                  alt="Search by algolia"
-                />
-              </div>
+        <div className="list-group col-md-10 mx-auto">
+          <div className="mb-4 text-muted d-flex justify-content-between px-4">
+            <div>
+              <b>{list.nbHits}</b> találat
             </div>
-
-            {list.hits.map(ex => (
-              <NavLink
-                key={ex.objectID}
-                to={`/exercise/${ex.objectID}`}
-                className="list-group-item list-group-item-action d-flex flex-column align-items-start"
-              >
-                <div className="mb-1 d-flex w-100 ">
-                  <Markdown source={ex.description} mark={term} />
-                </div>
-                <div>
-                  {this.renderBadge(ex, 'grade', 'light')}
-                  {this.renderBadge(ex, 'subject', 'primary')}
-                  {this.renderBadge(ex, 'topic', 'info')}
-                  {this.renderBadge(ex, 'tags', 'secondary')}
-                </div>
-              </NavLink>
-            ))}
+            <div>
+              {Search.renderAlgoliaLogo()}
+            </div>
           </div>
-        )
+
+          {list.hits.map(this.renderResultItem(term))}
+        </div>
       )
     }
 
-    renderBadge(exercise, key, type) {
+    private renderResultItem = term => exercise => (
+      <NavLink
+        key={exercise.objectID}
+        to={`/exercise/${exercise.objectID}`}
+        className="list-group-item list-group-item-action d-flex flex-column align-items-start"
+      >
+        <div className="mb-1 d-flex w-100 ">
+          <Markdown source={exercise.description} mark={term} />
+        </div>
+        <div>
+          {this.renderBadge(exercise, 'grade', 'light')}
+          {this.renderBadge(exercise, 'subject', 'primary')}
+          {this.renderBadge(exercise, 'topic', 'info')}
+          {this.renderBadge(exercise, 'tags', 'secondary')}
+        </div>
+      </NavLink>
+    )
+
+    private renderBadge(exercise, key, type) {
+      return (exercise[key] || []).map(this.renderBadgeItem(type))
+    }
+
+    private renderBadgeItem = type => item => {
       return (
-        exercise[key] &&
-        exercise[key].map(item => (
-          <span className={`badge badge-${type} mx-1`} key={item}>
-            {item}
-          </span>
-        ))
+        <span className={`badge badge-${type} mx-1`} key={item}>
+          {item}
+        </span>
       )
     }
 
-    renderInfo() {
-      const { list, loading } = this.state
+    private renderError() {
+      const { error } = this.state
+      return <div className="alert alert-danger col-md-8 mx-auto">{error.message}</div>
+    }
+
+    private static renderInfo() {
       return (
-        !list &&
-        !loading && (
-          <div className="text-info col-md-8 mx-auto text-center">
-            Írj be legalább 2 karaktert a keresés megkezdéséhez.
-          </div>
-        )
+        <div className="text-info col-md-8 mx-auto text-center">
+          Írj be legalább 2 karaktert a keresés megkezdéséhez.
+        </div>
       )
     }
 
-    renderError() {
-      const { error, loading } = this.state
-      return (
-        error &&
-        !loading && <div className="alert alert-danger col-md-8 mx-auto">{error.message}</div>
-      )
+    private static renderEmpty() {
+      return <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>
     }
 
-    renderEmpty() {
-      const { loading, error, list } = this.state
-
-      return (
-        list &&
-        list.nbHits === 0 &&
-        !loading &&
-        !error && <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>
-      )
+    private static renderAlgoliaLogo() {
+      return <img
+        className="algolia-logo"
+        src="https://www.algolia.com/static_assets/images/press/downloads/algolia-logo-light.svg"
+        alt="Search by algolia"
+      />
     }
   }
 )

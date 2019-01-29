@@ -9,33 +9,32 @@ import { PaypalButton } from '../component/PaypalButton'
 import { PatreonButton } from '../component/PatreonButton'
 import { MainClassificationSelector } from '../component/MainClassificationSelector'
 import { RouteComponentProps } from 'react-router'
-import { withTracker } from 'client-common/component/hoc/withTracker'
+import { setupPage } from 'client-common/component/hoc/setupPage'
 
-interface HomeStateProps {
+interface StoreProps {
   session: state.Session
 }
 
-interface HomeDispatchProps {
+interface DispatchProps {
   openSignInModal: typeof openSignInModal
   openSignUpModal: typeof openSignUpModal
 }
+
+type AllProps = StoreProps & DispatchProps & RouteComponentProps<{}>
 
 const mapStateToProps = (state: state.Root) => ({
   session: state.app.session
 })
 
 export const Home = pipe(
-  withTracker,
+  setupPage(),
   withRouter,
-  connect<HomeStateProps, HomeDispatchProps, RouteComponentProps<{}>>(
+  connect<StoreProps, DispatchProps, RouteComponentProps<{}>>(
     mapStateToProps,
     { openSignInModal, openSignUpModal }
   )
 )(
-  class HomeComponent extends React.Component<
-    HomeStateProps & HomeDispatchProps & RouteComponentProps<{}>,
-    {}
-  > {
+  class HomeComponent extends React.PureComponent<AllProps> {
     private searchInput = null
 
     private searchInputChange = debounce(() => {
@@ -75,13 +74,13 @@ export const Home = pipe(
               <i>Tetszik az oldal? Támogasd munkánkat, hogy még jobb legyen!</i>
             </p>
             <div className="row">
-              <div className="col-8 mx-auto row">
-              <div className="col-md-6 mb-1">
-                <PaypalButton />
-              </div>
-              <div className="col-md-6">
-                <PatreonButton />
-              </div>
+              <div className="col-md-8 mx-auto row">
+                <div className="col-md-6 mb-1">
+                  <PaypalButton />
+                </div>
+                <div className="col-md-6">
+                  <PatreonButton />
+                </div>
               </div>
             </div>
           </div>

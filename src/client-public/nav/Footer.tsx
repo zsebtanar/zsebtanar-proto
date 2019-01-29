@@ -22,6 +22,8 @@ export const Footer = connect<{}, FooterDispatchProps, {}>(
             {' - '}
             <NavLink to="/about">Rólunk</NavLink>
             {' - '}
+            <NavLink to="/joinus">Csatlakozz!</NavLink>
+            {' - '}
             <ExternalLink href={__CONFIG__.links.policy}>Adatvédelem</ExternalLink>
             {' - '}
             <Link onAction={this.props.openFeedbackModal}>Visszajelzés</Link>

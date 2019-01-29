@@ -1,8 +1,10 @@
 import { Loading } from 'client-common/component/general/Loading'
 import { Overlay } from 'client-common/component/modal/Overlay'
 import { About } from 'client-common/page/About'
+import { JoinUs } from 'client-common/page/JoinUs'
 import { Exercise } from 'client-common/page/exercise/Exercise'
 import { Page404 } from 'client-common/page/Page404'
+import { AppNotifications } from 'client-common/component/general/AppNotifications'
 import { History } from 'history'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -49,6 +51,7 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
         )}
         <Overlay />
         <CookieConsent />
+        <AppNotifications />
       </div>
     </Router>
   )
@@ -56,10 +59,10 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
 
 const App = props => () => {
   return (
-    <div className="container app-container">
+    <div className="container page-container">
       <Header />
       <SideNav />
-      <div className="content app-content">
+      <main className="main-content">
         <Switch>
           <Route path="/" exact component={Home} />
           {props.session.signedIn && <Route path="/profile" component={Profile} />}
@@ -67,10 +70,11 @@ const App = props => () => {
           <Route path="/grade/:grade" component={ExercisesByGrade} />
           <Route path="/search" component={Search} />
           <Route path="/about" component={About} />
+          <Route path="/joinus" component={JoinUs} />
           <Route path="/support" component={Workarounds} />
           <Route component={Page404} />
         </Switch>
-      </div>
+      </main>
       <Footer />
     </div>
   )

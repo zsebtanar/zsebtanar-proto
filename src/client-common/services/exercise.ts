@@ -1,8 +1,8 @@
-import { isNil, not, path, pipe, values } from 'ramda'
-import { cloudFnGet, cloudFnPost, resolveSnapshot } from '../util/firebase'
-import { assertP, excludeMetaKeys } from '../../shared/util/fn'
+import { always, filter, isNil, not, path, pipe, values } from 'ramda'
+import { assertP, excludeMetaKeys, isNotNil } from '../../shared/util/fn'
 import { app } from '../fireApp'
 import { NotFoundError } from '../util/error'
+import { cloudFnGet, cloudFnPost, resolveSnapshot } from '../util/firebase'
 
 const DB = app.database()
 const Exercises = DB.ref('exercise')
@@ -22,7 +22,7 @@ const notFound = uid =>
     new NotFoundError(`A kért feladat nem létezik: "${uid}".`)
   )
 
-export function getPublicExercise(exerciseId) {
+export function getPublicExercise(exerciseId): Promise<DB.Exercise> {
   return Exercises.child(`public/${exerciseId}`)
     .once('value')
     .then(
@@ -55,8 +55,14 @@ export function getAllPrivateExercises(): Promise<any> {
     )
 }
 
-export function selectPublicExercisesById(exerciseIds) {
-  return Promise.all(exerciseIds.map(getPublicExercise))
+/**
+ * Request Exercise by Ids and ignore missing or not published items
+ *
+ * @param exerciseIds
+ */
+export function selectPublicExercisesById(exerciseIds: string[]): Promise<DB.Exercise[]> {
+  const getWithoutError = id => getPublicExercise(id).catch(always(undefined))
+  return Promise.all(exerciseIds.map(getWithoutError)).then(list => filter(isNotNil, list))
 }
 
 export const createExercise = data =>

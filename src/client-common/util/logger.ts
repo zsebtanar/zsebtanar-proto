@@ -1,6 +1,9 @@
-export function logException(ex, context) {
+import { captureException } from '@sentry/browser';
+
+export function logException(ex) {
   if (!__DEV__) {
-    Raven.captureException(ex, { extra: context })
+    captureException(ex)
+  } else {
+    window.console && console.error && console.error(ex)
   }
-  window.console && console.error && console.error(ex)
 }

@@ -18,7 +18,7 @@ export function getClassification(group, uid) {
     .then(s => s.val())
 }
 
-export function getAllClassification() {
+export function getAllClassification(): Promise<DB.Classifications> {
   return Classification.once('value').then(resolveSnapshot)
 }
 

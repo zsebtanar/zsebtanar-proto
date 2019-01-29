@@ -1,4 +1,5 @@
-const ENV_CONFIG = require('./config')
+const { injectJS, injectCSS } = require('./utils')
+const { getConfig } = require('./config')
 
 //const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin')
 
@@ -10,13 +11,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-const server = process.env.SERVER_ENV || 'development'
 const env = process.env.NODE_ENV || 'development'
 const isDev = env === 'development'
 const isProd = env === 'production'
 
-const envCommonConfig = ENV_CONFIG.common
-const envConfig = { ...envCommonConfig, ...ENV_CONFIG[server] }
+const envConfig = getConfig()
 
 const sassExtract = new ExtractTextPlugin({
   filename: '[name].css',
@@ -30,6 +29,19 @@ const cssExtract = new ExtractTextPlugin({
 const ROOT_PATH = path.join(__dirname, '..')
 const SRC_PATH = path.join(ROOT_PATH, 'src')
 const TARGET_PATH = path.join(ROOT_PATH, 'bin/app')
+
+const commonHtmlWebpackPluginOptions = {
+  template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
+  alwaysWriteToDisk: false,
+  isDev: !isProd,
+  hash: true,
+  env: envConfig,
+  chunksSortMode: 'none',
+  inject: false,
+  inlineCSSRegex: isDev ? [] : ['.css$'],
+  injectJS,
+  injectCSS
+}
 
 module.exports = {
   mode: isDev ? 'development' : 'production',
@@ -75,6 +87,9 @@ module.exports = {
         { from: /^\//, to: '/index.html' }
       ]
     }
+    // headers: {
+    //   'Content-Security-Policy': envConfig.csp.join('; ')
+    // }
   },
   module: {
     rules: [
@@ -162,28 +177,18 @@ module.exports = {
   plugins: [
     sassExtract,
     new HtmlWebpackPlugin({
-      template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
-      alwaysWriteToDisk: false,
+      ...commonHtmlWebpackPluginOptions,
       filename: 'admin.html',
       title: 'Zsebtanár - Tanár',
-      isDev: !isProd,
       site: 'admin',
-      excludeChunks: ['public', 'public-modal'],
-      hash: true,
-      env: envConfig,
-      chunksSortMode: 'none'
+      excludeChunks: ['public', 'public-modal']
     }),
     new HtmlWebpackPlugin({
-      template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
-      alwaysWriteToDisk: false,
+      ...commonHtmlWebpackPluginOptions,
       filename: 'index.html',
-      isDev: !isProd,
       site: 'public',
       title: 'Zsebtanár',
-      excludeChunks: ['admin', 'admin-modal'],
-      hash: true,
-      env: envConfig,
-      chunksSortMode: 'none'
+      excludeChunks: ['admin', 'admin-modal']
     }),
     // new InlineChunkManifestHtmlWebpackPlugin({
     //   dropAsset: true

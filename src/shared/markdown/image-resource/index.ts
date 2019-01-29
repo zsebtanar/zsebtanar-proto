@@ -8,6 +8,7 @@ import { parseImageSize } from './parseImageSize'
 function refImage(resources) {
   resources = resources || {}
   return function refImageMD(state, silent) {
+    // tslint:disable-next-line:one-variable-per-declaration
     let attrs,
       code,
       content,
@@ -20,7 +21,9 @@ function refImage(resources) {
       token,
       start,
       resRef = '',
+      // tslint:disable-next-line:prefer-const
       oldPos = state.pos,
+      // tslint:disable-next-line:prefer-const
       max = state.posMax
 
     if (state.src.charCodeAt(state.pos) !== 0x40 /* @ */) {
@@ -46,7 +49,7 @@ function refImage(resources) {
 
       // [link](  <href>  =WxH  )
       //        ^^ skipping these spaces
-      //<editor-fold desc="skip spaces">
+      // <editor-fold desc="skip spaces">
       pos++
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos)
@@ -57,11 +60,11 @@ function refImage(resources) {
       if (pos >= max) {
         return false
       }
-      //</editor-fold>
+      // </editor-fold>
 
       // [link](  <href>  =WxH  )
       //          ^^^^^^ parsing link destination
-      //<editor-fold desc="parsing link destination">
+      // <editor-fold desc="parsing link destination">
       start = pos
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos)
@@ -73,11 +76,11 @@ function refImage(resources) {
         return false
       }
       resRef = state.src.substr(start, pos - start)
-      //</editor-fold>
+      // </editor-fold>
 
       // [link](  <href>  =WxH  )
       //                ^^ skipping these spaces
-      //<editor-fold desc="skip spaces">
+      // <editor-fold desc="skip spaces">
       start = pos
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos)
@@ -85,11 +88,11 @@ function refImage(resources) {
           break
         }
       }
-      //</editor-fold>
+      // </editor-fold>
 
       // [link](  <href>  =WxH  )
       //                  ^^^^ parsing image size
-      //<editor-fold desc="parsing image size">
+      // <editor-fold desc="parsing image size">
       if (pos - 1 >= 0) {
         code = state.src.charCodeAt(pos - 1)
 
@@ -113,7 +116,7 @@ function refImage(resources) {
           }
         }
       }
-      //</editor-fold>
+      // </editor-fold>
 
       if (pos >= max || state.src.charCodeAt(pos) !== 0x29 /* ) */) {
         state.pos = oldPos

@@ -11,38 +11,28 @@ body,
   height: 100%;
 }
 
-body {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
+.page-container {
+  margin-top: 4rem;
+  display: flex;
+  flex-flow: column;
+  .main-content {
+    flex: 1 0 auto;
+  }
 
-.app-container {
-    display: flex;
-    flex-flow: column;
-    .app-content {
-      flex: 1 0 auto;
+  .page {
+    margin: 3rem 0;
+
+    .list-group {
+      padding-left:  ($grid-gutter-width / 2);
     }
-
+  }
 }
 
-.logo {
-  background: url('/assets/logo.png') no-repeat left center;
-  background-size: contain;
-  padding-left: 2.5em;
-  height: 2em;
-  line-height: 2em;
-}
-
-.header,
 .footer {
   padding-right: 1rem;
   padding-left: 1rem;
 }
 
-/* Custom page header */
-.header {
-  border-bottom: 0.05rem solid #e5e5e5;
-}
 /* Custom page footer */
 .footer {
   margin-top: 1rem;
@@ -55,17 +45,10 @@ body {
 }
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 48em) {
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
   .footer {
     padding-right: 0;
     padding-left: 0;
   }
-}
-/* Space out the masthead */
-.header {
-  margin-bottom: 2rem;
 }
 
 .single-number input {
@@ -178,64 +161,9 @@ body {
   filter: none;
 }
 
-.header .desktop-header {
-  display: none;
-}
-.mobile-header {
-  position: relative;
-  margin: 0 -1rem;
-}
-.mobile-header .logo {
-  height: 2rem;
-  padding-left: 2rem;
-}
-
-@media (min-width: 768px) {
-  .header .desktop-header {
-    display: block;
-  }
-  .header .mobile-header,
-  .sidebar {
-    display: none;
-  }
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-}
-.sidebar .sidebar-content {
-  position: absolute;
-  right: 0;
-  z-index: 10;
-  background: white;
-  width: 90%;
-  max-width: 20rem;
-  height: 100%;
-}
-
 .mn-left-side {
   position: absolute;
   left: 0;
-}
-
-.desktop-header .user-menu {
-  .dropdown-menu {
-    position: absolute;
-    transform: translate3d(-80px, 44px, 0px);
-    top: 0;
-    left: 0;
-    will-change: transform;
-  }
-}
-
-.desktop-header .dropdown-menu {
-  top: 85%;
 }
 
 .search-input-group {
@@ -334,12 +262,11 @@ body {
   }
 }
 
-
 .fa-stack {
   color: $body-color;
 }
 
-.cookie-consent{
+.cookie-consent {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -348,7 +275,7 @@ body {
   align-items: center;
   justify-content: center;
   color: white;
-  background: theme-color-level("dark", 0);
+  background: theme-color-level('dark', 0);
 }
 
 .about-pic {

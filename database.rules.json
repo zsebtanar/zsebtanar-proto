@@ -24,7 +24,8 @@
       },
       "public": {
         "$exerciseId": {
-          ".read": true
+          ".read": true,
+          ".write": false
         }
       }
     },
