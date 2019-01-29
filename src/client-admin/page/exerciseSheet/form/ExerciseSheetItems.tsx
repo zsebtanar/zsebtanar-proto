@@ -4,7 +4,7 @@ import { Icon } from 'client-common/component/general/Icon'
 import { Loading } from 'client-common/component/general/Loading'
 import { Sortable } from 'client-common/component/general/Sortable'
 import { getPublicExercise, selectPublicExercisesById } from 'client-common/services/exercise'
-import { ExerciseSheetItem } from 'client-common/services/exerciseSheet'
+import { ExerciseSheetItem as ItemService } from 'client-common/services/exerciseSheet'
 import { openConfirmModal, openExerciseSearch } from 'client-common/store/actions/modal'
 import { append, filter, lensPath, prop, propEq } from 'ramda'
 import * as React from 'react'
@@ -17,7 +17,7 @@ import { ExerciseSheetItem } from './ExerciseSheetItem'
 
 interface Props {
   onChange: any
-  items: ExerciseSheetItem[]
+  items: ItemService[]
 }
 
 interface DispatchProps {

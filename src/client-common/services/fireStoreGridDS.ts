@@ -3,7 +3,7 @@ import { BaseModel, Service } from './fireStoreBase'
 
 export type QuerySnapshot = firebase.firestore.QuerySnapshot
 
-const getRecord = d => ({id: d.id, ...d.data()})
+const getRecord = d => ({ id: d.id, ...d.data() })
 
 export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
   private service: Service<T>
@@ -22,6 +22,10 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
 
     const from = pageNumber * limit
     const to = Math.min((pageNumber + 1) * limit - 1, this.size)
+
+    if (to === 0 && from === 0) {
+      return []
+    }
 
     if (to <= from) throw new Error('Invalid parameters')
 
