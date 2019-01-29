@@ -6,13 +6,22 @@ const commonConfig = {
   csp: [
     ['base-uri', "'self'"],
     ['default-src', "'none'"],
-    ['script-src', "'self'", 'https://*.firebaseio.com', 'https://www.google-analytics.com'],
+    ['manifest-src', 'https://zsebtanar.hu'],
+    [
+      'script-src',
+      "'self'",
+      'https://*.firebaseio.com',
+      'https://www.google-analytics.com',
+      'ḥttps://apis.google.com'
+    ],
     [
       'connect-src',
       "'self'",
       'wss://*.firebaseio.com',
       'https://*.algolianet.com',
-      'https://www.googleapis.com'
+      'https://*.algolia.net',
+      'https://www.googleapis.com',
+      'https://securetoken.googleapis.com'
     ],
     ['font-src', 'https://cdnjs.cloudflare.com'],
     ['style-src', "'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
@@ -26,7 +35,7 @@ const commonConfig = {
       'data:' // bootstrap alternative checkbox es radio
     ],
     ['form-action', "'self'"],
-    ['frame-src', 'https://*.firebaseio.com'],
+    ['frame-src', 'https://*.firebaseio.com', 'https://zsebtanar.hu'],
     ['frame-ancestors', "'none'"]
   ]
 }
