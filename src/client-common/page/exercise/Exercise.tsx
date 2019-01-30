@@ -61,7 +61,14 @@ export const Exercise = pipe(
       }
     }
 
-    historyBack = () => this.props.history.goBack()
+    historyBack = () => {
+      const { history } = this.props
+      if (history.length > 1) {
+        history.goBack()
+      } else {
+        history.push('/')
+      }
+    }
 
     render() {
       const { loading, exerciseError } = this.props
