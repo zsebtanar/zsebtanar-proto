@@ -50,11 +50,8 @@ export default function sessionWorkflow(state = INIT_STATE, action) {
     case SIGN_IN_SUCCESS:
       return {
         ...state,
-        signedIn: true,
         user: action.payload.user,
-        error: null,
-        signInLoading: false,
-        waitingForUser: false
+        error: null
       }
     case USER_SIGN_UP_FINISHED:
       return {
@@ -65,7 +62,13 @@ export default function sessionWorkflow(state = INIT_STATE, action) {
     case GET_USER_DETAILS:
       return { ...state, userDetails: action.payload }
     case USER_TOKEN:
-      return { ...state, token: action.payload }
+      return {
+        ...state,
+        token: action.payload,
+        signedIn: true,
+        signInLoading: false,
+        waitingForUser: false
+      }
     case SIGN_IN_ERROR:
     case SIGN_UP_ERROR:
       return {
