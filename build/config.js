@@ -12,7 +12,7 @@ const commonConfig = {
       "'self'",
       'https://*.firebaseio.com',
       'https://www.google-analytics.com',
-      'ḥttps://apis.google.com'
+      'https://apis.google.com'
     ],
     [
       'connect-src',
