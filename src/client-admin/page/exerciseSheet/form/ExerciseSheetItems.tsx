@@ -6,7 +6,7 @@ import { Sortable } from 'client-common/component/general/Sortable'
 import { getPublicExercise, selectPublicExercisesById } from 'client-common/services/exercise'
 import { ExerciseSheetItem as ItemService } from 'client-common/services/exerciseSheet'
 import { openConfirmModal, openExerciseSearch } from 'client-common/store/actions/modal'
-import { append, filter, lensPath, prop, propEq } from 'ramda'
+import { append, filter, lensPath, prop, propEq, always } from 'ramda'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { propNotEq } from 'shared/util/fn'
@@ -60,7 +60,8 @@ export const ExerciseSheetItems = connect<{}, DispatchProps, Props>(
     public componentWillMount(): void {
       const items = this.props.items
       if (items && items.length) {
-        selectPublicExercisesById(this.props.items.map(prop('exerciseId'))).then(res =>
+        const ids = items.map(prop('exerciseId'))
+        selectPublicExercisesById(ids).then(res =>
           this.setState({ loading: false, exercises: res })
         )
       } else {
@@ -75,7 +76,7 @@ export const ExerciseSheetItems = connect<{}, DispatchProps, Props>(
 
     private addExercise = exerciseId => {
       this.setState({ loading: true })
-      this.setItems(append({ exerciseId }))
+      this.setItems(append({ exerciseId, order: this.state.exercises.length }))
       getPublicExercise(exerciseId).then(res =>
         this.setState({ loading: false, exercises: this.state.exercises.concat(res) })
       )
@@ -86,6 +87,10 @@ export const ExerciseSheetItems = connect<{}, DispatchProps, Props>(
       this.setItems(filter(propNotEq('exerciseId', exerciseId)))
       removeExercise((items.find(propEq('exerciseId', exerciseId)) || { id: undefined }).id)
       this.setState({ exercises: filter(propNotEq('_key', exerciseId), this.state.exercises) })
+    }
+
+    private reorderExercise = list => {
+      this.setItems(always(list.map((i, idx) => ({ exerciseId: i._key, order: idx }))))
     }
 
     private openAddExercise = () => {
@@ -125,7 +130,7 @@ export const ExerciseSheetItems = connect<{}, DispatchProps, Props>(
           <Sortable
             list={exercises}
             itemComponent={ExerciseSheetItem}
-            onChange={this.setItems}
+            onChange={this.reorderExercise}
             itemProps={{
               openRemoveExercise: this.openRemoveExercise
             }}

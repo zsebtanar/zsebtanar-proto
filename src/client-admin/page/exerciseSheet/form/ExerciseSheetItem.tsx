@@ -9,7 +9,7 @@ interface Props extends SortableListItemProps {
   openRemoveExercise: (key: string) => () => void
 }
 
-export class ExerciseSheetItem extends React.Component<Props, void> {
+export class ExerciseSheetItem extends React.PureComponent<Props> {
   render(): React.ReactNode {
     const {
       data,
@@ -28,6 +28,7 @@ export class ExerciseSheetItem extends React.Component<Props, void> {
       connectDragPreview
     )(
       <div
+        key={data._key}
         className="list-group-item list-group-item-action flex-column align-items-start"
         style={{ opacity }}
       >

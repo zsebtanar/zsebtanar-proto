@@ -2,14 +2,20 @@ import { Button } from 'client-common/component/general/Button'
 import { FormGroup } from 'client-common/component/general/FormGroup'
 import { Icon } from 'client-common/component/general/Icon'
 import { Loading } from 'client-common/component/general/Loading'
-import { pipe, view } from 'ramda'
+import { Checkbox } from 'client-common/component/input/Checkbox'
+import { pathOr, pipe, view } from 'ramda'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
-import { Checkbox } from 'client-common/component/input/Checkbox'
 import { lensPathOr } from 'shared/util/fn'
+import { Alert } from '../../../../client-common/component/general/Alert'
 import { FormFieldProps } from '../../../store/form/formFields'
-import { loadExerciseSheet, newExerciseSheet, saveExerciseSheet, setExerciseSheetField } from '../exerciseSheetReducer'
+import {
+  loadExerciseSheet,
+  newExerciseSheet,
+  saveExerciseSheet,
+  setExerciseSheetField
+} from '../exerciseSheetReducer'
 import { ExerciseSheetItems } from './ExerciseSheetItems'
 
 ///
@@ -67,11 +73,17 @@ export const ExerciseSheetForm = pipe(
     }
 
     render(): React.ReactNode {
-      const { loading } = this.props
+      const { loading, error } = this.props
       return (
         <div>
           {this.renderHeader()}
-          {loading ? <Loading /> : this.renderContent()}
+          {loading ? (
+            <Loading />
+          ) : error ? (
+            <Alert type={'danger'}>{JSON.stringify(error)}</Alert>
+          ) : (
+            this.renderContent()
+          )}
         </div>
       )
     }
@@ -134,7 +146,8 @@ export const ExerciseSheetForm = pipe(
                 name="exerciseCount"
                 required
                 min={0}
-                max={data.items.length}
+                max={pathOr(0, ['items', 'length'], data)}
+                disabled={pathOr(false, ['items', 'length'], data) === false}
                 onChange={e => setField(numOfListedItemsL, e.currentTarget.value)}
                 value={view(numOfListedItemsL, this.props)}
               />

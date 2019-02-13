@@ -1,9 +1,17 @@
 import * as React from 'react'
 import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContext, DragSource, DragSourceConnector, DropTarget, DropTargetConnector } from 'react-dnd'
+import {
+  DragDropContext,
+  DragSource,
+  DragSourceConnector,
+  DropTarget,
+  DropTargetConnector
+} from 'react-dnd'
 import { insert, pipe, prop, remove } from 'ramda'
 import { findDOMNode } from 'react-dom'
 import { uid } from '../../util/uuid'
+
+///
 
 export interface SortableListItem {
   id: string
@@ -12,15 +20,16 @@ export interface SortableListItem {
 
 export interface SortableListItemProps extends SortableListItem {
   index: number
-  connectDragPreview: ReturnType<DragSourceConnector["dragPreview"]>,
-  connectDragSource: ReturnType<DragSourceConnector["dragSource"]>
-  connectDropTarget: ReturnType<DropTargetConnector["dropTarget"]>
+  connectDragPreview: ReturnType<DragSourceConnector['dragPreview']>
+  connectDragSource: ReturnType<DragSourceConnector['dragSource']>
+  connectDropTarget: ReturnType<DropTargetConnector['dropTarget']>
   isDragging: () => boolean
 }
 
 interface SortableProps {
   className?: string
   list: any[]
+  idFn?: (any) => string
   elementType?: string
   itemProps?: any
   itemComponent: React.ReactNode
@@ -29,10 +38,21 @@ interface SortableProps {
 
 interface SortableState {
   list: SortableListItem[]
+  originalList: any[]
 }
 
-function sortableList(list) {
-  return (list || []).map(data => ({ id: uid(), data }))
+///
+
+function defaultIdfn(data) {
+  return data && (data.id || data._key || data[0])
+}
+
+function sortableList(list = [], idFn = defaultIdfn) {
+  return list.map(data => {
+    const id = idFn(data)
+    if (!id) throw new Error(`Invalid sort item's id`)
+    return { id, data }
+  })
 }
 
 function unwrapSortableList(list) {
@@ -58,11 +78,12 @@ function itemSource(ctx) {
 function itemTarget(ctx) {
   return {
     hover(props, monitor, component) {
+      if (!component) return null
+
       const dragIndex = monitor.getItem().index
       const hoverIndex = props.index
 
       if (dragIndex === hoverIndex) return
-
       const hoverBoundingRect = (findDOMNode(component) as Element).getBoundingClientRect()
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       const clientOffset = monitor.getClientOffset()
@@ -79,7 +100,7 @@ function itemTarget(ctx) {
   }
 }
 
-function sortableItem(component, ctx) {
+function sortableItem(component, ctx /*: Sortable*/) {
   return pipe(
     DropTarget(ctx.itemType, itemTarget(ctx), connect => ({
       connectDropTarget: connect.dropTarget()
@@ -92,9 +113,11 @@ function sortableItem(component, ctx) {
   )(component)
 }
 
+///
+
 export const Sortable = DragDropContext(HTML5Backend)(
   class extends React.Component<SortableProps, SortableState> {
-    state = { list: [] }
+    state = { list: [], originalList: [] }
 
     public itemType
     private readonly ItemComponent
@@ -103,7 +126,8 @@ export const Sortable = DragDropContext(HTML5Backend)(
       super(props)
       this.itemType = `sortable-${uid()}`
       this.ItemComponent = sortableItem(props.itemComponent, this)
-      this.state.list = sortableList(props.list)
+      this.state.originalList = props.list
+      this.state.list = sortableList(props.list, props.idFn)
     }
 
     moveItem = (dragIdx, hoverIdx) => {
@@ -118,10 +142,11 @@ export const Sortable = DragDropContext(HTML5Backend)(
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-      if (nextProps && (!prevState || nextProps.list !== prevState.list)) {
-        return { list: sortableList(nextProps.list) }
+      if (nextProps.list !== prevState.originalList) {
+        return { list: sortableList(nextProps.list, nextProps.idFn), originalList: nextProps.list }
+      } else {
+        return { list: prevState.list }
       }
-      return null
     }
 
     dndFinish(lastItem) {

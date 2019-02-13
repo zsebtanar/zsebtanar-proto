@@ -35,7 +35,9 @@ export function loadExerciseSheet(id) {
     exerciseSheet
       .get(id, subCollections)
       .then(
-        data => dispatch({ type: EXERCISE_LIST_READY, payload: data }),
+        data => {
+          dispatch({ type: EXERCISE_LIST_READY, payload: data })
+        },
         error => dispatch({ type: EXERCISE_LIST_ERROR, payload: error })
       )
   }

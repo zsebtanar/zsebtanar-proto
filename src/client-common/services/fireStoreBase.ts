@@ -1,4 +1,4 @@
-import { curry, pickBy, pipe, reduce, invoker } from 'ramda'
+import { curry, pickBy, pipe, reduce, propOr } from 'ramda'
 import { app } from '../fireApp'
 
 ///
@@ -23,7 +23,7 @@ db.settings({
   timestampsInSnapshots: true
 })
 
-export class Service<T extends BaseModel>{
+export class Service<T extends BaseModel> {
   private readonly collectionName: string
 
   constructor(collectionName: string) {
@@ -31,7 +31,7 @@ export class Service<T extends BaseModel>{
   }
 
   public async create(data: T, options?: StoreOptions): Promise<DocRef> {
-    const doc = await db.collection(this.collectionName).add(omitInvalidFields(data))
+    const doc = await db.collection(this.collectionName).add(omitInvalidFields(options, data))
     await this.storeSubCollection(doc, data, options)
 
     this.log('CREATE', doc.id, data)
@@ -42,7 +42,7 @@ export class Service<T extends BaseModel>{
     const doc = db.collection(this.collectionName).doc(data.id)
 
     await Promise.all([
-      doc.set(omitInvalidFields(data) as any),
+      doc.set(omitInvalidFields(options, data) as any),
       this.storeSubCollection(doc, data, options)
     ])
 
@@ -110,14 +110,14 @@ export class Service<T extends BaseModel>{
     await Promise.all(
       populate.map(async collection => {
         const res = await new Service(`${this.collectionName}/${id}/${collection}`).getList()
-        collections[collection] = res.docs.map(invoker(0, 'data'))
+        collections[collection] = res.docs.map((doc) => ({id: doc.id, ...doc.data() }))
       })
     )
     return collections
   }
 
   private async storeSubCollection(doc: DocRef, data: T, options?: StoreOptions) {
-    const subCollections = options.subCollections || []
+    const subCollections = propOr([], 'subCollections', options) as string[]
     return await Promise.all(
       subCollections.map(collection =>
         new Service(`${this.collectionName}/${doc.id}/${collection}`).storeAll(data[collection])
@@ -139,7 +139,13 @@ export class Service<T extends BaseModel>{
   }
 }
 
-const omitInvalidFields = pickBy((val: any, key: string) => val !== undefined && key !== 'id')
+const omitInvalidFields = (options: StoreOptions, data: any) => {
+  const subCollections = propOr([], 'subCollections', options) as string[]
+  return pickBy(
+    (val: any, key: string) => val !== undefined && key !== 'id' && !subCollections.includes(key),
+    data
+  )
+}
 
 const qReduce = curry<any[], (q: Query, val: any) => Query, Query, Query>((list, fn, acc) =>
   reduce(fn, acc, list)
