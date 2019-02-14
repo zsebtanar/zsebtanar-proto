@@ -81,9 +81,9 @@ function AdminRoutes() {
             <Route path="/exercise/add/" component={ExerciseForm} />
             <Route path="/exercise/edit/:key" component={ExerciseForm} />
             <Route path="/exercise/view/:key" component={ExercisePreview} />
-            <Route path="/exercise-list" exact component={ExerciseSheetGrid} />
-            <Route path="/exercise-list/add" component={ExerciseSheetForm} />
-            <Route path="/exercise-list/edit/:key" component={ExerciseSheetForm} />
+            <Route path="/exercise-sheet" exact component={ExerciseSheetGrid} />
+            <Route path="/exercise-sheet/add" component={ExerciseSheetForm} />
+            <Route path="/exercise-sheet/edit/:key" component={ExerciseSheetForm} />
             <Route path="/feedback" component={FeedbackList} />
             <Route path="/utilities" component={AdminUtils} />
             <Route path="/about" component={About} />

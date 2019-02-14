@@ -199,6 +199,7 @@ export function openFileUpload(params?) {
 }
 
 interface ExerciseSearchParams extends BaseModalParams {
+  filterOut?: string[]
   onSuccess?: (id: string) => void
 }
 export function openExerciseSearch(params?: ExerciseSearchParams) {

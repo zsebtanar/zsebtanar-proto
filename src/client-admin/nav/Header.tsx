@@ -70,7 +70,7 @@ export const Header = withRouter(
                   <NavLink activeClassName="active" className="dropdown-item" to="/exercise">
                     <Icon fa="tasks" /> Feladatok
                   </NavLink>
-                  <NavLink activeClassName="active" className="dropdown-item" to="/exercise-list">
+                  <NavLink activeClassName="active" className="dropdown-item" to="/exercise-sheet">
                     <Icon fa="list-alt" /> Feladatsorok
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/classification">

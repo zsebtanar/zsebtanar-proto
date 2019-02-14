@@ -11,8 +11,10 @@ import { lensPathOr } from 'shared/util/fn'
 import { Alert } from '../../../../client-common/component/general/Alert'
 import { FormFieldProps } from '../../../store/form/formFields'
 import {
+  clearExerciseSheet,
   loadExerciseSheet,
   newExerciseSheet,
+  removeExerciseSheet,
   saveExerciseSheet,
   setExerciseSheetField
 } from '../exerciseSheetReducer'
@@ -23,9 +25,11 @@ import { ExerciseSheetItems } from './ExerciseSheetItems'
 interface StoreProps extends state.AdminExerciseSheet {}
 
 interface DispatchProps {
-  createList: typeof newExerciseSheet
-  loadList: typeof loadExerciseSheet
-  saveList: typeof saveExerciseSheet
+  createSheet: typeof newExerciseSheet
+  loadSheet: typeof loadExerciseSheet
+  saveSheet: typeof saveExerciseSheet
+  removeSheet: typeof removeExerciseSheet
+  clearSheet: typeof clearExerciseSheet
   setField: typeof setExerciseSheetField
 }
 
@@ -38,9 +42,11 @@ type AllProps = RouteProps & StoreProps & DispatchProps & FormFieldProps
 const mapStoreToProps = (state: state.AdminRoot) => state.exerciseSheet
 
 const mapDispatchToProps = {
-  createList: newExerciseSheet,
-  loadList: loadExerciseSheet,
-  saveList: saveExerciseSheet,
+  createSheet: newExerciseSheet,
+  loadSheet: loadExerciseSheet,
+  saveSheet: saveExerciseSheet,
+  removeSheet: removeExerciseSheet,
+  clearSheet: clearExerciseSheet,
   setField: setExerciseSheetField
 }
 
@@ -59,16 +65,20 @@ export const ExerciseSheetForm = pipe(
 )(
   class ExerciseSheetFormComp extends React.PureComponent<AllProps> {
     componentWillMount(): void {
-      this.loadList()
+      this.loadSheet()
     }
 
-    private loadList = () => {
+    componentWillUnmount(): void {
+      this.props.clearSheet()
+    }
+
+    private loadSheet = () => {
       const { key } = this.props.match.params
 
       if (key) {
-        this.props.loadList(key)
+        this.props.loadSheet(key)
       } else {
-        this.props.createList()
+        this.props.createSheet()
       }
     }
 
@@ -89,14 +99,14 @@ export const ExerciseSheetForm = pipe(
     }
 
     private renderHeader() {
-      const { saving, changed } = this.props
+      const { saving, changed, data } = this.props
 
       return (
         <div className="d-flex justify-content-between align-items-center mb-4">
           <div className="d-flex justify-content-between align-items-center">
             <NavLink
               exact
-              to="/exercise-list"
+              to="/exercise-sheet"
               className="btn btn-outline-light py-0 text-dark mx-2"
               title="Mégsem"
             >
@@ -104,15 +114,27 @@ export const ExerciseSheetForm = pipe(
             </NavLink>
             <h4 className="d-inline-block m-0 mr-1">Feladatlista</h4>
           </div>
-          <Button
-            loading={saving}
-            disabled={!changed}
-            className="btn btn-primary ml-1"
-            onAction={this.props.saveList}
-            icon="save"
-          >
-            Mentés
-          </Button>
+          <div>
+            {data &&
+              data.id && (
+                <Button
+                  className="btn btn-outline-danger"
+                  onAction={this.props.removeSheet}
+                  icon="trash"
+                >
+                  Törlés
+                </Button>
+              )}
+            <Button
+              loading={saving}
+              disabled={!changed}
+              className="btn btn-primary ml-1"
+              onAction={this.props.saveSheet}
+              icon="save"
+            >
+              Mentés
+            </Button>
+          </div>
         </div>
       )
     }
@@ -139,7 +161,10 @@ export const ExerciseSheetForm = pipe(
                 checked={view(randomOrderL, this.props)}
               />
             </FormGroup>
-            <FormGroup label="Megoldandó feladatok száma">
+            <FormGroup
+              label="Megoldandó feladatok száma"
+              helpText="0 érték esetén minden feladat elérhető lesz."
+            >
               <input
                 className="form-control"
                 type="number"
@@ -153,7 +178,7 @@ export const ExerciseSheetForm = pipe(
               />
             </FormGroup>
             <hr />
-            <ExerciseSheetItems items={data.items} onChange={console.log} />
+            <ExerciseSheetItems items={data.items} />
           </div>
         </div>
       )

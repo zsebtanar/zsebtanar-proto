@@ -6,7 +6,7 @@ import { Sortable } from 'client-common/component/general/Sortable'
 import { getPublicExercise, selectPublicExercisesById } from 'client-common/services/exercise'
 import { ExerciseSheetItem as ItemService } from 'client-common/services/exerciseSheet'
 import { openConfirmModal, openExerciseSearch } from 'client-common/store/actions/modal'
-import { append, filter, lensPath, prop, propEq, always } from 'ramda'
+import { always, append, filter, lensPath, prop, propEq } from 'ramda'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { propNotEq } from 'shared/util/fn'
@@ -16,7 +16,6 @@ import { ExerciseSheetItem } from './ExerciseSheetItem'
 ///
 
 interface Props {
-  onChange: any
   items: ItemService[]
 }
 
@@ -90,11 +89,19 @@ export const ExerciseSheetItems = connect<{}, DispatchProps, Props>(
     }
 
     private reorderExercise = list => {
-      this.setItems(always(list.map((i, idx) => ({ exerciseId: i._key, order: idx }))))
+      const { items } = this.props
+
+      const itemList = list.map((i, idx) => {
+        const item = items.find(({ exerciseId }) => exerciseId === i._key)
+        return { ...item, order: idx }
+      })
+      this.setItems(always(itemList))
     }
 
     private openAddExercise = () => {
-      this.props.openExerciseSearch({ onSuccess: this.addExercise })
+      const { items } = this.props;
+      const filterOut = items && items.map(i => i.exerciseId )
+      this.props.openExerciseSearch({ onSuccess: this.addExercise, filterOut })
     }
 
     private openRemoveExercise = exerciseId => () =>
@@ -106,8 +113,8 @@ export const ExerciseSheetItems = connect<{}, DispatchProps, Props>(
     public render() {
       return (
         <div>
-          <div className="d-flex justify-content-between">
-            <label htmlFor="exercise-list-items">Feladatok:</label>
+          <div className="d-flex justify-content-between mb-2">
+            <label htmlFor="exercise-sheet-items">Feladatok:</label>
             <Button
               title="Feladat hozzáadása"
               onAction={this.openAddExercise}
@@ -126,7 +133,7 @@ export const ExerciseSheetItems = connect<{}, DispatchProps, Props>(
       if (loading) return <Loading />
       if (!exercises.length) return <Alert type="info">A feladatlista üres.</Alert>
       return (
-        <div className="list-group my-2" id="exercise-list-items">
+        <div className="list-group my-2" id="exercise-sheet-items">
           <Sortable
             list={exercises}
             itemComponent={ExerciseSheetItem}

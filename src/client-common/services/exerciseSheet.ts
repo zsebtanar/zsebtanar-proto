@@ -14,4 +14,4 @@ export interface ExerciseSheetItem extends BaseModel {
 }
 
 export const exerciseSheet = new Service<ExerciseSheet>('exerciseSheet')
-export const exerciseSheetItem = id => new Service<ExerciseSheetItem>(`lesson/${id}/items`)
+export const exerciseSheetItem = id => new Service<ExerciseSheetItem>(`exerciseSheet/${id}/items`)

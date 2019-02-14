@@ -12,6 +12,7 @@ import { DialogHeader } from './base/DialogHeader'
 
 interface ConfirmModalProps extends ui.ModalProps {
   onSuccess: (exerciseId: string) => void
+  filterOut: string[]
   buttonType?: ButtonType
   content: React.ReactNode
 }
@@ -23,6 +24,11 @@ export class ExerciseSearchModal extends React.Component<ConfirmModalProps> {
     loading: false,
     term: ''
   }
+  private isOpen = true
+
+  componentWillUnmount(): void {
+    this.isOpen = false
+  }
 
   private onSearch = event => this.searchTerm(event.currentTarget.value)
 
@@ -31,14 +37,16 @@ export class ExerciseSearchModal extends React.Component<ConfirmModalProps> {
       this.setState({ loading: true, list: undefined })
 
       search(term)
-        .then(list => this.setState({ list, error: undefined, loading: false, term }))
-        .catch(error => this.setState({ error, loading: false }))
+        .then(
+          list => this.isOpen && this.setState({ list, error: undefined, loading: false, term })
+        )
+        .catch(error => this.isOpen && this.setState({ error, loading: false }))
     } else {
       this.setState({ loading: false, list: undefined, term: '' })
     }
   }
 
-  private selectExercise = (id) => {
+  private selectExercise = id => {
     this.props.onSuccess(id)
     this.props.close()
   }
@@ -49,9 +57,7 @@ export class ExerciseSearchModal extends React.Component<ConfirmModalProps> {
         {this.props.title && (
           <DialogHeader onClose={this.props.close}>{this.props.title}</DialogHeader>
         )}
-        <DialogBody>
-          {this.renderBody()}
-        </DialogBody>
+        <DialogBody>{this.renderBody()}</DialogBody>
         <DialogFooter>
           <Button onAction={this.props.close} className="btn-link">
             Mégsem
@@ -115,23 +121,28 @@ export class ExerciseSearchModal extends React.Component<ConfirmModalProps> {
     )
   }
 
-  private renderResultItem = term => exercise => (
-    <div
-      key={exercise.objectID}
-      className="list-group-item list-group-item-action d-flex flex-column align-items-start"
-      onClick={() => this.selectExercise(exercise.objectID)}
-    >
-      <div className="mb-1 d-flex w-100 ">
-        <Markdown source={exercise.description} mark={term} />
+  private renderResultItem = term => exercise => {
+    const { filterOut } = this.props;
+    const isDisabled = !!(filterOut && filterOut.find(id => id === exercise.objectID))
+    return (
+      <div
+        key={exercise.objectID}
+        className="list-group-item list-group-item-action d-flex flex-column align-items-start"
+        style={{opacity: isDisabled ? 0.3 : 1}}
+        onClick={() => !isDisabled && this.selectExercise(exercise.objectID)}
+      >
+        <div className="mb-1 d-flex w-100 ">
+          <Markdown source={exercise.description} mark={term} />
+        </div>
+        <div>
+          {this.renderBadge(exercise, 'grade', 'light')}
+          {this.renderBadge(exercise, 'subject', 'primary')}
+          {this.renderBadge(exercise, 'topic', 'info')}
+          {this.renderBadge(exercise, 'tags', 'secondary')}
+        </div>
       </div>
-      <div>
-        {this.renderBadge(exercise, 'grade', 'light')}
-        {this.renderBadge(exercise, 'subject', 'primary')}
-        {this.renderBadge(exercise, 'topic', 'info')}
-        {this.renderBadge(exercise, 'tags', 'secondary')}
-      </div>
-    </div>
-  )
+    )
+  }
 
   private renderBadge(exercise, key, type) {
     return (exercise[key] || []).map(this.renderBadgeItem(type))

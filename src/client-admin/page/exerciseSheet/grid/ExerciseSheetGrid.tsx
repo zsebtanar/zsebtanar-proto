@@ -15,7 +15,7 @@ export class ExerciseSheetGrid extends React.PureComponent<{}> {
       <div>
         <div className="btn-toolbar justify-content-between align-items-center">
           <h3>Feladatsorok</h3>
-          <NavLink exact to="/exercise-list/add" className="btn btn-outline-secondary">
+          <NavLink exact to="/exercise-sheet/add" className="btn btn-outline-secondary">
             <i className="fa fa-plus" /> Feladatsor létrehozása
           </NavLink>
         </div>
@@ -36,16 +36,7 @@ export class ExerciseSheetGrid extends React.PureComponent<{}> {
       <div className="text-center">
         <NavLink
           exact
-          to={`/exercise-list/view/${item.id}`}
-          className="btn btn-sm btn-light"
-          title="Megtekintés"
-        >
-          <Icon fa="eye" />
-        </NavLink>
-        &nbsp;
-        <NavLink
-          exact
-          to={`/exercise-list/add/${item.id}`}
+          to={`/exercise-sheet/add/${item.id}`}
           className="btn btn-sm btn-light"
           title="Feladat másolása"
         >
@@ -54,7 +45,7 @@ export class ExerciseSheetGrid extends React.PureComponent<{}> {
         &nbsp;
         <NavLink
           exact
-          to={`/exercise-list/edit/${item.id}`}
+          to={`/exercise-sheet/edit/${item.id}`}
           className="btn btn-sm btn-light"
           title="Feladat szerkesztése"
         >

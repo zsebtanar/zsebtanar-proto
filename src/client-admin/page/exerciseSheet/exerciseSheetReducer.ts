@@ -1,7 +1,12 @@
-import { ExerciseSheet, exerciseSheet, exerciseSheetItem } from 'client-common/services/exerciseSheet'
+import {
+  ExerciseSheet,
+  exerciseSheet,
+  exerciseSheetItem
+} from 'client-common/services/exerciseSheet'
 import { DocRef } from 'client-common/services/fireStoreBase'
 import { addNotification } from 'client-common/store/notifications'
 import { append, assocPath, lensPath, over, pipe, set } from 'ramda'
+import { openConfirmModal } from '../../../client-common/store/actions/modal'
 
 ///
 
@@ -21,6 +26,12 @@ const subCollections = ['items']
 
 ///
 
+export function clearExerciseSheet() {
+  return dispatch => {
+    dispatch({ type: EXERCISE_LIST_INIT })
+  }
+}
+
 export function newExerciseSheet() {
   return dispatch => {
     dispatch({ type: EXERCISE_LIST_INIT })
@@ -32,14 +43,12 @@ export function newExerciseSheet() {
 export function loadExerciseSheet(id) {
   return dispatch => {
     dispatch({ type: EXERCISE_LIST_INIT })
-    exerciseSheet
-      .get(id, subCollections)
-      .then(
-        data => {
-          dispatch({ type: EXERCISE_LIST_READY, payload: data })
-        },
-        error => dispatch({ type: EXERCISE_LIST_ERROR, payload: error })
-      )
+    exerciseSheet.get(id, subCollections).then(
+      data => {
+        dispatch({ type: EXERCISE_LIST_READY, payload: data })
+      },
+      error => dispatch({ type: EXERCISE_LIST_ERROR, payload: error })
+    )
   }
 }
 
@@ -72,7 +81,7 @@ export function saveExerciseSheet() {
         const res: DocRef = await exerciseSheet.store(data, { subCollections })
 
         if (!data.id) {
-          window.location.replace(`/admin/exercise-list/edit/${res.id}`)
+          window.location.replace(`/admin/exercise-sheet/edit/${res.id}`)
         } else {
           dispatch({ type: EXERCISE_LIST_SAVED })
         }
@@ -81,6 +90,21 @@ export function saveExerciseSheet() {
         dispatch({ type: EXERCISE_LIST_ERROR, payload: error })
       }
     }
+  }
+}
+
+export function removeExerciseSheet() {
+  return async (dispatch, getState: () => state.AdminRoot) => {
+    const state = getState().exerciseSheet
+    dispatch(
+      openConfirmModal({
+        content: `Biztos törlöd a(z) "${state.data.title}"feladat listát`,
+        onSuccess: async () => {
+          await exerciseSheet.delete(state.data.id)
+          window.location.replace(`/admin/exercise-sheet/`)
+        }
+      })
+    )
   }
 }
 
