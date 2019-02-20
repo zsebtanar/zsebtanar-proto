@@ -24,6 +24,8 @@
       "joi",
       "markdown-it",
       "markdown-it-katex",
+      "markdown-it-kbd",
+      "markdown-it-center-text",
       "ramda"
     ]
   },
@@ -44,7 +46,9 @@
     "history": "4.7.2",
     "joi": "13.6.0",
     "markdown-it": "8.4.2",
+    "markdown-it-center-text": "^1.0.4",
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#v2.2.0",
+    "markdown-it-kbd": "^1.1.1",
     "prop-types": "15.6.2",
     "ramda": "0.25.0",
     "react": "16.4.2",
@@ -103,7 +107,7 @@
     "webpack": "4.16.5",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "3.1.0",
-    "webpack-dev-server": "3.1.5"
+    "webpack-dev-server": "^3.1.10"
   },
   "scripts": {
     "test": "jest test",

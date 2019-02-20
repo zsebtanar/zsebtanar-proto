@@ -217,6 +217,58 @@ Kódblokk.
             </div>
           </div>
         </div>
+        <div className="row">
+            <div className="col-12">
+              <h5>
+                <b>Billentyű piktogramok (keyboard) használata</b>
+              </h5>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>
+                [[ENTER]]
+                <br />[[F1]]
+                <br />[[a]]
+                <br />[[/]]
+              </p>
+            </div>
+            <div className="col-6">
+              <Markdown
+                source={`
+[[ENTER]]
+
+[[F1]]
+
+[[a]]
+
+[[/]]
+
+`}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <h5>
+                <b>Szöveg középre igazítása</b>
+              </h5>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>
+                {"-> Középre igazított szöveg <-"}
+              </p>
+            </div>
+            <div className="col-6">
+              <Markdown
+                source={`
+-> Középre igazított szöveg <-
+`}
+              />
+            </div>
+          </div>  
         <div className="modal-footer text-center">
           <Button onAction={props.close}>Bezár</Button>
         </div>

@@ -59,10 +59,11 @@ export const Search = pipe(
         this.setState({ loading: true, list: undefined })
         this.props.history.push({ search: `q=${term}` })
 
-        ReactGA.event({ category: 'User', action: 'Search', value: term })
-
         search(term)
-          .then(list => this.setState({ list, error: undefined, loading: false, term }))
+          .then(list => {
+            this.setState({ list, error: undefined, loading: false, term })
+            if (list) { ReactGA.event({ category: 'User', action: 'Search results', label: term, value: list.nbHits })}
+          })
           .catch(error => this.setState({ error, loading: false }))
       } else {
         this.props.history.push({ search: `` })
