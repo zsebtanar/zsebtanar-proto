@@ -67,7 +67,7 @@ module.exports = {
       shared: path.join(SRC_PATH, 'shared'),
       'client-common': path.join(SRC_PATH, 'client-common')
     },
-    modules: ['node_modules'],
+    //    modules: ['node_modules'],
     extensions: ['.ts', '.tsx', '.jsx', '.js', '.json']
   },
 
@@ -106,19 +106,21 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        exclude: /node_modules/,
         use: cssExtract.extract(['css-loader'])
       },
       {
         test: /\.scss$/,
         use: sassExtract.extract(['css-loader', 'sass-loader'])
       },
-      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' }
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /node_modules/ }
     ]
   },
 
-  optimization: {
-    minimizer: !!isProd
-      ? [
+  optimization: !isProd
+    ? undefined
+    : {
+        minimizer: [
           new UglifyJsPlugin({
             parallel: 2,
             uglifyOptions: {
@@ -131,49 +133,48 @@ module.exports = {
               }
             }
           })
-        ]
-      : [],
-    splitChunks: {
-      minSize: 10000, // doesn't seem enforced...
-      maxInitialRequests: 3, // only app and libs
-      maxAsyncRequests: 2,
-      cacheGroups: {
-        default: false,
-        vendors: false,
-        firebase: {
-          test: /[\\/]node_modules[\\/]@firebase[\\/]/,
-          name: 'firebase',
-          chunks: 'initial',
-          minSize: 1,
-          priority: 3
+        ],
+        splitChunks: {
+          minSize: 10000, // doesn't seem enforced...
+          maxInitialRequests: 3, // only app and libs
+          maxAsyncRequests: 2,
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            firebase: {
+              test: /[\\/]node_modules[\\/]@firebase[\\/]/,
+              name: 'firebase',
+              chunks: 'initial',
+              minSize: 1,
+              priority: 3
+            },
+            admin: {
+              test: /[\\/]src[\\/]clint-admin[\\/]/,
+              name: 'admin',
+              chunks: 'initial',
+              minSize: 1000,
+              priority: 1
+            },
+            public: {
+              test: /[\\/]src[\\/]clint-public[\\/]/,
+              name: 'public',
+              chunks: 'initial',
+              minSize: 1000,
+              priority: 1
+            },
+            common: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'common',
+              chunks: 'initial',
+              minSize: 10000,
+              priority: -100
+            }
+          }
         },
-        admin: {
-          test: /[\\/]src[\\/]clint-admin[\\/]/,
-          name: 'admin',
-          chunks: 'initial',
-          minSize: 1000,
-          priority: 1
-        },
-        public: {
-          test: /[\\/]src[\\/]clint-public[\\/]/,
-          name: 'public',
-          chunks: 'initial',
-          minSize: 1000,
-          priority: 1
-        },
-        common: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'common',
-          chunks: 'initial',
-          minSize: 10000,
-          priority: -100
+        runtimeChunk: {
+          name: 'manifest'
         }
-      }
-    },
-    runtimeChunk: {
-      name: 'manifest'
-    }
-  },
+      },
   plugins: [
     sassExtract,
     new HtmlWebpackPlugin({

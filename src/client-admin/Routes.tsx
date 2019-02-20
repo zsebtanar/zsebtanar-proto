@@ -1,26 +1,28 @@
+import { Loading } from 'client-common/component/general/Loading'
+import { Overlay } from 'client-common/component/modal/Overlay'
+import { About } from 'client-common/page/About'
+import { JoinUs } from 'client-common/page/JoinUs'
+import { Page404 } from 'client-common/page/Page404'
+import { History } from 'history'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { History } from 'history'
 
 import { Route, Router, Switch } from 'react-router-dom'
-import { Loading } from 'client-common/component/general/Loading'
+import { AppNotifications } from '../client-common/component/general/AppNotifications'
+import { isAdmin } from '../client-common/services/user'
 
 import { Header } from './nav/Header'
 import { SideNav } from './nav/SideNav'
-import { Home } from './page/Home'
-import { ExerciseList } from './page/ExerciseList'
-import { ExerciseForm } from './page/excersice-edit/ExerciseForm'
-import { Page404 } from 'client-common/page/Page404'
-import { Overlay } from 'client-common/component/modal/Overlay'
-import { UserList } from './page/user/UserList'
-import { ClassificationList } from './page/classification/ClassificationList'
-import { FeedbackList } from './page/FeedbackList'
-import { About } from 'client-common/page/About'
-import { JoinUs } from 'client-common/page/JoinUs'
-import { Footer } from './nav/Footer'
 import { AdminUtils } from './page/AdminUtils'
+import { ClassificationList } from './page/classification/ClassificationList'
+import { ExerciseSheetForm } from './page/exerciseSheet/form/ExerciseSheetForm'
+import { ExerciseForm } from './page/exerciseEdit/ExerciseForm'
 import { ExercisePreview } from './page/ExercisePreview'
-import { isAdmin } from '../client-common/services/user'
+import { Exercises } from './page/Exercises'
+import { FeedbackList } from './page/FeedbackList'
+import { Home } from './page/Home'
+import { ExerciseSheetGrid } from './page/exerciseSheet/grid/ExerciseSheetGrid'
+import { UserList } from './page/user/UserList'
 
 interface RoutesProps {
   history: History
@@ -60,33 +62,37 @@ function RouteContent(props: RoutesStateProps & RoutesProps) {
     )
   }
 
-  props.history.push('/')
-  return <Home/>
+  return <Home />
 }
 
 function AdminRoutes() {
   return (
-    <div className="container">
-      <Header />
-      <SideNav />
-      <div className="content">
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/user" exact component={UserList} />
-          <Route path="/classification" exact component={ClassificationList} />
-          <Route path="/exercise" exact component={ExerciseList} />
-          <Route path="/exercise/add/:clone" component={ExerciseForm} />
-          <Route path="/exercise/add/" component={ExerciseForm} />
-          <Route path="/exercise/edit/:key" component={ExerciseForm} />
-          <Route path="/exercise/view/:key" component={ExercisePreview} />
-          <Route path="/feedback" component={FeedbackList} />
-          <Route path="/utilities" component={AdminUtils} />
-          <Route path="/about" component={About} />
-          <Route path="/joinus" component={JoinUs} />
-          <Route component={Page404} />
-        </Switch>
+    <div>
+      <div className="container">
+        <Header />
+        <SideNav />
+        <div className="content">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/user" exact component={UserList} />
+            <Route path="/classification" exact component={ClassificationList} />
+            <Route path="/exercise" exact component={Exercises} />
+            <Route path="/exercise/add/:clone" component={ExerciseForm} />
+            <Route path="/exercise/add/" component={ExerciseForm} />
+            <Route path="/exercise/edit/:key" component={ExerciseForm} />
+            <Route path="/exercise/view/:key" component={ExercisePreview} />
+            <Route path="/exercise-sheet" exact component={ExerciseSheetGrid} />
+            <Route path="/exercise-sheet/add" component={ExerciseSheetForm} />
+            <Route path="/exercise-sheet/edit/:key" component={ExerciseSheetForm} />
+            <Route path="/feedback" component={FeedbackList} />
+            <Route path="/utilities" component={AdminUtils} />
+            <Route path="/about" component={About} />
+            <Route path="/joinus" component={JoinUs} />
+            <Route component={Page404} />
+          </Switch>
+        </div>
       </div>
-      <Footer />
+      <AppNotifications />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Notification } from './Notification'
+import { Alert } from './Alert'
 import { removeNotification } from '../../store/notifications'
 import { isPositiveInt } from '../../../shared/util/math'
 
@@ -30,7 +30,7 @@ export const AppNotifications = connect<StoreProps, DispatchProps, {}>(
     render(): React.ReactNode {
       return (
         <div className="notifications" aria-live="polite">
-          <div className="col-md-8 mx-auto">
+          <div className="col-md-8 col-lg-4 mx-auto">
             {this.props.notifications.map(this.renderNotifications)}
           </div>
         </div>
@@ -41,9 +41,9 @@ export const AppNotifications = connect<StoreProps, DispatchProps, {}>(
       const { id, type, message, options } = item
       const onDismiss = isPositiveInt(options.timeout) ? undefined : this.dismissNotify(id)
       return (
-        <Notification key={id} type={type} onDismiss={onDismiss}>
+        <Alert key={id} type={type} onDismiss={onDismiss}>
           {message}
-        </Notification>
+        </Alert>
       )
     }
 

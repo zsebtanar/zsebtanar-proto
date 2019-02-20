@@ -47,7 +47,7 @@ import {
   newExercise,
   saveExercise,
   updateContent
-} from '../../store/exerciseEdit'
+} from './exerciseFormReducer'
 import { Icon } from 'client-common/component/general/Icon'
 import { isAdmin } from 'client-common/services/user'
 import { Dropdown} from 'client-common/component/general/dropdown/Dropdown'

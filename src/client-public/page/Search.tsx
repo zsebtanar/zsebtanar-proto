@@ -1,15 +1,16 @@
-import * as React from 'react'
-import * as ReactGA from 'react-ga'
 import * as algoliasearch from 'algoliasearch'
-import { connect } from 'react-redux'
-import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
-import { Markdown } from 'client-common/component/general/Markdown'
-import { Loading } from 'client-common/component/general/Loading'
 import { Icon } from 'client-common/component/general/Icon'
+import { Loading } from 'client-common/component/general/Loading'
+import { Markdown } from 'client-common/component/general/Markdown'
+import { setupPage } from 'client-common/component/hoc/setupPage'
 import { search } from 'client-common/services/search'
 import { getQueryParams } from 'client-common/util/url'
-import { setupPage } from 'client-common/component/hoc/setupPage'
 import { pipe } from 'ramda'
+import * as React from 'react'
+import * as ReactGA from 'react-ga'
+import { connect } from 'react-redux'
+import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
+import { AlgoliaLogo } from '../../client-common/component/general/AlgoliaLogo'
 
 interface StoreProps {
   session: state.Session
@@ -58,10 +59,11 @@ export const Search = pipe(
         this.setState({ loading: true, list: undefined })
         this.props.history.push({ search: `q=${term}` })
 
-        ReactGA.event({ category: 'User', action: 'Search', value: term })
-
         search(term)
-          .then(list => this.setState({ list, error: undefined, loading: false, term }))
+          .then(list => {
+            this.setState({ list, error: undefined, loading: false, term })
+            if (list) { ReactGA.event({ category: 'User', action: 'Search results', label: term, value: list.nbHits })}
+          })
           .catch(error => this.setState({ error, loading: false }))
       } else {
         this.props.history.push({ search: `` })
@@ -117,7 +119,7 @@ export const Search = pipe(
               <b>{list.nbHits}</b> találat
             </div>
             <div>
-              {Search.renderAlgoliaLogo()}
+              <AlgoliaLogo/>
             </div>
           </div>
 
@@ -171,14 +173,6 @@ export const Search = pipe(
 
     private static renderEmpty() {
       return <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>
-    }
-
-    private static renderAlgoliaLogo() {
-      return <img
-        className="algolia-logo"
-        src="https://www.algolia.com/static_assets/images/press/downloads/algolia-logo-light.svg"
-        alt="Search by algolia"
-      />
     }
   }
 )

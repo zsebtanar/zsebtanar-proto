@@ -5,11 +5,14 @@ import { DialogBody } from './base/DialogBody'
 import { DialogHeader } from './base/DialogHeader'
 import { DialogFooter } from './base/DialogFooter'
 
-interface ConfirmModalProps extends ui.ModalProps {
-  onSuccess: () => void
-  buttonType?: Buttontype
+export interface ConfirmModalParams {
+  title?: string
+  onSuccess?: () => void
+  buttonType?: ButtonType
   content: React.ReactNode
 }
+
+interface ConfirmModalProps extends ui.ModalProps, ConfirmModalParams {}
 
 export function ConfirmModal(props: ConfirmModalProps) {
   const onOk = () => {

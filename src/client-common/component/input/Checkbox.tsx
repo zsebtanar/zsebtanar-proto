@@ -6,7 +6,7 @@ interface CheckboxProps {
   name: string
   checked?: boolean
   onChange?: (event: any) => void
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 export function Checkbox(props: CheckboxProps) {
