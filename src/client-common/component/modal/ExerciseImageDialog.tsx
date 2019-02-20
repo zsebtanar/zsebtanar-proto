@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { imageUpload } from 'client-common/services/images'
 import { isAdvancedUploadSupported } from 'client-common/util/browser'
 import { pairsInNameOrder } from 'shared/util/fn'
-import { addResource } from '../../../client-admin/store/exerciseEdit'
+import { addResource } from '../../../client-admin/page/exerciseEdit/exerciseFormReducer'
 import { CloseButton } from '../general/CloseButton'
 import { DnDOverlay } from './utils/DnDOverlay'
 

@@ -16,7 +16,7 @@ export class DynamicComponent extends React.Component<
 
   componentDidMount() {
     const { comp } = this.props
-    comp().then(module => this.setState({ module: module.default }))
+    comp().then(module => this.setState({ module: module.default || module }))
   }
 
   render() {

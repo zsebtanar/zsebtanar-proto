@@ -24,9 +24,15 @@ declare const __INITIAL_STATE__: any
 declare const __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
 declare const grecaptcha: any
 
+declare type FormMode = 'new' | 'update' | 'clone'
+
 declare namespace state {
   interface Root {
     app: App
+  }
+
+  interface AdminRoot extends Root {
+    exerciseSheet: AdminExerciseSheet
   }
 
   interface App {
@@ -95,9 +101,20 @@ declare namespace state {
 
   interface Notification {
     id: string
-    type: NotificationType
+    type: AlertType
     message: string,
     options: NotificationOptions
+  }
+
+
+  interface AdminExerciseSheet {
+    loading: boolean
+    mode: FormMode
+    changed: boolean
+    saving: boolean
+    data: ExerciseSheet
+    removedExercises: string[]
+    error: any
   }
 }
 
@@ -300,14 +317,13 @@ declare interface ObjectMap<T> {
   [key: string]: T
 }
 
-declare type Buttontype =
-  | 'primary'
-  | 'secondary'
-  | 'danger'
-  | 'success'
-  | 'info'
-  | 'warning'
-  | 'dark'
+declare type UIItemStyle = 'danger'|'dark'|'info'|'light'|'primary'|'secondary'|'success'|'warning'
+
+declare type ButtonType = UIItemStyle
+
+declare type BadgeType = UIItemStyle
+
+declare type AlertType = UIItemStyle
 
 declare interface BaseModalParams {
   onClose?: () => void
@@ -319,18 +335,19 @@ interface FractionNumber {
   denominator: number
 }
 
-declare const enum NotificationType {
-  Primary,
-  Secondary,
-  Success,
-  Danger,
-  Warning,
-  Info,
-  Light,
-  Dark
-}
-
 declare interface NotificationOptions {
   timeout?: number
   description?: string
+}
+
+declare interface GridFilterOptions {
+  where?: [string | FieldPath, WhereFilterOp, any][]
+  orderBy?: [string | FieldPath, OrderByDirection]
+}
+
+declare interface GridDataSource<T> {
+  size: number
+  refresh()
+  loadList(options?: GridFilterOptions): Promise<QuerySnapshot>
+  getPage(pageNumber: number, limit: number): Promise<T[]>
 }

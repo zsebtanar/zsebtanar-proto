@@ -7,7 +7,7 @@ import { Loading } from 'client-common/component/general/Loading'
 import { ExerciseState } from '../components/ExerciseState'
 import { Icon } from 'client-common/component/general/Icon'
 
-export class ExerciseList extends React.Component<any, any> {
+export class Exercises extends React.Component<any, any> {
   state = {
     exercises: null
   }

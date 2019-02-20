@@ -5,6 +5,7 @@ import { ReactElement } from 'react'
 interface FormGroupProps {
   label: string
   col?: number
+  helpText?: string
   className?: string
   children?: React.ReactNode
 }
@@ -20,7 +21,10 @@ export function FormGroup(props: FormGroupProps) {
         {props.label}
       </label>
       <div className={`col-${colAlt}`}>
-        {React.Children.map(props.children, child => React.cloneElement(child as ReactElement<any>, { id }))}
+        {React.Children.map(props.children, child =>
+          React.cloneElement(child as ReactElement<any>, { id })
+        )}
+        {props.helpText && <small className="form-text text-muted">{props.helpText}</small>}
       </div>
     </div>
   )

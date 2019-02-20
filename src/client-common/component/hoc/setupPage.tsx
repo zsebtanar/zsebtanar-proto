@@ -51,7 +51,7 @@ export const setupPage = (options: PageOptions = {}) => WrappedComponent => {
 
     render() {
       const pageClassName = opt.pageClassName || WrappedComponent.name
-      console.log(pageClassName, opt)
+
       return (
         <div className={cx('page', pageClassName)}>
           <WrappedComponent {...this.props} />
