@@ -2,6 +2,7 @@ import * as React from 'react'
 import { mapObjIndexed, pathOr } from 'ramda'
 import { pairsInOrder } from '../../../../shared/util/fn'
 import { Markdown } from 'client-common/component/general/Markdown'
+import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
 
 export class NumberList extends React.Component<any, any> {
   private readOnly:boolean
@@ -35,6 +36,8 @@ export class NumberList extends React.Component<any, any> {
         <Markdown source={prefix} resources={resources} className="prefix" />
         {this.renderItems()}
         <Markdown source={postfix} resources={resources} className="postfix" />
+        {this.props.fractionDigits > 0 &&
+        <DecimalAccuracyWarning value={this.props}/>}
       </div>
     )
   }

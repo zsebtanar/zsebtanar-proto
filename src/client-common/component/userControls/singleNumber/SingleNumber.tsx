@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Markdown } from 'client-common/component/general/Markdown'
-import { Icon } from '../../general/Icon'
+import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
 
 export function SingleNumber(props) {
   const setSolution = e => {
@@ -31,12 +31,8 @@ export function SingleNumber(props) {
           <Markdown source={props.postfix} resources={props.resources} />
         </span>
       </div>
-      {props.fractionDigits > 0 && (
-        <small className="form-text text-warning">
-          <Icon fa="exclamation-triangle" /> Kérlek, {props.fractionDigits} tizedesjegy pontossággal
-          add meg a megoldást.
-        </small>
-      )}
+      {this.props.fractionDigits > 0 &&
+      <DecimalAccuracyWarning value={this.props}/>}
     </div>
   )
 }
