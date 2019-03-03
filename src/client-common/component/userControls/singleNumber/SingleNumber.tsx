@@ -32,7 +32,7 @@ export function SingleNumber(props) {
         </span>
       </div>
       {this.props.fractionDigits > 0 &&
-      <DecimalAccuracyWarning value={this.props}/>}
+      <DecimalAccuracyWarning fractionDigits={this.props.fractionDigits}/>}
     </div>
   )
 }

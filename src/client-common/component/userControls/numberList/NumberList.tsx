@@ -37,7 +37,7 @@ export class NumberList extends React.Component<any, any> {
         {this.renderItems()}
         <Markdown source={postfix} resources={resources} className="postfix" />
         {this.props.fractionDigits > 0 &&
-        <DecimalAccuracyWarning value={this.props}/>}
+        <DecimalAccuracyWarning fractionDigits={this.props.fractionDigits}/>}
       </div>
     )
   }
