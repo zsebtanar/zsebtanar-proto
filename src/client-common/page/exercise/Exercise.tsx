@@ -155,7 +155,7 @@ export const Exercise = pipe(
           <div className="exercise-result">
             <div className="container">
               <p className="my-3 text-success">
-                <i className="fa fa-check fa-lg" /> Gratuláunk! Sikeresen megoldottad a feldatot.
+                <i className="fa fa-check fa-lg" /> Gratulálunk! Sikeresen megoldottad a feladatot.
               </p>
               <Button className="btn btn-secondary btn-lg btn-block" onAction={this.historyBack}>
                 <i className="fa fa-chevron-left" /> Vissza a feladat listához
