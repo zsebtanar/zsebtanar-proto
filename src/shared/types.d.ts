@@ -15,7 +15,7 @@ declare const __CONFIG__: {
   }
   recaptcha: {
     siteKey: string
-  },
+  }
   links: {
     policy: string
   }
@@ -33,6 +33,7 @@ declare namespace state {
 
   interface AdminRoot extends Root {
     exerciseSheet: AdminExerciseSheet
+    wikiPage: AdminWikPage
   }
 
   interface App {
@@ -102,20 +103,24 @@ declare namespace state {
   interface Notification {
     id: string
     type: AlertType
-    message: string,
+    message: string
     options: NotificationOptions
   }
 
-
-  interface AdminExerciseSheet {
+  interface BaseFormData<T> {
     loading: boolean
     mode: FormMode
     changed: boolean
     saving: boolean
-    data: ExerciseSheet
-    removedExercises: string[]
+    data: T
     error: any
   }
+
+  interface AdminExerciseSheet extends BaseFormData<ExerciseSheet> {
+    removedExercises: string[]
+  }
+
+  interface AdminWikPage extends BaseFormData<WikiPageModel> {}
 }
 
 declare namespace DB {
@@ -317,7 +322,15 @@ declare interface ObjectMap<T> {
   [key: string]: T
 }
 
-declare type UIItemStyle = 'danger'|'dark'|'info'|'light'|'primary'|'secondary'|'success'|'warning'
+declare type UIItemStyle =
+  | 'danger'
+  | 'dark'
+  | 'info'
+  | 'light'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
 
 declare type ButtonType = UIItemStyle
 

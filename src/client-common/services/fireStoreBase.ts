@@ -105,7 +105,7 @@ export class Service<T extends BaseModel> {
     await Promise.all(ids.map(id => coll.doc(id).delete()))
   }
 
-  private async populate(id, populate): Promise<Partial<T>> {
+  private async populate(id, populate=[]): Promise<Partial<T>> {
     const collections = {}
     await Promise.all(
       populate.map(async collection => {
