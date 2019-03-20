@@ -25,6 +25,40 @@ export function MarkdownHelpModal(props) {
               </p>
             </div>
           </div>
+
+          <div className="row">
+            <div className="col-12">
+              <h5>
+                <b>Linkek</b>
+              </h5>
+            </div>
+          </div>
+          <div className="row m-3">
+            <div className="col-6 alert alert-secondary">
+              <p>Alap (externál) link:</p>
+              <p>
+                [Alap link](https://example.com)
+              </p>
+              <p>Wiki (internál) link:</p>
+              <p>
+                ~[Wiki link](abc123)
+              </p>
+            </div>
+
+            <div className="col-6">
+              <Markdown
+                source={`
+Alap (externál) link:
+
+[Alap link](https://example.com)
+
+Wiki (internál) link:
+
+~[Wiki link](abc123)
+`}
+              />
+            </div>
+          </div>
           <div className="row">
             <div className="col-12">
               <h5>
@@ -216,8 +250,8 @@ Kódblokk.
               <img src={'/assets/logo.png'} alt="logó" style={{ height: '75px' }} />
             </div>
           </div>
-        </div>
-        <div className="row">
+
+          <div className="row">
             <div className="col-12">
               <h5>
                 <b>Billentyű piktogramok (keyboard) használata</b>
@@ -268,7 +302,9 @@ Kódblokk.
 `}
               />
             </div>
-          </div>  
+          </div>
+        </div>
+
         <div className="modal-footer text-center">
           <Button onAction={props.close}>Bezár</Button>
         </div>

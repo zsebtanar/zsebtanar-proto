@@ -11,7 +11,11 @@ import {
 import { DropdownMenu } from './dropdown/DropdownMenu'
 import { DropdownToggle } from './dropdown/DropdownToggle'
 
-interface TextEditorProps {
+import './TextEditor.scss';
+
+///
+
+interface Props {
   value: string
   name: string
   className?: string
@@ -24,9 +28,11 @@ interface TextEditorProps {
   openEquationHelpModal: typeof openEquationHelpModal
 }
 
-interface TextEditorState {
+interface State {
   value: string
 }
+
+///
 
 export const TextEditor = connect(
   undefined,
@@ -36,7 +42,7 @@ export const TextEditor = connect(
     openEquationHelpModal
   }
 )(
-  class extends React.Component<TextEditorProps, TextEditorState> {
+  class extends React.Component<Props, State> {
     private text
 
     constructor(props) {
@@ -153,7 +159,10 @@ export const TextEditor = connect(
             value={this.state.value}
           />
 
-          <Markdown source={this.state.value} resources={this.props.resources} />
+          <div className="mt-2 text-muted"><small>Előnézet:</small></div>
+          <div className="text-editor-preview form-control disabled">
+            <Markdown source={this.state.value} resources={this.props.resources} />
+          </div>
         </div>
       )
     }
