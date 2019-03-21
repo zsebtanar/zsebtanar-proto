@@ -1,7 +1,7 @@
 const commonConfig = {
   links: {
     policy:
-      'https://firebasestorage.googleapis.com/v0/b/zsebtanar-prod.appspot.com/o/docs%2Fzsebtanar-adatvedelmi-szabalyzat-2018.pdf?alt=media&amp;token=3cd16e18-51bc-4069-af98-051df97f2fe6'
+      'https://firebasestorage.googleapis.com/v0/b/zsebtanar-prod.appspot.com/o/docs%2Fzsebtanar-adatvedelmi-szabalyzat-v2.pdf?alt=media&token=366c58b0-6b12-4dff-94ee-4c3b4fe7a028'
   },
   csp: [
     ['base-uri', "'self'"],
