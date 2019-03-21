@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Alert } from './Alert'
 import { removeNotification } from '../../store/notifications'
-import { isPositiveInt } from '../../../shared/util/math'
+import { isNotZeroInteger } from '../../../shared/util/math'
 
 import './AppNotifications.scss'
 
@@ -39,7 +39,7 @@ export const AppNotifications = connect<StoreProps, DispatchProps, {}>(
 
     private renderNotifications = (item: state.Notification) => {
       const { id, type, message, options } = item
-      const onDismiss = isPositiveInt(options.timeout) ? undefined : this.dismissNotify(id)
+      const onDismiss = isNotZeroInteger(options.timeout) ? undefined : this.dismissNotify(id)
       return (
         <Alert key={id} type={type} onDismiss={onDismiss}>
           {message}

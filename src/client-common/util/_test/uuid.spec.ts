@@ -1,4 +1,4 @@
-import { guid, uid } from '../../src/client-common/util/uuid'
+import { uid } from '../uuid'
 
 describe('uid', () => {
   it('generate the right format', () => {

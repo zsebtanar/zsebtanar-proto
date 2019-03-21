@@ -1,5 +1,5 @@
 import { identity } from 'ramda'
-import { assert, pairsInOrder } from '../../src/shared/util/fn'
+import { assert, pairsInOrder } from '../fn'
 
 describe('pairsInOrder', () => {
   it('an empty object', () => {

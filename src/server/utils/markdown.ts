@@ -13,7 +13,11 @@ export const unTokeniseMarkdown = description =>
     .toLowerCase()
     .trim()
 
-const initMarkdown = () => new Markdown({}).use(katex).use(kbd).use(centertext).use(imageInit({}))
+const initMarkdown = () => new Markdown({})
+  .use(katex)
+  .use(kbd)
+  .use(centertext)
+  .use(imageInit({}))
 
 const reduceTokenList = tokenList =>
   tokenList.reduce((acc, i) => {
