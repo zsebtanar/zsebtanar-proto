@@ -1,11 +1,16 @@
 import * as React from 'react'
 import { matchAllHunVowel, TAG_REGEXP } from 'shared/util/string'
 
+import './Markdown.scss'
+
+///
+
 interface MarkdownProps {
   className?: string
   source: MDString
   resources?: MarkdownResources
   mark?: string
+  onWikiLink?: (wikiPageId: string) => void
   // TODO: markdown options type
   options?: any
 }
@@ -19,8 +24,11 @@ const katexOptions = {
   unicodeTextInMathMode: true
 }
 
-export const Markdown = class extends React.PureComponent<MarkdownProps, MarkdownState> {
+///
+
+export class Markdown extends React.PureComponent<MarkdownProps, MarkdownState> {
   private markRE?: RegExp
+  private container: HTMLDivElement
 
   state = {
     md: undefined
@@ -77,16 +85,22 @@ export const Markdown = class extends React.PureComponent<MarkdownProps, Markdow
     return text
   }
 
-  componentWillUpdate(nextProps) {
+  public componentWillUnmount(): void {
+    if (this.container) {
+      this.container.removeEventListener('click', this.handleOnClick, false)
+    }
+  }
+
+  public componentWillUpdate(nextProps) {
     if (nextProps.options !== this.props.options || nextProps.resources !== this.props.resources) {
       this.initMD(nextProps.options, nextProps.resources)
     }
     this.initMark()
   }
 
-  render() {
+  public render() {
     return (
-      <div className={`markdown ${this.props.className || ''}`}>
+      <div className={`markdown ${this.props.className || ''}`} ref={this.onRef}>
         {this.props.source ? (
           <span
             dangerouslySetInnerHTML={{
@@ -106,6 +120,22 @@ export const Markdown = class extends React.PureComponent<MarkdownProps, Markdow
       return ''
     } else {
       return this.state.md.render(source)
+    }
+  }
+
+  private onRef = ref => {
+    if (ref) {
+      this.container = ref
+      this.container.addEventListener('click', this.handleOnClick, false)
+    }
+  }
+
+  private handleOnClick = (event: MouseEvent) => {
+    const target = event.target as HTMLDivElement
+    if (this.props.onWikiLink && /\bwiki-link\b/.test(target.className)) {
+      event.preventDefault()
+      const id = (target as any).getAttribute('href').substr(1)
+      this.props.onWikiLink(id)
     }
   }
 }

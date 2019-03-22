@@ -1,6 +1,8 @@
 import { identity } from 'ramda'
 import AlertModal from '../../component/modal/AlertModal'
 import ConfirmModal, { ConfirmModalParams as CMP } from '../../component/modal/ConfirmModal'
+import { WikiModalParams } from '../../component/modal/WikiModal'
+import { WikiPageSelectorModalParams } from '../../component/modal/WikiPageSelectorModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -114,6 +116,17 @@ export function openFeedbackModal(params?) {
   )
 }
 
+export function openWikiModal(params?: WikiModalParams) {
+  return openModal(
+    () =>
+      import(/* webpackChunkName: 'public-modal' */ 'client-common/component/modal/WikiModal'),
+    {
+      onClose: identity,
+      ...params
+    }
+  )
+}
+
 interface InputModalParams extends BaseModalParams {
   title?: string
   label?: string
@@ -214,3 +227,17 @@ export function openExerciseSearch(params?: ExerciseSearchParams) {
     }
   )
 }
+
+export function openWikiPageSelector(params?: WikiPageSelectorModalParams) {
+  return openModal(
+    () =>
+      import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/WikiPageSelectorModal'),
+    {
+      onClose: identity,
+      onSuccess: identity,
+      disableBackdropClose: true,
+      ...params
+    }
+  )
+}
+
