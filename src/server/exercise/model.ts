@@ -104,6 +104,7 @@ export const exerciseSchema = Joi.object({
     Joi.object({
       _key: Joi.string(),
       name: Joi.string(),
+      type: Joi.string().optional(),
       fullPath: Joi.string(),
       url: Joi.string()
     })

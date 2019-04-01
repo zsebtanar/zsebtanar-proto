@@ -1,6 +1,7 @@
 import { identity } from 'ramda'
 import AlertModal from '../../component/modal/AlertModal'
 import ConfirmModal, { ConfirmModalParams as CMP } from '../../component/modal/ConfirmModal'
+import { FileUploadModalParams } from '../../component/modal/FileUploadModal'
 import { WikiModalParams } from '../../component/modal/WikiModal'
 import { WikiPageSelectorModalParams } from '../../component/modal/WikiPageSelectorModal'
 
@@ -118,8 +119,7 @@ export function openFeedbackModal(params?) {
 
 export function openWikiModal(params?: WikiModalParams) {
   return openModal(
-    () =>
-      import(/* webpackChunkName: 'public-modal' */ 'client-common/component/modal/WikiModal'),
+    () => import(/* webpackChunkName: 'public-modal' */ 'client-common/component/modal/WikiModal'),
     {
       onClose: identity,
       ...params
@@ -187,7 +187,7 @@ export function openUserControlModal(params?) {
 export function openExerciseImageDialog(params?) {
   return openModal(
     () =>
-      import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/ExerciseImageDialog'),
+      import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/ImageBrowserModal'),
     {
       onClose: identity,
       onSelect: identity,
@@ -196,7 +196,7 @@ export function openExerciseImageDialog(params?) {
   )
 }
 
-export function openFileUpload(params?) {
+export function openFileUpload(params: FileUploadModalParams) {
   return openModal(
     () =>
       import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/FileUploadModal'),
@@ -204,7 +204,7 @@ export function openFileUpload(params?) {
       onClose: identity,
       onSuccess: identity,
       onError: identity,
-      resources: [],
+      resources: {},
       disableBackdropClose: true,
       ...params
     }
@@ -240,4 +240,3 @@ export function openWikiPageSelector(params?: WikiPageSelectorModalParams) {
     }
   )
 }
-

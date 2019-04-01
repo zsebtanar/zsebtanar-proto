@@ -21,7 +21,10 @@ import {
 
 ///
 
-interface StoreProps extends state.AdminWikPage {}
+interface StoreProps {
+  wiki: state.AdminWikPage
+  resources: state.AdminResource['data']
+}
 
 interface DispatchProps {
   createPage: typeof newWikiPage
@@ -38,7 +41,12 @@ type AllProps = RouteProps & StoreProps & DispatchProps & FormFieldProps
 
 ///
 
-const mapStoreToProps = (state: state.AdminRoot) => state.wikiPage
+const mapStoreToProps = (state: state.AdminRoot) => {
+  return {
+    wiki: state.wikiPage,
+    resources: state.resources.data
+  }
+}
 
 const mapDispatchToProps = {
   createPage: newWikiPage,
@@ -53,7 +61,6 @@ const mapDispatchToProps = {
 
 const titleL = lensPathOr('', ['data', 'title'])
 const contentL = lensPathOr(false, ['data', 'content'])
-const resourcesL = lensPathOr(0, ['data', 'resources'])
 
 ///
 
@@ -84,7 +91,7 @@ export const WikiPageForm = pipe(
     }
 
     render(): React.ReactNode {
-      const { loading, error } = this.props
+      const { loading, error } = this.props.wiki
       return (
         <div>
           {this.renderHeader()}
@@ -100,7 +107,7 @@ export const WikiPageForm = pipe(
     }
 
     private renderHeader() {
-      const { saving, changed, data } = this.props
+      const { saving, changed, data } = this.props.wiki
 
       return (
         <div className="d-flex justify-content-between align-items-center mb-4">
@@ -141,7 +148,7 @@ export const WikiPageForm = pipe(
     }
 
     private renderContent() {
-      const { setField } = this.props
+      const { setField, wiki, resources } = this.props
       return (
         <div className="row">
           <div className="col-10 mx-auto">
@@ -152,7 +159,7 @@ export const WikiPageForm = pipe(
                 name="title"
                 required
                 onChange={e => setField(titleL, e.currentTarget.value)}
-                value={view(titleL, this.props)}
+                value={view(titleL, wiki)}
               />
             </FormGroup>
 
@@ -163,8 +170,8 @@ export const WikiPageForm = pipe(
                 rows="10"
                 required
                 onChange={e => setField(contentL, e.value)}
-                value={view(contentL, this.props)}
-                resources={view(resourcesL, this.props)}
+                value={view(contentL, wiki)}
+                resources={resources}
               />
             </div>
           </div>

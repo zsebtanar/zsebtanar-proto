@@ -34,6 +34,7 @@ declare namespace state {
   interface AdminRoot extends Root {
     exerciseSheet: AdminExerciseSheet
     wikiPage: AdminWikPage
+    resources: AdminResource
   }
 
   interface App {
@@ -121,6 +122,19 @@ declare namespace state {
   }
 
   interface AdminWikPage extends BaseFormData<WikiPageModel> {}
+
+  interface AdminResource {
+    data: MarkdownResources,
+    error: any,
+  }
+
+  interface ResourceFileData {
+    isNew: boolean
+    url: string
+    type: string,
+    name: string,
+    file: File
+  }
 }
 
 declare namespace DB {
@@ -312,7 +326,12 @@ declare interface BaseUserControlAdminProps {
 
 declare type MDString = string
 
-declare type MarkdownResources = ObjectMap<string>
+interface MarkdownResource {
+  url: string
+  type: string
+}
+
+declare type MarkdownResources = ObjectMap<MarkdownResource>
 
 declare interface Ordered {
   order: number

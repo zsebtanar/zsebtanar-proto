@@ -3,6 +3,8 @@ import { WikiPageModel, wikiPageService } from 'client-common/services/wikiPageS
 import { openConfirmModal } from 'client-common/store/actions/modal'
 import { addNotification } from 'client-common/store/notifications'
 import { assocPath, pipe, set } from 'ramda'
+import { EXERCISE_ERROR } from '../exerciseEdit/exerciseFormReducer'
+import { initResources, uploadResources } from '../resources/resourceReducer'
 
 ///
 
@@ -28,6 +30,7 @@ export function newWikiPage() {
     dispatch({ type: WIKI_PAGE_INIT })
     dispatch({ type: WIKI_PAGE_NEW })
     dispatch({ type: WIKI_PAGE_READY, payload: NEW_LIST })
+    dispatch(initResources({}))
   }
 }
 
@@ -37,6 +40,7 @@ export function loadWikiPage(id) {
     wikiPageService.get(id).then(
       data => {
         dispatch({ type: WIKI_PAGE_READY, payload: data })
+        dispatch(initResources(data.resources || {}))
       },
       error => dispatch({ type: WIKI_PAGE_ERROR, payload: error })
     )
@@ -44,11 +48,18 @@ export function loadWikiPage(id) {
 }
 
 export function saveWikiPage() {
+  return dispatch =>
+    dispatch(uploadResources('wiki'))
+      .then(() => dispatch(storeWikiPage()))
+      .catch(error => dispatch({ type: EXERCISE_ERROR, payload: error }))
+}
+
+function storeWikiPage() {
   return async (dispatch, getState: () => state.AdminRoot) => {
-    const state = getState().wikiPage
-    if (state.changed && !state.saving) {
+    const { wikiPage, resources } = getState()
+    if (wikiPage.changed && !wikiPage.saving) {
       dispatch({ type: WIKI_PAGE_SAVE_START })
-      const data = { ...state.data }
+      const data = { ...wikiPage.data, resources: { ...resources.data } }
 
       try {
         const res: DocRef = await wikiPageService.store(data)
@@ -58,7 +69,7 @@ export function saveWikiPage() {
         } else {
           dispatch({ type: WIKI_PAGE_SAVED })
         }
-        dispatch(addNotification('success', 'Wiki oldal elmentve.'))
+        dispatch(addNotification('success', 'Wiki oldal elmentve.', { timeout: 3 }))
       } catch (error) {
         dispatch({ type: WIKI_PAGE_ERROR, payload: error })
       }

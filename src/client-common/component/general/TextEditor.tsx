@@ -61,24 +61,26 @@ export const TextEditor = connect(
 
     private wrapText = char => () => {
       const { selectionStart: start, selectionEnd: end, value } = this.textRef
-      this.textRef.value = `${value.slice(0, start)}${char}${value.slice(
-        start,
-        end
-      )}${char}${value.slice(end)}`
+      const before = value.slice(0, start)
+      const selected = value.slice(start, end)
+      const after = value.slice(end)
+
+      this.textRef.value = `${before}${char}${selected}${char}${after}`
+      this.textRef.selectionEnd = end + char.length
       this.update()
     }
 
     private multiLine = char => () => {
       const { selectionStart, selectionEnd: end, value } = this.textRef
       const start = value.lastIndexOf('\n', selectionStart) + 1
-      const sStart = value.slice(0, start)
+      const before = value.slice(0, start)
       const text = value
         .slice(start, end)
         .split('\n')
         .map(x => `${char}${x}`)
         .join('\n')
-      const sEnd = value.slice(end)
-      this.textRef.value = `${sStart}${text}${sEnd}`
+      const after = value.slice(end)
+      this.textRef.value = `${before}${text}${after}`
       this.update()
     }
 
@@ -92,9 +94,9 @@ export const TextEditor = connect(
     }
 
     private insertWikiLink = () => {
-      const { openWikiPageSelector } = this.props;
+      const { openWikiPageSelector } = this.props
       openWikiPageSelector({
-        onSelect: ({id, title}: WikiPageModel) => {
+        onSelect: ({ id, title }: WikiPageModel) => {
           this.textRef.value += `~[${title}](${id})`
           this.update()
         }
@@ -132,7 +134,6 @@ export const TextEditor = connect(
         </div>
       )
     }
-
 
     private renderTools() {
       return (
