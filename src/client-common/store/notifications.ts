@@ -1,6 +1,6 @@
 import { uid } from '../util/uuid'
 import { idNotEq } from 'shared/util/fn'
-import { isPositiveInt } from '../../shared/util/math'
+import { isNotZeroInteger } from '../../shared/util/math'
 
 export const ADD_NOTIFICATION = 'common/ADD_NOTIFICATION'
 export const REMOVE_NOTIFICATION = 'common/REMOVE_NOTIFICATION'
@@ -17,7 +17,7 @@ export function addNotification(
 
     const timeout = !options.timeout === undefined ? 3 : options.timeout
 
-    if (isPositiveInt(timeout)) {
+    if (isNotZeroInteger(timeout)) {
       setTimeout(() => dispatch(removeNotification(id)), timeout * 1000)
     }
 

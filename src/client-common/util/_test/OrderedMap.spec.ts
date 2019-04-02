@@ -1,4 +1,4 @@
-import { removeFromObjById } from '../../src/client-common/util/OrderedMap'
+import { removeFromObjById } from '../OrderedMap'
 
 describe('OrderedMap', () => {
   it('should pass with an empty object', () => {

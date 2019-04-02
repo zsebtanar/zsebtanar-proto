@@ -5,6 +5,11 @@ const HUN_VOWEL_MAP = {
   i: '[ií]',
   o: '[oóöő]',
   u: '[uúüű]',
+  A: '[AÁ]',
+  E: '[EÉ]',
+  I: '[IÍ]',
+  O: '[OÓÖŐ]',
+  U: '[UÚÜŰ]',
 }
 
 export const matchAllHunVowel = text =>

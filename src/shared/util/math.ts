@@ -1,3 +1,3 @@
-export function isPositiveInt(x) {
+export function isNotZeroInteger(x) {
   return Number.isInteger(x) && x > 0
 }

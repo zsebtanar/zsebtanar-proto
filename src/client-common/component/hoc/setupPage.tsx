@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactGa from 'react-ga'
 import * as cx from 'classnames'
 import { RouteComponentProps } from 'react-router'
-import { getScrollPos, storeScrollPos } from '../util/localStore'
+import { getScrollPos, storeScrollPos } from '../../util/localStore'
 
 interface PageOptions {
   storePosition?: boolean
