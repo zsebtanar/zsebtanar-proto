@@ -1,8 +1,17 @@
 import * as React from 'react'
 import { Markdown } from 'client-common/component/general/Markdown'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
+import UCSingleNumberProps = DB.UCSingleNumberProps
 
-export function SingleNumber(props) {
+interface SingleNumberProps extends UCSingleNumberProps {
+  name: string
+  value?: string
+  onChange: any
+  resources: ObjectMap<string>
+  readOnly?: boolean
+}
+
+export function SingleNumber(props: SingleNumberProps) {
   const setSolution = e => {
     if (props.onChange) {
       props.onChange({ name: props.name, value: e.currentTarget.value })
@@ -31,8 +40,8 @@ export function SingleNumber(props) {
           <Markdown source={props.postfix} resources={props.resources} />
         </span>
       </div>
-      {this.props.fractionDigits > 0 &&
-      <DecimalAccuracyWarning fractionDigits={this.props.fractionDigits}/>}
+      {props.fractionDigits > 0 &&
+      <DecimalAccuracyWarning fractionDigits={props.fractionDigits}/>}
     </div>
   )
 }
