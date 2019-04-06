@@ -167,7 +167,7 @@ export const WikiPageForm = pipe(
               <TextEditor
                 className="form-group"
                 name="description"
-                rows="10"
+                rows={10}
                 required
                 onChange={e => setField(contentL, e.value)}
                 value={view(contentL, wiki)}

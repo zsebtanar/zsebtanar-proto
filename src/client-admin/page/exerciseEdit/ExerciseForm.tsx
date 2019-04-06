@@ -375,7 +375,7 @@ export const ExerciseForm = connect(
           <TextEditor
             className="form-group"
             name="description"
-            rows="10"
+            rows={10}
             required
             onChange={this.update}
             value={pathOr('', ['description'], exercise)}

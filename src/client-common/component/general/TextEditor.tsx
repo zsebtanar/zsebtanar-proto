@@ -21,7 +21,7 @@ interface Props {
   value: string
   name: string
   className?: string
-  row?: number
+  rows?: number
   required?: boolean
   resources: MarkdownResources
   onChange: (data: { name: string; value: string }) => void
@@ -52,35 +52,65 @@ export const TextEditor = connect(
   }
 )(
   class extends React.Component<AllProps, State> {
-    private textRef
-
-    constructor(props) {
-      super(props)
-      this.state = { value: props.value || '' }
+    static defaultProp = {
+      rows: 10
     }
 
-    private wrapText = char => () => {
+    private textRef: HTMLTextAreaElement
+    state = { value: this.props.value || '' }
+
+    private wrapText = (token: string, sample = '') => () => {
       const { selectionStart: start, selectionEnd: end, value } = this.textRef
+
+      const noSelection = sample && start === end
       const before = value.slice(0, start)
-      const selected = value.slice(start, end)
+      const selected = noSelection ? sample : value.slice(start, end)
       const after = value.slice(end)
 
-      this.textRef.value = `${before}${char}${selected}${char}${after}`
-      this.textRef.selectionEnd = end + char.length
+      this.textRef.value = `${before}${token}${selected}${token}${after}`
+      if (noSelection) {
+        this.textRef.selectionStart = start + token.length
+        this.textRef.selectionEnd = end + sample.length + token.length
+      } else {
+        this.textRef.selectionEnd = end + token.length
+      }
       this.update()
     }
 
-    private multiLine = char => () => {
+    private multiLine = (token: string, sample = '') => () => {
       const { selectionStart, selectionEnd: end, value } = this.textRef
       const start = value.lastIndexOf('\n', selectionStart) + 1
+
+      const noSelection = sample && start === end
       const before = value.slice(0, start)
-      const text = value
-        .slice(start, end)
+      const text = noSelection ? sample : value.slice(start, end)
+      const result = text
         .split('\n')
-        .map(x => `${char}${x}`)
+        .map(x => `${token}${x}`)
         .join('\n')
       const after = value.slice(end)
-      this.textRef.value = `${before}${text}${after}`
+      this.textRef.value = `${before}${result}${after}`
+
+      if (noSelection) {
+        this.textRef.selectionStart = start + token.length
+      }
+      this.textRef.selectionEnd = end + result.length
+      this.update()
+    }
+
+    private insertLink = (sample = '') => () => {
+      const { selectionStart: start, selectionEnd: end, value } = this.textRef
+
+      const noSelection = sample && start === end
+      const before = value.slice(0, start)
+      const selected = noSelection ? sample : value.slice(start, end)
+      const after = value.slice(end)
+      const url = 'https://example.com'
+
+      this.textRef.value = `${before}[${selected}](${url})${after}`
+
+      this.textRef.selectionStart = start + selected.length + 3
+      this.textRef.selectionEnd = this.textRef.selectionStart + url.length
       this.update()
     }
 
@@ -110,12 +140,14 @@ export const TextEditor = connect(
       this.setState({ value })
     }
 
-    private onRef = textRef => {
-      this.textRef = textRef
+    private onRef = (textRef: HTMLTextAreaElement) => {
+      if (!this.textRef && textRef) {
+        this.textRef = textRef
+      }
     }
 
     public render() {
-      const { name, required, row, className } = this.props
+      const { name, required, rows, className } = this.props
 
       return (
         <div className={className || ''}>
@@ -123,7 +155,7 @@ export const TextEditor = connect(
           <textarea
             className="form-control"
             name={name}
-            rows={row || 10}
+            rows={rows}
             required={required}
             onChange={this.update}
             ref={this.onRef}
@@ -139,28 +171,46 @@ export const TextEditor = connect(
       return (
         <div className="btn-toolbar m-2" role="toolbar" aria-label="Szövegszerkesztő eszközök">
           <div className="btn-group mr-2" role="group" aria-label="Formázás">
-            <Button secondary onAction={this.wrapText('**')} title="Félkövér" icon="bold" />
-            <Button secondary onAction={this.wrapText('*')} title="Dőlt" icon="italic" />
             <Button
               secondary
-              onAction={this.wrapText('~~')}
-              title="Áthúzott"
-              icon="strikethrough"
+              onAction={this.wrapText('**', 'félkövér')}
+              title="Félkövér"
+              icon="bold"
             />
-            <Button secondary onAction={this.wrapText('$')} title="Matematika jelölés" icon="usd" />
+            <Button secondary onAction={this.wrapText('*', 'dőlt')} title="Dőlt" icon="italic" />
+            <Button secondary onAction={this.wrapText('$', 'x_1=2')} title="Matematika jelölés">
+              $
+            </Button>
+            <Button
+              secondary
+              onAction={this.multiLine('$$', 'E=mc^2')}
+              title="Többsoros matematika jelölés"
+            >
+              $$
+            </Button>
           </div>
           <div className="btn-group mr-2" role="group" aria-label="Listák">
-            <Button secondary onAction={this.multiLine('* ')} title="Normál lista" icon="list-ul" />
             <Button
               secondary
-              onAction={this.multiLine('1. ')}
+              onAction={this.multiLine('* ', 'lista\n')}
+              title="Normál lista"
+              icon="list-ul"
+            />
+            <Button
+              secondary
+              onAction={this.multiLine('1. ', 'számozott lista\n')}
               title="Számozott lista"
               icon="list-ol"
             />
-            <Button secondary onAction={this.multiLine('    ')} title="Behúzás" icon="indent" />
+            <Button
+              secondary
+              onAction={this.multiLine('    ', 'szöveg')}
+              title="Behúzás"
+              icon="indent"
+            />
           </div>
           <div className="btn-group mr-2" role="group" aria-label="Link">
-            <Button secondary onAction={this.multiLine('')} title="Hivatkozás" icon="link" />
+            <Button secondary onAction={this.insertLink('szöveg')} title="Hivatkozás" icon="link" />
             <Button secondary onAction={this.insertWikiLink} title="Wiki" icon="wikipedia-w" />
           </div>
           <div className="btn-group mr-2" role="group" aria-label="Kép">

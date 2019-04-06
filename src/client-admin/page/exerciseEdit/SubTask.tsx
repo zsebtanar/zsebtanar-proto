@@ -71,7 +71,7 @@ export const SubTask = connect(
         <TextEditor
           className="form-group"
           name="description"
-          rows="10"
+          rows={10}
           required
           onChange={this.updateDescription}
           value={pathOr('', ['description'], subTask)}
