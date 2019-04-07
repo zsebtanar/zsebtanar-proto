@@ -3,12 +3,11 @@ import { mapObjIndexed, pathOr } from 'ramda'
 import { pairsInOrder } from '../../../../shared/util/fn'
 import { Markdown } from 'client-common/component/general/Markdown'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
-import UCNumberListProps = DB.UCNumberListProps
 
-interface NumberListProps extends UCNumberListProps {
+interface NumberListProps extends DB.UCNumberListProps {
   name: string
   value?: string
-  onChange: any
+  onChange: ({name, value}: {name: string, value: string}) => void
 }
 
 export class NumberList extends React.Component<any, any> {

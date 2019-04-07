@@ -1,13 +1,12 @@
 import * as React from 'react'
 import { Markdown } from 'client-common/component/general/Markdown'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
-import UCSingleNumberProps = DB.UCSingleNumberProps
 
-interface SingleNumberProps extends UCSingleNumberProps {
+interface SingleNumberProps extends DB.UCSingleNumberProps {
   name: string
   value?: string
   onChange: any
-  resources: ObjectMap<string>
+  resources: MarkdownResources
   readOnly?: boolean
 }
 
