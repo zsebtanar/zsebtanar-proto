@@ -5,7 +5,7 @@ import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
 interface SingleNumberProps extends DB.UCSingleNumberProps {
   name: string
   value?: string
-  onChange: any
+  onChange: ({name, value}: {name: string, value: string}) => void
   resources: MarkdownResources
   readOnly?: boolean
 }
