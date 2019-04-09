@@ -6,7 +6,7 @@ import {
 import { DocRef } from 'client-common/services/fireStoreBase'
 import { addNotification } from 'client-common/store/notifications'
 import { append, assocPath, lensPath, over, pipe, set } from 'ramda'
-import { openConfirmModal } from '../../../client-common/store/actions/modal'
+import { openConfirmModal } from 'client-common/store/actions/modal'
 
 ///
 

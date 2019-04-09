@@ -10,6 +10,7 @@ import { openSideNav } from 'client-common/store/reducers/sideNav'
 import { Dropdown } from 'client-common/component/general/dropdown/Dropdown'
 import { DropdownMenu } from 'client-common/component/general/dropdown/DropdownMenu'
 import { DropdownToggle } from 'client-common/component/general/dropdown/DropdownToggle'
+import { DropdownDevider } from '../../client-common/component/general/dropdown/DropdownDevicer'
 
 interface HeaderProps extends RouteComponentProps<{}> {}
 
@@ -75,6 +76,10 @@ export const Header = withRouter(
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/classification">
                     <Icon fa="folder" /> Kategóriák
+                  </NavLink>
+                  <DropdownDevider />
+                  <NavLink activeClassName="active" className="dropdown-item" to="/wiki-page">
+                    <Icon fa="wikipedia-w" /> Wiki oldalak
                   </NavLink>
                 </DropdownMenu>
               </Dropdown>

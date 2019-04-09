@@ -12,29 +12,35 @@ import {
 } from 'client-common/store/exercise'
 import { Button } from 'client-common/component/general/Button'
 import { Icon } from 'client-common/component/general/Icon'
+import { openWikiModal } from '../../store/actions/modal'
 
-interface SubTaskProps {
+///
+
+interface Props {
   id: string
   isFirst: boolean
   exerciseId: string
   task: state.SubTask
   resources: MarkdownResources
 }
-interface SubTaskStateProps {
+interface StateProps {
   isDone: boolean
 }
 
-interface SubTaskDispatchProps {
+interface DispatchProps {
   getHintAction: typeof getHintAction
   checkSolutionAction: typeof checkSolutionAction
+  openWikiModal: typeof openWikiModal
 }
 
-interface SubTaskState {
+interface State {
   loadingHint: boolean
   loadingCheck: boolean
   checkCounter: number
   solutions: DB.UserControlSolution
 }
+
+///
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -43,14 +49,11 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskProps>(
+export const SubTask = connect<StateProps, DispatchProps, Props>(
   mapStateToProps,
-  { getHintAction, checkSolutionAction }
+  { getHintAction, checkSolutionAction, openWikiModal }
 )(
-  class SubTaskComponent extends React.Component<
-    SubTaskProps & SubTaskStateProps & SubTaskDispatchProps,
-    SubTaskState
-  > {
+  class SubTaskComponent extends React.Component<Props & StateProps & DispatchProps, State> {
     state = {
       loadingHint: false,
       loadingCheck: false,
@@ -97,12 +100,12 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
 
     private scrollToSubTask = ref => {
       if (!this.props.isFirst && ref) {
-        ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+        ref.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
       }
     }
 
     private scrollToHint = ref => {
-      ref && ref.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+      ref && ref.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
     }
 
     render() {
@@ -153,7 +156,16 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
 
     private renderDescription() {
       const desc = this.props.task.details.description
-      return desc && <Markdown className="" source={desc} resources={this.props.resources} />
+      return (
+        desc && (
+          <Markdown
+            className=""
+            source={desc}
+            resources={this.props.resources}
+            onWikiLink={this.openWikiModal}
+          />
+        )
+      )
     }
 
     private renderControl = ([ctrlId, { controlType, controlProps }]) => {
@@ -190,7 +202,7 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
 
     private renderHint = item => (
       <div className="mb-2" key={item.key} ref={this.scrollToHint}>
-        <Markdown source={item.hint.text} resources={this.props.resources} />
+        <Markdown source={item.hint.text} resources={this.props.resources} onWikiLink={this.openWikiModal} />
       </div>
     )
 
@@ -208,6 +220,10 @@ export const SubTask = connect<SubTaskStateProps, SubTaskDispatchProps, SubTaskP
             <Icon fa="times" size="2x" />
           </span>
         )
+    }
+
+    private openWikiModal = (pageId) => {
+      this.props.openWikiModal({ pageId })
     }
   }
 )

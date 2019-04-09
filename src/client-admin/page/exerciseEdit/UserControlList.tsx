@@ -17,7 +17,7 @@ const controlTypes = keys(CONTROL_TYPES).sort()
 
 function mapStateToProps(state) {
   return {
-    resources: state.exerciseEdit.resources
+    resources: state.resources.data
   }
 }
 
