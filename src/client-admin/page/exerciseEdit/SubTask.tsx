@@ -13,7 +13,7 @@ const TABS = ['Leírás', 'Megoldások', 'Útmutatók']
 
 function mapStateToProps(state) {
   return {
-    resources: state.exerciseEdit.resources
+    resources: state.resources.data
   }
 }
 
@@ -66,16 +66,16 @@ export const SubTask = connect(
     }
 
     renderDescription() {
-      const subTask = this.props.value
+      const { value: subTask, resources } = this.props;
       return (
         <TextEditor
           className="form-group"
           name="description"
-          rows="10"
+          rows={10}
           required
           onChange={this.updateDescription}
           value={pathOr('', ['description'], subTask)}
-          resources={this.props.resources}
+          resources={resources}
         />
       )
     }

@@ -3,35 +3,49 @@ import { app, firebase } from '../fireApp'
 import 'firebase/storage'
 import { resolveSnapshot } from 'client-common/util/firebase'
 
+///
+
+type UTS = firebase.storage.UploadTaskSnapshot
+
+interface UploadProgress {
+  bytesTransferred: number
+  totalBytes: number
+}
+
+export interface UploadedFile {
+  _key: string
+  name: string
+  type: string
+  fullPath: string
+  url: string
+}
+
+///
+
 const storageRef = app.storage().ref()
 const DB = app.database()
 const Storage = DB.ref('storage')
+
 const STATE_CHANGED = firebase.storage.TaskEvent.STATE_CHANGED
 
-type UploadProgress = { bytesTransferred: number; totalBytes: number }
+///
 
-export function imageUpload(path, file, progressCb: (ss: UploadProgress) => void = identity) {
+export async function imageUpload(
+  path: string,
+  file: File,
+  progressCb: (up: UploadProgress) => void = identity
+): Promise<UploadedFile> {
   const _key = Storage.push().key
-  const fileName = file.name
-  const uploadTask = storageRef.child(`storage/${path}/${_key}`).put(file, {})
+  const snapshot = await createUploadTask(file, _key, path, progressCb)
+  const url = await getFileUrl(snapshot.metadata.fullPath)
 
-  return new Promise((resolve, reject) =>
-    uploadTask.on(
-      STATE_CHANGED, // or 'state_changed'
-      progressCb,
-      reject,
-      () => resolve(uploadTask.snapshot)
-    )
-  )
-    .then((file: firebase.storage.UploadTaskSnapshot) =>
-      getFileUrl(file.metadata.fullPath).then(url => ({ file, url }))
-    )
-    .then(({ file, url }) => ({
-      _key,
-      name: fileName,
-      fullPath: file.metadata.fullPath,
-      url
-    }))
+  return {
+    _key,
+    name: file.name,
+    type: file.type,
+    fullPath: snapshot.metadata.fullPath,
+    url
+  }
 }
 
 export function getFiles(folder) {
@@ -40,4 +54,19 @@ export function getFiles(folder) {
 
 export function getFileUrl(filePath) {
   return storageRef.child(filePath).getDownloadURL()
+}
+
+///
+
+async function createUploadTask(file, key, path, progressCb): Promise<UTS> {
+  const uploadTask = storageRef.child(`storage/${path}/${key}`).put(file, {})
+  // @ts-ignore
+  return new Promise((resolve, reject) =>
+    uploadTask.on(
+      STATE_CHANGED, // or 'state_changed'
+      progressCb,
+      reject,
+      () => resolve(uploadTask.snapshot)
+    )
+  )
 }

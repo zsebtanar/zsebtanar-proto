@@ -7,6 +7,8 @@ import { Icon } from 'client-common/component/general/Icon'
 import { pipe } from 'ramda'
 import { setupPage } from '../../client-common/component/hoc/setupPage'
 
+///
+
 interface StateProps {
   session: state.Session
 }
@@ -24,6 +26,8 @@ const mapDispatchToProps = {
   deleteUser,
   openConfirmModal
 }
+
+///
 
 export const Profile = pipe(
   setupPage(),
@@ -43,7 +47,7 @@ export const Profile = pipe(
               <Icon fa="exclamation-triangle" size="4x" />
               <p className="ml-4 mb-0">
                 Figyelem! <br />A folyamat során visszafordíthatatlanul töröljük a felhasználói
-                adataidat és minden eddig elér eredményedet.
+                adataidat és minden eddig elér eredményeidet.
               </p>
             </div>
             <p>Biztos törölni szeretnéd a profilod?</p>
@@ -71,21 +75,12 @@ export const Profile = pipe(
               <dd className="col-sm-7">{user.email}</dd>
 
               <dt className="col-sm-5">Regisztráció dátuma</dt>
-              <dd className="col-sm-7">{new Date(user._created).toLocaleDateString()}</dd>
+              <dd className="col-sm-7">
+                {new Date(user.metadata.creationTime).toLocaleDateString()}
+              </dd>
             </dl>
-
-            <h2 className="mt-5">Statisztikák:</h2>
-            <hr />
-
-            <dl className="row">
-              <dt className="col-sm-5">Megoldott feladatok száma:</dt>
-              <dd className="col-sm-7">999999</dd>
-
-              <dt className="col-sm-5">Helyes megoldások aránya</dt>
-              <dd className="col-sm-7">110%</dd>
-            </dl>
-            <p>...</p>
-            <p>
+            <hr className="my-5" />
+            <p className="text-right">
               <Button className="btn-danger" onAction={this.deleteProfile} icon="trash">
                 Felhasználói fiók törlése
               </Button>

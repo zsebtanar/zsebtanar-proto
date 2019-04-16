@@ -1,6 +1,9 @@
 import { identity } from 'ramda'
 import AlertModal from '../../component/modal/AlertModal'
 import ConfirmModal, { ConfirmModalParams as CMP } from '../../component/modal/ConfirmModal'
+import { FileUploadModalParams } from '../../component/modal/FileUploadModal'
+import { WikiModalParams } from '../../component/modal/WikiModal'
+import { WikiPageSelectorModalParams } from '../../component/modal/WikiPageSelectorModal'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -114,6 +117,16 @@ export function openFeedbackModal(params?) {
   )
 }
 
+export function openWikiModal(params?: WikiModalParams) {
+  return openModal(
+    () => import(/* webpackChunkName: 'public-modal' */ 'client-common/component/modal/WikiModal'),
+    {
+      onClose: identity,
+      ...params
+    }
+  )
+}
+
 interface InputModalParams extends BaseModalParams {
   title?: string
   label?: string
@@ -174,7 +187,7 @@ export function openUserControlModal(params?) {
 export function openExerciseImageDialog(params?) {
   return openModal(
     () =>
-      import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/ExerciseImageDialog'),
+      import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/ImageBrowserModal'),
     {
       onClose: identity,
       onSelect: identity,
@@ -183,7 +196,7 @@ export function openExerciseImageDialog(params?) {
   )
 }
 
-export function openFileUpload(params?) {
+export function openFileUpload(params: FileUploadModalParams) {
   return openModal(
     () =>
       import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/FileUploadModal'),
@@ -191,7 +204,7 @@ export function openFileUpload(params?) {
       onClose: identity,
       onSuccess: identity,
       onError: identity,
-      resources: [],
+      resources: {},
       disableBackdropClose: true,
       ...params
     }
@@ -206,6 +219,19 @@ export function openExerciseSearch(params?: ExerciseSearchParams) {
   return openModal(
     () =>
       import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/ExerciseSearchModal'),
+    {
+      onClose: identity,
+      onSuccess: identity,
+      disableBackdropClose: true,
+      ...params
+    }
+  )
+}
+
+export function openWikiPageSelector(params?: WikiPageSelectorModalParams) {
+  return openModal(
+    () =>
+      import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/WikiPageSelectorModal'),
     {
       onClose: identity,
       onSuccess: identity,

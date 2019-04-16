@@ -15,6 +15,7 @@ import { ProgressBar } from 'client-common/component/general/Progress'
 import { Button } from '../../component/general/Button'
 import { ShowError } from '../../component/error/ShwoError'
 import { setupPage } from '../../component/hoc/setupPage'
+import { openWikiModal } from '../../store/actions/modal'
 
 import './Exercise.scss'
 
@@ -31,7 +32,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
   getPublicExerciseAction,
-  unloadExerciseAction
+  unloadExerciseAction,
+  openWikiModal
 }
 
 const isFinished = pathOr(false, ['exercise', 'isFinished'])
@@ -111,6 +113,7 @@ export const Exercise = pipe(
                   className="main-description mb-3"
                   source={ex.description}
                   resources={ex.resources}
+                  onWikiLink={this.openWikiModal}
                 />
 
                 {subTasks.map(([taskId, task], idx) =>
@@ -164,6 +167,10 @@ export const Exercise = pipe(
           </div>
         )
       }
+    }
+
+    private openWikiModal = (pageId) => {
+      this.props.openWikiModal({ pageId })
     }
   }
 )

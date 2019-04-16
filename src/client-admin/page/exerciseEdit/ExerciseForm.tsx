@@ -50,7 +50,7 @@ import {
 } from './exerciseFormReducer'
 import { Icon } from 'client-common/component/general/Icon'
 import { isAdmin } from 'client-common/services/user'
-import { Dropdown} from 'client-common/component/general/dropdown/Dropdown'
+import { Dropdown } from 'client-common/component/general/dropdown/Dropdown'
 
 const modeLabel = {
   Add: 'létrehozása',
@@ -70,7 +70,9 @@ function mapStateToProps(state) {
   return {
     session: state.app.session,
     classifications: state.app.classifications,
-    exercise: state.exerciseEdit,
+    exercise: state.exerciseEdit.data,
+    exerciseMeta: state.exerciseEdit,
+    resources: state.resources.data,
     loading: state.app.classifications.loading || state.exerciseEdit.loading,
     error: state.exerciseEdit.error
   }
@@ -112,7 +114,7 @@ export const ExerciseForm = connect(
 
     saveExercise = event => {
       event.preventDefault()
-      if (keys(this.props.exercise.data.subTasks).length < 1) {
+      if (keys(this.props.exercise.subTasks).length < 1) {
         return alert('Kérlek hozz létre legalább egy részfeladatot')
       }
       this.props.saveExercise()
@@ -120,7 +122,7 @@ export const ExerciseForm = connect(
 
     changeExerciseState = state => event => {
       if (confirm(STATE_MESSAGES[state])) {
-        changeState(this.props.exercise.data._key, state).then(
+        changeState(this.props.exercise._key, state).then(
           () =>
             state === EXERCISE_REMOVE
               ? window.location.replace('/admin/exercise/')
@@ -130,7 +132,7 @@ export const ExerciseForm = connect(
     }
 
     updateContent = fn => {
-      this.props.updateContent(fn(this.props.exercise.data))
+      this.props.updateContent(fn(this.props.exercise))
     }
 
     update = event => {
@@ -144,7 +146,7 @@ export const ExerciseForm = connect(
 
     updateClassification = (group, path) => value => {
       const selectedValues = map(prop('_key'), value) as string[]
-      let ex = this.props.exercise.data
+      let ex = this.props.exercise
       if (last(path) === SUBJECT) {
         // remove all topic(s) which is not connect to any selected subject(s)
         const allNOTUsedSubjectTopics = values(
@@ -240,7 +242,8 @@ export const ExerciseForm = connect(
     }
 
     renderHeader() {
-      const { data: exercise, mode, saving, changed } = this.props.exercise
+      const { exercise, exerciseMeta } = this.props
+      const { mode, saving, changed } = exerciseMeta
       const mLabel = modeLabel[mode]
       const notNew = mode !== 'new'
       const exState = exercise._state
@@ -328,12 +331,12 @@ export const ExerciseForm = connect(
         case 2:
           return this.renderSubTasks()
         case 3:
-          return <ExercisePreview exercise={this.props.exercise.data} />
+          return <ExercisePreview exercise={this.props.exercise} />
       }
     }
 
     renderMetadata() {
-      const ex = this.props.exercise.data
+      const ex = this.props.exercise
       const classifications = this.props.classifications.data
       return (
         <div className="col-10 mx-auto">
@@ -366,16 +369,16 @@ export const ExerciseForm = connect(
     }
 
     renderDescription() {
-      const { data, resources } = this.props.exercise
+      const { exercise, resources } = this.props;
       return (
         <div className="col-11 mx-auto">
           <TextEditor
             className="form-group"
             name="description"
-            rows="10"
+            rows={10}
             required
             onChange={this.update}
-            value={pathOr('', ['description'], data)}
+            value={pathOr('', ['description'], exercise)}
             resources={resources}
           />
         </div>
@@ -385,7 +388,7 @@ export const ExerciseForm = connect(
     renderSubTasks() {
       return (
         <SubTaskList
-          subTasks={this.props.exercise.data.subTasks || {}}
+          subTasks={this.props.exercise.subTasks || {}}
           onChange={this.updateSubTask}
         />
       )
@@ -400,7 +403,7 @@ export const ExerciseForm = connect(
             name={path.join('.')}
             onChange={this.update}
             required
-            value={pathOr('', path, this.props.exercise.data)}
+            value={pathOr('', path, this.props.exercise)}
           />
         </FormGroup>
       )
@@ -412,7 +415,7 @@ export const ExerciseForm = connect(
         classifications && (
           <FormGroup key={group} label={label}>
             <Select
-              value={pathOr([], path, this.props.exercise.data)}
+              value={pathOr([], path, this.props.exercise)}
               multi={true}
               labelKey="name"
               valueKey="_key"

@@ -1,7 +1,6 @@
-import { assocPath, concat, dissoc, evolve, pickBy, pipe, toPairs } from 'ramda'
-import { uid } from 'client-common/util/uuid'
-import { openFileUpload } from 'client-common/store/actions/modal'
 import { createExercise, getPrivateExercise, updateExercise } from 'client-common/services/exercise'
+import { assocPath, concat, dissoc, evolve, pipe } from 'ramda'
+import { initResources, uploadResources } from '../resources/resourceReducer'
 
 export const EXERCISE_LOADING = 'admin/EXERCISE_LOADING'
 export const EXERCISE_NEW = 'admin/EXERCISE_NEW'
@@ -13,12 +12,11 @@ export const EXERCISE_ERROR = 'admin/EXERCISE_ERROR'
 export const EXERCISE_RESOURCE_ADD = 'admin/EXERCISE_RESOURCE_ADD'
 export const EXERCISE_UPDATE_CONTENT = 'admin/EXERCISE_UPDATE_CONTENT'
 
-const isNew = val => val.isNew
-
 export function newExercise() {
   return dispatch => {
     dispatch({ type: EXERCISE_LOADING })
     dispatch({ type: EXERCISE_NEW, payload: {} })
+    dispatch(initResources({}))
   }
 }
 
@@ -26,7 +24,10 @@ export function loadExercise(id) {
   return dispatch => {
     dispatch({ type: EXERCISE_LOADING })
     return getPrivateExercise(id).then(
-      data => dispatch({ type: EXERCISE_LOAD, payload: data }),
+      data => {
+        dispatch({ type: EXERCISE_LOAD, payload: data })
+        dispatch(initResources(data.resources || {}))
+      },
       error => dispatch({ type: EXERCISE_ERROR, payload: error })
     )
   }
@@ -36,7 +37,10 @@ export function cloneExercise(id) {
   return dispatch => {
     dispatch({ type: EXERCISE_LOADING })
     return getPrivateExercise(id).then(
-      data => dispatch({ type: EXERCISE_CLONE, payload: data }),
+      data => {
+        dispatch({ type: EXERCISE_CLONE, payload: data })
+        dispatch(initResources(data.resources || {}))
+      },
       error => dispatch({ type: EXERCISE_ERROR, payload: error })
     )
   }
@@ -46,51 +50,23 @@ export function updateContent(exerciseData) {
   return dispatch => dispatch({ type: EXERCISE_UPDATE_CONTENT, payload: exerciseData })
 }
 
-export function addResource(file) {
-  const id = uid()
-  return dispatch => {
-    const reader = new FileReader()
-
-    reader.addEventListener(
-      'load',
-      () => dispatch({ type: EXERCISE_RESOURCE_ADD, payload: { id, file, url: reader.result } }),
-      false
-    )
-    reader.readAsDataURL(file)
-  }
-}
-
 export function saveExercise() {
-  return dispatch => dispatch(uploadResources())
+  return dispatch =>
+    dispatch(uploadResources('exercise'))
+      .then(() => dispatch(storeExercise()))
+      .catch(error => dispatch({ type: EXERCISE_ERROR, payload: error }))
 }
 
-function uploadResources() {
+function storeExercise() {
   return (dispatch, getState) => {
-    const res = getState().exerciseEdit.resources
-    const newResList = pipe(pickBy(isNew), toPairs)(res)
-    if (newResList.length) {
-      dispatch(
-        openFileUpload({
-          resources: newResList,
-          onSuccess: newResources => dispatch(storeExercise(newResources)),
-          onError: error => dispatch({ type: EXERCISE_ERROR, payload: error })
-        })
-      )
-    } else {
-      dispatch(storeExercise({}))
-    }
-  }
-}
+    const { exerciseEdit, resources } = getState()
 
-function storeExercise(newResources) {
-  return (dispatch, getState) => {
-    const state = getState().exerciseEdit
-    if (state.changed && !state.saving) {
+    if (exerciseEdit.changed && !exerciseEdit.saving) {
       dispatch({ type: EXERCISE_SAVE_START })
-      const ex = { ...state.data, resources: { ...state.data.resources, ...newResources } }
+      const ex = { ...exerciseEdit.data, resources: resources.data }
       const promise = ex._key
         ? updateExercise(ex._key, ex).then(() => dispatch({ type: EXERCISE_SAVED }))
-        : createExercise(ex).then(key => (window.location.replace(`/admin/exercise/edit/${key}`)))
+        : createExercise(ex).then(key => window.location.replace(`/admin/exercise/edit/${key}`))
 
       return promise.catch(error => dispatch({ type: EXERCISE_ERROR, payload: error }))
     }
@@ -102,7 +78,6 @@ const INIT_STATE = {
   mode: undefined, // new | update | clone
   changed: false,
   saving: false,
-  resources: undefined,
   data: undefined,
   error: undefined
 }
@@ -115,7 +90,6 @@ export function exerciseFormReducer(state = INIT_STATE, action) {
       return {
         loading: false,
         mode: 'new',
-        resources: {},
         data: {},
         changed: true
       }
@@ -123,15 +97,16 @@ export function exerciseFormReducer(state = INIT_STATE, action) {
       return {
         loading: false,
         mode: 'update',
-        resources: action.payload.resources || {},
         data: action.payload
       }
     case EXERCISE_CLONE:
       return {
         loading: false,
         mode: 'clone',
-        resources: action.payload.resources || {},
-        data: pipe(dissoc('_key'), evolve({ title: concat(' [másolat]') }))(action.payload),
+        data: pipe(
+          dissoc('_key'),
+          evolve({ title: concat(' [másolat]') })
+        )(action.payload),
         changed: true
       }
     case EXERCISE_SAVE_START:
