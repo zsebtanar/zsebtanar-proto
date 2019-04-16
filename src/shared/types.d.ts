@@ -124,15 +124,15 @@ declare namespace state {
   interface AdminWikPage extends BaseFormData<WikiPageModel> {}
 
   interface AdminResource {
-    data: MarkdownResources,
-    error: any,
+    data: MarkdownResources
+    error: any
   }
 
   interface ResourceFileData {
     isNew: boolean
     url: string
-    type: string,
-    name: string,
+    type: string
+    name: string
     file: File
   }
 }
@@ -258,8 +258,10 @@ declare namespace DB {
   }
 
   interface UCNumberListSolution {
-    options: ObjectMap<number>
+    options: ObjectMap<string>
   }
+
+  interface UCNumberListInput extends ObjectMap<string> {}
 
   interface UCSimpleText extends BaseUserControl {
     controlType: 'simple-text'
