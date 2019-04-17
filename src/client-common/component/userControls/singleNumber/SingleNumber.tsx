@@ -1,8 +1,16 @@
 import * as React from 'react'
 import { Markdown } from 'client-common/component/general/Markdown'
-import { Icon } from '../../general/Icon'
+import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
 
-export function SingleNumber(props) {
+interface SingleNumberProps extends DB.UCSingleNumberProps {
+  name: string
+  value?: string
+  onChange: ({name, value}: {name: string, value: string}) => void
+  resources: MarkdownResources
+  readOnly?: boolean
+}
+
+export function SingleNumber(props: SingleNumberProps) {
   const setSolution = e => {
     if (props.onChange) {
       props.onChange({ name: props.name, value: e.currentTarget.value })
@@ -31,12 +39,8 @@ export function SingleNumber(props) {
           <Markdown source={props.postfix} resources={props.resources} />
         </span>
       </div>
-      {props.fractionDigits > 0 && (
-        <small className="form-text text-warning">
-          <Icon fa="exclamation-triangle" /> Kérlek, {props.fractionDigits} tizedesjegy pontossággal
-          add meg a megoldást.
-        </small>
-      )}
+      {props.fractionDigits > 0 &&
+      <DecimalAccuracyWarning fractionDigits={props.fractionDigits}/>}
     </div>
   )
 }
