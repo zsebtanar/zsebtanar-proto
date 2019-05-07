@@ -124,7 +124,7 @@ export const ExercisesByTopic = pipe(
           <div className="mb-1 d-flex w-100 ">
             <Markdown source={ex.description} resources={ex.resources} />
           </div>
-          <div>{ex.classification.tags.map(this.renderTag)}</div>
+          <div>{(ex.classification.tags || []).map(this.renderTag)}</div>
         </NavLink>
       )
     }
@@ -132,7 +132,7 @@ export const ExercisesByTopic = pipe(
     private renderTag = tag => {
       return (
         <span className="badge badge-secondary mx-1" key={tag}>
-          {this.state.classification[TAGS][tag].name}
+          {pathOr('', ['classification', TAGS, tag, 'name'], this.state)}
         </span>
       )
     }
