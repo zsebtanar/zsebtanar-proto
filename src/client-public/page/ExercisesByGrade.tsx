@@ -83,7 +83,7 @@ export const ExercisesByGrade = pipe(
 
       return (
         <div className="row">
-          <h2 className="col-12 my-4">{classification.grade[grade].name}</h2>
+          <h2 className="col-12 my-4">{pathOr('', ['grade', grade, 'name'], classification)}</h2>
 
           {!exercises ? (
             <div className="my-5 m-auto">
@@ -103,7 +103,7 @@ export const ExercisesByGrade = pipe(
                   <div>
                     {ex.classification.tags.map(tag => (
                       <span className="badge badge-secondary mx-1" key={tag}>
-                        {classificationData[TAGS][tag].name}
+                        {pathOr('', [TAGS, tag, 'name'], classificationData)}
                       </span>
                     ))}
                   </div>
