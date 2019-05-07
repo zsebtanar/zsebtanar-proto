@@ -2,11 +2,18 @@ import * as React from 'react'
 import { mapObjIndexed, pathOr } from 'ramda'
 import { pairsInOrder } from '../../../../shared/util/fn'
 import { Markdown } from 'client-common/component/general/Markdown'
+import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
+
+interface NumberListProps extends DB.UCNumberListProps {
+  name: string
+  value?: string
+  onChange: ({name, value}: {name: string, value: string}) => void
+}
 
 export class NumberList extends React.Component<any, any> {
-  private readOnly:boolean
+  private readOnly: boolean
 
-  constructor(props) {
+  constructor(props: NumberListProps) {
     super(props)
 
     this.state = {
@@ -35,6 +42,8 @@ export class NumberList extends React.Component<any, any> {
         <Markdown source={prefix} resources={resources} className="prefix" />
         {this.renderItems()}
         <Markdown source={postfix} resources={resources} className="postfix" />
+        {this.props.fractionDigits > 0 &&
+        <DecimalAccuracyWarning fractionDigits={this.props.fractionDigits}/>}
       </div>
     )
   }
