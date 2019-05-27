@@ -1,5 +1,5 @@
 import { GridComponent } from 'client-common/component/grid/GridComponent'
-import { FeedbackDataModel, FeedbackService } from 'client-common/services/FeedbackService'
+import { FeedbackDataModel, FeedbackService } from 'client-common/services/feedbackService'
 import { FireStoreGridDS } from 'client-common/services/fireStoreGridDS'
 import * as React from 'react'
 
