@@ -15,13 +15,13 @@ import { Header } from './nav/Header'
 import { SideNav } from './nav/SideNav'
 import { AdminUtils } from './page/AdminUtils'
 import { ClassificationList } from './page/classification/ClassificationList'
-import { ExerciseSheetForm } from './page/exerciseSheet/form/ExerciseSheetForm'
 import { ExerciseForm } from './page/exerciseEdit/ExerciseForm'
 import { ExercisePreview } from './page/ExercisePreview'
 import { Exercises } from './page/Exercises'
-import { FeedbackList } from './page/FeedbackList'
-import { Home } from './page/Home'
+import { ExerciseSheetForm } from './page/exerciseSheet/form/ExerciseSheetForm'
 import { ExerciseSheetGrid } from './page/exerciseSheet/grid/ExerciseSheetGrid'
+import { FeedbackGrid } from './page/feedback/grid/FeedbackGrid'
+import { Home } from './page/Home'
 import { UserList } from './page/user/UserList'
 import { WikiPageForm } from './page/wiki/form/WikiPageForm'
 import { WikiPageGrid } from './page/wiki/grid/WikiPageGrid'
@@ -96,7 +96,7 @@ function AdminRoutes() {
             <Route path="/wiki-page/add" exact component={WikiPageForm} />
             <Route path="/wiki-page/edit/:key" exact component={WikiPageForm} />
 
-            <Route path="/feedback" component={FeedbackList} />
+            <Route path="/feedback" component={FeedbackGrid} />
             <Route path="/utilities" component={AdminUtils} />
             <Route path="/about" component={About} />
             <Route path="/joinus" component={JoinUs} />
