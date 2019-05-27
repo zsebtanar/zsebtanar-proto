@@ -1,12 +1,17 @@
-import { Icon } from 'client-common/component/general/Icon'
+import { GridComponent } from 'client-common/component/grid/GridComponent'
+import { FeedbackDataModel, FeedbackService } from 'client-common/services/FeedbackService'
 import { FireStoreGridDS } from 'client-common/services/fireStoreGridDS'
 import * as React from 'react'
-import { NavLink } from 'react-router-dom'
-import { GridComponent } from 'client-common/component/grid/GridComponent'
-import {
-  FeedbackDataModel,
-  FeedbackService
-} from 'client-common/services/FeedbackService'
+
+const opt = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric'
+}
+const dateFormatter = new Intl.DateTimeFormat('hu', opt)
 
 export class FeedbackGrid extends React.PureComponent<{}> {
   private ds = new FireStoreGridDS(FeedbackService)
@@ -22,30 +27,25 @@ export class FeedbackGrid extends React.PureComponent<{}> {
         <Grid
           dataSource={this.ds}
           columnDefs={[
-            { title: '#', width: 100, renderer: (data, row, idx) => idx + 1 },
-            { key: 'type', title: 'Típus', width: 100 },
-            { key: 'state', title: 'Állapot', width: 100 },
-            { key: 'site', title: 'Oldal', width: 100 },
-            { key: 'description', title: 'Visszajelzés szövege' },
-            { title: 'Opciók', width: 200, renderer: (_, row) => this.renderListItem(row) }
+            { title: '#', width: 50, renderer: (data, row, idx) => idx + 1 },
+            { key: 'site', title: 'Oldal', width: 75 },
+            { key: 'type', title: 'Típus', width: 75 },
+            { key: 'state', title: 'Állapot', width: 75 },
+            { key: 'email', title: 'E-mail', width: 150 },
+            {
+              key: 'created',
+              title: 'Létrehozva',
+              width: 200,
+              renderer: this.renderDate
+            },
+            { key: 'description', title: 'Visszajelzés szövege' }
           ]}
         />
       </div>
     )
   }
 
-  private renderListItem = (item: FeedbackDataModel) => {
-    return (
-      <div className="text-center">
-        <NavLink
-          exact
-          to={`/wiki-page/edit/${item.id}`}
-          className="btn btn-sm btn-light"
-          title="Visszajelzés megtekintése"
-        >
-          <Icon fa="edit" />
-        </NavLink>
-      </div>
-    )
+  private renderDate(data) {
+    return data ? dateFormatter.format(data.toDate()) : ''
   }
 }

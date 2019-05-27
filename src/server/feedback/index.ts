@@ -59,6 +59,6 @@ function storeFeedback(data) {
     Feedback.add({
       ...pick(['type', 'email', 'description', 'site', 'pathname'], data),
       state: 'new',
-      creation: new Date()
+      created: new Date()
     })
 }

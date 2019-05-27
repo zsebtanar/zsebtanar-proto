@@ -22,7 +22,7 @@ export interface FeedbackDataModel extends BaseModel {
   description: string
   email: string
   pathname: string
-  creation?: Date
+  created?: Date
   modification?: Date
 }
 
