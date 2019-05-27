@@ -14,7 +14,13 @@
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "client-admin": ["client-admin/*"],
+      "client-public": ["client-public/*"],
+      "client-common": ["client-common/*"],
+      "shared": ["shared/*"]
+    }
   },
   "typeRoots": ["node_modules/@types"],
   "exclude": ["node_modules"]
