@@ -14,7 +14,7 @@ interface GridColumnDefinition<T> {
   renderer?: GridColumnRenderer<T>
 }
 
-interface InernalGridColumnDefinition<T> extends GridColumnDefinition<T> {
+interface InternalGridColumnDefinition<T> extends GridColumnDefinition<T> {
   _id: string
 }
 
@@ -24,6 +24,7 @@ interface Props<T> {
   columnDefs: GridColumnDefinition<T>[]
   defaultGridOptions?: GridFilterOptions
   defaultPageSize?: number
+  rowAction?: (event: MouseEvent, rowData: T) => void
 }
 
 interface State<T> {
@@ -43,7 +44,7 @@ function defaultColumnRenderer(data: any) {
 ///
 
 export class GridComponent<T> extends React.Component<Props<T>, State<T>> {
-  private columnDefs: InernalGridColumnDefinition<T>[] = undefined
+  private columnDefs: InternalGridColumnDefinition<T>[] = undefined
 
   state = {
     loading: true,
@@ -114,12 +115,13 @@ export class GridComponent<T> extends React.Component<Props<T>, State<T>> {
 
   private renderBody() {
     const { list } = this.state
+    const { rowAction } = this.props
     const columnDefs = this.getColumnsDefs()
 
     return (
       <tbody>
         {list.map((row, rIdx) => (
-          <tr key={row.id}>
+          <tr key={row.id} onClick={rowAction && (e => rowAction(e as any, row))}>
             {columnDefs.map((def, cIdx) => this.renderCell(def, row, rIdx, cIdx))}
           </tr>
         ))}
@@ -127,12 +129,12 @@ export class GridComponent<T> extends React.Component<Props<T>, State<T>> {
     )
   }
 
-  private renderCell(def: InernalGridColumnDefinition<T>, row: T, rowIdx: number, colIdx: number) {
+  private renderCell(def: InternalGridColumnDefinition<T>, row: T, rowIdx: number, colIdx: number) {
     const data = row[def.key]
     return <td key={def._id}>{def.renderer(data, row, rowIdx)}</td>
   }
 
-  private getColumnsDefs(): InernalGridColumnDefinition<T>[] {
+  private getColumnsDefs(): InternalGridColumnDefinition<T>[] {
     if (!this.columnDefs) {
       const { columnDefs } = this.props
       this.columnDefs = this.genColumnDefs(columnDefs)
@@ -140,7 +142,7 @@ export class GridComponent<T> extends React.Component<Props<T>, State<T>> {
     return this.columnDefs
   }
 
-  private genColumnDefs(customDefs = []): InernalGridColumnDefinition<T>[] {
+  private genColumnDefs(customDefs = []): InternalGridColumnDefinition<T>[] {
     let columns
     if (customDefs.length) {
       return customDefs.map(def => ({
