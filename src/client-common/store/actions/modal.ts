@@ -1,3 +1,4 @@
+import { TextPromptModalParams } from 'client-common/component/modal/TextPromptModal'
 import { identity } from 'ramda'
 import AlertModal from '../../component/modal/AlertModal'
 import ConfirmModal, { ConfirmModalParams as CMP } from '../../component/modal/ConfirmModal'
@@ -143,6 +144,19 @@ export function openInputModal(params?: InputModalParams) {
       value: '',
       onClose: identity,
       onUpdate: identity,
+      disableBackdropClose: true,
+      ...params
+    }
+  )
+}
+
+export function openTextPromptModal(params?: TextPromptModalParams) {
+  return openModal(
+    () => import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/TextPromptModal'),
+    {
+      title: 'Prompt',
+      value: '',
+      onClose: identity,
       disableBackdropClose: true,
       ...params
     }
