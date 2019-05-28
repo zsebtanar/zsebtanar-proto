@@ -10,7 +10,7 @@ import { openSideNav } from 'client-common/store/reducers/sideNav'
 import { Dropdown } from 'client-common/component/general/dropdown/Dropdown'
 import { DropdownMenu } from 'client-common/component/general/dropdown/DropdownMenu'
 import { DropdownToggle } from 'client-common/component/general/dropdown/DropdownToggle'
-import { DropdownDevider } from '../../client-common/component/general/dropdown/DropdownDevicer'
+import { DropdownDevider } from 'client-common/component/general/dropdown/DropdownDevicer'
 
 interface HeaderProps extends RouteComponentProps<{}> {}
 
@@ -74,7 +74,7 @@ export const Header = withRouter(
                   <NavLink activeClassName="active" className="dropdown-item" to="/exercise-sheet">
                     <Icon fa="list-alt" /> Feladatsorok
                   </NavLink>
-                  <NavLink activeClassName="active" className="dropdown-item" to="/classification">
+                  <NavLink activeClassName="active" className="dropdown-item" to="/categories">
                     <Icon fa="folder" /> Kategóriák
                   </NavLink>
                   <DropdownDevider />

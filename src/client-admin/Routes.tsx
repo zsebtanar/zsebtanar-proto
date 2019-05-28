@@ -14,6 +14,8 @@ import { isAdmin } from '../client-common/services/user'
 import { Header } from './nav/Header'
 import { SideNav } from './nav/SideNav'
 import { AdminUtils } from './page/AdminUtils'
+import { MainCategoryGrid } from './page/categories/MainCategoryGrid'
+import { SubCategoryGrid } from './page/categories/SubCategoryGrid'
 import { ClassificationList } from './page/classification/ClassificationList'
 import { ExerciseForm } from './page/exerciseEdit/ExerciseForm'
 import { ExercisePreview } from './page/ExercisePreview'
@@ -78,6 +80,9 @@ function AdminRoutes() {
             <Route path="/" exact component={Home} />
             <Route path="/user" exact component={UserList} />
             <Route path="/classification" exact component={ClassificationList} />
+
+            <Route path="/categories" exact component={MainCategoryGrid} />
+            <Route path="/sub-categories/:id" exact component={SubCategoryGrid} />
 
             {/* Exercises */}
             <Route path="/exercise" exact component={Exercises} />
