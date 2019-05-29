@@ -60,6 +60,8 @@ export class GridComponent<T> extends React.Component<Props<T>, State<T>> {
 
   private async init() {
     const { dataSource } = this.props
+    dataSource.on('loadStart', () => this.setState({ loading: true }))
+    dataSource.on('loadEnd', () => this.setState({ loading: false }))
     await dataSource.loadList()
     this.getPage(0)
   }
@@ -163,7 +165,6 @@ export class GridComponent<T> extends React.Component<Props<T>, State<T>> {
   private async getPage(page: number) {
     const { dataSource } = this.props
     const { pageSize } = this.state
-    this.setState({ loading: true })
     try {
       const list = await dataSource.getPage(page, pageSize)
       this.setState({ list, pageNum: page, loading: false })

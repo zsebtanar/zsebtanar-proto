@@ -379,9 +379,12 @@ declare interface GridFilterOptions {
   orderBy?: [string | FieldPath, OrderByDirection]
 }
 
+declare type DataSourceEvents = 'loadStart' | 'loadEnd'
+
 declare interface GridDataSource<T> {
   size: number
   refresh()
   loadList(options?: GridFilterOptions): Promise<QuerySnapshot>
   getPage(pageNumber: number, limit: number): Promise<T[]>
+  on(type: DataSourceEvents, callback: () => void)
 }

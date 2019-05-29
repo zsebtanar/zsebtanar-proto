@@ -94,7 +94,7 @@ export class Service<T extends BaseModel> {
   }
 
   public async delete(id: string): Promise<void> {
-    return await db
+    return db
       .collection(this.collectionName)
       .doc(id)
       .delete()
@@ -118,7 +118,7 @@ export class Service<T extends BaseModel> {
 
   private async storeSubCollection(doc: DocRef, data: T, options?: StoreOptions) {
     const subCollections = propOr([], 'subCollections', options) as string[]
-    return await Promise.all(
+    return Promise.all(
       subCollections.map(collection =>
         new Service(`${this.collectionName}/${doc.id}/${collection}`).storeAll(data[collection])
       )
