@@ -3,12 +3,11 @@
 
 'use strict'
 
-import { parseImageSize } from './parseImageSize'
+import { parseImageSize } from 'shared/markdown/image-resource/parseImageSize'
 
 function refImage(resources) {
   resources = resources || {}
   return function refImageMD(state, silent) {
-    // tslint:disable-next-line:one-variable-per-declaration
     let attrs,
       code,
       content,
@@ -21,9 +20,9 @@ function refImage(resources) {
       token,
       start,
       resRef = '',
-      // tslint:disable-next-line:prefer-const
+      // eslint-disable-next-line prefer-const
       oldPos = state.pos,
-      // tslint:disable-next-line:prefer-const
+      // eslint-disable-next-line prefer-const
       max = state.posMax
 
     if (state.src.charCodeAt(state.pos) !== 0x40 /* @ */) {
@@ -33,7 +32,9 @@ function refImage(resources) {
       return false
     }
 
+    // eslint-disable-next-line prefer-const
     labelStart = state.pos + 2
+    // eslint-disable-next-line prefer-const
     labelEnd = state.md.helpers.parseLinkLabel(state, state.pos + 1, false)
 
     // parser failed to find ']', so it's not a valid link
@@ -81,7 +82,6 @@ function refImage(resources) {
       // [link](  <href>  =WxH  )
       //                ^^ skipping these spaces
       // <editor-fold desc="skip spaces">
-      start = pos
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos)
         if (!isSpace(code) && code !== 0x0a) {

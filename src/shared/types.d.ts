@@ -20,8 +20,6 @@ declare const __CONFIG__: {
     policy: string
   }
 }
-declare const __INITIAL_STATE__: any
-declare const __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
 declare const grecaptcha: any
 
 declare type FormMode = 'new' | 'update' | 'clone'
@@ -134,6 +132,21 @@ declare namespace state {
     type: string
     name: string
     file: File
+  }
+}
+
+declare namespace FB {
+  interface UserData {
+    uid: string
+    disabled: boolean
+    email: string
+    emailVerified: boolean
+    metadata: unknown
+    providerData: string
+    displayName: string
+    customClaim: {
+      role: UserRoles
+    }
   }
 }
 

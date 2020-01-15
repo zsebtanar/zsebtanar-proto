@@ -4,7 +4,9 @@
 
 function parseNextNumber(str, pos, max) {
   let code,
+    // eslint-disable-next-line prefer-const
     start = pos,
+    // eslint-disable-next-line prefer-const
     result = {
       ok: false,
       pos: pos,
@@ -13,7 +15,7 @@ function parseNextNumber(str, pos, max) {
 
   code = str.charCodeAt(pos)
 
-  while ((pos < max && (code >= 0x30 /* 0 */ && code <= 0x39) /* 9 */) || code === 0x25 /* % */) {
+  while ((pos < max && code >= 0x30 /* 0 */ && code <= 0x39) /* 9 */ || code === 0x25 /* % */) {
     code = str.charCodeAt(++pos)
   }
 
@@ -26,6 +28,7 @@ function parseNextNumber(str, pos, max) {
 
 export function parseImageSize(str, pos, max) {
   let code,
+    // eslint-disable-next-line prefer-const
     result = {
       ok: false,
       pos: 0,
@@ -55,7 +58,7 @@ export function parseImageSize(str, pos, max) {
   }
 
   // parse width
-  let resultW = parseNextNumber(str, pos, max)
+  const resultW = parseNextNumber(str, pos, max)
   pos = resultW.pos
 
   // next charactor must be 'x'
@@ -67,7 +70,7 @@ export function parseImageSize(str, pos, max) {
   pos++
 
   // parse height
-  let resultH = parseNextNumber(str, pos, max)
+  const resultH = parseNextNumber(str, pos, max)
   pos = resultH.pos
 
   result.width = resultW.value

@@ -1,4 +1,5 @@
-import { cloudFnGet, cloudFnPost } from 'client-common/util/firebase'
+import { AxiosResponse } from 'axios'
+import { cloudFnGet, cloudFnPost } from './utils/firebase'
 import { app } from '../fireApp'
 
 const DB = app.database()
@@ -15,8 +16,9 @@ export const isUser = token => roleIs([ROLE_USER], token)
 export const isAdmin = token => roleIs([ROLE_ADMIN], token)
 export const isTeacher = token => roleIs([ROLE_TEACHER], token)
 
-export function parseToken(currentUser, force) {
-  return currentUser.getIdToken(force).then(idToken => JSON.parse(atob(idToken.split('.')[1])))
+export async function parseToken(currentUser, force = false) {
+  const idToken = await currentUser.getIdToken(force)
+  return await JSON.parse(atob(idToken.split('.')[1]))
 }
 
 export function getUserDetails(uid) {
@@ -27,7 +29,10 @@ export function getUserDetails(uid) {
 
 export const removeUserData = uid => Users.child(uid).remove()
 
-export const getAllUser = () => cloudFnGet(`user/all`, {}, { withToken: true })
+export const getAllUser = () =>
+  cloudFnGet(`user/all`, {}, { withToken: true }) as Promise<
+    AxiosResponse<{ users: FB.UserData[] }>
+  >
 
 export const updateUserRole = (uid, newRole) =>
   cloudFnPost(`user/role/${uid}`, { newRole }, { withToken: true })

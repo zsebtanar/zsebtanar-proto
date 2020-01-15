@@ -2,7 +2,7 @@ import createHistory from 'history/createBrowserHistory'
 
 let history
 
-export function initHistory(basename, store) {
+export function initHistory(basename) {
   history = createHistory({
     basename,
     forceRefresh: false,

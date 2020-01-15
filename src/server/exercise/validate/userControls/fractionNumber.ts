@@ -1,4 +1,4 @@
-import { isValid, simplifyFractionNumber, INVALID_FRACTION_NUMBER } from '../../../utils/math'
+import { isValid, simplifyFractionNumber, INVALID_FRACTION_NUMBER } from 'server/utils/math'
 
 export function fractionNumber(
   control: DB.UCFractionNumber,

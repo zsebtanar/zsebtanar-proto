@@ -11,7 +11,7 @@ route.get('/re-publish-all-exercise', [getToken, onlyAdmin], (req, res) => {
   getAllPrivateExercise()
     .then(snapshot => {
       const promises = []
-      snapshot.forEach((childSnapshot) => {
+      snapshot.forEach(childSnapshot => {
         const key = childSnapshot.key
         const exercise = childSnapshot.val() as DB.Exercise
         const isActive = exercise._state === EXERCISE_ACTIVE
@@ -25,7 +25,6 @@ route.get('/re-publish-all-exercise', [getToken, onlyAdmin], (req, res) => {
     })
     .then(() => res.status(204).send())
     .catch(error => {
-      // tslint:disable-next-line:no-console
       console.error(error)
       res.status(500).send('Unexpected error')
     })

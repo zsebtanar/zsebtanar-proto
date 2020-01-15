@@ -1,4 +1,4 @@
-import { all, isEmpty, isNil, keys, propOr } from 'ramda'
+import { all, isEmpty, isNil, keys } from 'ramda'
 
 export function binaryChoiceCheck(
   control: DB.UCBinaryChoice,
@@ -8,7 +8,7 @@ export function binaryChoiceCheck(
   if (isNil(solution) || isEmpty(solution)) return false
 
   return all(
-    key => solution[key].toString() === propOr('', key, userInput).toString(),
+    key => solution[key].toString() === (userInput?.[key].toString() ?? ''),
     keys(solution)
   )
 }

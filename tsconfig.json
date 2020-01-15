@@ -3,6 +3,7 @@
     "baseUrl": "./src",
     "outDir": "./bin",
     "sourceMap": true,
+    "strict": true,
     "skipDefaultLibCheck": true,
     "noImplicitAny": false,
     "removeComments": false,
@@ -20,7 +21,9 @@
       "client-public": ["client-public/*"],
       "client-common": ["client-common/*"],
       "shared": ["shared/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "typeRoots": ["node_modules/@types"],
   "exclude": ["node_modules"]

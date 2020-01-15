@@ -15,7 +15,7 @@ export default function requestValidator(schema, options?) {
   const schemas = schema.isJoi ? { body: schema } : schema
   return function validatorMiddleware(req, res, next) {
     const validate = ([key, schema]) => {
-      const result = validator(options, req[key], schema) as Joi.ValidationResult<any>
+      const result = validator(options, req[key], schema) as Joi.ValidationResult<unknown>
       return result.error
         ? {
             message: `Schema validation failed: "${req.originalUrl} - req.${key}"`,
@@ -24,11 +24,9 @@ export default function requestValidator(schema, options?) {
         : null
     }
 
-    const errors = pipe(
-      toPairs,
-      map(validate),
-      filter(identity as (any) => boolean)
-    )(schemas) as [string]
+    const errors = pipe(toPairs, map(validate), filter(identity as (any) => boolean))(schemas) as [
+      string
+    ]
 
     if (errors.length) {
       console.error(errors)
