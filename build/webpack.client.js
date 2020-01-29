@@ -31,7 +31,7 @@ const SRC_PATH = path.join(ROOT_PATH, 'src')
 const TARGET_PATH = path.join(ROOT_PATH, 'bin/app')
 
 const commonHtmlWebpackPluginOptions = {
-  template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
+  template: path.join(SRC_PATH, 'client/generic/index.ejs'),
   alwaysWriteToDisk: false,
   isDev: !isProd,
   hash: true,
@@ -46,8 +46,8 @@ const commonHtmlWebpackPluginOptions = {
 module.exports = {
   mode: isDev ? 'development' : 'production',
   entry: {
-    admin: path.join(SRC_PATH, 'client-admin/admin.tsx'),
-    public: path.join(SRC_PATH, 'client-public/public.tsx')
+    admin: path.join(SRC_PATH, 'client/app-admin/admin.tsx'),
+    public: path.join(SRC_PATH, 'client/app-public/public.tsx')
   },
   output: {
     path: TARGET_PATH,
@@ -64,11 +64,14 @@ module.exports = {
   target: 'web',
   resolve: {
     alias: {
-      shared: path.join(SRC_PATH, 'shared'),
-      'client-common': path.join(SRC_PATH, 'client-common')
+      shared: path.join(SRC_PATH, 'shared')
     },
     //    modules: ['node_modules'],
-    extensions: ['.ts', '.tsx', '.jsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+    modules: [
+      'node_modules',
+      SRC_PATH
+    ]
   },
 
   devServer: {
@@ -96,9 +99,11 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
+        include: SRC_PATH,
         loader: 'ts-loader',
         options: {
           configFile: path.join(ROOT_PATH, 'build/ts/tsconfig.client.json'),
+          experimentalWatchApi: !isProd,
           compilerOptions: {
             noUnusedLocals: !isProd
           }
@@ -149,14 +154,14 @@ module.exports = {
               priority: 3
             },
             admin: {
-              test: /[\\/]src[\\/]clint-admin[\\/]/,
+              test: /[\\/]src[\\/]clint[\\/]app-admin[\\/]/,
               name: 'admin',
               chunks: 'initial',
               minSize: 1000,
               priority: 1
             },
             public: {
-              test: /[\\/]src[\\/]clint-public[\\/]/,
+              test: /[\\/]src[\\/]clint[\\/]app-public[\\/]/,
               name: 'public',
               chunks: 'initial',
               minSize: 1000,

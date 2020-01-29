@@ -1,6 +1,6 @@
 import { pick, pipe, prop, sortBy, values } from 'ramda'
-import { resolveSnapshot } from '../util/firebase'
-import { app } from '../fireApp'
+import { resolveSnapshot } from 'client/generic/services/firebase'
+import { app } from 'client/generic/services/fireApp'
 
 const DB = app.database()
 
@@ -37,6 +37,10 @@ export function updateClassification(group, uid, data) {
 export function createClassification(group, data) {
   const path = group.split('.').join('/')
   const _key = Classification.child(path).push().key
+
+  if (!_key) {
+    throw new Error('Invalid key')
+  }
 
   return Classification.child(path)
     .child(_key)

@@ -30,12 +30,14 @@ module.exports = {
         'prettier/react'
       ],
       rules: {
-        'jsx-a11y/anchor-is-valid': 1,
-        'jsx-a11y/no-onchange': 0,
-        'jsx-a11y/no-autofocus': 0,
-        '@typescript-eslint/explicit-function-return-type': 0,
-        '@typescript-eslint/no-empty-interface': 0,
-        '@typescript-eslint/no-use-before-define': 0
+        'jsx-a11y/anchor-is-valid': 'warn',
+        'jsx-a11y/no-noninteractive-element-interactions': 'warn',
+        'jsx-a11y/no-onchange': 'off',
+        'jsx-a11y/no-autofocus': 'off',
+        'jsx-a11y/click-events-have-key-events': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-empty-interface': 'off',
+        '@typescript-eslint/no-use-before-define': 'off'
       }
     },
     {

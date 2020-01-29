@@ -17,14 +17,11 @@
     "target": "es5",
     "jsx": "react",
     "paths": {
-      "client-admin": ["client-admin/*"],
-      "client-public": ["client-public/*"],
-      "client-common": ["client-common/*"],
       "shared": ["shared/*"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
   "typeRoots": ["node_modules/@types"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx"]
 }
