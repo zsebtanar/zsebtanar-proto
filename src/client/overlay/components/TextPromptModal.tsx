@@ -17,10 +17,10 @@ interface Props {
 ///
 
 export function TextPromptModal({ title, children, label, value, buttonType }: Props) {
-  const { closeDialog } = useDialog()
+  const { closeModal } = useDialog()
   const { value: text, bind: bindText } = useInput(value)
 
-  const close = () => closeDialog()
+  const close = () => closeModal()
 
   return (
     <Dialog className="confirm">
@@ -43,7 +43,7 @@ export function TextPromptModal({ title, children, label, value, buttonType }: P
         <Button onAction={close} className="btn-link">
           Mégsem
         </Button>
-        <Button onAction={() => closeDialog(text)} btn={buttonType}>
+        <Button onAction={() => closeModal(text)} btn={buttonType}>
           Rendben
         </Button>
       </DialogFooter>

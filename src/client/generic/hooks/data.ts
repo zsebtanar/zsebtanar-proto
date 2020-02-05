@@ -1,5 +1,4 @@
 import { useReducer, Reducer, useEffect, DependencyList } from 'react'
-import { wikiPageService } from 'client/wiki/services/wikiPageService'
 
 interface State<T> {
   loading: boolean
@@ -10,10 +9,14 @@ interface State<T> {
 
 type Action<T> =
   | { type: 'loading' }
-  | { type: 'success'; payload: T }
+  | { type: 'success'; payload: { result: T; isEmpty: boolean } }
   | { type: 'error'; payload: Error }
 
 interface API<T> extends State<T> {}
+
+interface Options<T> {
+  isEmpty(data: T): boolean
+}
 
 ///
 
@@ -24,13 +27,24 @@ const initState = {
   isEmpty: undefined
 }
 
-export function useDataLoad<T>(fn: () => Promise<T>, deps?: DependencyList): API<T> {
+export function useDataLoad<T>(
+  loaderFn: () => Promise<T>,
+  deps?: DependencyList,
+  options?: Options<T>
+): API<T> {
   const [state, dispatch] = useReducer<Reducer<State<T>, Action<T>>>(userReducer, initState)
 
   useEffect(() => {
     dispatch({ type: 'loading' })
-    wikiPageService.getList().then(
-      result => dispatch({ type: 'success', payload: result }),
+    loaderFn().then(
+      result =>
+        dispatch({
+          type: 'success',
+          payload: {
+            result,
+            isEmpty: options?.isEmpty?.(result) ?? isEmpty(result)
+          }
+        }),
       error => dispatch({ type: 'error', payload: error })
     )
   }, deps)
@@ -47,13 +61,14 @@ function userReducer<T>(state: State<T>, action: Action<T>): State<T> {
     case 'error':
       return { loading: false, error: action.payload, result: undefined, isEmpty: true }
     case 'success': {
-      const result = action.payload
-      return {
-        loading: false,
-        error: undefined,
-        result,
-        isEmpty: result === undefined || result?.['length'] === 0
-      }
+      const { result, isEmpty } = action.payload
+      return { loading: false, error: undefined, result, isEmpty }
     }
   }
+}
+
+///
+
+function isEmpty<T>(data: T) {
+  return data === undefined || data?.['length'] === 0
 }

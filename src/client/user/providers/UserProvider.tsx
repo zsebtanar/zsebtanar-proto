@@ -89,7 +89,7 @@ export function UserProvider({ children }: Props) {
   }, [])
 
   React.useEffect(() => {
-    if (!state.error) {
+    if (state.error) {
       logException(state.error)
     }
   })

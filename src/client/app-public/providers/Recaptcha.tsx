@@ -17,6 +17,7 @@ export function Recaptcha({ children }: Props) {
       <div
         id="recaptcha"
         className="g-recaptcha"
+        hidden
         data-sitekey="your_site_key"
         data-callback="onSubmit"
         data-size="invisible"

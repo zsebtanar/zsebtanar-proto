@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { search } from '../search/services/search'
+import { search } from 'client/search/services/search'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
 import { Button } from 'client/generic/components/Button'
 import { Icon } from 'client/generic/components/Icon'

@@ -5,6 +5,9 @@ import { Markdown } from './Markdown'
 import { WikiPageSelectorModal } from 'client/wiki/modals/WikiPageSelectorModal'
 import { WikiPageModel } from 'client/wiki/types'
 import { EquationHelpModal, MarkdownHelpModal } from 'client/markdown/modals'
+import { ImageBrowserModal } from 'client/file-upload/modals/ImageBrowserModal'
+import { RemoteFileResource } from 'client/file-upload/types'
+import { MarkdownResources } from 'client/markdown/types'
 
 import './TextEditor.scss'
 
@@ -23,7 +26,7 @@ interface Props {
 export function TextEditor({ value, onChange, name, required, rows, className, resources }: Props) {
   const textRef = useRef<HTMLTextAreaElement>(null)
   const [txt, setTxt] = useState<string>(value || '')
-  const { openDialog } = useOverlayDispatch()
+  const { openModal } = useOverlayDispatch()
 
   const wrapText = (token: string, sample = '') => {
     const ref = textRef.current
@@ -92,11 +95,9 @@ export function TextEditor({ value, onChange, name, required, rows, className, r
     const ref = textRef.current
     if (!ref) return
 
-    props.openExerciseImageDialog({
-      onSelect: ({ id, file }) => {
-        ref.value += `@[${file.name}](${id} =100x)`
-        update()
-      }
+    openModal<RemoteFileResource>(<ImageBrowserModal />).then(file => {
+      ref.value += `@[${file.name}](${file.id} =100x)`
+      update()
     })
   }
 
@@ -104,7 +105,7 @@ export function TextEditor({ value, onChange, name, required, rows, className, r
     const ref = textRef.current
     if (!ref) return
 
-    const { id, title } = await openDialog<WikiPageModel>(<WikiPageSelectorModal />)
+    const { id, title } = await openModal<WikiPageModel>(<WikiPageSelectorModal />)
     ref.value += `~[${title}](${id})`
     update()
   }
@@ -151,14 +152,14 @@ interface ToolsProps {
 }
 
 function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: ToolsProps) {
-  const { openDialog } = useOverlayDispatch()
+  const { openModal } = useOverlayDispatch()
 
   const openEquationHelpModal = () => {
-    openDialog(<EquationHelpModal />)
+    openModal(<EquationHelpModal />)
   }
 
   const openMarkdownHelpModal = () => {
-    openDialog(<MarkdownHelpModal />)
+    openModal(<MarkdownHelpModal />)
   }
 
   return (

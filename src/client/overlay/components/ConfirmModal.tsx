@@ -10,11 +10,11 @@ interface Props {
 }
 
 export function ConfirmModal({ children, title, buttonType }: Props) {
-  const { closeDialog } = useDialog()
+  const { closeModal } = useDialog()
 
-  const close = () => closeDialog()
-  const cancel = () => closeDialog(false)
-  const ok = () => closeDialog(true)
+  const close = () => closeModal()
+  const cancel = () => closeModal(false)
+  const ok = () => closeModal(true)
 
   return (
     <Dialog className="confirm">

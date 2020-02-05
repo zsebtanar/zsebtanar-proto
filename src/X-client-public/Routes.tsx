@@ -17,7 +17,7 @@ import { ExercisesByGrade } from './page/ExercisesByGrade'
 import { ExercisesByTopic } from './page/ExercisesByTopic'
 import { Home } from './page/Home'
 import { Profile } from './page/Profile'
-import { Search } from './page/Search'
+import { Search } from 'client/app-public/pages/Search'
 import { Workarounds } from '../client-common/page/Workarounds'
 import { CookieConsent } from './component/CookieConsent'
 

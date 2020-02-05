@@ -339,15 +339,6 @@ declare interface BaseUserControlAdminProps {
   resource?: MarkdownResources
 }
 
-declare type MDString = string
-
-interface MarkdownResource {
-  url: string
-  type: string
-}
-
-declare type MarkdownResources = ObjectMap<MarkdownResource>
-
 declare interface Ordered {
   order: number
 }
@@ -366,7 +357,7 @@ declare type UIItemStyle =
   | 'success'
   | 'warning'
 
-declare type ButtonType = UIItemStyle
+declare type ButtonType = UIItemStyle | 'link'
 
 declare type BadgeType = UIItemStyle
 

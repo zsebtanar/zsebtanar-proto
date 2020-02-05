@@ -5,12 +5,14 @@ import { isAdvancedUploadSupported } from 'client/generic/utils/browser'
 import { DnDOverlay } from '../components/DnDOverlay'
 import { clipboardToFile, checkFileType, checkFileSize } from '../utils/file'
 import { useDocumentEvent } from 'client/generic/hooks'
-import { ResourceFile } from 'client/file-upload/types'
+import { FileResource } from 'client/file-upload/types'
+import { useFileResource } from 'client/file-upload/providers/FileResourceProvider'
 
 export function ImageBrowserModal() {
-  const { closeDialog } = useDialog()
+  const { closeModal } = useDialog()
+  const { files } = useFileResource()
 
-  const close = () => closeDialog()
+  const close = () => closeModal()
 
   const fileSelect = event => {
     let files: File[]
@@ -51,8 +53,13 @@ export function ImageBrowserModal() {
             <div className="msg-block">Nincs feltöltött fájl.</div>
           ) : (
             <div>
-              {images.map(([]) => (
-                <ImageResource file={null} />
+              {files.map(file => (
+                <ImageResource
+                  key={file.id}
+                  id={file.id}
+                  file={file}
+                  onSelect={(id, file) => closeModal(file)}
+                />
               ))}
             </div>
           )}
@@ -87,8 +94,8 @@ export function ImageBrowserModal() {
 
 interface ImageResourceProps {
   id: string
-  file: ResourceFile
-  onSelect: (id: string, file: ResourceFile) => void
+  file: FileResource
+  onSelect: (id: string, file: FileResource) => void
 }
 
 function ImageResource({ id, file, onSelect }: ImageResourceProps) {

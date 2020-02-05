@@ -1,4 +1,7 @@
 import React from 'react'
+import * as cx from 'classnames'
+
+import './Button.scss'
 
 interface ButtonProps {
   title?: string
@@ -9,6 +12,7 @@ interface ButtonProps {
   loading?: boolean
   submit?: boolean
   tabIndex?: number
+  inline?: boolean
   onAction?: (event: MouseEvent) => void
   children?: React.ReactNode
 }
@@ -23,6 +27,7 @@ export function Button({
   title,
   disabled,
   loading,
+  inline,
   children
 }: ButtonProps) {
   const onClick =
@@ -35,7 +40,7 @@ export function Button({
   return (
     <button
       type={submit ? 'submit' : 'button'}
-      className={`btn ${className || `btn-${btn || 'secondary'}`}`}
+      className={cx(className, 'btn', `btn-${btn || 'secondary'}`, { 'btn-inline': inline })}
       onClick={onClick}
       tabIndex={tabIndex}
       title={title}

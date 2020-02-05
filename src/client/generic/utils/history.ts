@@ -1,4 +1,4 @@
-import createHistory from 'history/createBrowserHistory'
+import { createBrowserHistory } from 'history'
 import { History, LocationState } from 'history'
 
 let history
@@ -9,7 +9,7 @@ let history
  * @param basename
  */
 export function initHistory(basename: string): History<LocationState> {
-  history = createHistory({
+  history = createBrowserHistory({
     basename,
     forceRefresh: false,
     getUserConfirmation: (message, callback) => callback(window.confirm(message)),

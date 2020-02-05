@@ -39,7 +39,7 @@ export function Page({ className, children, storePosition, track, trackOptions }
     }
   }, [])
 
-  return <div className={cx('page', className)}>{children}</div>
+  return <section className={cx('page', className)}>{children}</section>
 }
 
 Page.defaultProps = {

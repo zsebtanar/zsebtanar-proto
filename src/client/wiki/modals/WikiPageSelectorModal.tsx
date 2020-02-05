@@ -8,15 +8,15 @@ import { Loading, Alert } from 'client/generic/components'
 
 export function WikiPageSelectorModal() {
   const state = useLoadWikiPages()
-  const { closeDialog } = useDialog()
+  const { closeModal } = useDialog()
 
   const selectPage = page => {
-    closeDialog(page)
+    closeModal(page)
   }
 
   return (
     <Dialog className="confirm">
-      <DialogHeader onClose={closeDialog}>Wiki oldalak</DialogHeader>
+      <DialogHeader onClose={closeModal}>Wiki oldalak</DialogHeader>
       <DialogBody>
         <div className="list-group">
           {state.loading && <Loading />}

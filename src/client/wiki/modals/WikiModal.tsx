@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function WikiModal({ pageId }: Props) {
-  const { closeDialog } = useDialog()
+  const { closeModal } = useDialog()
 
   const [nextPageId, setNextPageId] = useState<string>(pageId)
   const [activePage, setActivePage] = useState<number>(0)
@@ -40,7 +40,7 @@ export function WikiModal({ pageId }: Props) {
 
   return (
     <Dialog className="wiki-modal">
-      <DialogHeader onClose={closeDialog}>
+      <DialogHeader onClose={closeModal}>
         <Button
           className="btn-sm btn-light nav-back"
           icon="arrow-left"

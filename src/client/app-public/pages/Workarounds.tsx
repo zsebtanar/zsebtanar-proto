@@ -5,7 +5,7 @@ import { useOverlayDispatch } from 'client/overlay/providers'
 import { FeedbackModal } from 'client/app-public/modals/FeedbackModal'
 
 export function Workarounds() {
-  const { openDialog } = useOverlayDispatch()
+  const { openModal } = useOverlayDispatch()
   return (
     <Page>
       <div className="col-10 mx-auto">
@@ -17,7 +17,7 @@ export function Workarounds() {
         </p>
         <ul className="my-2">
           <li>
-            Írj <Button onAction={() => openDialog(<FeedbackModal />)}>Visszajelzést</Button> vagy
+            Írj <Button onAction={() => openModal(<FeedbackModal />)}>Visszajelzést</Button> vagy
           </li>
           <li>
             Hozz létre egy hibajegyet a{' '}

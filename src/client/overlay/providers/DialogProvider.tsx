@@ -2,7 +2,7 @@ import React, { ReactNode, useContext } from 'react'
 import { useOverlayDispatch } from './OverlayProvider'
 
 interface DialogContextAPI {
-  closeDialog<R>(result?: R): void
+  closeModal<R>(result?: R): void
 }
 
 interface Props {
@@ -16,11 +16,11 @@ interface Props {
 export const DialogContext = React.createContext<DialogContextAPI>({} as any)
 
 export function DialogProvider({ id, children }: Props) {
-  const { closeDialog } = useOverlayDispatch()
+  const { closeModal } = useOverlayDispatch()
 
   const api: DialogContextAPI = {
-    closeDialog<T>(result?: boolean | undefined | T): void {
-      closeDialog(id, result)
+    closeModal<T>(result?: boolean | undefined | T): void {
+      closeModal(id, result)
     }
   }
 

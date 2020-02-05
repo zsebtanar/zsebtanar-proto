@@ -1,9 +1,14 @@
 import React from 'react'
+import { Icon } from 'client/generic/components/Icon'
 
-export function ExternalLink(props: React.AnchorHTMLAttributes<{}>) {
+interface Props extends React.AnchorHTMLAttributes<{}>{
+  hideIcon?: boolean
+}
+
+export function ExternalLink({ hideIcon, ...props }: Props) {
   return (
     <a {...props} target="_blank" rel="noopener noreferrer">
-      {props.children}
+      {props.children} {!hideIcon && <Icon fa="external-link"/>}
     </a>
   )
 }

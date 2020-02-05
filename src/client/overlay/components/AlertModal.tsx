@@ -13,9 +13,9 @@ interface Props {
 }
 
 export function AlertModal({size, children, buttonType, title }: Props) {
-  const { closeDialog } = useDialog()
+  const { closeModal } = useDialog()
 
-  const close = () => closeDialog()
+  const close = () => closeModal()
 
   return (
     <Dialog className="alert" size={size}>

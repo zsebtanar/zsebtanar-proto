@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { Button, Loading } from '../../generic/components'
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from '../../modal/components/modal'
 import { useRadio, useInput } from '../../generic/hooks'
-import { useUser, useDialog } from '../../modal/providers'
-import { createFeedback } from '../../../client-common/services/feedbackService'
+import { createFeedback } from 'client-common/services/feedbackService'
+import { Recaptcha } from 'client/app-public/providers/Recaptcha'
+import { Dialog, DialogHeader, DialogBody, DialogFooter } from 'client/overlay/components/base'
+import { useUser } from 'client/user/providers/UserProvider'
+import { useDialog } from 'client/overlay/providers'
 
 enum FormStates {
   Init,
@@ -15,14 +17,16 @@ enum FormStates {
 
 export function FeedbackModal() {
   const session = useUser()
-  const { closeDialog } = useDialog()
-  const close = () => closeDialog()
-
+  const { closeModal } = useDialog()
   const [formState, setFormState] = useState<FormStates>(FormStates.Init)
+  const userEmail = session?.user?.email
+
   const [capthca, setCapthca] = useState<string>('')
   const { value: type, bind: bindType } = useRadio('')
+  const { value: email, bind: bindEmail } = useInput(userEmail ?? '')
   const { value: description, bind: bindDesc } = useInput('')
-  const { value: email, bind: bindEmail } = useInput(session?.user?.email ?? '')
+
+  const close = () => closeModal()
 
   const saveDetails = async event => {
     event?.preventDefault()
@@ -45,13 +49,15 @@ export function FeedbackModal() {
   }
 
   return (
-    <Dialog className="feedback">
-      <DialogHeader onClose={close}>Visszajelzés</DialogHeader>
-      <form onSubmit={saveDetails}>
-        <DialogBody>{renderContent()}</DialogBody>
-        <DialogFooter>{renderFooter()}</DialogFooter>
-      </form>
-    </Dialog>
+    <Recaptcha>
+      <Dialog className="feedback">
+        <DialogHeader onClose={close}>Visszajelzés</DialogHeader>
+        <form onSubmit={saveDetails}>
+          <DialogBody>{renderContent()}</DialogBody>
+          <DialogFooter>{renderFooter()}</DialogFooter>
+        </form>
+      </Dialog>
+    </Recaptcha>
   )
 
   function renderContent() {
@@ -142,9 +148,8 @@ export function FeedbackModal() {
             name="email"
             className="form-control"
             placeholder="E-mail cím"
-            defaultValue={email || ''}
             required
-            readOnly={!!email}
+            readOnly={!!userEmail}
             {...bindEmail}
           />
         </div>

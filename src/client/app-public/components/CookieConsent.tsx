@@ -8,7 +8,7 @@ const CONSENT_KEY = 'zsebtanar-consent-accepted'
 
 export function CookieConsent() {
   const [isAccepted, setCookieConsent] = useState<boolean>(true)
-  const { openDialog } = useOverlayDispatch()
+  const { openModal } = useOverlayDispatch()
 
   useEffect(() => {
     const currentValue = window.localStorage.getItem(CONSENT_KEY)
@@ -30,7 +30,7 @@ export function CookieConsent() {
             <ExternalLink href={__CONFIG__.links.policy}>Adatvédelmi tájékoztatónkban</ExternalLink>{' '}
             megtalálod, hogyan gondoskodunk adataid védelméről. Oldalunkon HTTP-sütiket használunk a
             jobb működésért.{' '}
-            <a onClick={() => openDialog(<CookieModal />)} href="#">
+            <a onClick={() => openModal(<CookieModal />)} href="#">
               További információk
             </a>
           </div>

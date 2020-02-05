@@ -3,7 +3,6 @@ import {
   assocPath,
   curry,
   flip,
-  fromPairs,
   map,
   pickBy,
   pipe,

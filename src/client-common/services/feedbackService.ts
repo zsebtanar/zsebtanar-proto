@@ -1,5 +1,5 @@
 import { cloudFnPost } from 'client/generic/services/firebase'
-import { BaseModel, Service } from './fireStoreBase'
+import { BaseModel, Service } from 'client/generic/services'
 
 export enum FeedbackType {
   note = 'note',
@@ -28,5 +28,4 @@ export interface FeedbackDataModel extends BaseModel {
 
 export const FeedbackService = new Service<FeedbackDataModel>('feedback')
 
-export const createFeedback = (data) =>
-  cloudFnPost('feedback', data)
+export const createFeedback = data => cloudFnPost('feedback', data)

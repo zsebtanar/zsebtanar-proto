@@ -4,7 +4,7 @@ import { ExternalLink } from 'client/generic/components'
 
 export function JoinUs() {
   return (
-    <Page>
+    <Page className="search-page">
       <div className="col-10 mx-auto">
         <h2 className="mb-4">Csatlakozz!</h2>
         <p>A Zsebtanár csapatába junior webfejlesztőt keresünk!</p>
