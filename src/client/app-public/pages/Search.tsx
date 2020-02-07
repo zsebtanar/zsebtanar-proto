@@ -6,7 +6,7 @@ import { useInput } from 'client/generic/hooks'
 import { Icon, Loading, ErrorMsg, Page } from 'client/generic/components'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
 import { NavLink } from 'react-router-dom'
-import { Markdown } from 'client/markdown/components'
+import { Markdown } from 'client/generic/components/markdown'
 import { ExerciseSearchRecord, ExerciseSearchResult } from 'client/search/types'
 
 const MIN_TERM_LENGTH = 2

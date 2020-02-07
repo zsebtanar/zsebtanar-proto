@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLoadWikiPage } from '../services/wikiPageService'
 import { Dialog, DialogHeader, DialogBody } from 'client/overlay/components'
 import { Button, Loading } from 'client/generic/components'
-import { Markdown } from 'client/markdown/components'
+import { Markdown } from 'client/generic/components/markdown'
 import { useDialog } from 'client/overlay/providers'
 import { WikiPageModel } from 'client/wiki/types'
 

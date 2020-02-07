@@ -12,7 +12,7 @@ interface UserDetails {}
 interface State {
   loading: boolean
   loggedIn: boolean
-  error?: Error
+  error?: any
   user?: firebase.User
   userToken?: string
   userDetails?: UserDetails
@@ -51,11 +51,11 @@ function userReducer(state: State, action: Action) {
   switch (action.type) {
     case 'SetUser': {
       const { user } = action.payload
-      return { loading: false, user: user, loggedIn: !!user }
+      return { ...state, user: user, loggedIn: !!user }
     }
     case 'SetDetails': {
       const { details, token } = action.payload
-      return { ...state, userDetails: details, userToken: token }
+      return { ...state, loading: false, userDetails: details, userToken: token }
     }
     case 'SingInStart': {
       return { ...defaultState }

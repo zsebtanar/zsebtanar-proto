@@ -14,7 +14,7 @@ import { isAdmin } from 'client/user/services/user'
 
 import { Header } from './nav/Header'
 import { SideNav } from './nav/SideNav'
-import { AdminUtils } from './page/AdminUtils'
+import { AdminUtils } from 'client/app-admin/pages/AdminUtils'
 import { MainCategoryGrid } from './page/categories/MainCategoryGrid'
 import { SubCategoryGrid } from './page/categories/SubCategoryGrid'
 import { ExerciseForm } from './page/exerciseEdit/ExerciseForm'
@@ -25,9 +25,9 @@ import { ExerciseSheetGrid } from './page/exerciseSheet/grid/ExerciseSheetGrid'
 import { FeedbackGrid } from '../client-admin/page/feedback/FeedbackGrid'
 
 import { Home } from './page/Home'
-import { UserList } from './page/user/UserList'
-import { WikiPageForm } from './page/wiki/form/WikiPageForm'
-import { WikiPageGrid } from './page/wiki/grid/WikiPageGrid'
+import { UserList } from 'client/user/pages/UserList'
+import { WikiPageForm } from 'client/wiki/page/WikiPageForm'
+import { WikiPageGrid } from 'client/wiki/page/WikiPageGrid'
 
 interface RoutesProps {
   history: History

@@ -22,7 +22,7 @@ export function AlertModal({size, children, buttonType, title }: Props) {
       {title && <DialogHeader onClose={close}>{title}</DialogHeader>}
       <DialogBody>{children}</DialogBody>
       <DialogFooter>
-        <Button onAction={close} className={`btn-${buttonType || 'primary'}`}>
+        <Button onAction={close} btn={buttonType}>
           Rendben
         </Button>
       </DialogFooter>

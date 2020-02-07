@@ -21,10 +21,10 @@ export function ConfirmModal({ children, title, buttonType }: Props) {
       {title && <DialogHeader onClose={close}>{title}</DialogHeader>}
       <DialogBody>{children}</DialogBody>
       <DialogFooter>
-        <Button onAction={cancel} className="btn-link">
+        <Button onAction={cancel} btn="link">
           Mégsem
         </Button>
-        <Button onAction={ok} className={`btn-${buttonType || 'primary'}`}>
+        <Button onAction={ok} btn={buttonType}>
           Rendben
         </Button>
       </DialogFooter>

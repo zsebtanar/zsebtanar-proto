@@ -1,4 +1,5 @@
 import { BaseModel, Service } from './fireStoreBase'
+import { MarkdownResources } from 'client/markdown/types'
 
 export interface WikiPageModel extends BaseModel {
   title: string

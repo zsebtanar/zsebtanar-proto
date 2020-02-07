@@ -1,6 +1,6 @@
 import { createExercise, getPrivateExercise, updateExercise } from 'client-common/services/exercise'
 import { assocPath, concat, dissoc, evolve, pipe } from 'ramda'
-import { initResources, uploadResources } from '../resources/resourceReducer'
+import { initResources, uploadResources } from '../../../client/file-upload/resources/resourceReducer'
 
 export const EXERCISE_LOADING = 'admin/EXERCISE_LOADING'
 export const EXERCISE_NEW = 'admin/EXERCISE_NEW'

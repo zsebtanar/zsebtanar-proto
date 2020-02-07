@@ -93,3 +93,13 @@ export const reduceToObj = (fn, array: any[], init: any = undefined) =>
 export const lensPathOr = curry<(data: unknown, list: string[]) => Lens>((defVal, p) =>
   lens(pathOr(defVal, p), assocPath(p))
 )
+
+export const range = (from:number, to: number, step=1): number[] => {
+  if (from < to) return []
+
+  const res = [from]
+  for (let i = from; i < to; i+= step) {
+    res.push(i += step);
+  }
+  return res;
+}

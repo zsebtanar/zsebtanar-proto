@@ -1,14 +1,15 @@
-import { useDropdown } from './DropdownProvider'
 import React from 'react'
+import { useDropdown } from './DropdownProvider'
 
 interface Props extends Pick<React.HTMLAttributes<unknown>, 'role'> {
   id?: string
   className?: string
   title?: string
+  btn?: ButtonType
   children?: React.ReactNode
 }
 
-export function DropdownToggle({ id, className, children, ...props }: Props) {
+export function DropdownToggle({ id, className, btn, children, ...props }: Props) {
   const dropdown = useDropdown()
 
   const action = () => {
@@ -22,7 +23,7 @@ export function DropdownToggle({ id, className, children, ...props }: Props) {
   return (
     <button
       id={id}
-      className={`${className || 'nav-link'} dropdown-toggle`}
+      className={`btn ${btn || 'link'} ${className || 'nav-link'} dropdown-toggle`}
       aria-haspopup="true"
       aria-expanded={dropdown.isOpen}
       onClick={action}

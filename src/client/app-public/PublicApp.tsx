@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Navigation, Footer } from './components/nav'
+import { Navigation, Footer } from './nav'
 import { About, Home, JoinUs, Page404, Workarounds, Search } from './pages'
 
 export function PublicApp() {
