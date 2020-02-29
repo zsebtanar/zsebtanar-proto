@@ -39,6 +39,15 @@
             ]
          },
          {
+            "source": "/admin/**",
+            "headers": [
+               {
+                  "key": "X-Robots-Tag",
+                  "value": "noindex"
+               }
+            ]
+         },
+         {
             "source": "**",
             "headers": [
                {
@@ -63,7 +72,7 @@
                },
                {
                   "key": "Content-Security-Policy-Report-Only",
-                  "value": "base-uri 'self'; default-src 'none'; manifest-src https://zsebtanar.hu; script-src 'self' https://*.firebaseio.com https://www.google-analytics.com https://apis.google.com; connect-src 'self' wss://*.firebaseio.com https://*.algolianet.com https://*.algolia.net https://www.googleapis.com https://securetoken.googleapis.com; font-src https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' https://firebasestorage.googleapis.com https://www.google-analytics.com https://www.paypalobjects.com https://www.algolia.com data:; form-action 'self'; frame-src https://*.firebaseio.com https://zsebtanar.hu; frame-ancestors 'none'; report-uri undefined"
+                  "value": "base-uri 'self'; default-src 'none'; manifest-src https://zsebtanar.hu; script-src 'self' https://*.firebaseio.com https://www.google-analytics.com https://apis.google.com; connect-src 'self' wss://*.firebaseio.com https://*.algolianet.com https://*.algolia.net https://www.googleapis.com https://securetoken.googleapis.com; font-src https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' https://firebasestorage.googleapis.com https://www.google-analytics.com https://www.paypalobjects.com https://www.algolia.com data:; form-action 'self'; frame-src https://*.firebaseio.com https://zsebtanar.hu; frame-ancestors 'none'; report-uri https://sentry.io/api/275143/security/?sentry_key=1cdfdee0c0f5468a8b1ae6d207271688"
                }
             ]
          }
@@ -76,6 +85,14 @@
          {
             "source": "/:asset*.@(js|css|png|ico|json)",
             "destination": "/:asset"
+         },
+         {
+            "source": "/robot.txt",
+            "function": "/robot.txt"
+         },
+         {
+            "source": "/sitemap.xml",
+            "function": "/sitemap.xml"
          },
          {
             "source": "/google9ca33113ff814b8c.html",
