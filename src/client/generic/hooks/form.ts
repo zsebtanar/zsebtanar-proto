@@ -1,30 +1,39 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import * as dp from 'dot-prop-immutable'
+import { FieldOnChange, Representation, FormField } from 'client/generic/types'
 
-export function useInput(initialValue = '') {
-  const [value, setValue] = useState<string>(initialValue)
 
-  return {
-    set: setValue,
-    value,
-    bind: {
-      value,
-      onChange: event => {
-        setValue(event.target.value)
-      }
-    }
-  }
+interface OutputField<T> {
+  name: string
+  value: T
+  representation: Representation
+  onChange: FieldOnChange<T>
 }
 
-export function useRadio(initialValue?: string) {
-  const [value, setValue] = useState<undefined | string>(initialValue)
+interface Output<T> {
+  fields: OutputField<T>[]
+  model: T
+}
+
+export function useForm<T>(model: T, fieldDef: FormField[]): Output<T> {
+  const [modelValue, setValue] = useState<T>(model)
+
+  const fields = useMemo(
+    () =>
+      fieldDef.map(({ name, defaultValue, representation }) => {
+        const value = dp.get(modelValue, name, defaultValue ?? '')
+        return {
+          name,
+          value,
+          representation,
+          onChange: event => setValue(model => dp.set(model, name, event.value))
+        }
+      }),
+    [fieldDef]
+  )
 
   return {
-    set: setValue,
-    value,
-    bind: {
-      onChange: event => {
-        setValue(event.target.value)
-      }
-    }
+    fields,
+    model: modelValue
   }
 }

@@ -21,7 +21,7 @@ module.exports = {
         },
         project: './build/ts/tsconfig.eslint.json'
       },
-      plugins: ['@typescript-eslint/eslint-plugin', 'jsx-a11y'],
+      plugins: ['@typescript-eslint/eslint-plugin', 'jsx-a11y', 'react-hooks'],
       extends: [
         'plugin:react/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
@@ -37,7 +37,9 @@ module.exports = {
         'jsx-a11y/click-events-have-key-events': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-empty-interface': 'off',
-        '@typescript-eslint/no-use-before-define': 'off'
+        '@typescript-eslint/no-use-before-define': 'off',
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
       }
     },
     {
