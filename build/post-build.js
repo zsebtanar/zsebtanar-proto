@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const shell = require('shelljs')
-const getCSPConfig = require('./config').getCSPConfig
+const config = require('./config')
 
 const bin = path.join(__dirname, '../bin')
 const resources = path.join(__dirname, '../resources/*')
@@ -21,14 +21,18 @@ htmlConfig.headers = htmlConfig.headers.filter(h => !h.key.startsWith('Content-S
 
 htmlConfig.headers.push({
   key: 'Content-Security-Policy-Report-Only',
-  value: getCSPConfig(true)
+  value: config.getCSPConfig(true)
 })
 
 if (!reportOnly) {
   htmlConfig.headers.push({
     key: 'Content-Security-Policy',
-    value: getCSPConfig(false)
+    value: config.getCSPConfig(false)
   })
 }
 
 fs.writeFileSync(firebaseConfigFile, JSON.stringify(firebaseConfig, null, 3), 'utf8')
+
+// Robot txt
+const robotTxtFile = path.join(app, 'robot.txt')
+fs.writeFileSync(robotTxtFile, config.getRobotTxt(), 'utf8')
