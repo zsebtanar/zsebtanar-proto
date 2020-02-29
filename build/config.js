@@ -42,6 +42,7 @@ const commonConfig = {
 
 const envConfig = {
   development: {
+    siteUrl: 'http://localhost:3000/',
     api: 'https://zsebtanar-test.firebaseapp.com/api',
     firebase: {
       apiKey: 'AIzaSyD3SmCO7FvzawbprcqeC42YZBDmf6TZr4A',
@@ -64,6 +65,7 @@ const envConfig = {
     sentry: {}
   },
   test: {
+    siteUrl: 'https://zsebtanar-test.firebaseapp.com',
     api: '/api',
     firebase: {
       apiKey: 'AIzaSyD3SmCO7FvzawbprcqeC42YZBDmf6TZr4A',
@@ -89,6 +91,7 @@ const envConfig = {
     }
   },
   production: {
+    siteUrl: 'https://zsebtanar.hu/',
     api: '/api',
     firebase: {
       apiKey: 'AIzaSyAqJ6qUZfiB586kHXHZdagx-i0vzHMrqMU',
@@ -129,7 +132,19 @@ function getCSPConfig(withReport) {
     .join('; ')
 }
 
+function getRobotTxt () {
+  const server = process.env.SERVER_ENV || 'development'
+  const config = getConfig()
+  switch (server) {
+    case 'production':
+      return ['User-agent: * Disallow: /admin/*', `Sitemap: ${config.siteUrl}sitemap.xml`].join('\n')
+    default:
+      return ['User-agent: * Disallow: /'].join('\n')
+  }
+}
+
 module.exports = {
   getConfig,
-  getCSPConfig
+  getCSPConfig,
+  getRobotTxt
 }
