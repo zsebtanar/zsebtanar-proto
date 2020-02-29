@@ -6,7 +6,7 @@ version: 2
 jobs:
   build-test:
     docker:
-      - image: circleci/node:8.5
+      - image: circleci/node:13
     environment:
       NODE_ENV: test
       SERVER_ENV: test
@@ -48,7 +48,7 @@ jobs:
 
   build-prod:
     docker:
-      - image: circleci/node:8.5
+      - image: circleci/node:13
     environment:
       NODE_ENV: test
       SERVER_ENV: production
@@ -90,7 +90,7 @@ jobs:
 
   build-ci:
     docker:
-    - image: circleci/node:8.5
+    - image: circleci/node:13
     environment:
       NODE_ENV: test
       SERVER_ENV: test
