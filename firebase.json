@@ -78,6 +78,10 @@
             "destination": "/:asset"
          },
          {
+            "source": "/google9ca33113ff814b8c.html",
+            "destination": "/google9ca33113ff814b8c.html"
+         },
+         {
             "source": "/admin/**",
             "destination": "/admin.html"
          },
