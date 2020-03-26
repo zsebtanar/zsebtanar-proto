@@ -1,4 +1,3 @@
-
 export enum RepresentationType {
   Text,
   Number,
@@ -66,19 +65,29 @@ export type Representation =
   | RadioButtonField
   | SelectField
 
-export interface FormField<T = string> {
+interface FormFieldTemplateOptions {}
+
+export interface FieldDefinition<T = string> {
   name: string
+  templateOptions: FormFieldTemplateOptions
   defaultValue?: T
   placeholder?: string
   helpText?: string
   representation: Representation
 }
 
+export type FieldDefinitionList<TModel> = FieldDefinition<keyof TModel>[]
+
 export interface FieldOnChangeEvent<T> {
   name: string
   value: T
 }
 
-export interface FieldOnChange<T> {
-  (event: FieldOnChangeEvent<T>): void
+export type FieldOnChange<TValue> = (value: TValue) => void
+
+export interface FieldModelProps<TValue, TTemplate> {
+  name: string
+  value: TValue
+  onChange: (name: string, newValue: TValue) => void
+  templateOptions: TTemplate
 }

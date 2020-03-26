@@ -66,7 +66,9 @@
     "react-test-renderer": "^16.12.0",
     "redux": "4.0.4",
     "redux-logger": "3.0.6",
-    "redux-thunk": "2.3.0"
+    "redux-thunk": "2.3.0",
+    "xstate": "latest",
+    "@xstate/react": "latest"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",

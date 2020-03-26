@@ -14,7 +14,7 @@ const MIN_TERM_LENGTH = 2
 export function Search() {
   const { q } = useParams()
   const { value: searchTerm, bind: bindSearch } = useInput(q ?? '')
-  const { result, isEmpty, loading, error } = useAlgoliaSearch(searchTerm, MIN_TERM_LENGTH)
+  const { result, hasNoResult, isLoading, isSuccess, error } = useAlgoliaSearch(searchTerm, MIN_TERM_LENGTH)
 
   useEffect(() => {
     if (result) {
@@ -50,10 +50,10 @@ export function Search() {
           Írj be legalább 2 karaktert a keresés megkezdéséhez.
         </div>
       )}
-      {loading && <Loading />}
+      {isLoading && <Loading />}
       {error && <ErrorMsg error={error} />}
-      {isEmpty && <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>}
-      {!isEmpty && result && <SearchResult term={searchTerm} data={result} />}
+      {hasNoResult && <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>}
+      {!isSuccess && result && <SearchResult term={searchTerm} data={result} />}
     </Page>
   )
 }

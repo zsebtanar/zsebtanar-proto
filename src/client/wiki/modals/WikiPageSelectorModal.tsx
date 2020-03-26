@@ -7,7 +7,7 @@ import { Loading, Alert } from 'client/generic/components'
 ///
 
 export function WikiPageSelectorModal() {
-  const state = useLoadWikiPages()
+  const {isPending, isLoading, hasNoResult, result} = useLoadWikiPages()
   const { closeModal } = useDialog()
 
   const selectPage = page => {
@@ -19,10 +19,10 @@ export function WikiPageSelectorModal() {
       <DialogHeader onClose={closeModal}>Wiki oldalak</DialogHeader>
       <DialogBody>
         <div className="list-group">
-          {state.loading && <Loading />}
-          {state.isEmpty && <Alert type={'info'}>Nincs találat</Alert>}
-          {state.result &&
-            state.result.map(item => (
+          {isPending || isLoading && <Loading />}
+          {hasNoResult && <Alert type={'info'}>Nincs találat</Alert>}
+          {result &&
+            result.map(item => (
               <button
                 key={item.id}
                 className="list-group-item list-group-item-action"

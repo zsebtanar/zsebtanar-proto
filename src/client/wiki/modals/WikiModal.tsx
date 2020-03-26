@@ -21,13 +21,13 @@ export function WikiModal({ pageId }: Props) {
   const [activePage, setActivePage] = useState<number>(0)
   const [history, setHistory] = useState<WikiPageModel[]>([])
 
-  const state = useLoadWikiPage(nextPageId)
+  const {isPending, isSuccess, isLoading, result} = useLoadWikiPage(nextPageId)
 
   useEffect(() => {
-    if (state.result !== undefined) {
-      setHistory([...history, state.result])
+    if (result !== undefined) {
+      setHistory([...history, result])
     }
-  }, [state.result])
+  }, [result])
 
   const page = history[activePage]
 
@@ -51,8 +51,8 @@ export function WikiModal({ pageId }: Props) {
       </DialogHeader>
       <DialogBody>
         <div className="list-group">
-          {state.loading && <Loading />}
-          {state.loading && (
+          {isPending || isLoading && <Loading />}
+          {isSuccess && (
             <Markdown source={page.content} resources={page.resources} onWikiLink={navForward} />
           )}
         </div>

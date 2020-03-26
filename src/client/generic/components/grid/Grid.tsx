@@ -20,7 +20,7 @@ interface Props<T> {
 export function Grid<T extends BaseModel>({ dataSource, columnDefs, rowAction, defaultPageSize }: Props<T>) {
   const [pageNum, setPageNum] = useState<number>(0)
   const [colDefs, setColDefs] = useState<InternalGridColumnDefinition<T>[]>([])
-  const { loading, error, isEmpty, result } = useGridDS<T>(
+  const { isPending, isLoading, error, hasNoResult, result } = useGridDS<T>(
     dataSource,
     pageNum,
     defaultPageSize || 25
@@ -32,7 +32,7 @@ export function Grid<T extends BaseModel>({ dataSource, columnDefs, rowAction, d
     }
   })
 
-  if (loading) {
+  if (isLoading || isPending) {
     return (
       <div>
         <Loading />
@@ -40,7 +40,7 @@ export function Grid<T extends BaseModel>({ dataSource, columnDefs, rowAction, d
     )
   } else if (error) {
     return <Alert type={'danger'}>Hiba: {JSON.stringify(error)}</Alert>
-  } else if (isEmpty) {
+  } else if (hasNoResult) {
     return <Alert type={'info'}>A lista üres</Alert>
   } else if (!colDefs?.length) {
     return <Alert type={'info'}>Nincsenek oszlopai a listának</Alert>

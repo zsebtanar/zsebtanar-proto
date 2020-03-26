@@ -2,22 +2,22 @@ import React from 'react'
 import { Loading, Alert, Icon, Button, FormGroup } from 'client/generic/components'
 import { Simulate } from 'react-dom/test-utils'
 import { NavLink } from 'react-router-dom'
-import { TextEditor } from 'client/generic/components/TextEditor'
-import { FormField, RepresentationType } from 'client/generic/types'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { FieldDefinition, RepresentationType } from 'client/generic/types'
 import { useForm } from 'client/generic/hooks/form'
 import { WikiPageModel } from 'client/wiki/types'
 import error = Simulate.error
 
 
-const formFields: FormField[] = [
+const formFields: FieldDefinition[] = [
   {
-    name: 'title',
+    key: 'title',
     representation: {
       type: RepresentationType.Text
     }
   },
   {
-    name: 'content',
+    key: 'content',
     representation: {
       type: RepresentationType.Markdown
     }

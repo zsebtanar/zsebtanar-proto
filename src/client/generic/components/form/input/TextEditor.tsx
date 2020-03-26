@@ -9,7 +9,7 @@ import { ImageBrowserModal } from 'client/file-upload/modals/ImageBrowserModal'
 import { RemoteFileResource } from 'client/file-upload/types'
 import { MarkdownResources } from 'client/generic/components/markdown/types'
 
-import 'client/generic/components/TextEditor.scss'
+import 'client/generic/components/form/input/TextEditor.scss'
 
 ///
 

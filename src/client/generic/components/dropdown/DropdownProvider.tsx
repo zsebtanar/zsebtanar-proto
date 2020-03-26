@@ -28,7 +28,7 @@ export function DropdownProvider({ children }: Props) {
 export function useDropdown() {
   const context = React.useContext(DropdownContext)
   if (context === undefined) {
-    throw new Error('useUser must be used within a UserContext')
+    throw new Error('useDropdown must be used within a DropdownContext')
   }
   return context
 }

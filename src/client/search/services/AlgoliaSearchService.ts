@@ -3,7 +3,6 @@ import { useDataLoad } from 'client/generic/hooks'
 import { algoliaSearch } from './search'
 import { ExerciseSearchResult } from 'client/search/types'
 
-
 export function useAlgoliaSearch(searchTerm: string, limit = 2) {
   return useDataLoad<ExerciseSearchResult>(
     () => {

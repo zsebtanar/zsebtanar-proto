@@ -1,18 +1,25 @@
 import { useReducer, Reducer, useEffect, DependencyList } from 'react'
 
 interface State<T> {
-  loading: boolean
-  isEmpty?: boolean
+  state: 'pending' | 'loading' | 'success' | 'noResult' | 'error'
   error?: Error
   result?: T
 }
+
+interface Getters {
+  readonly isPending: boolean
+  readonly isLoading: boolean
+  readonly hasError: boolean
+  readonly isSuccess: boolean
+  readonly hasNoResult: boolean
+}
+
+interface API<T> extends State<T>, Getters{}
 
 type Action<T> =
   | { type: 'loading' }
   | { type: 'success'; payload: { result: T; isEmpty: boolean } }
   | { type: 'error'; payload: Error }
-
-interface API<T> extends State<T> {}
 
 interface Options<T> {
   isEmpty(data: T): boolean
@@ -20,11 +27,17 @@ interface Options<T> {
 
 ///
 
-const initState = {
-  loading: true,
-  error: undefined,
-  result: undefined,
-  isEmpty: undefined
+
+const initState: State<never> = {
+  state: 'pending'
+}
+
+const getters: Getters = {
+  get isPending(this: State<never>) {return this.state === 'pending'},
+  get isLoading(this: State<never>) {return this.state === 'loading'},
+  get hasError(this: State<never>) {return this.state === 'error'},
+  get isSuccess(this: State<never>) {return this.state === 'success'},
+  get hasNoResult(this: State<never>) {return this.state === 'noResult'}
 }
 
 export function useDataLoad<T>(
@@ -40,16 +53,13 @@ export function useDataLoad<T>(
       result =>
         dispatch({
           type: 'success',
-          payload: {
-            result,
-            isEmpty: options?.isEmpty?.(result) ?? isEmpty(result)
-          }
+          payload: { result, isEmpty: options?.isEmpty?.(result) ?? isEmpty(result) }
         }),
-      error => dispatch({ type: 'error', payload: error })
-    )
+
+    ).catch(error => dispatch({ type: 'error', payload: error }))
   }, deps)
 
-  return state
+  return { ...state, ...getters }
 }
 
 ///
@@ -57,12 +67,12 @@ export function useDataLoad<T>(
 function userReducer<T>(state: State<T>, action: Action<T>): State<T> {
   switch (action.type) {
     case 'loading':
-      return { loading: true, error: undefined, result: undefined, isEmpty: undefined }
+      return { state: 'loading', result: undefined, error: undefined }
     case 'error':
-      return { loading: false, error: action.payload, result: undefined, isEmpty: true }
+      return { state: 'error', error: action.payload, result: undefined }
     case 'success': {
       const { result, isEmpty } = action.payload
-      return { loading: false, error: undefined, result, isEmpty }
+      return { state: isEmpty ? 'noResult' : 'success', error: undefined, result }
     }
   }
 }
