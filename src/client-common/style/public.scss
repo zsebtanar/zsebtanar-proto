@@ -13,6 +13,7 @@ body,
 
 .page-container {
   margin-top: 4rem;
+  margin-bottom: 10rem;
   display: flex;
   flex-flow: column;
   .main-content {
@@ -39,6 +40,14 @@ body,
   padding-top: 1.5rem;
   color: #777;
   border-top: 0.05rem solid #e5e5e5;
+
+  .footer-link {
+    padding-bottom: 0.2rem;
+  }
+
+  .footer-copyright {
+    padding: 1rem 0;
+  }
 }
 .modal.show .modal-dialog {
   z-index: 1100;
@@ -69,6 +78,7 @@ body,
 }
 .jumbotron {
   background: transparent;
+  margin-bottom: 0;
 
   .or-label {
     display: inline-flex;
@@ -84,6 +94,10 @@ body,
       margin: 0 0.5rem;
     }
   }
+}
+
+.home-youtube {
+  margin-bottom: 5rem;
 }
 
 .markdown {

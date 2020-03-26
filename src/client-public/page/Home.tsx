@@ -10,6 +10,7 @@ import { PatreonButton } from '../component/PatreonButton'
 import { MainClassificationSelector } from '../component/MainClassificationSelector'
 import { RouteComponentProps } from 'react-router'
 import { setupPage } from 'client-common/component/hoc/setupPage'
+import { YouTubeEmbed } from '../component/YouTubeEmbed'
 
 interface StoreProps {
   session: state.Session
@@ -65,6 +66,10 @@ export const Home = pipe(
                 </div>
               </NavLink>
             </div>
+          </div>
+
+          <div className="home-youtube d-flex justify-content-center">
+            <YouTubeEmbed />
           </div>
 
           <MainClassificationSelector />
