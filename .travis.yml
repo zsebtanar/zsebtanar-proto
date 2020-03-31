@@ -4,14 +4,14 @@ language: node_js
 node_js:
   - "13"
 
-script: npm test
-
 jobs:
   include:
-    - stage: Build
+    - stage: test and Build
+      script: npm test
+    - # test and build
       script: NODE_ENV=production npm run build
 
-    - stage: Test relase
+    - stage: Test release
       if: branch = develop
       deploy:
         provider: firebase
