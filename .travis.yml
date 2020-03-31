@@ -1,0 +1,28 @@
+
+
+language: node_js
+node_js:
+  - "13"
+
+jobs:
+  include:
+    - stage: test and Build
+      script: npm test
+    - # test and build
+      script: NODE_ENV=production npm run build
+
+    - stage: Test release
+      if: branch = develop
+      deploy:
+        provider: firebase
+        project: test
+        token:
+          secure: "FIREBASE_DEPLOY_TOKEN"
+
+    - stage: Production release
+      if: branch = master
+      deploy:
+        provider: firebase
+        project: prod
+        token:
+          secure: "FIREBASE_DEPLOY_TOKEN"
