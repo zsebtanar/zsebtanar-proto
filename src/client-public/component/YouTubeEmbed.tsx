@@ -17,7 +17,7 @@ export class YouTubeEmbed extends React.Component<{}, State> {
     axios.get(RRS_URL).then(response => {
       const baseURL = response.data.items[0].link
       const id = baseURL.substr(baseURL.indexOf('=') + 1)
-      const url = `https://youtube.com/embed/${id}?controls=0&autoplay=0`
+      const url = `https://youtube.com/embed/${id}?controls=1&autoplay=0&hl=hu&iv_load_policy=3&rel=0`
       this.setState({ url })
     })
   }

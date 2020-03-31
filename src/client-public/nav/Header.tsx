@@ -90,7 +90,7 @@ function signedInMenu(props: AllProps) {
       </DropdownToggle>
       <DropdownMenu>
         <NavLink exact to="/profile" className="dropdown-item">
-          Profile
+          Profil
         </NavLink>
         <a href="#" className="dropdown-item" onClick={props.signOut}>
           Kijelentkezés
