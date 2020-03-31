@@ -1,5 +1,28 @@
-dist: trusty
+
 
 language: node_js
 node_js:
   - "13"
+
+script: npm test
+
+jobs:
+  include:
+    - stage: Build
+      script: NODE_ENV=production npm run build
+
+    - stage: Test relase
+      if: branch = develop
+      deploy:
+        provider: firebase
+        project: test
+        token:
+          secure: "FIREBASE_DEPLOY_TOKEN"
+
+    - stage: Production release
+      if: branch = master
+      deploy:
+        provider: firebase
+        project: prod
+        token:
+          secure: "FIREBASE_DEPLOY_TOKEN"
