@@ -4,6 +4,9 @@ language: node_js
 node_js:
   - "13"
 
+install:
+  - npm install
+
 script:
   - npm test
   - NODE_ENV=production npm run build
