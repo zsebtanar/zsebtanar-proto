@@ -1,16 +1,17 @@
-### Elvárt viselkedés
+### Summary:
 
+### Steps to Reproduce:
 
-### Jelenlegi viselkedés
+### Expected Results:
 
+### Actual Results:
 
-### Környezet
+___
 
- - szerver: test vagy prod?
- - böngésző név és verzió:
- - OS név és verzió
+### More Info
 
-### Lépések a viselkedés reprodukálásához
-
- 1) ...
-   
+Info    | Details    
+---     | ---
+Server  | Test/Prod
+Browser | Name/Version
+OS      | Name/Version
