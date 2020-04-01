@@ -10,17 +10,13 @@ script:
 
 deploy:
   # Deploy on test env
-  - provider: firebase
-    project: test
-    token:
-      secure: "FIREBASE_DEPLOY_TOKEN"
+  - provider: script
+    script: bash ./node_modules/.bin/firebase deploy --project=test --token=$FIREBASE_DEPLOY_TOKEN
     on:
       branche: develop
 
   # Deploy on production env
-  - provider: firebase
-    project: prod
-    token:
-      secure: "FIREBASE_DEPLOY_TOKEN"
+  - provider: script
+    script: bash ./node_modules/.bin/firebase deploy --project=prod --token=$FIREBASE_DEPLOY_TOKEN
     on:
       branche: master
