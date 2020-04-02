@@ -10,6 +10,10 @@ script:
 
 before_deploy:
   - npm install -g firebase-tools
+  - git config --local user.name "Vadasz Laszlo"
+  - git config --local user.email "maxinteger@gmail.com"
+  - export TRAVIS_TAG=v$(date +'%Y-%m-%d')
+  - git tag $TRAVIS_TAG
 
 deploy:
   # Deploy on test env
@@ -23,5 +27,11 @@ deploy:
   - provider: firebase
     edge: true
     project: prod
+    on:
+      branche: master
+
+  # Deploy on production env
+  - provider: releases
+    edge: true
     on:
       branche: master
