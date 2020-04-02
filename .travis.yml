@@ -4,6 +4,15 @@ language: node_js
 node_js:
   - "13"
 
+env:
+  - NODE_ENV=test
+  - SERVER_ENV=test
+
+before_script:
+  - if [[ $TRAVIS_BRANCH == "master" ]]; then
+      export SERVER_ENV=production;
+    fi
+
 script:
   - npm test
   - NODE_ENV=production npm run build
