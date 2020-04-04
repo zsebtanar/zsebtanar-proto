@@ -17,6 +17,7 @@ import {
 import { checkSolution, getHint, getPublicExercise } from 'client-common/services/exercise'
 import { openSignInModal } from 'client-common/store/actions/modal'
 import { pairsInOrder } from 'shared/util/fn'
+import { updateSolvedExercise } from 'client-common/services/user-statistics'
 
 export const EXERCISE_INIT = 'EXERCISE_INIT'
 export const EXERCISE_GET = 'EXERCISE_GET'
@@ -25,6 +26,7 @@ export const EXERCISE_CHECK_SUCCESS = 'EXERCISE_CHECK_SUCCESS'
 export const EXERCISE_CHECK_FAIL = 'EXERCISE_CHECK_FAIL'
 export const EXERCISE_CHECK_ERROR = 'EXERCISE_CHECK_ERROR'
 export const EXERCISE_NEXT_SUB_TASK = 'EXERCISE_NEXT_SUB_TASK'
+export const EXERCISE_FINISHED = 'EXERCISE_FINISHED'
 
 export const HINT_GET = 'HINT_GET'
 export const HINT_GET_ERROR = 'HINT_GET_ERROR'
@@ -109,10 +111,15 @@ export function getHintAction(exerciseId, subTaskId, lastHintId): any {
 }
 
 export function activateNextSubTask() {
-  return (dispatch, getState) => 
-  {
-    dispatch({type: EXERCISE_NEXT_SUB_TASK})
+  return (dispatch, getState) => {
+    dispatch({ type: EXERCISE_NEXT_SUB_TASK })
     const state = getState()
+    const exercise = state.app.exercise.item
+    const session = state.app.session
+
+    if (exercise.isFinished && session.signedIn) {
+      updateSolvedExercise(session.user.uid, exercise._key, exercise.statistics)
+    }
   }
 }
 
@@ -154,8 +161,8 @@ const reduceHintUsed = (state) =>
   evolve({
     item: {
       statistics: {
-          usedHelps: add(1)
-        }
+        usedHelps: add(1)
+      }
     }
   })(state)
 
@@ -163,8 +170,9 @@ const reduceAttemptHappened = (state) =>
   evolve({
     item: {
       statistics: {
-          numberOfAttempt: add(1)
-        }
+        numberOfAttempt: add(1),
+        endTime: always(new Date().getTime())
+      }
     }
   })(state)
 
@@ -181,8 +189,10 @@ const reduceExercise = (state, { payload }) => ({
       }))
     }),
     assocPath(['statistics'], {
-      numberOfAttempt : 0,
-      usedHelps: 0
+      numberOfAttempt: 0,
+      usedHelps: 0,
+      startTime: new Date().getTime(),
+      endTime: new Date().getTime()
     }),
     assocPath(['allTasks'], keys(payload.subTasks).length),
     assocPath(['finishedTasks'], 0),

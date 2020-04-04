@@ -9,7 +9,7 @@ export const route = express.Router()
 
 // Add or update the existing statistics for the task
 route.post(
-  '/updateExerciseTask/:uid/:exerciseId',
+  '/updateSolvedExercise/:uid/:exerciseId',
   [getToken, onlyUser, requestValidator({ body: solvedExerciseUpdateSchema })],
   updateSolvedExercise
 )
