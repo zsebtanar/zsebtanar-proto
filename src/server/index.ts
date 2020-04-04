@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions'
 import app from './api'
+import { userSolvedAnExercise } from './trigger/userSolvedAnExercise'
 
 /**
  * HTTP endpoints
@@ -11,3 +12,6 @@ export const api = functions.https.onRequest((request: any, response: any) => {
   }
   return app(request, response)
 })
+
+export const checkUserStatistics = functions.database.ref('/userStatistics/{userUId}/solvedExercises/{exerciseId}')
+  .onWrite((snapshot, context) => userSolvedAnExercise(snapshot, context))
