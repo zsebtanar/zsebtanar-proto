@@ -81,6 +81,8 @@
     "@types/react-router-dom": "^4.3.0",
     "awesome-typescript-loader": "5.2.0",
     "bootstrap": "^4.4.1",
+    "concurrently": "^5.1.0",
+    "cross-env": "^7.0.2",
     "css-loader": "1.0.0",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "firebase-tools": "^8.0.0",
@@ -114,7 +116,7 @@
   "scripts": {
     "test": "jest test",
     "start": "npm run ::client-dev",
-    "build": "NODE_ENV=production npm run ::server-build && npm run ::client-build",
+    "build": "cross-env NODE_ENV=production npm run ::server-build && npm run ::client-build",
     "predeploy": "npm run test",
     "deploy": "npm run build && firebase --project=test deploy",
     "postbuild": "node build/post-build",
@@ -124,9 +126,14 @@
     "server:logs": "firebase functions:log",
     "lint": "tslint --project tsconfig.json",
     "precommit": "lint-staged",
-    "::client-dev": "webpack-dev-server --progress --config ./build/webpack.client.js",
-    "::client-build": "NODE_ENV=production webpack -p --config ./build/webpack.client.js",
-    "::server-build": "node build/prepare-server && NODE_ENV=production webpack -p --display-error-details --config ./build/webpack.server.js"
+    "::client-dev": "webpack-dev-server --config ./build/webpack.client.js",
+    "::client-build": "cross-env NODE_ENV=production webpack -p --config ./build/webpack.client.js",
+    "::server-dev": "concurrently --kill-others --names \"server,firebase,client\" \"npm run ::server-compile -- --watch\" \"npm run ::server-emulator\" \"SERVER_ENV=emulator npm run ::client-dev\"",
+    "::server-build": "npm run ::server-compile",
+    "pre::server-compile": "npm run ::server-prep",
+    "::server-compile": "cross-env NODE_ENV=production webpack --display-error-details --config ./build/webpack.server.js",
+    "::server-emulator": "./build/emulator.sh",
+    "::server-prep": "node build/prepare-server"
   },
   "jest": {
     "roots": [

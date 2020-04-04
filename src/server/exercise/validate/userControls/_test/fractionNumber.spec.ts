@@ -20,10 +20,6 @@ describe('fractionNumber', () => {
 
   it('should fail if the input is not valid', () => {
     const f1 = fractionNum(3, 9)
-    expect(fractionNumber(null, f1, { n: 1, d: 3 })).toBe(false)
-    expect(fractionNumber(null, f1, {})).toBe(false)
-    expect(fractionNumber(null, f1, 10)).toBe(false)
     expect(fractionNumber(null, f1, undefined)).toBe(false)
-    expect(fractionNumber(null, f1, NaN)).toBe(false)
   })
 })

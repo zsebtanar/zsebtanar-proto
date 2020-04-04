@@ -1,8 +1,6 @@
 const { injectJS, injectCSS } = require('./utils')
 const { getConfig } = require('./config')
 
-//const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin')
-
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')

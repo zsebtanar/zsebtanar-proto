@@ -385,3 +385,9 @@ declare interface GridDataSource<T> {
   loadList(options?: GridFilterOptions): Promise<QuerySnapshot>
   getPage(pageNumber: number, limit: number): Promise<T[]>
 }
+
+type DispatchProp<Fn> = Fn extends (
+  ...actionCreatorArgs: infer Args
+) => (...dispatchArgs: unknown[]) => infer Return
+  ? (...args: Args) => Return
+  : never
