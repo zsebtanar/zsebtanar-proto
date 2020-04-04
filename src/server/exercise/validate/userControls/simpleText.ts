@@ -3,7 +3,7 @@ import { any, equals, identity, pipe, replace, toLower, values } from 'ramda'
 export function simpleTextCheck(
   control: DB.UCSimpleText,
   solution: DB.UCSimpleTextSolution,
-  userInput: DB.UCSimpleTextSolution
+  userInput: string
 ): boolean {
   const transform = pipe(
     input => input || '',

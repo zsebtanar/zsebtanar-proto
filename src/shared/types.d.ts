@@ -274,8 +274,8 @@ declare namespace DB {
   }
 
   interface UCSimpleTextSolution {
-    ignoreSpaces: boolean
-    caseSensitive: boolean
+    ignoreSpaces?: boolean
+    caseSensitive?: boolean
     options: ObjectMap<string>
   }
 
