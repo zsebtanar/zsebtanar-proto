@@ -170,7 +170,7 @@ const reduceAttemptHappened = (state) =>
   evolve({
     item: {
       statistics: {
-        numberOfAttempt: add(1),
+        numberOfAttempts: add(1),
         endTime: always(new Date().getTime())
       }
     }
@@ -189,7 +189,7 @@ const reduceExercise = (state, { payload }) => ({
       }))
     }),
     assocPath(['statistics'], {
-      numberOfAttempt: 0,
+      numberOfAttempts: 0,
       usedHelps: 0,
       startTime: new Date().getTime(),
       endTime: new Date().getTime()
