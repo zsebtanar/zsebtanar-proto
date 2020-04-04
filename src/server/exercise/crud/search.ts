@@ -21,15 +21,38 @@ const getIndexData = (exercise, classifications) => {
   const topics = pathOr([], ['classification', 'topic'], exercise)
   const tags = pathOr([], ['classification', 'tags'], exercise)
 
-  const classTopics = pipe(prop('subject'), values, map(prop('topic')), mergeAll)(classifications)
+  const classTopics = pipe(
+    prop('subject'),
+    values as any,
+    map(prop('topic')),
+    mergeAll
+  )(classifications)
 
-  const gradeList = pipe(prop('grade'), pick(grades), values)(classifications)
+  const gradeList = pipe(
+    prop('grade'),
+    pick(grades),
+    values
+  )(classifications)
 
   return {
     grade: map(prop('name'), gradeList),
-    subject: pipe(prop('subject'), pick(subjects), values, map(prop('name')))(classifications),
-    topic: pipe(pick(topics), values, map(prop('name')))(classTopics),
-    tags: pipe(prop('tags'), pick(tags), values, map(prop('name')))(classifications),
+    subject: pipe(
+      prop('subject'),
+      pick(subjects),
+      values as any,
+      map(prop('name') as any)
+    )(classifications),
+    topic: pipe(
+      pick(topics),
+      values as any,
+      map(prop('name') as any)
+    )(classTopics),
+    tags: pipe(
+      prop('tags'),
+      pick(tags),
+      values as any,
+      map(prop('name') as any)
+    )(classifications),
     difficulty: exercise.difficulty,
     description: exercise.description,
     searchableDescription: unTokeniseMarkdown(exercise.description)

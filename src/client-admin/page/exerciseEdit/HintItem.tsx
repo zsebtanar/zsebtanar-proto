@@ -21,10 +21,7 @@ export class HintItem extends React.Component<any, any> {
 
     const opacity = isDragging ? 0 : 1
 
-    return pipe(
-      connectDropTarget,
-      connectDragPreview
-    )(
+    return (pipe as any)(connectDropTarget, connectDragPreview)(
       <div
         className="list-group-item list-group-item-action flex-column align-items-start"
         style={{ opacity }}

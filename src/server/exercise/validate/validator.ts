@@ -18,7 +18,7 @@ type ValidatorFn = (
 
 export default (
   userSolutions: ObjectMap<DB.UserControlSolution>,
-  subTask: DB.SubTask
+  subTask: any
 ): ObjectMap<boolean> => {
   return mapObjIndexed((solution: DB.UserControlSolution, key: string) => {
     const control: DB.UserControl = propOr({}, key, subTask.controls)

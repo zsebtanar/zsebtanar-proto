@@ -26,7 +26,7 @@ export function numberList(
   } else {
     return pipe(
       toPairs,
-      all(([key, val]) => parseFloat(userInput[key]) === parseFloat(val))
+      all(([key, val]) => parseFloat(userInput[key]) === parseFloat(val as any))
     )(solutions)
   }
 }

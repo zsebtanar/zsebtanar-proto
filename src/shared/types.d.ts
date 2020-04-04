@@ -274,8 +274,8 @@ declare namespace DB {
   }
 
   interface UCSimpleTextSolution {
-    ignoreSpaces: boolean
-    caseSensitive: boolean
+    ignoreSpaces?: boolean
+    caseSensitive?: boolean
     options: ObjectMap<string>
   }
 
@@ -385,3 +385,9 @@ declare interface GridDataSource<T> {
   loadList(options?: GridFilterOptions): Promise<QuerySnapshot>
   getPage(pageNumber: number, limit: number): Promise<T[]>
 }
+
+type DispatchProp<Fn> = Fn extends (
+  ...actionCreatorArgs: infer Args
+) => (...dispatchArgs: unknown[]) => infer Return
+  ? (...args: Args) => Return
+  : never

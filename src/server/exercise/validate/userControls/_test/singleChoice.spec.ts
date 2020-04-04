@@ -6,6 +6,8 @@ describe('singleChoice', () => {
   })
 
   it('should fail in any other case', () => {
-    ;[null, undefined, 'a', 1].map(input => expect(singleChoice(null, 'A', input)).toBe(false))
+    ;[null, undefined, 'a', 1].map(input =>
+      expect(singleChoice(null, 'A', input as any)).toBe(false)
+    )
   })
 })

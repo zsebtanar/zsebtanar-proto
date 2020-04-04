@@ -59,5 +59,6 @@ const updateClassification = curry((exKey, selectedItems, object) =>
       )
     ]),
     mergeAll
+    // @ts-ignore
   )(object)
 )
