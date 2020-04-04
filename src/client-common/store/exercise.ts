@@ -28,6 +28,9 @@ export const EXERCISE_NEXT_SUB_TASK = 'EXERCISE_NEXT_SUB_TASK'
 
 export const HINT_GET = 'HINT_GET'
 export const HINT_GET_ERROR = 'HINT_GET_ERROR'
+export const HINT_USED = 'HINT_USED'
+
+export const ATTEMPT_HAPPEN = 'ATTEMPT_HAPPEN'
 
 export const TASK_STATUS_WAITING = 'waiting'
 export const TASK_STATUS_ACTIVE = 'active'
@@ -64,6 +67,8 @@ export function checkSolutionAction(exerciseId, subTaskId, solutions): any {
           }
         })
 
+        dispatch({ type: ATTEMPT_HAPPEN })
+
         if (isValid) {
           dispatch(activateNextSubTask())
         }
@@ -87,7 +92,7 @@ export function getHintAction(exerciseId, subTaskId, lastHintId): any {
     }
 
     return getHint(exerciseId, subTaskId, lastHintId)
-      .then(({ data }) =>
+      .then(({ data }) => {
         dispatch({
           type: HINT_GET,
           payload: data,
@@ -96,13 +101,19 @@ export function getHintAction(exerciseId, subTaskId, lastHintId): any {
             subTaskId
           }
         })
-      )
+
+        dispatch({ type: HINT_USED })
+      })
       .catch(error => dispatch({ type: HINT_GET_ERROR, payload: error }))
   }
 }
 
 export function activateNextSubTask() {
-  return { type: EXERCISE_NEXT_SUB_TASK }
+  return (dispatch, getState) => 
+  {
+    dispatch({type: EXERCISE_NEXT_SUB_TASK})
+    const state = getState()
+  }
 }
 
 /**
@@ -130,10 +141,32 @@ export function exerciseReducer(state = INIT_STATE, action) {
       return reduceFailedCheck(state, action)
     case EXERCISE_CHECK_SUCCESS:
       return reduceSuccessCheck(state, action)
+    case HINT_USED:
+      return reduceHintUsed(state)
+    case ATTEMPT_HAPPEN:
+      return reduceAttemptHappened(state)
     default:
       return state
   }
 }
+
+const reduceHintUsed = (state) =>
+  evolve({
+    item: {
+      statistics: {
+          usedHelps: add(1)
+        }
+    }
+  })(state)
+
+const reduceAttemptHappened = (state) =>
+  evolve({
+    item: {
+      statistics: {
+          numberOfAttempt: add(1)
+        }
+    }
+  })(state)
 
 const reduceExercise = (state, { payload }) => ({
   item: pipe(
@@ -146,6 +179,10 @@ const reduceExercise = (state, { payload }) => ({
         hintsLeft: pathOr(0, ['hintCount'], task),
         validity: {}
       }))
+    }),
+    assocPath(['statistics'], {
+      numberOfAttempt : 0,
+      usedHelps: 0
     }),
     assocPath(['allTasks'], keys(payload.subTasks).length),
     assocPath(['finishedTasks'], 0),
