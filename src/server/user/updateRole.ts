@@ -9,6 +9,7 @@ export default errorHandler((req, res) => {
     role: data.newRole
   }
 
+  // TODO Check if anyone who is authenticated can call this with different uid
   return admin
     .auth()
     .setCustomUserClaims(uid, customClaims)
