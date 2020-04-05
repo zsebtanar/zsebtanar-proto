@@ -103,8 +103,11 @@ function signedInMenu(props: AllProps, numberOfRewards) {
           <NavLink exact to="/profile" className="dropdown-item">
             Profil
         </NavLink>
-          <a href="#" className="dropdown-item" onClick={props.signOut}>
-            Kijelentkezés
+        <NavLink exact to="/rewards" className="dropdown-item">
+          Jutalmak
+        </NavLink>
+        <a href="#" className="dropdown-item" onClick={props.signOut}>
+          Kijelentkezés
         </a>
         </DropdownMenu>
       </Dropdown>

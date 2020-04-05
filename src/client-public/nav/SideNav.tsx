@@ -67,11 +67,23 @@ export const SideNav = pipe(
 
 function signedInMenu(props: AllProps) {
   return (
-    <li className="nav-item" key="sing-out">
-      <a href="#" className="nav-link" onClick={props.signOut}>
-        Kijelentkezés
-      </a>
-    </li>
+    <>
+      <li className="nav-item" key="profile">
+        <SideNavLink activeClassName="active" className="nav-link" to="/profile">
+          Profil
+        </SideNavLink>
+      </li>
+      <li className="nav-item" key="rewards">
+        <SideNavLink activeClassName="active" className="nav-link" to="/rewards">
+          Jutalmak
+        </SideNavLink>
+      </li>
+      <li className="nav-item" key="sing-out">
+        <a href="#" className="nav-link" onClick={props.signOut}>
+          Kijelentkezés
+        </a>
+      </li>
+    </>
   )
 }
 

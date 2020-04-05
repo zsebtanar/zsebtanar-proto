@@ -20,6 +20,8 @@ import { Profile } from './page/Profile'
 import { Search } from './page/Search'
 import { Workarounds } from '../client-common/page/Workarounds'
 import { CookieConsent } from './component/CookieConsent'
+import Rewards from './page/Rewards'
+import { Reward } from './page/Reward'
 
 interface RoutersProps {
   history: History
@@ -72,6 +74,8 @@ const App = props => () => {
           <Route path="/about" component={About} />
           <Route path="/joinus" component={JoinUs} />
           <Route path="/support" component={Workarounds} />
+          <Route path="/rewards" component={Rewards} />
+          <Route path="/reward/:reward" component={Reward} />
           <Route component={Page404} />
         </Switch>
       </main>
