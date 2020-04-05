@@ -6,7 +6,7 @@ function RewardCard(props) {
   const { id, name, dateOfAchieving, description } = props
   const imageURL = props.imageURL
     ? props.imageURL
-    : 'https://image.flaticon.com/icons/svg/420/420105.svg'
+    : '/assets/images/trophy-empty.svg'
   return (
     <div className="card m-1" style={{ width: '250px' }}>
       <img src={imageURL} className="card-img-top p-2" alt="trófea" width="120px" height="120px" />

@@ -62,7 +62,7 @@ export class Reward extends React.Component<RewardProps, RewardState> {
     return (
       <div className="text-center">
         <img
-          src="https://image.flaticon.com/icons/svg/420/420105.svg"
+          src="/assets/images/trophy-empty.svg"
           width="200px"
           height="200px"
           className="m-2"
