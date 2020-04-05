@@ -45,6 +45,13 @@ export const Header = connect<StoreProps, DispatchProps, {}>(
   }
 )(function HeaderComp(props: AllProps) {
   const { signedIn, token } = props.session
+  var numberOfRewards = 0
+  if(signedIn){
+    const rewards = props.session.userDetails.rewards;
+    if (rewards) {
+      numberOfRewards = Object.keys(rewards).length
+    }
+  }
   return (
     <header className="header clearfix">
       <div className="container">
@@ -55,7 +62,7 @@ export const Header = connect<StoreProps, DispatchProps, {}>(
           <nav>
             <ul className="nav nav-pills">
               {signedIn && isAdmin(token) ? adminMenu() : ''}
-              {signedIn ? signedInMenu(props) : anonymousUserMenu(props)}
+              {signedIn ? signedInMenu(props, numberOfRewards) : anonymousUserMenu(props)}
             </ul>
           </nav>
         </div>
@@ -64,7 +71,9 @@ export const Header = connect<StoreProps, DispatchProps, {}>(
           <NavLink exact to="/" className="logo-link" aria-label="Főoldal">
             <div className="logo" />
           </NavLink>
-
+          <ul className="nav nav-pills">
+              {signedIn ? renderRewardBox(numberOfRewards) : ''}
+          </ul>
           <Button
             className="navbar-toggle"
             onAction={props.openSideNav}
@@ -79,25 +88,36 @@ export const Header = connect<StoreProps, DispatchProps, {}>(
   )
 })
 
-function signedInMenu(props: AllProps) {
+function signedInMenu(props: AllProps, numberOfRewards) {
   return (
-    <Dropdown elementType="li" className="user-menu" right key="user-menu">
-      <DropdownToggle>
-        <span className="fa-stack fa">
-          <i className="fa fa-circle fa-stack-2x" />
-          <i className="fa fa-user fa-stack-1x fa-inverse" />
-        </span>
-      </DropdownToggle>
-      <DropdownMenu>
-        <NavLink exact to="/profile" className="dropdown-item">
-          Profil
+    <>
+      {renderRewardBox(numberOfRewards)}
+      <Dropdown elementType="li" className="user-menu" right key="user-menu">
+        <DropdownToggle>
+          <span className="fa-stack fa">
+            <i className="fa fa-circle fa-stack-2x" />
+            <i className="fa fa-user fa-stack-1x fa-inverse" />
+          </span>
+        </DropdownToggle>
+        <DropdownMenu>
+          <NavLink exact to="/profile" className="dropdown-item">
+            Profil
         </NavLink>
-        <a href="#" className="dropdown-item" onClick={props.signOut}>
-          Kijelentkezés
+          <a href="#" className="dropdown-item" onClick={props.signOut}>
+            Kijelentkezés
         </a>
-      </DropdownMenu>
-    </Dropdown>
+        </DropdownMenu>
+      </Dropdown>
+    </>
   )
+}
+
+function renderRewardBox(numberOfRewards) {
+  return (
+  <>
+    <li className="reward-box"><NavLink exact to="/Rewards">{numberOfRewards}</NavLink></li>
+    <li className="reward-box"><NavLink exact to="/Rewards"><div className="trophy-filled" /></NavLink></li>
+  </>)
 }
 
 function anonymousUserMenu(props: AllProps) {

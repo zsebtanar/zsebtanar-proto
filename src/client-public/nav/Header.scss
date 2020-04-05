@@ -20,6 +20,21 @@
     height: 3rem;
   }
 
+  .trophy-filled {
+    background: url('/assets/images/trophy-filled.png') no-repeat right center;
+    background-size: contain;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .reward-box {
+    text-align:center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 0.5rem;
+  }
+
   .mobile-header,
   .desktop-header {
     flex-direction: row;
