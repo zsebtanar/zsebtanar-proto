@@ -1,7 +1,8 @@
 import * as React from 'react'
 import RewardCard from '../component/RewardCard'
+import { Loading } from 'client-common/component/general/Loading'
 
-import { getRewardsArray } from '../../client-common/services/rewards'
+import { getRewardsArray } from 'client-common/services/rewards'
 
 export interface RewardsProps {}
 
@@ -43,15 +44,21 @@ class Rewards extends React.Component<RewardsProps, RewardsState> {
       <div>
         <h1>Jutalmak</h1>
         <div className="row">
-          {this.state.rewards.map(e => (
-            <RewardCard
-              key={e.id}
-              id={e.id}
-              name={e.name}
-              description={e.description}
-              imageURL={e.imageURL}
-            />
-          ))}
+          {this.state.rewards.length > 0 ? (
+            this.state.rewards.map(e => (
+              <RewardCard
+                key={e.id}
+                id={e.id}
+                name={e.name}
+                description={e.description}
+                imageURL={e.imageURL}
+              />
+            ))
+          ) : (
+            <div className="my-5 m-auto">
+              <Loading />
+            </div>
+          )}
         </div>
       </div>
     )
