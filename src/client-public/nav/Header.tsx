@@ -47,7 +47,8 @@ export const Header = connect<StoreProps, DispatchProps, {}>(
   const { signedIn, token } = props.session
   var numberOfRewards = 0
   if(signedIn){
-    const rewards = props.session.userDetails.rewards;
+    // TODO reward count refresh during user session
+    const rewards = (props.session && props.session.userDetails && props.session.userDetails.rewards)
     if (rewards) {
       numberOfRewards = Object.keys(rewards).length
     }
