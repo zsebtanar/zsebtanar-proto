@@ -8,7 +8,7 @@ export function binaryChoiceCheck(
   if (isNil(solution) || isEmpty(solution)) return false
 
   return all(
-    key => solution[key].toString() === propOr('', key, userInput).toString(),
+    key => solution[key].toString() === propOr('', key.toString(), userInput).toString(),
     keys(solution)
   )
 }

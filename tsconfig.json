@@ -3,6 +3,7 @@
     "baseUrl": "./src",
     "outDir": "./bin",
     "sourceMap": true,
+    "strict": false,
     "skipDefaultLibCheck": true,
     "noImplicitAny": false,
     "removeComments": false,
@@ -17,5 +18,5 @@
     "jsx": "react"
   },
   "typeRoots": ["node_modules/@types"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "./src/**/*.spec.ts"]
 }

@@ -1,4 +1,4 @@
-**Javított hibajegy:** #
+**Issue number:** #
 
-**Változások:**
+**Changelog:**
  - ...

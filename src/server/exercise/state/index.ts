@@ -1,4 +1,3 @@
-import { curry } from 'ramda'
 import * as express from 'express'
 import { onlyAdmin } from '../../utils/authorization'
 import validateFirebaseIdToken from '../../middlewares/firebaseToken'

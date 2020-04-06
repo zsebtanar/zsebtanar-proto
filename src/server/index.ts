@@ -5,7 +5,7 @@ import app from './api'
  * HTTP endpoints
  */
 
-export const api = functions.https.onRequest((request, response) => {
+export const api = functions.https.onRequest((request: any, response: any) => {
   if (!request.path) {
     request.url = `/${request.url}` // prepend '/' to keep query params if any
   }

@@ -1,117 +1,113 @@
 {
-   "hosting": {
-      "cleanUrls": true,
-      "trailingSlash": false,
-      "public": "bin/app",
-      "ignore": [
-         "firebase.json",
-         "**/.*",
-         "**/node_modules/**",
-         "**/package-lock.json",
-         "**/yarn.lock"
-      ],
-      "headers": [
-         {
-            "source": "manifest.json",
-            "headers": [
-               {
-                  "key": "Content-Type",
-                  "value": "application/manifest+json"
-               }
-            ]
-         },
-         {
-            "source": "**/*.@(js|css|gif|png)",
-            "headers": [
-               {
-                  "key": "Cache-Control",
-                  "value": "max-age=30672000"
-               }
-            ]
-         },
-         {
-            "source": "**/*.@(jpg|jpeg|gif|png|json)",
-            "headers": [
-               {
-                  "key": "Cache-Control",
-                  "value": "max-age=604800"
-               }
-            ]
-         },
-         {
-            "source": "/admin/**",
-            "headers": [
-               {
-                  "key": "X-Robots-Tag",
-                  "value": "noindex"
-               }
-            ]
-         },
-         {
-            "source": "**",
-            "headers": [
-               {
-                  "key": "X-Frame-Options",
-                  "value": "DENY"
-               },
-               {
-                  "key": "X-Content-Type-Options",
-                  "value": "nosniff"
-               },
-               {
-                  "key": "X-XSS-Protection",
-                  "value": "1; mode=block"
-               },
-               {
-                  "key": "Feature-Policy",
-                  "value": "fullscreen 'self'; geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; payment 'none'"
-               },
-               {
-                  "key": "Referrer-Policy",
-                  "value": "same-origin"
-               },
-               {
-                  "key": "Content-Security-Policy-Report-Only",
-                  "value": "base-uri 'self'; default-src 'none'; manifest-src https://zsebtanar.hu; script-src 'self' https://*.firebaseio.com https://www.google-analytics.com https://apis.google.com; connect-src 'self' wss://*.firebaseio.com https://*.algolianet.com https://*.algolia.net https://www.googleapis.com https://securetoken.googleapis.com; font-src https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' https://firebasestorage.googleapis.com https://www.google-analytics.com https://www.paypalobjects.com https://www.algolia.com data:; form-action 'self'; frame-src https://*.firebaseio.com https://zsebtanar.hu; frame-ancestors 'none'; report-uri https://sentry.io/api/275143/security/?sentry_key=1cdfdee0c0f5468a8b1ae6d207271688"
-               }
-            ]
-         }
-      ],
-      "rewrites": [
-         {
-            "source": "/api/**",
-            "function": "api"
-         },
-         {
-            "source": "/:asset*.@(js|css|png|ico|json)",
-            "destination": "/:asset"
-         },
-         {
-            "source": "/robot.txt",
-            "function": "/robot.txt"
-         },
-         {
-            "source": "/sitemap.xml",
-            "function": "/sitemap.xml"
-         },
-         {
-            "source": "/google9ca33113ff814b8c.html",
-            "destination": "/google9ca33113ff814b8c.html"
-         },
-         {
-            "source": "/admin/**",
-            "destination": "/admin.html"
-         },
-         {
-            "source": "**",
-            "destination": "/index.html"
-         }
-      ]
-   },
-   "functions": {
-      "source": "bin/functions"
-   },
-   "database": {
-      "rules": "database.rules.json"
-   }
+  "hosting": {
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "public": "bin/app",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/package-lock.json",
+      "**/yarn.lock"
+    ],
+    "headers": [
+      {
+        "source": "manifest.json",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/manifest+json"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css|gif|png)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=30672000"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|json)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=604800"
+          }
+        ]
+      },
+      {
+        "source": "/admin/**",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex"
+          }
+        ]
+      },
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "X-XSS-Protection",
+            "value": "1; mode=block"
+          },
+          {
+            "key": "Feature-Policy",
+            "value": "fullscreen 'self'; geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; payment 'none'"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "same-origin"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "function": "api"
+      },
+      {
+        "source": "/:asset*.@(js|css|png|ico|json)",
+        "destination": "/:asset"
+      },
+      {
+        "source": "/robot.txt",
+        "function": "/robot.txt"
+      },
+      {
+        "source": "/sitemap.xml",
+        "function": "/sitemap.xml"
+      },
+      {
+        "source": "/google9ca33113ff814b8c.html",
+        "destination": "/google9ca33113ff814b8c.html"
+      },
+      {
+        "source": "/admin/**",
+        "destination": "/admin.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "functions": {
+    "source": "bin/functions"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  }
 }

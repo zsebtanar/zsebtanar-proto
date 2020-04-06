@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { values } from 'ramda'
 import { Markdown } from 'client-common/component/general/Markdown'
 
 export function SimpleText(props) {
@@ -18,13 +17,17 @@ export function SimpleText(props) {
         <Markdown source={props.prefix} resources={props.resources} />
       </span>
       {props.readOnly ? (
-        <strong>&nbsp;{props.value}&nbsp;</strong>
+        <strong>
+          &nbsp;
+          {props.value}
+          &nbsp;
+        </strong>
       ) : (
         <input
           name={props.name}
           type="text"
           className="form-control col-4 mx-1"
-          value={((props.value && values(props.value.options)) || [props.value]).join('; ')}
+          value={props.value || ''}
           onChange={setSolution}
         />
       )}

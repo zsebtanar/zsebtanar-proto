@@ -39,7 +39,10 @@ export const listToOrderedObject = pipe(
 )
 
 // tslint:disable-next-line:no-console
-export const log = (...args) => console.log(...args) || args[0]
+export const log = (...args) => {
+  console.log(...args)
+  return args[0]
+}
 
 export const assert = curry((predicate, message, value) => {
   if (predicate(value)) {
@@ -95,7 +98,10 @@ export const idNotEq = curry<string, any, boolean>(
   )
 )
 export const propNotEq = curry<string, any, any, boolean>(
-  pipe(propEq, not)
+  pipe(
+    propEq,
+    not
+  )
 )
 
 export const isNotNil: (any) => boolean = pipe(
@@ -109,4 +115,6 @@ export const reduceToObj = (fn, array: any[], init: any = undefined) =>
     return obj
   }, init || Object.create(null))
 
-export const lensPathOr = curry<any, string[], Lens>((defVal, p) =>  lens(pathOr(defVal, p), assocPath(p)))
+export const lensPathOr = curry<any, string[], Lens>((defVal, p) =>
+  lens(pathOr(defVal, p), assocPath(p))
+)
