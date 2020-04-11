@@ -11,6 +11,8 @@ import { MainClassificationSelector } from '../component/MainClassificationSelec
 import { RouteComponentProps } from 'react-router'
 import { setupPage } from 'client-common/component/hoc/setupPage'
 import { YouTubeEmbed } from '../component/YouTubeEmbed'
+import { Alert } from 'client-common/component/general/Alert'
+import { ExternalLink } from 'client-common/component/general/ExternalLink'
 
 interface StoreProps {
   session: state.Session
@@ -47,6 +49,21 @@ export const Home = pipe(
         <div>
           <div className="jumbotron">
             {this.renderWelcome()}
+            <Alert type="info" className="from-announcement">
+              💥MONDD EL A VÉLEMÉNYED!💥 📢 Szeretnénk jobbá tenni a Zsebtanárt. Ehhez készítettünk
+              egy néhány perces kérdőívet, hogy megtudjuk, TI mit gondoltok róla. 💭 Kérünk titeket,
+              hogy szánjatok néhány percet a kitöltésére! ✍️ Köszönjük előre is a segítségeteket!
+              🙏
+              <br />
+              <div className="text-center">
+                <ExternalLink
+                  className="btn btn-info mt-3"
+                  href="https://forms.gle/CsTmP4zS5fFrLa8XA"
+                >
+                  Zsebtanár kérdőív <Icon fa="chevron-right" />
+                </ExternalLink>
+              </div>
+            </Alert>
             <div className="my-5 col-11 mx-auto">
               <NavLink to="/search">
                 <div className="search-input-group ">
