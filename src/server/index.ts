@@ -13,5 +13,10 @@ export const api = functions.https.onRequest((request: any, response: any) => {
   return app(request, response)
 })
 
+
+/**
+ * Real time db triggers
+ */
+
 export const checkUserStatistics = functions.database.ref('/userStatistics/{userUId}/solvedExercises/{exerciseId}')
   .onWrite((snapshot, context) => userSolvedAnExercise(snapshot, context))

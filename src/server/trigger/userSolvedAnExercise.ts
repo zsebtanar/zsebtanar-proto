@@ -10,7 +10,6 @@ export const userSolvedAnExercise = (snapshot, context) => {
     .once('value')
     .then(rewardsSnapshot => {
       const possibleRewards = rewardsSnapshot.val()
-      console.info(possibleRewards)
 
       if (Array.isArray(possibleRewards)) {
         console.info(`User UId: ${userUId}`)
@@ -18,8 +17,6 @@ export const userSolvedAnExercise = (snapshot, context) => {
           .once('value')
           .then(solvedSnapshot => {
             const solvedExerciseIds = Object.keys(solvedSnapshot.val())
-
-            console.info(solvedExerciseIds)
 
             possibleRewards.forEach(rewardId => {
               const userRewardPath = `/users/${userUId}/rewards/${rewardId}`
@@ -29,7 +26,7 @@ export const userSolvedAnExercise = (snapshot, context) => {
                     .once('value')
                     .then(shouldCompleteSnapshot => {
                       const shouldCompleteExerciseIds = shouldCompleteSnapshot.val()
-                      console.log(shouldCompleteExerciseIds)
+                      
                       // shouldCompleteExerciseIds contains all solvedExerciseIds
                       if (shouldCompleteExerciseIds.every(v => solvedExerciseIds.includes(v))) {
                         db.ref(userRewardPath).set({
