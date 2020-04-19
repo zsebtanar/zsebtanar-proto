@@ -15,6 +15,6 @@ app.use('/api/exercise/state', require('./exercise/state/index').route)
 app.use('/api/exercise/', require('./exercise/crud/index').route)
 app.use('/api/feedback/', require('./feedback/index').route)
 app.use('/api/userStatistic/', require('./user-statistic/index').route)
-app.use('/api/admin/reward', require('./reward/index').route)
+app.use('/api/rewards', require('./reward/index').route)
 
 export default app

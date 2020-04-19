@@ -46,8 +46,11 @@ export class Exercises extends React.Component<any, any> {
   }
 
   rewardSelected = reward => {
-    console.log(reward)
     this.setState({ selectedReward: reward })
+  }
+
+  addToReward = _ => {
+    
   }
 
   render() {
@@ -153,6 +156,7 @@ export class Exercises extends React.Component<any, any> {
           </NavLink>
           &nbsp;
           <Button
+            onAction={this.addToReward}
             disabled={!this.canDisplayAddRewardButton(ex)}
             className={`btn btn-sm btn-light`}
             title="Hozzáadás a kiválasztott jutalomhoz"

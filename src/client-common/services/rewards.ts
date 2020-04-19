@@ -1,5 +1,5 @@
 import { app } from '../fireApp'
-import { resolveSnapshot } from '../util/firebase'
+import { resolveSnapshot, cloudFnPost } from '../util/firebase'
 import { pipe, values } from 'ramda'
 
 const DB = app.database()
@@ -31,3 +31,6 @@ export function getReward(id) {
     .once('value')
     .then(resolveSnapshot)
 }
+
+export const addExerciseToReward = (exerciseId, rewardId) =>
+  cloudFnPost(`rewards/addExerciseToReward`, { exerciseId, rewardId } , { withToken: true })
