@@ -1,15 +1,17 @@
 import { admin } from '../utils/firebase'
 
-export const userSolvedAnExercise = (snapshot, context) => {
+export const userSolvedAnExercise = (_, context) => {
   const userUId = context.params.userUId
   const exerciseId = context.params.exerciseId
   const db = admin.database()
 
   console.info(`Exercise Id: ${exerciseId}`)
-  return db.ref(`/exercise/public/${exerciseId}/rewards`)
+  return db.ref(`/rewards`)
     .once('value')
     .then(rewardsSnapshot => {
-      const possibleRewards = rewardsSnapshot.val()
+      const possibleRewards = Object.values(rewardsSnapshot.val())
+        .filter((r:any) => r && r.additionalInfo && r.additionalInfo.shouldComplete
+          && r.additionalInfo.shouldComplete.includes(exerciseId))
 
       if (Array.isArray(possibleRewards)) {
         console.info(`User UId: ${userUId}`)
@@ -18,22 +20,18 @@ export const userSolvedAnExercise = (snapshot, context) => {
           .then(solvedSnapshot => {
             const solvedExerciseIds = Object.keys(solvedSnapshot.val())
 
-            possibleRewards.forEach(rewardId => {
-              const userRewardPath = `/users/${userUId}/rewards/${rewardId}`
+            possibleRewards.forEach(reward => {
+              const userRewardPath = `/users/${userUId}/rewards/${reward._key}`
               db.ref(userRewardPath).once('value').then(snapshot => {
                 if (!snapshot.exists()) {
-                  db.ref(`/rewards/${rewardId}/additionalInfo/shouldComplete`)
-                    .once('value')
-                    .then(shouldCompleteSnapshot => {
-                      const shouldCompleteExerciseIds = shouldCompleteSnapshot.val()
-                      
-                      // shouldCompleteExerciseIds contains all solvedExerciseIds
-                      if (shouldCompleteExerciseIds.every(v => solvedExerciseIds.includes(v))) {
-                        db.ref(userRewardPath).set({
-                          timeOfCollection: new Date().getTime() // Unix time
-                        })
-                      }
+                  const shouldCompleteExerciseIds = reward.additionalInfo.shouldComplete
+
+                  // shouldCompleteExerciseIds contains all solvedExerciseIds
+                  if (shouldCompleteExerciseIds.every(v => solvedExerciseIds.includes(v))) {
+                    db.ref(userRewardPath).set({
+                      timeOfCollection: new Date().getTime() // Unix time
                     })
+                  }
                 }
               })
             })
