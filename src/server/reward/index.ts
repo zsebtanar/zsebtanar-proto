@@ -1,20 +1,28 @@
 import * as express from 'express'
 import getToken from '../middlewares/firebaseToken'
 import { onlyAdmin } from '../utils/authorization'
-import { addExerciseToRewardSchema } from './schema'
-import requestValidator from 'server/middlewares/requestValidator'
-import { admin } from 'server/utils/firebase'
+import { addExerciseToRewardSchema, rewardSchema } from './schema'
+import requestValidator from '../middlewares/requestValidator'
+import { admin } from '../utils/firebase'
+import { errorHandler } from '../utils/error'
 
 export const route = express.Router()
 const DB = admin.database()
 const REWARDS = DB.ref('rewards')
 
 // Update or add
-route.post('/addReward', [getToken, onlyAdmin], (req, res) => {
+route.post('/addReward', [getToken, onlyAdmin, requestValidator({ body: rewardSchema })], errorHandler((req, res) => {
+  let reward = req.body
 
-})
+  if (!reward._key) {
+    const rewardKey = REWARDS.push().key
+    reward._key = rewardKey
+  }
 
-route.post('/addExerciseToReward', [getToken, onlyAdmin, requestValidator({ body: addExerciseToRewardSchema })], (req, res) => {
+  return REWARDS.child(reward._key).push(reward).then(() => res.status(204).send())
+}))
+
+route.post('/addExerciseToReward', [getToken, onlyAdmin, requestValidator({ body: addExerciseToRewardSchema })], errorHandler((req, res) => {
   const rewardId = req.body.rewardId
   const exerciseId = req.body.exerciseId
 
@@ -25,4 +33,4 @@ route.post('/addExerciseToReward', [getToken, onlyAdmin, requestValidator({ body
       res.status(404).send(`Reward with id ${rewardId} not found.`)
     }
   })
-})
+}))
