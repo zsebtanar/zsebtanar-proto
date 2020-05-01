@@ -8,6 +8,5 @@ export const addExerciseToRewardSchema = Joi.object().keys({
 export const rewardSchema = Joi.object().keys({
   description: Joi.string().required(),
   name: Joi.string().required(),
-  trophy: Joi.string().required(),
-  imageUrl: Joi.string().uri()
+  trophy: Joi.string().required()
 })

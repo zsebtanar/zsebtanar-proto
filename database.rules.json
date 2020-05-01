@@ -43,7 +43,7 @@
       ".read": true
     },
     "rewards": {
-      ".write": false,
+      ".write": "auth.token.role === 1000",
       ".read": true
     },
     "userStatistics": {

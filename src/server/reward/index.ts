@@ -26,9 +26,18 @@ route.post('/addExerciseToReward', [getToken, onlyAdmin, requestValidator({ body
   const rewardId = req.body.rewardId
   const exerciseId = req.body.exerciseId
 
-  return REWARDS.child(`${rewardId}`).once("value", snapshot => {
+  return REWARDS.child(`${rewardId}/`).once("value", snapshot => {
     if (snapshot.exists()) {
-      REWARDS.child(`${rewardId}/additionalInfo/shouldComplete/`).push(exerciseId).then(() => res.status(204).send())
+      const reward:any = snapshot.val()
+      console.log(reward)
+      const shouldCompleteList = (reward.additionalInfo && reward.additionalInfo.shouldComplete) || []
+      if(!shouldCompleteList.includes(exerciseId)){
+        shouldCompleteList.push(exerciseId)
+        console.log(shouldCompleteList)
+        REWARDS.child(`${rewardId}/additionalInfo/shouldComplete/`)
+        .set(shouldCompleteList)
+        .then(() => res.status(204).send())
+      }
     } else {
       res.status(404).send(`Reward with id ${rewardId} not found.`)
     }

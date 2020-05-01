@@ -7,7 +7,7 @@ import { Loading } from 'client-common/component/general/Loading'
 import { ExerciseState } from '../components/ExerciseState'
 import { Icon } from 'client-common/component/general/Icon'
 import { Button } from 'client-common/component/general/Button'
-import { getRewards } from 'client-common/services/rewards'
+import { getRewards, addExerciseToReward } from 'client-common/services/rewards'
 import { RewardSelector } from '../components/RewardSelector'
 
 export class Exercises extends React.Component<any, any> {
@@ -49,8 +49,16 @@ export class Exercises extends React.Component<any, any> {
     this.setState({ selectedReward: reward })
   }
 
-  addToReward = _ => {
-    
+  addToReward = exerciseId => {
+    addExerciseToReward(exerciseId, this.state.selectedReward._key)
+      .then( _ => getRewards().then(rewards => {
+        const selectedReward = rewards.find(r => r._key === this.state.selectedReward._key)
+        this.setState({rewards, selectedReward})
+      }))
+      .catch(error => {
+        console.error(error);
+        window.alert("Sajnos a feladat mentése a jutalomhoz sikertelen. A hibaüzenet megtekintéséhez kérlek nyomd meg az F12-t.")
+      })
   }
 
   render() {
@@ -156,7 +164,7 @@ export class Exercises extends React.Component<any, any> {
           </NavLink>
           &nbsp;
           <Button
-            onAction={this.addToReward}
+            onAction={() => this.addToReward(ex._key)}
             disabled={!this.canDisplayAddRewardButton(ex)}
             className={`btn btn-sm btn-light`}
             title="Hozzáadás a kiválasztott jutalomhoz"

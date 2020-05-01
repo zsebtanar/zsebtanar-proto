@@ -4,8 +4,8 @@ import { NavLink } from 'react-router-dom'
 function RewardCard(props) {
   //https://www.flaticon.com/free-icon/trophy_420105
   const { id, name, dateOfAchieving, description } = props
-  const imageURL = props.imageURL
-    ? props.imageURL
+  const imageURL = props.userOwns
+    ? '/assets/images/trophy-filled.svg'
     : '/assets/images/trophy-empty.svg'
   return (
     <div className="card m-1" style={{ width: '250px' }}>
