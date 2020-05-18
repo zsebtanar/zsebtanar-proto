@@ -161,7 +161,7 @@ export function exerciseSheetReducer(state = INIT_STATE, action): state.AdminExe
     }
     case EXERCISE_LIST_REMOVE_EXERCISE: {
       const { id } = action.payload
-      if (!id) return
+      if (!id) return state
 
       return pipe(
         over(removedExercisesLens, append(id)),

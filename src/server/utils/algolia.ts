@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions'
-import * as algoliasearch from 'algoliasearch'
+import algoliasearch from 'algoliasearch'
 
 const FB_CONFIG = functions.config()
 let client

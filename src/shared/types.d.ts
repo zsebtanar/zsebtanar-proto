@@ -23,6 +23,7 @@ declare const __CONFIG__: {
 declare const __INITIAL_STATE__: any
 declare const __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
 declare const grecaptcha: any
+declare const __SERVER_ENV__: string
 
 declare type FormMode = 'new' | 'update' | 'clone'
 
@@ -35,6 +36,7 @@ declare namespace state {
     exerciseSheet: AdminExerciseSheet
     wikiPage: AdminWikPage
     resources: AdminResource
+    exerciseEdit: any
   }
 
   interface App {
@@ -88,7 +90,6 @@ declare namespace state {
 
   interface AppModal {
     modals: Modal[]
-    closeModal: (id: string) => void
   }
 
   interface Modal {
@@ -124,8 +125,8 @@ declare namespace state {
   interface AdminWikPage extends BaseFormData<WikiPageModel> {}
 
   interface AdminResource {
-    data: MarkdownResources
-    error: any
+    data?: MarkdownResources
+    error?: any
   }
 
   interface ResourceFileData {

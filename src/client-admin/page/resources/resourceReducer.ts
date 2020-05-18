@@ -65,12 +65,15 @@ export function uploadResources(folder: string) {
 
 ///
 
-const INIT_STATE = {
+const INIT_STATE: state.AdminResource = {
   data: undefined,
   error: undefined
 }
 
-export function resourcesReducer(state = INIT_STATE, action) {
+export function resourcesReducer(
+  state: state.AdminResource = INIT_STATE,
+  action
+): state.AdminResource {
   switch (action.type) {
     case RESOURCES_INIT:
       return { ...INIT_STATE, data: action.payload }
@@ -81,13 +84,13 @@ export function resourcesReducer(state = INIT_STATE, action) {
         type: action.payload.file.type,
         name: action.payload.file.name,
         file: action.payload.file
-      })(state)
+      })(state) as state.AdminResource
     case RESOURCES_UPLOADED:
       return { ...state, data: { ...state.data, ...action.payload } }
     case RESOURCES_CLEAN:
       return { ...INIT_STATE }
     case RESOURCES_ERROR:
-      return { ...state, error: action.payload}
+      return { ...state, error: action.payload }
     default:
       return state
   }

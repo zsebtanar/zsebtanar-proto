@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { init } from '@sentry/browser';
+import { hot } from 'react-hot-ts'
+import { init } from '@sentry/browser'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Routes } from './Routes'
@@ -14,15 +15,17 @@ if (__CONFIG__.sentry.dsn) {
     dsn: __CONFIG__.sentry.dsn,
     environment: 'prototype',
     maxBreadcrumbs: 10,
-    ignoreErrors: ['top.GLOBALS'],
+    ignoreErrors: ['top.GLOBALS']
   })
 }
 
 startup().then(({ store, history }) => {
-  render(
-    <Provider store={store}>
-      <Routes history={history} />
-    </Provider>,
-    document.getElementById('root')
+  hot(module)(
+    render(
+      <Provider store={store}>
+        <Routes history={history} />
+      </Provider>,
+      document.getElementById('root')
+    )
   )
 })

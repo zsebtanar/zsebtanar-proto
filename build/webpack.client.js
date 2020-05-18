@@ -8,10 +8,12 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const rhTransformer = require('react-hot-ts/lib/transformer')
 
 const env = process.env.NODE_ENV || 'development'
 const isDev = env === 'development'
 const isProd = env === 'production'
+const serverEnv = process.env.SERVER_ENV
 
 const envConfig = getConfig()
 
@@ -26,7 +28,10 @@ const cssExtract = new ExtractTextPlugin({
 
 const ROOT_PATH = path.join(__dirname, '..')
 const SRC_PATH = path.join(ROOT_PATH, 'src')
+const ADMIN_SRC_PATH = path.join(ROOT_PATH, 'src/client-admin')
+const PUBLIC_SRC_PATH = path.join(ROOT_PATH, 'src/client-public')
 const TARGET_PATH = path.join(ROOT_PATH, 'bin/app')
+const RESOURCES_PATH = path.join(ROOT_PATH, 'resources')
 
 const commonHtmlWebpackPluginOptions = {
   template: path.join(ROOT_PATH, 'src/client-common/index.ejs'),
@@ -43,9 +48,18 @@ const commonHtmlWebpackPluginOptions = {
 
 module.exports = {
   mode: isDev ? 'development' : 'production',
+  context: SRC_PATH,
   entry: {
-    admin: path.join(SRC_PATH, 'client-admin/admin.tsx'),
-    public: path.join(SRC_PATH, 'client-public/public.tsx')
+    admin: [
+      isDev && 'webpack-dev-server/client?http://localhost:8080',
+      isDev && 'webpack/hot/only-dev-server',
+      path.join(ADMIN_SRC_PATH, 'admin.tsx')
+    ].filter(Boolean),
+    public: [
+      isDev && 'webpack-dev-server/client?http://localhost:8080',
+      isDev && 'webpack/hot/only-dev-server',
+      path.join(PUBLIC_SRC_PATH, 'public.tsx')
+    ].filter(Boolean)
   },
   output: {
     path: TARGET_PATH,
@@ -70,12 +84,15 @@ module.exports = {
   },
 
   devServer: {
-    contentBase: path.join(ROOT_PATH, 'resources'),
+    contentBase: [ADMIN_SRC_PATH, PUBLIC_SRC_PATH, SRC_PATH, RESOURCES_PATH],
     overlay: {
       warnings: true,
       errors: true
     },
+    hot: true,
     inline: true,
+    quiet: false,
+    publicPath: '/',
     historyApiFallback: {
       verbose: true,
       rewrites: [
@@ -99,6 +116,10 @@ module.exports = {
           configFile: path.join(ROOT_PATH, 'build/ts/tsconfig.client.json'),
           compilerOptions: {
             noUnusedLocals: !isProd
+          },
+          transpileOnly: isDev,
+          getCustomTransformers: {
+            before: [rhTransformer({})]
           }
         }
       },
@@ -108,7 +129,7 @@ module.exports = {
         use: cssExtract.extract(['css-loader'])
       },
       {
-        test: /\.scss$/,
+        test: /\.s?css$/,
         use: sassExtract.extract(['css-loader', 'sass-loader'])
       },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /node_modules/ }
@@ -193,17 +214,14 @@ module.exports = {
     //   dropAsset: true
     // }),
     new HtmlWebpackHarddiskPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
-      __CONFIG__: JSON.stringify(envConfig)
-    })
-  ].concat(
-    isDev
-      ? []
-      : [
-          // new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true })
-        ]
-  )
+      __CONFIG__: JSON.stringify(envConfig),
+      __SERVER_ENV__: JSON.stringify(serverEnv)
+    }),
+    isDev && new webpack.HotModuleReplacementPlugin(),
+    isDev && new webpack.NamedModulesPlugin()
+    // isDev && new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true })
+  ].filter(Boolean)
 }

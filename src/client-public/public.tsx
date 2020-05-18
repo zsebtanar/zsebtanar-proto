@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { hot } from 'react-hot-ts'
 import { init } from '@sentry/browser'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -18,12 +19,14 @@ if (__CONFIG__.sentry.dsn) {
 }
 
 startup().then(({ store, history }) => {
-  render(
-    <Provider store={store}>
-      <Recaptcha>
-        <Routes history={history} />
-      </Recaptcha>
-    </Provider>,
-    document.getElementById('root')
+  hot(module)(
+    render(
+      <Provider store={store}>
+        <Recaptcha>
+          <Routes history={history} />
+        </Recaptcha>
+      </Provider>,
+      document.getElementById('root')
+    )
   )
 })

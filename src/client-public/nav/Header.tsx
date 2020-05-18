@@ -43,7 +43,7 @@ export const Header = connect<StoreProps, DispatchProps, {}>(
     openSignInModal,
     openSignUpModal
   }
-)(function HeaderComp(props: AllProps) {
+)(function HeaderComp(props: any) {
   const { signedIn, token } = props.session
   return (
     <header className="header clearfix">

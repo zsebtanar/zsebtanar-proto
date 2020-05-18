@@ -84,6 +84,7 @@ function itemTarget(ctx) {
       const hoverIndex = props.index
 
       if (dragIndex === hoverIndex) return
+      // eslint-disable-next-line react/no-find-dom-node
       const hoverBoundingRect = (findDOMNode(component) as Element).getBoundingClientRect()
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       const clientOffset = monitor.getClientOffset()
@@ -116,7 +117,7 @@ function sortableItem(component, ctx /*: Sortable*/) {
 ///
 
 export const Sortable = DragDropContext(HTML5Backend)(
-  class extends React.Component<SortableProps, SortableState> {
+  class SortableComp extends React.Component<SortableProps, SortableState> {
     state = { list: [], originalList: [] }
 
     public itemType
@@ -155,7 +156,7 @@ export const Sortable = DragDropContext(HTML5Backend)(
     }
 
     render() {
-      const Container = this.props.elementType || 'div'
+      const Container: any = this.props.elementType || 'div'
 
       return (
         <Container className={`sortable-list ${this.props.className}`}>

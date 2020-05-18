@@ -1,6 +1,6 @@
 import { Button } from 'client-common/component/general/Button'
 import { Dropdown } from 'client-common/component/general/dropdown/Dropdown'
-import { Markdown } from 'client-common/component/general/Markdown'
+import { MarkdownWithCode } from 'client-common/services/generator/MarkdownWithCode'
 import {
   openEquationHelpModal,
   openExerciseImageDialog,
@@ -56,10 +56,11 @@ export const TextEditor = connect(
       rows: 10
     }
 
-    private textRef: HTMLTextAreaElement
+    private textRef?: HTMLTextAreaElement
     state = { value: this.props.value || '' }
 
     private wrapText = (token: string, sample = '') => () => {
+      if (!this.textRef) return
       const { selectionStart: start, selectionEnd: end, value } = this.textRef
 
       const noSelection = sample && start === end
@@ -78,6 +79,7 @@ export const TextEditor = connect(
     }
 
     private multiLine = (token: string, sample = '') => () => {
+      if (!this.textRef) return
       const { selectionStart, selectionEnd: end, value } = this.textRef
       const start = value.lastIndexOf('\n', selectionStart) + 1
 
@@ -99,6 +101,7 @@ export const TextEditor = connect(
     }
 
     private insertLink = (sample = '') => () => {
+      if (!this.textRef) return
       const { selectionStart: start, selectionEnd: end, value } = this.textRef
 
       const noSelection = sample && start === end
@@ -117,8 +120,10 @@ export const TextEditor = connect(
     private insertFile = () => {
       this.props.openExerciseImageDialog({
         onSelect: ({ id, file }) => {
-          this.textRef.value += `@[${file.name}](${id} =100x)`
-          this.update()
+          if (this.textRef) {
+            this.textRef.value += `@[${file.name}](${id} =100x)`
+            this.update()
+          }
         }
       })
     }
@@ -127,13 +132,16 @@ export const TextEditor = connect(
       const { openWikiPageSelector } = this.props
       openWikiPageSelector({
         onSelect: ({ id, title }: WikiPageModel) => {
-          this.textRef.value += `~[${title}](${id})`
-          this.update()
+          if (this.textRef) {
+            this.textRef.value += `~[${title}](${id})`
+            this.update()
+          }
         }
       })
     }
 
     private update = () => {
+      if (!this.textRef) return
       const { name, value } = this.textRef
       this.textRef.focus()
       this.props.onChange({ name, value })
@@ -251,7 +259,7 @@ export const TextEditor = connect(
             <small>Előnézet:</small>
           </div>
           <div className="text-editor-preview form-control disabled">
-            <Markdown source={this.state.value} resources={this.props.resources} />
+            <MarkdownWithCode source={this.state.value} resources={this.props.resources} />
           </div>
         </>
       )

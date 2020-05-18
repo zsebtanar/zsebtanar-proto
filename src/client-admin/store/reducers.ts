@@ -5,7 +5,7 @@ import { exerciseFormReducer as exerciseEdit } from '../page/exerciseEdit/exerci
 import { wikiPageReducer as wikiPage } from '../page/wiki/wikiReducer'
 import { resourcesReducer as resources } from '../page/resources/resourceReducer'
 
-export default combineReducers({
+export default combineReducers<state.AdminRoot>({
   app,
   exerciseEdit,
   exerciseSheet,

@@ -1,5 +1,4 @@
 import { closeSideNav } from 'client-common/store/reducers/sideNav'
-import { pipe } from 'ramda'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
@@ -27,35 +26,37 @@ const mapStateToProps = state => ({
   sideNavActive: state.app.sideNav.active
 })
 
-export const SideNavLink = pipe(
-  withRouter,
+export const SideNavLink = withRouter(
   connect<SideNavLinkStateProps, SideNavLinkDispatchProps, SideNavLinkProps>(
     mapStateToProps,
     { closeSideNav }
-  )
-)(function SideNavLinkComp(
-  props: SideNavLinkStateProps & SideNavLinkDispatchProps & SideNavLinkProps & RouteComponentProps<{}>
-) {
-  const isActive = props.isActive ? props.isActive() : props.to === props.location.pathname
+  )(function SideNavLinkComp(
+    props: SideNavLinkStateProps &
+      SideNavLinkDispatchProps &
+      SideNavLinkProps &
+      RouteComponentProps<{}>
+  ) {
+    const isActive = props.isActive ? props.isActive() : props.to === props.location.pathname
 
-  const linkTo = e => {
-    e.preventDefault()
-    props.closeSideNav()
-    if (props.to) {
-      props.history.push(props.to)
+    const linkTo = e => {
+      e.preventDefault()
+      props.closeSideNav()
+      if (props.to) {
+        props.history.push(props.to)
+      }
+      if (props.onAction) {
+        props.onAction()
+      }
     }
-    if (props.onAction){
-      props.onAction()
-    }
-  }
 
-  return (
-    <a
-      href=""
-      className={`${props.className} ${isActive ? props.activeClassName : ''}`}
-      onClick={linkTo}
-    >
-      {props.children}
-    </a>
-  )
-})
+    return (
+      <a
+        href=""
+        className={`${props.className} ${isActive ? props.activeClassName : ''}`}
+        onClick={linkTo}
+      >
+        {props.children}
+      </a>
+    )
+  })
+)

@@ -46,7 +46,7 @@ export const Exercise = pipe(
     mapDispatchToProps
   )
 )(
-  class extends React.Component<any, any> {
+  class ExerciseComp extends React.Component<any, any> {
     componentDidMount() {
       const { match, getPublicExerciseAction, previewMode } = this.props
 
@@ -88,7 +88,7 @@ export const Exercise = pipe(
       const ex = this.props.exercise
       const subTaskList = pairsInOrder(ex.subTasks)
       const isSingleTask = subTaskList.length === 1
-      const subTasks = subTaskList.filter(([_, task]) => task.status !== TASK_STATUS_WAITING)
+      const subTasks = subTaskList.filter(([_, task]: any) => task.status !== TASK_STATUS_WAITING)
 
       return (
         <div className="exercise-page">
@@ -169,7 +169,7 @@ export const Exercise = pipe(
       }
     }
 
-    private openWikiModal = (pageId) => {
+    private openWikiModal = pageId => {
       this.props.openWikiModal({ pageId })
     }
   }

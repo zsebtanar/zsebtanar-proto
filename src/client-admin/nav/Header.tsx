@@ -10,7 +10,7 @@ import { openSideNav } from 'client-common/store/reducers/sideNav'
 import { Dropdown } from 'client-common/component/general/dropdown/Dropdown'
 import { DropdownMenu } from 'client-common/component/general/dropdown/DropdownMenu'
 import { DropdownToggle } from 'client-common/component/general/dropdown/DropdownToggle'
-import { DropdownDevider } from '../../client-common/component/general/dropdown/DropdownDevicer'
+import { DropdownDevider } from 'client-common/component/general/dropdown/DropdownDevicer'
 
 interface HeaderProps extends RouteComponentProps<{}> {}
 
@@ -24,7 +24,7 @@ interface HeaderDispatchProps {
   openSideNav: typeof openSideNav
 }
 
-const mapStateToProps = (state: state.Root) => ({
+const mapStateToProps = (state: state.Root): HeaderStateProps => ({
   session: state.app.session,
   sideNav: state.app.sideNav
 })
@@ -33,7 +33,7 @@ export const Header = withRouter(
   connect<HeaderStateProps, HeaderDispatchProps, HeaderProps>(
     mapStateToProps,
     { signOut, openSideNav }
-  )(function HeaderComp(props: HeaderStateProps & HeaderDispatchProps & HeaderProps) {
+  )(function HeaderComp(props: any) {
     if (!props.session.signedIn) {
       return <div />
     }
@@ -100,7 +100,7 @@ export const Header = withRouter(
             </ul>
           </nav>
           <NavLink exact to="/" className="logo-link" aria-label="Főoldal">
-            <h4 className="text-muted logo" />
+            <div className="text-muted logo" />
           </NavLink>
         </div>
 
@@ -115,7 +115,7 @@ export const Header = withRouter(
           </Button>
 
           <NavLink exact to="/" className="logo-link float-right" aria-label="Főoldal">
-            <h4 className="text-muted logo" />
+            <div className="text-muted logo" />
           </NavLink>
         </div>
       </header>

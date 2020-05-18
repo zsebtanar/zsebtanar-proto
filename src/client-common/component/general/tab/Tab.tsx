@@ -6,10 +6,11 @@ interface TabProps {
   tabIndex?: number
   label: string
   selectTab?: (index: number) => void
+  children: React.ReactNode
 }
 
 export const Tab = (props: TabProps) => {
-  const Content = props.tabComponent || 'span'
+  const Content: any = props.tabComponent || 'span'
   return (
     <li className="nav-item">
       <a

@@ -1,0 +1,42 @@
+.code-editor {
+  .CodeMirror {
+    border: 1px solid #dee2e6;
+    border-left: none;
+    border-radius: 0.2rem;
+  }
+  .output {
+    min-height: 300px;
+    font-family: monospace;
+    line-height: 1.2;
+    position: relative;
+    margin: 0;
+    &> div {
+      border-top: 1px solid #eee;
+      padding: 0.2em 0.5em 0.2rem 2rem;
+      &:before {
+        position: absolute;
+        left: 0.5rem;
+      }
+    }
+
+    .normal:before {
+      content: '>';
+      color: #aaa;
+    }
+    .error {
+      color: darkred;
+      background: rgba(255, 0, 0, 0.1);
+      &:before {
+        display: block;
+        content: '!';
+        color: white;
+        background: red;
+        border-radius: 50%;
+        width: 0.7rem;
+        height: 0.7rem;
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+  }
+}

@@ -21,10 +21,9 @@ export class Dropdown extends React.Component<DropdownProps, DropdownState> {
   state = { open: false }
 
   private id = `id-dd-${uid()}`
-  private menuRef: HTMLElement
 
   private getComponent(type) {
-    return (this.props.children as ReactElement<any>[]).filter(propEq('type', type))
+    return (this.props.children as ReactElement[]).filter(propEq('type', type))
   }
 
   private toggleDropdown = open => {
@@ -35,17 +34,14 @@ export class Dropdown extends React.Component<DropdownProps, DropdownState> {
 
   private show = () => this.toggleDropdown(true)
 
-  private getMenuRef = ref => (this.menuRef = ref)
-
   render() {
     const { dropUp, className } = this.props
-    const Elm = this.props.elementType || 'div'
+    const Elm: any = this.props.elementType ?? 'div'
     return (
       <Elm
         className={`nav-item ${dropUp ? 'dropup' : 'dropdown'} ${className || ''} ${
           this.state.open ? 'show' : ''
         }`}
-        ref={this.getMenuRef}
         onMouseEnter={this.show}
         onMouseLeave={this.hide}
         onMouseUp={this.hide}
@@ -59,7 +55,7 @@ export class Dropdown extends React.Component<DropdownProps, DropdownState> {
   private renderToggle() {
     const toggle = this.getComponent(DropdownToggle)
     return React.Children.map(toggle, child =>
-      React.cloneElement(child as ReactElement<any>, {
+      React.cloneElement(child as ReactElement, {
         id: this.id,
         active: this.state.open
       })
@@ -69,7 +65,7 @@ export class Dropdown extends React.Component<DropdownProps, DropdownState> {
   private renderMenu() {
     const menu = this.getComponent(DropdownMenu)
     return React.Children.map(menu, child =>
-      React.cloneElement(child as ReactElement<any>, {
+      React.cloneElement(child as ReactElement, {
         id: this.id,
         active: this.state.open,
         className: this.props.right ? 'dropdown-menu-right' : ''

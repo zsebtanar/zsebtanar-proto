@@ -18,11 +18,6 @@ interface StoreOptions {
 
 const db = app.firestore()
 
-// Disable deprecated features
-db.settings({
-  timestampsInSnapshots: true
-})
-
 export class Service<T extends BaseModel> {
   private readonly collectionName: string
 
@@ -105,12 +100,12 @@ export class Service<T extends BaseModel> {
     await Promise.all(ids.map(id => coll.doc(id).delete()))
   }
 
-  private async populate(id, populate=[]): Promise<Partial<T>> {
+  private async populate(id, populate = []): Promise<Partial<T>> {
     const collections = {}
     await Promise.all(
       populate.map(async collection => {
         const res = await new Service(`${this.collectionName}/${id}/${collection}`).getList()
-        collections[collection] = res.docs.map((doc) => ({id: doc.id, ...doc.data() }))
+        collections[collection] = res.docs.map(doc => ({ id: doc.id, ...doc.data() }))
       })
     )
     return collections

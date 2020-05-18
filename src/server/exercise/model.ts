@@ -91,6 +91,7 @@ export const exerciseSchema = Joi.object({
   }),
   difficulty: Joi.any().optional(),
   description: Joi.string().required(),
+  script: Joi.string().allow(''),
   subTasks: Joi.object()
     .pattern(uidPattern, subTaskSchema)
     .min(1),

@@ -33,7 +33,7 @@ interface RoutesStateProps {
   session: state.Session
 }
 
-const mapStateToProps = (state: state.Root) => ({
+const mapStateToProps = (state: any) => ({
   session: state.app.session
 })
 

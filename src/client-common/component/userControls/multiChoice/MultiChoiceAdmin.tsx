@@ -13,14 +13,14 @@ export const MultiChoiceAdmin = connect(
   undefined,
   { openInputModal }
 )(
-  class extends React.Component<any, any> {
+  class MultiChoiceAdminComp extends React.Component<any, any> {
     state = {
       options: {},
       randomOrder: false,
       solution: {}
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       if (this.props.value && this.props.value.options) {
         this.setState(this.props.value)
       } else if (keys(this.state.options).length < 1) {
@@ -94,7 +94,7 @@ export const MultiChoiceAdmin = connect(
             </Checkbox>
           </div>
           <div>
-            {options.map(([id, data], idx) =>
+            {options.map(([id, data]: any, idx) =>
               this.renderItem({ id, ...data, name: 'admin', isLast: options.length < 2 }, idx)
             )}
             <Button
@@ -126,10 +126,13 @@ export const MultiChoiceAdmin = connect(
               onChange={this.updateOption(item.id)}
             />
             <div className="row">
-              <label className="col-3">Megoldás:</label>
+              <label className="col-3" htmlFor={item.id}>
+                Megoldás:
+              </label>
               <div className="col-9">
                 <select
                   name={item.id}
+                  id={item.id}
                   className="form-control"
                   required
                   defaultValue={pathOr(false, ['solution', 'options', item.id], this.state)}

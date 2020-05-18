@@ -14,7 +14,7 @@ export const NumberListAdmin = connect(
   undefined,
   { openInputModal }
 )(
-  class extends React.Component<any, any> {
+  class NumberListAdminComp extends React.Component<any, any> {
     constructor(props) {
       super(props)
 
@@ -29,7 +29,7 @@ export const NumberListAdmin = connect(
       }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       if (!this.state.solution.options) {
         this.addSolution()
       }
@@ -126,10 +126,13 @@ export const NumberListAdmin = connect(
             cleanable
           />
           <div className="form-group row">
-            <label className="col-3 col-form-label">Maximális tizedes jegyek száma:</label>
+            <label className="col-3 col-form-label" htmlFor="max-precision">
+              Maximális tizedes jegyek száma:
+            </label>
             <div className="col-7">
               <input
                 type="number"
+                id="max-precision"
                 onChange={this.setFractionDigits}
                 className="form-control"
                 value={fractionDigits}
@@ -143,7 +146,7 @@ export const NumberListAdmin = connect(
           <div className="">
             <div>Megoldás mezők:</div>
             {orderedFields.map((item, idx) =>
-              this.renderItem(item as [any], idx, solution.length < 2)
+              this.renderItem(item as any, idx, solution.length < 2)
             )}
           </div>
           <div className="form-group row">

@@ -15,7 +15,7 @@ export function addNotification(
   return dispatch => {
     const id = uid()
 
-    const timeout = !options.timeout === undefined ? 3 : options.timeout
+    const timeout = options.timeout === undefined ? 3 : options.timeout
 
     if (isNotZeroInteger(timeout)) {
       setTimeout(() => dispatch(removeNotification(id)), timeout * 1000)
@@ -38,7 +38,10 @@ const initialState = {
   list: []
 }
 
-export function notificationReducer(state = initialState, action) {
+export function notificationReducer(
+  state: state.Notifications = initialState,
+  action
+): state.Notifications {
   switch (action.type) {
     case ADD_NOTIFICATION:
       return {

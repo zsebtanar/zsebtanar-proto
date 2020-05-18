@@ -15,8 +15,13 @@
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "shared": ["shared/*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "typeRoots": ["node_modules/@types"],
-  "exclude": ["node_modules", "./src/**/*.spec.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx"]
 }

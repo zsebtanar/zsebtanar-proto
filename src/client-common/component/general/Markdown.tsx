@@ -5,7 +5,7 @@ import './Markdown.scss'
 
 ///
 
-interface MarkdownProps {
+export interface MarkdownProps {
   className?: string
   source: MDString
   resources?: MarkdownResources

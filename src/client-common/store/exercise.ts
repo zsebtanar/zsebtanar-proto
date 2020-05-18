@@ -114,7 +114,7 @@ const INIT_STATE = {
   error: undefined
 }
 
-export function exerciseReducer(state = INIT_STATE, action) {
+export function exerciseReducer(state: state.Classifications = INIT_STATE, action) {
   switch (action.type) {
     case EXERCISE_INIT:
       return INIT_STATE

@@ -4,7 +4,7 @@ import { FormGroup } from 'client-common/component/general/FormGroup'
 import { Icon } from 'client-common/component/general/Icon'
 import { Loading } from 'client-common/component/general/Loading'
 import { TextEditor } from 'client-common/component/general/TextEditor'
-import { pipe, view } from 'ramda'
+import { view } from 'ramda'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
@@ -37,8 +37,6 @@ interface DispatchProps {
 
 type RouteProps = RouteComponentProps<{ key?: string }>
 
-type AllProps = RouteProps & StoreProps & DispatchProps & FormFieldProps
-
 ///
 
 const mapStoreToProps = (state: state.AdminRoot) => {
@@ -64,119 +62,118 @@ const contentL = lensPathOr(false, ['data', 'content'])
 
 ///
 
-export const WikiPageForm = pipe(
-  withRouter,
+export const WikiPageForm = withRouter(
   connect<StoreProps, DispatchProps, RouteProps & FormFieldProps>(
     mapStoreToProps,
     mapDispatchToProps
-  )
-)(
-  class ExerciseSheetFormComp extends React.PureComponent<AllProps> {
-    componentWillMount(): void {
-      this.loadPage()
-    }
-
-    componentWillUnmount(): void {
-      this.props.clearPage()
-    }
-
-    private loadPage = () => {
-      const { key } = this.props.match.params
-
-      if (key) {
-        this.props.loadPage(key)
-      } else {
-        this.props.createPage()
+  )(
+    class ExerciseSheetFormComp extends React.PureComponent<any> {
+      UNSAFE_componentWillMount(): void {
+        this.loadPage()
       }
-    }
 
-    render(): React.ReactNode {
-      const { loading, error } = this.props.wiki
-      return (
-        <div>
-          {this.renderHeader()}
-          {loading ? (
-            <Loading />
-          ) : error ? (
-            <Alert type={'danger'}>{JSON.stringify(error)}</Alert>
-          ) : (
-            this.renderContent()
-          )}
-        </div>
-      )
-    }
+      componentWillUnmount(): void {
+        this.props.clearPage()
+      }
 
-    private renderHeader() {
-      const { saving, changed, data } = this.props.wiki
+      private loadPage = () => {
+        const { key } = this.props.match.params
 
-      return (
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <div className="d-flex justify-content-between align-items-center">
-            <NavLink
-              exact
-              to="/wiki-page"
-              className="btn btn-outline-light py-0 text-dark mx-2"
-              title="Mégsem"
-            >
-              <Icon fa="angle-left" size="2x" />
-            </NavLink>
-            <h4 className="d-inline-block m-0 mr-1">Wiki oldal</h4>
-          </div>
+        if (key) {
+          this.props.loadPage(key)
+        } else {
+          this.props.createPage()
+        }
+      }
+
+      render(): React.ReactNode {
+        const { loading, error } = this.props.wiki
+        return (
           <div>
-            {data &&
-              data.id && (
-                <Button
-                  className="btn btn-outline-danger"
-                  onAction={this.props.removePage}
-                  icon="trash"
-                >
-                  Törlés
-                </Button>
-              )}
-            <Button
-              loading={saving}
-              disabled={!changed}
-              className="btn btn-primary ml-1"
-              onAction={this.props.savePage}
-              icon="save"
-            >
-              Mentés
-            </Button>
+            {this.renderHeader()}
+            {loading ? (
+              <Loading />
+            ) : error ? (
+              <Alert type={'danger'}>{JSON.stringify(error)}</Alert>
+            ) : (
+              this.renderContent()
+            )}
           </div>
-        </div>
-      )
-    }
+        )
+      }
 
-    private renderContent() {
-      const { setField, wiki, resources } = this.props
-      return (
-        <div className="row">
-          <div className="col-10 mx-auto">
-            <FormGroup label="Wiki oldal címe">
-              <input
-                className="form-control"
-                type="text"
-                name="title"
-                required
-                onChange={e => setField(titleL, e.currentTarget.value)}
-                value={view(titleL, wiki)}
-              />
-            </FormGroup>
+      private renderHeader() {
+        const { saving, changed, data } = this.props.wiki
 
+        return (
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex justify-content-between align-items-center">
+              <NavLink
+                exact
+                to="/wiki-page"
+                className="btn btn-outline-light py-0 text-dark mx-2"
+                title="Mégsem"
+              >
+                <Icon fa="angle-left" size="2x" />
+              </NavLink>
+              <h4 className="d-inline-block m-0 mr-1">Wiki oldal</h4>
+            </div>
             <div>
-              <TextEditor
-                className="form-group"
-                name="description"
-                rows={10}
-                required
-                onChange={e => setField(contentL, e.value)}
-                value={view(contentL, wiki)}
-                resources={resources}
-              />
+              {data &&
+                data.id && (
+                  <Button
+                    className="btn btn-outline-danger"
+                    onAction={this.props.removePage}
+                    icon="trash"
+                  >
+                    Törlés
+                  </Button>
+                )}
+              <Button
+                loading={saving}
+                disabled={!changed}
+                className="btn btn-primary ml-1"
+                onAction={this.props.savePage}
+                icon="save"
+              >
+                Mentés
+              </Button>
             </div>
           </div>
-        </div>
-      )
+        )
+      }
+
+      private renderContent() {
+        const { setField, wiki, resources } = this.props
+        return (
+          <div className="row">
+            <div className="col-10 mx-auto">
+              <FormGroup label="Wiki oldal címe">
+                <input
+                  className="form-control"
+                  type="text"
+                  name="title"
+                  required
+                  onChange={e => setField(titleL, e.currentTarget.value)}
+                  value={view(titleL, wiki)}
+                />
+              </FormGroup>
+
+              <div>
+                <TextEditor
+                  className="form-group"
+                  name="description"
+                  rows={10}
+                  required
+                  onChange={e => setField(contentL, e.value)}
+                  value={view(contentL, wiki)}
+                  resources={resources}
+                />
+              </div>
+            </div>
+          </div>
+        )
+      }
     }
-  }
+  )
 )
