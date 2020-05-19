@@ -14,7 +14,7 @@ import {
   FieldDefinition,
   FieldDefinitionList
 } from 'client/generic/types'
-import { useDataLoad } from 'client/generic/hooks/data'
+import { useFetchData } from 'client/generic/hooks/fetchData'
 import { WikiPageModel } from 'client/wiki/types'
 import { wikiPageService } from 'client/wiki/services/wikiPageService'
 import { Service, BaseModel } from '../services'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams, useHistory } from 'react-router'
-import { Page } from '../../generic/component/Page'
+import { Page } from 'client/generic/components'
 import { Exercise } from '../component/Exercise'
 
 export function ExercisePage() {

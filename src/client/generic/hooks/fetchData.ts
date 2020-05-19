@@ -27,16 +27,17 @@ interface Options<T> {
 
 ///
 
+
 const initState: State<never> = {
   state: 'pending'
 }
 
 const getters: Getters = {
-  get isPending() {return this.state === 'pending'},
-  get isLoading() {return this.state === 'loading'},
-  get hasError() {return this.state === 'error'},
-  get isSuccess() {return this.state === 'success'},
-  get hasNoResult() {return this.state === 'noResult'}
+  get isPending(this: State<never>) {return this.state === 'pending'},
+  get isLoading(this: State<never>) {return this.state === 'loading'},
+  get hasError(this: State<never>) {return this.state === 'error'},
+  get isSuccess(this: State<never>) {return this.state === 'success'},
+  get hasNoResult(this: State<never>) {return this.state === 'noResult'}
 }
 
 export function useFetchData<T>(
@@ -56,7 +57,7 @@ export function useFetchData<T>(
         }),
 
     ).catch(error => dispatch({ type: 'error', payload: error }))
-  }, [...deps, loaderFn])
+  }, deps)
 
   return { ...state, ...getters }
 }

@@ -1,26 +1,20 @@
 import React, { ReactNode, useReducer, Reducer } from 'react'
-import { ExerciseData } from '../type'
-import { pairsInOrder } from '../../../shared/util/fn'
+import { ExerciseModel } from '../type'
 
 interface ActiveSubTask {
   numberOfAttempt: number
   usedHints: 0
 }
 interface State {
-  exercise: ExerciseData
+  exercise: ExerciseModel
   activeSubTask: ActiveSubTask
   isSingle: boolean
   numberOfTasks: number
   finishedTasks: number
 }
-type Action =
-  | { type: 'init'; payload: ExerciseData }
-  | { type: 'nextSubTask' }
-  | { type: 'validationFailed' }
-  | { type: 'nextHelp' }
+type Action = { type: 'nextSubTask' } | { type: 'validationFailed' } | { type: 'nextHelp' }
 
 interface ExerciseContextAPI {
-  init(exercise: ExerciseData): void
   checkActiveSubTask(): void
 }
 
@@ -31,17 +25,6 @@ const activeSubTaskInit: ActiveSubTask = {
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'init': {
-      const exercise = action.payload
-      const subTasks = pairsInOrder(exercise.subTasks)
-      return {
-        exercise,
-        activeSubTask: { ...activeSubTaskInit },
-        finishedTasks: 0,
-        isSingle: false,
-        numberOfTasks: subTasks.length
-      }
-    }
     case 'nextSubTask':
       return state
     case 'validationFailed':
@@ -52,21 +35,35 @@ function reducer(state: State, action: Action): State {
       return state
   }
 }
+
 ///
 
 interface Props {
   children: ReactNode
+  exercise: ExerciseModel
 }
 
-const ExerciseContext = React.createContext<State>(undefined)
-const ExerciseDispatchContext = React.createContext<ExerciseContextAPI>(undefined)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ExerciseContext = React.createContext<State>({} as any)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ExerciseDispatchContext = React.createContext<ExerciseContextAPI>({} as any)
 
-export function ExerciseProvider({ children }: Props) {
-  const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, undefined)
+function initState(exercise: ExerciseModel): State {
+  return {
+    exercise,
+    activeSubTask: { ...activeSubTaskInit },
+    finishedTasks: 0,
+    isSingle: false,
+    numberOfTasks: exercise.subTasks.length
+  }
+}
+
+export function ExerciseProvider({ children, exercise }: Props) {
+  const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, initState(exercise))
 
   const api: ExerciseContextAPI = {
-    init(exercise: ExerciseData) {
-      dispatch({ type: 'init', payload: exercise })
+    checkActiveSubTask() {
+      throw 'not implemented yet'
     }
   }
 

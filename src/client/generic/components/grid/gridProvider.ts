@@ -1,7 +1,7 @@
-import { useDataLoad } from 'client/generic/hooks'
+import { useFetchData } from 'client/generic/hooks'
 
 export function useGridDS<T>(dataSource: GridDataSource<T>, pageNum: number, pageLimit: number) {
-  return useDataLoad(async () => {
+  return useFetchData(async () => {
     const list = await dataSource.getPage(pageNum, pageLimit)
     return {
       list,

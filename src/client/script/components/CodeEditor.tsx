@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as cx from 'classnames'
 import * as CodeMirror from 'codemirror'
 import { useEffect, useRef, useState } from 'react'
-import { usePocketLisp } from 'client-common/services/generator/PocketLispProvider'
+import { usePocketLisp } from 'client/generator/PocketLispProvider'
 
 import 'codemirror/mode/clojure/clojure'
 import 'codemirror/addon/edit/closebrackets'

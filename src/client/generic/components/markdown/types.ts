@@ -1,4 +1,4 @@
-export type MDString = string
+export type MarkdownString = string
 
 export interface MarkdownResource {
   url: string
@@ -9,7 +9,7 @@ export type MarkdownResources = ObjectMap<MarkdownResource>
 
 export interface MarkdownProps {
   className?: string
-  source: MDString
+  source: MarkdownString
   resources?: MarkdownResources
   mark?: string
   onWikiLink?: (wikiPageId: string) => void

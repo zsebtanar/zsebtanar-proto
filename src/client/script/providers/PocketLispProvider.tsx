@@ -1,9 +1,8 @@
-import * as React from 'react'
-import { ReactNode, useState } from 'react'
-import { PseudoRandomNumberGenerator } from 'client-common/util/random'
+import React, { ReactNode, useState } from 'react'
 import { Interpreter, Parser, Scanner } from 'pocket-lisp'
-import { valueSet } from 'client-common/services/generator/shared-code'
 import { toJS, runtime, utils, literals } from 'pocket-lisp-stdlib'
+import { valueSet } from './shared-code'
+import { PseudoRandomNumberGenerator } from 'client/generic/utils/random'
 
 interface Props {
   seed?: number
@@ -17,7 +16,7 @@ export type InterpreterOutput = {
 }
 
 interface InterpreterContextAPI {
-  current: Interpreter
+  current?: Interpreter
   run(source: string)
   eval(source: string): unknown
   getGlobalNames(): string[]
@@ -42,7 +41,7 @@ export function PocketLispProvider({ children, seed, isEdit }: Props) {
     () => {
       const prng = new PseudoRandomNumberGenerator(seed)
       const globals = { ...runtime, ...valueSet(prng) }
-      const stdout = isEdit ? setOutput : () => {}
+      const stdout = isEdit ? setOutput : () => undefined
       const interpreter = new Interpreter({ globals, stdout, utils }, literals)
       setInterpreter(interpreter)
     },

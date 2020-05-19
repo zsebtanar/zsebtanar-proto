@@ -1,10 +1,10 @@
 import * as algoliasearch from 'algoliasearch'
-import { useDataLoad } from 'client/generic/hooks'
+import { useFetchData } from 'client/generic/hooks'
 import { algoliaSearch } from './search'
 import { ExerciseSearchResult } from 'client/search/types'
 
 export function useAlgoliaSearch(searchTerm: string, limit = 2) {
-  return useDataLoad<ExerciseSearchResult>(
+  return useFetchData<ExerciseSearchResult>(
     () => {
       if (searchTerm.length < limit) {
         return Promise.resolve({}) as Promise<ExerciseSearchResult>

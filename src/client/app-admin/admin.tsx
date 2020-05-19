@@ -12,14 +12,14 @@ import './admin.scss'
 initSentryLogger()
 
 hot(module)(
-render(
-  <UserProvider>
-    <AdminRouter>
-      <OverlayProvider>
-        <AdminApp />
-      </OverlayProvider>
-    </AdminRouter>
-  </UserProvider>,
-  document.getElementById('root')
-)
+  render(
+    <UserProvider>
+      <AdminRouter>
+        <OverlayProvider>
+          <AdminApp />
+        </OverlayProvider>
+      </AdminRouter>
+    </UserProvider>,
+    document.getElementById('root')
+  )
 )

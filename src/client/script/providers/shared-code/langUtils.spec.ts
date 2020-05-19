@@ -1,6 +1,6 @@
 import { langUtils } from './langUtils'
 import { plNumber } from 'pocket-lisp/dist/stdlib.js'
-import { plFractionNumber } from 'pocket-lisp/bin/src/stdlib'
+import { plFractionNumber } from '../pocket-lisp/bin/src/stdlib/index'
 
 describe('lang utils', () => {
   test('suffix-times', () => {

@@ -7,16 +7,19 @@ import { PublicRouter } from 'client/generic/providers/Routes'
 import { PublicApp } from './PublicApp'
 
 import './public.scss'
+import { hot } from 'react-hot-ts'
 
 initSentryLogger()
 
-render(
-  <UserProvider>
-    <PublicRouter>
-      <OverlayProvider>
-        <PublicApp />
-      </OverlayProvider>
-    </PublicRouter>
-  </UserProvider>,
-  document.getElementById('root')
+hot(module)(
+  render(
+    <UserProvider>
+      <PublicRouter>
+        <OverlayProvider>
+          <PublicApp />
+        </OverlayProvider>
+      </PublicRouter>
+    </UserProvider>,
+    document.getElementById('root')
+  )
 )

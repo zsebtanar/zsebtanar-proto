@@ -113,6 +113,7 @@
     "node-sass": "4.13.0",
     "prettier": "1.19.1",
     "react-axe": "^3.3.0",
+    "react-hot-ts": "^0.7.3",
     "sass-loader": "8.0.0",
     "shelljs": "0.8.3",
     "source-map-loader": "0.2.4",

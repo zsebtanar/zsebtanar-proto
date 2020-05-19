@@ -175,151 +175,9 @@ declare namespace DB {
     hints: ObjectMap<Hint>
   }
 
-  interface BaseUserControl extends Ordered {
-    controlType: string
-  }
-
   interface Hint extends Ordered {
     text: string
   }
-
-  type UserControl =
-    | UCBinaryChoice
-    | UCFractionNumber
-    | UCMultiChoice
-    | UCNumberList
-    | UCSimpleText
-    | UCSingleChoice
-    | UCSingleNumber
-
-  type UserControlSolution =
-    | UCBinaryChoiceSolution
-    | UCFractionNumberSolution
-    | UCMultiChoiceSolution
-    | UCNumberListSolution
-    | UCSimpleTextSolution
-    | UCSingleChoiceSolution
-    | UCSingleNumberSolution
-
-  enum UserControlType {}
-
-  interface UCBinaryChoice extends BaseUserControl {
-    controlType: 'binary-choice'
-    controlProps: UCBinaryChoiceProps
-  }
-
-  interface UCBinaryChoiceProps {
-    randomOrder: boolean
-    options: ObjectMap<UCBinaryChoiceOption>
-  }
-
-  interface UCBinaryChoiceOption extends Ordered {
-    label: MarkdownString
-    trueLabel: MarkdownString
-    falseLabel: MarkdownString
-  }
-
-  interface UCBinaryChoiceSolution extends ObjectMap<boolean> {}
-
-  interface UCFractionNumber extends BaseUserControl {
-    controlType: 'fraction-number'
-    controlProps: UCFractionNumberProps
-  }
-
-  interface UCFractionNumberProps {
-    prefix?: MarkdownString
-    postfix?: MarkdownString
-  }
-
-  interface UCFractionNumberSolution {
-    numerator: number
-    denominator: number
-  }
-
-  interface UCMultiChoice extends BaseUserControl {
-    controlType: 'multi-choice'
-    controlProps: UCMultiChoiceProps
-  }
-
-  interface UCMultiChoiceProps {
-    randomOrder: boolean
-    options: ObjectMap<UCMultiChoiceOption>
-  }
-
-  interface UCMultiChoiceOption extends Ordered {
-    label: MarkdownString
-  }
-
-  interface UCMultiChoiceSolution extends ObjectMap<boolean> {}
-
-  interface UCNumberList extends BaseUserControl {
-    controlType: 'number-list'
-    controlProps: UCNumberListProps
-  }
-
-  interface UCNumberListProps {
-    prefix?: MarkdownString
-    postfix?: MarkdownString
-    fractionDigits: number
-    acceptRandomOrder: boolean
-    multiLine: boolean
-    fields: ObjectMap<UCNumberListField>
-  }
-
-  interface UCNumberListField extends Ordered {
-    prefix?: MarkdownString
-    postfix?: MarkdownString
-  }
-
-  interface UCNumberListSolution {
-    options: ObjectMap<string>
-  }
-
-  interface UCNumberListInput extends ObjectMap<string> {}
-
-  interface UCSimpleText extends BaseUserControl {
-    controlType: 'simple-text'
-    controlProps: UCSimpleTextProps
-  }
-
-  interface UCSimpleTextProps {
-    prefix?: MarkdownString
-    postfix?: MarkdownString
-  }
-
-  interface UCSimpleTextSolution {
-    ignoreSpaces?: boolean
-    caseSensitive?: boolean
-    options: ObjectMap<string>
-  }
-
-  interface UCSingleChoice extends BaseUserControl {
-    controlType: 'single-choice'
-    controlProps: UCSingleChoiceProps
-  }
-
-  interface UCSingleChoiceProps {
-    options: ObjectMap<UCSingleChoiceOption>
-  }
-
-  interface UCSingleChoiceOption {
-    label: MarkdownString
-  }
-
-  type UCSingleChoiceSolution = string
-
-  interface UCSingleNumber extends BaseUserControl {
-    controlType: 'single-number'
-    controlProps: UCSingleNumberProps
-  }
-
-  interface UCSingleNumberProps {
-    prefix?: MarkdownString
-    postfix?: MarkdownString
-    fractionDigits: number
-  }
-
-  type UCSingleNumberSolution = number
 }
 
 declare namespace ui {
@@ -369,11 +227,6 @@ declare interface BaseModalParams {
   disableBackdropClose?: boolean
 }
 
-interface FractionNumber {
-  numerator: number
-  denominator: number
-}
-
 declare interface NotificationOptions {
   timeout?: number
   description?: string
@@ -393,9 +246,3 @@ declare interface GridDataSource<T> {
   getPage(pageNumber: number, limit: number): Promise<T[]>
   on(type: DataSourceEvents, callback: () => void)
 }
-
-type DispatchProp<Fn> = Fn extends (
-  ...actionCreatorArgs: infer Args
-) => (...dispatchArgs: unknown[]) => infer Return
-  ? (...args: Args) => Return
-  : never
