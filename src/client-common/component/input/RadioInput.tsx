@@ -4,7 +4,7 @@ import { Markdown } from 'client-common/component/general/Markdown'
 interface RadioInputProps extends React.InputHTMLAttributes<any> {
   id: string
   name: string
-  label: MDString
+  label: MarkdownString
   resources: MarkdownResources
 }
 

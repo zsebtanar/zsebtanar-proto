@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { assocPath, dissocPath, evolve, keys, pathOr } from 'ramda'
 import { connect } from 'react-redux'
-import { abcIndex } from '../../../../shared/util/fn'
+import { toAbcIndex } from '../../../../shared/util/fn'
 import { uid } from '../../../util/uuid'
 import { openInputModal } from 'client-common/store/actions/modal'
 import { MarkdownField } from 'client-common/component/userControls/common/MarkdownField'
@@ -169,7 +169,7 @@ export const NumberListAdmin = connect(
       return (
         <div key={key} className="card mb-1">
           <div className="card-header card-header-sm d-flex justify-content-between align-items-center">
-            <span>{abcIndex(idx)})</span>
+            <span>{toAbcIndex(idx)})</span>
             {!isLast && <TrashButton label="Törlés" onAction={this.delSolution(key)} />}
           </div>
           <div className="card-body">

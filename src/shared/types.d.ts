@@ -201,9 +201,9 @@ declare namespace DB {
   }
 
   interface UCBinaryChoiceOption extends Ordered {
-    label: MDString
-    trueLabel: MDString
-    falseLabel: MDString
+    label: MarkdownString
+    trueLabel: MarkdownString
+    falseLabel: MarkdownString
   }
 
   interface UCBinaryChoiceSolution extends ObjectMap<boolean> {}
@@ -214,8 +214,8 @@ declare namespace DB {
   }
 
   interface UCFractionNumberProps {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
   }
 
   interface UCFractionNumberSolution {
@@ -234,7 +234,7 @@ declare namespace DB {
   }
 
   interface UCMultiChoiceOption extends Ordered {
-    label: MDString
+    label: MarkdownString
   }
 
   interface UCMultiChoiceSolution extends ObjectMap<boolean> {}
@@ -245,8 +245,8 @@ declare namespace DB {
   }
 
   interface UCNumberListProps {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
     fractionDigits: number
     acceptRandomOrder: boolean
     multiLine: boolean
@@ -254,8 +254,8 @@ declare namespace DB {
   }
 
   interface UCNumberListField extends Ordered {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
   }
 
   interface UCNumberListSolution {
@@ -270,8 +270,8 @@ declare namespace DB {
   }
 
   interface UCSimpleTextProps {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
   }
 
   interface UCSimpleTextSolution {
@@ -290,7 +290,7 @@ declare namespace DB {
   }
 
   interface UCSingleChoiceOption {
-    label: MDString
+    label: MarkdownString
   }
 
   type UCSingleChoiceSolution = string
@@ -301,8 +301,8 @@ declare namespace DB {
   }
 
   interface UCSingleNumberProps {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
     fractionDigits: number
   }
 
@@ -327,7 +327,7 @@ declare interface BaseUserControlAdminProps {
   resource?: MarkdownResources
 }
 
-declare type MDString = string
+declare type MarkdownString = string
 
 interface MarkdownResource {
   url: string

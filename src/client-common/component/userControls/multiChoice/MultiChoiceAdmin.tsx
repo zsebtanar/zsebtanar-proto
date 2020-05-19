@@ -3,7 +3,7 @@ import { assocPath, dissoc, evolve, keys, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { openInputModal } from 'client-common/store/actions/modal'
 import { uid } from 'client-common/util/uuid'
-import { abcIndex, fMerge, pairsInOrder } from 'shared/util/fn'
+import { toAbcIndex, fMerge, pairsInOrder } from 'shared/util/fn'
 import { TrashButton } from 'client-common/component/userControls/common/TrashButton'
 import { MarkdownField } from 'client-common/component/userControls/common/MarkdownField'
 import { Button } from 'client-common/component/general/Button'
@@ -112,7 +112,7 @@ export const MultiChoiceAdmin = connect(
       return (
         <div key={item.id} className="card mb-1">
           <div className="card-header card-header-sm d-flex justify-content-between align-items-center">
-            <span>{abcIndex(idx)})</span>
+            <span>{toAbcIndex(idx)})</span>
             {!item.isLast && (
               <TrashButton label="Törlés" onAction={() => this.removeItem(item.id)} />
             )}

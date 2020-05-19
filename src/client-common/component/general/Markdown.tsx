@@ -7,7 +7,7 @@ import './Markdown.scss'
 
 export interface MarkdownProps {
   className?: string
-  source: MDString
+  source: MarkdownString
   resources?: MarkdownResources
   mark?: string
   onWikiLink?: (wikiPageId: string) => void

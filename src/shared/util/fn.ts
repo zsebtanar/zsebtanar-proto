@@ -78,7 +78,7 @@ export function excludeMetaKeys(obj) {
 }
 
 const littleACode = 'a'.charCodeAt(0)
-export function abcIndex(idx) {
+export function toAbcIndex(idx) {
   return String.fromCharCode(littleACode + idx)
 }
 
