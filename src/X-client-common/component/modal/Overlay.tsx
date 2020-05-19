@@ -6,15 +6,19 @@ import { DynamicComponent } from '../util/DynamicComponent'
 
 interface OverlayStateProps extends state.AppModal {}
 
+interface DispatchProps {
+  closeModal: (payload: any) => void
+}
+
 const body = window.document.body
 
-const mapStateToProps = (state: state.Root) => state.app.modal
+const mapStateToProps = (state: any) => state.app.modal
 
-export const Overlay = connect<OverlayStateProps, {}, {}>(
+export const Overlay = connect<OverlayStateProps, DispatchProps, void>(
   mapStateToProps,
   { closeModal }
 )(
-  class Overlay extends Component<OverlayStateProps> {
+  class Overlay extends Component<OverlayStateProps & DispatchProps> {
     private backDropClose = (modal: state.Modal) => {
       const hasBackdropClose = !modal.parameters.disableBackdropClose
       if (hasBackdropClose) {

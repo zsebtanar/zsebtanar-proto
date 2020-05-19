@@ -2,7 +2,7 @@ import * as React from 'react'
 import { pathOr, pipe } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { abcIndex, pairsInOrder } from 'shared/util/fn'
+import { toAbcIndex, pairsInOrder } from 'shared/util/fn'
 import { Markdown } from 'client-common/component/general/Markdown'
 import { Loading } from 'client-common/component/general/Loading'
 import { SubTask } from 'client-common/page/exercise/SubTask'
@@ -46,7 +46,7 @@ export const Exercise = pipe(
     mapDispatchToProps
   )
 )(
-  class extends React.Component<any, any> {
+  class ExerciseComp extends React.Component<any, any> {
     componentDidMount() {
       const { match, getPublicExerciseAction, previewMode } = this.props
 
@@ -88,7 +88,7 @@ export const Exercise = pipe(
       const ex = this.props.exercise
       const subTaskList = pairsInOrder(ex.subTasks)
       const isSingleTask = subTaskList.length === 1
-      const subTasks = subTaskList.filter(([_, task]) => task.status !== TASK_STATUS_WAITING)
+      const subTasks = subTaskList.filter(([_, task]: any) => task.status !== TASK_STATUS_WAITING)
 
       return (
         <div className="exercise-page">
@@ -131,7 +131,7 @@ export const Exercise = pipe(
       return (
         <div className="row" key={taskId}>
           <div className="sub-task-index col-md-1 mb-1 font-weight-bold">
-            {isSingleTask ? '' : `${abcIndex(task.order)})`}
+            {isSingleTask ? '' : `${toAbcIndex(task.order)})`}
           </div>
           <div className="col-md-10">
             <SubTask
@@ -169,7 +169,7 @@ export const Exercise = pipe(
       }
     }
 
-    private openWikiModal = (pageId) => {
+    private openWikiModal = pageId => {
       this.props.openWikiModal({ pageId })
     }
   }

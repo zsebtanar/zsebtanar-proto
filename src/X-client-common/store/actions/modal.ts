@@ -216,9 +216,6 @@ export function openFileUpload(params: FileUploadModalParams) {
       import(/* webpackChunkName: 'admin-modal' */ 'client-common/component/modal/FileUploadModal'),
     {
       onClose: identity,
-      onSuccess: identity,
-      onError: identity,
-      resources: {},
       disableBackdropClose: true,
       ...params
     }

@@ -1,7 +1,7 @@
 import { evolve, keys, mapObjIndexed, pick, pipe } from 'ramda'
 import * as Joi from 'joi'
 import { admin } from '../utils/firebase'
-import {uidPattern} from '../utils/joi'
+import { uidPattern } from '../utils/joi'
 
 const PUBLIC_EXERCISE_PROPS = [
   '_key',
@@ -16,11 +16,8 @@ const PUBLIC_SUB_TASK_PROPS = ['controls', 'order', 'description']
 const DB = admin.database()
 const PrivateExercise = DB.ref('exercise/private')
 const PublicExercise = DB.ref('exercise/public')
-const storageRef = admin.storage().bucket()
 
 export const newPrivateExerciseKey = () => PrivateExercise.push().key
-
-export const getPrivateExercise = key => PrivateExercise.child(key).once('value')
 
 export const getExerciseState = key =>
   PrivateExercise.child(key)
@@ -49,8 +46,6 @@ export const removePublicExercise = key => PublicExercise.child(key).remove()
 
 export const removeExercise = key =>
   Promise.all([PrivateExercise.child(key).remove(), removePublicExercise(key)])
-
-
 
 const classificationSchema = Joi.array().items(Joi.string())
 
@@ -96,6 +91,7 @@ export const exerciseSchema = Joi.object({
   }),
   difficulty: Joi.any().optional(),
   description: Joi.string().required(),
+  script: Joi.string().allow(''),
   subTasks: Joi.object()
     .pattern(uidPattern, subTaskSchema)
     .min(1),

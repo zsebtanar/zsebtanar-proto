@@ -21,6 +21,7 @@ declare const __CONFIG__: {
   }
 }
 declare const grecaptcha: any
+declare const __SERVER_ENV__: string
 
 declare type FormMode = 'new' | 'update' | 'clone'
 
@@ -33,6 +34,7 @@ declare namespace state {
     exerciseSheet: AdminExerciseSheet
     wikiPage: AdminWikPage
     resources: AdminResource
+    exerciseEdit: any
   }
 
   interface App {
@@ -86,7 +88,6 @@ declare namespace state {
 
   interface AppModal {
     modals: Modal[]
-    closeModal: (id: string) => void
   }
 
   interface Modal {
@@ -122,8 +123,8 @@ declare namespace state {
   interface AdminWikPage extends BaseFormData<WikiPageModel> {}
 
   interface AdminResource {
-    data: MarkdownResources
-    error: any
+    data?: MarkdownResources
+    error?: any
   }
 
   interface ResourceFileData {
@@ -213,9 +214,9 @@ declare namespace DB {
   }
 
   interface UCBinaryChoiceOption extends Ordered {
-    label: MDString
-    trueLabel: MDString
-    falseLabel: MDString
+    label: MarkdownString
+    trueLabel: MarkdownString
+    falseLabel: MarkdownString
   }
 
   interface UCBinaryChoiceSolution extends ObjectMap<boolean> {}
@@ -226,8 +227,8 @@ declare namespace DB {
   }
 
   interface UCFractionNumberProps {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
   }
 
   interface UCFractionNumberSolution {
@@ -246,7 +247,7 @@ declare namespace DB {
   }
 
   interface UCMultiChoiceOption extends Ordered {
-    label: MDString
+    label: MarkdownString
   }
 
   interface UCMultiChoiceSolution extends ObjectMap<boolean> {}
@@ -257,8 +258,8 @@ declare namespace DB {
   }
 
   interface UCNumberListProps {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
     fractionDigits: number
     acceptRandomOrder: boolean
     multiLine: boolean
@@ -266,8 +267,8 @@ declare namespace DB {
   }
 
   interface UCNumberListField extends Ordered {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
   }
 
   interface UCNumberListSolution {
@@ -282,13 +283,13 @@ declare namespace DB {
   }
 
   interface UCSimpleTextProps {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
   }
 
   interface UCSimpleTextSolution {
-    ignoreSpaces: boolean
-    caseSensitive: boolean
+    ignoreSpaces?: boolean
+    caseSensitive?: boolean
     options: ObjectMap<string>
   }
 
@@ -302,7 +303,7 @@ declare namespace DB {
   }
 
   interface UCSingleChoiceOption {
-    label: MDString
+    label: MarkdownString
   }
 
   type UCSingleChoiceSolution = string
@@ -313,8 +314,8 @@ declare namespace DB {
   }
 
   interface UCSingleNumberProps {
-    prefix?: MDString
-    postfix?: MDString
+    prefix?: MarkdownString
+    postfix?: MarkdownString
     fractionDigits: number
   }
 
@@ -392,3 +393,9 @@ declare interface GridDataSource<T> {
   getPage(pageNumber: number, limit: number): Promise<T[]>
   on(type: DataSourceEvents, callback: () => void)
 }
+
+type DispatchProp<Fn> = Fn extends (
+  ...actionCreatorArgs: infer Args
+) => (...dispatchArgs: unknown[]) => infer Return
+  ? (...args: Args) => Return
+  : never

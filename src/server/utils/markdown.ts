@@ -1,7 +1,7 @@
-import * as Markdown from 'markdown-it'
-import * as katex from 'markdown-it-katex'
-import * as kbd from 'markdown-it-kbd'
-import * as centertext from 'markdown-it-center-text'
+import Markdown from 'markdown-it'
+import katex from 'markdown-it-katex'
+import kbd from 'markdown-it-kbd'
+import centertext from 'markdown-it-center-text'
 import { imageInit } from 'shared/markdown/image-resource'
 import { wikiLinkInit } from '../../shared/markdown/wiki-link'
 

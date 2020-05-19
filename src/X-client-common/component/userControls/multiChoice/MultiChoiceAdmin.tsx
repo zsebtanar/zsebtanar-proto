@@ -3,7 +3,7 @@ import { assocPath, dissoc, evolve, keys, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { openInputModal } from 'client-common/store/actions/modal'
 import { uid } from 'client-common/util/uuid'
-import { abcIndex, fMerge, pairsInOrder } from 'shared/util/fn'
+import { toAbcIndex, fMerge, pairsInOrder } from 'shared/util/fn'
 import { TrashButton } from 'client-common/component/userControls/common/TrashButton'
 import { MarkdownField } from 'client-common/component/userControls/common/MarkdownField'
 import { Button } from 'client-common/component/general/Button'
@@ -13,14 +13,14 @@ export const MultiChoiceAdmin = connect(
   undefined,
   { openInputModal }
 )(
-  class extends React.Component<any, any> {
+  class MultiChoiceAdminComp extends React.Component<any, any> {
     state = {
       options: {},
       randomOrder: false,
       solution: {}
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       if (this.props.value && this.props.value.options) {
         this.setState(this.props.value)
       } else if (keys(this.state.options).length < 1) {
@@ -94,7 +94,7 @@ export const MultiChoiceAdmin = connect(
             </Checkbox>
           </div>
           <div>
-            {options.map(([id, data], idx) =>
+            {options.map(([id, data]: any, idx) =>
               this.renderItem({ id, ...data, name: 'admin', isLast: options.length < 2 }, idx)
             )}
             <Button
@@ -112,7 +112,7 @@ export const MultiChoiceAdmin = connect(
       return (
         <div key={item.id} className="card mb-1">
           <div className="card-header card-header-sm d-flex justify-content-between align-items-center">
-            <span>{abcIndex(idx)})</span>
+            <span>{toAbcIndex(idx)})</span>
             {!item.isLast && (
               <TrashButton label="Törlés" onAction={() => this.removeItem(item.id)} />
             )}
@@ -126,10 +126,13 @@ export const MultiChoiceAdmin = connect(
               onChange={this.updateOption(item.id)}
             />
             <div className="row">
-              <label className="col-3">Megoldás:</label>
+              <label className="col-3" htmlFor={item.id}>
+                Megoldás:
+              </label>
               <div className="col-9">
                 <select
                   name={item.id}
+                  id={item.id}
                   className="form-control"
                   required
                   defaultValue={pathOr(false, ['solution', 'options', item.id], this.state)}

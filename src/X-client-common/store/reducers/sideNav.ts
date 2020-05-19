@@ -13,12 +13,12 @@ const initialState = {
   active: false
 }
 
-export default function modal(state = initialState, action) {
+export default function sideNav(state: state.SideNav = initialState, action): state.SideNav {
   switch (action.type) {
     case OPEN_SIDE_NAV:
       return { active: true }
     case CLOSE_SIDE_NAV:
-      return { action: false }
+      return { active: false }
     default:
       return state
   }

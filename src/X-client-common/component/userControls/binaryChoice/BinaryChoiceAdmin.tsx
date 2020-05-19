@@ -20,14 +20,14 @@ export const BinaryChoiceAdmin = connect(
   undefined,
   { openInputModal }
 )(
-  class extends React.Component<any, BinaryChoiceAdminState> {
+  class BinaryChoiceAdminComp extends React.Component<any, BinaryChoiceAdminState> {
     state = {
       options: {},
       randomOrder: false,
       solution: {}
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       if (this.props.value && this.props.value.options) {
         this.setState(this.props.value)
       } else if (keys(this.state.options).length < 1) {
@@ -101,7 +101,7 @@ export const BinaryChoiceAdmin = connect(
           </div>
           <div>
             <div className="list-group">
-              {options.map(([id, data], idx) =>
+              {options.map(([id, data]: any, idx) =>
                 this.renderItem({ id, ...data, name: 'admin', isLast: options.length < 2 }, idx)
               )}
             </div>
@@ -159,10 +159,13 @@ export const BinaryChoiceAdmin = connect(
             />
 
             <div className="form-group row">
-              <label className="col-3 col-form-label">Megoldás</label>
+              <label className="col-3 col-form-label" htmlFor={item.id}>
+                Megoldás
+              </label>
               <div className="col-6">
                 <select
                   name={item.id}
+                  id={item.id}
                   className="form-control"
                   required
                   defaultValue={pathOr(false, ['solution', item.id], this.state).toString()}

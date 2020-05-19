@@ -40,55 +40,53 @@ const commonConfig = {
   ]
 }
 
+const baseTestConfig = {
+  siteUrl: 'https://zsebtanar-test.firebaseapp.com',
+  api: '/api',
+  firebase: {
+    apiKey: 'AIzaSyD3SmCO7FvzawbprcqeC42YZBDmf6TZr4A',
+    authDomain: 'zsebtanar-test.firebaseapp.com',
+    databaseURL: 'https://zsebtanar-test.firebaseio.com',
+    projectId: 'zsebtanar-test',
+    storageBucket: 'zsebtanar-test.appspot.com',
+    messagingSenderId: '650562716671'
+  },
+  algolia: {
+    appId: 'J8PWVF536F',
+    key: '502f297f7fecf9051688c205ab391225'
+  },
+  ga: {
+    ua: 'UA-118780906-2'
+  },
+  recaptcha: {
+    siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
+  }
+}
+
 const envConfig = {
+  emulator: {
+    ...baseTestConfig,
+    siteUrl: 'http://localhost:3000/',
+    api: 'http://localhost:5001/zsebtanar-test/us-central1/api/api',
+    sentry: {}
+  },
   development: {
+    ...baseTestConfig,
+    siteUrl: 'http://localhost:3000/',
     api: 'https://zsebtanar-test.firebaseapp.com/api',
-    firebase: {
-      apiKey: 'AIzaSyD3SmCO7FvzawbprcqeC42YZBDmf6TZr4A',
-      authDomain: 'zsebtanar-test.firebaseapp.com',
-      databaseURL: 'https://zsebtanar-test.firebaseio.com',
-      projectId: 'zsebtanar-test',
-      storageBucket: 'zsebtanar-test.appspot.com',
-      messagingSenderId: '650562716671'
-    },
-    algolia: {
-      appId: 'J8PWVF536F',
-      key: '502f297f7fecf9051688c205ab391225'
-    },
-    ga: {
-      ua: 'UA-118780906-2'
-    },
-    recaptcha: {
-      siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
-    },
     sentry: {}
   },
   test: {
+    ...baseTestConfig,
+    siteUrl: 'https://zsebtanar-test.firebaseapp.com',
     api: '/api',
-    firebase: {
-      apiKey: 'AIzaSyD3SmCO7FvzawbprcqeC42YZBDmf6TZr4A',
-      authDomain: 'zsebtanar-test.firebaseapp.com',
-      databaseURL: 'https://zsebtanar-test.firebaseio.com',
-      projectId: 'zsebtanar-test',
-      storageBucket: 'zsebtanar-test.appspot.com',
-      messagingSenderId: '650562716671'
-    },
     sentry: {
       dsn: 'https://51329885b5704f2d8b19d4c29cad3e9a@sentry.io/275144',
       csp: 'https://sentry.io/api/275144/security/?sentry_key=51329885b5704f2d8b19d4c29cad3e9a'
-    },
-    algolia: {
-      appId: 'J8PWVF536F',
-      key: '502f297f7fecf9051688c205ab391225'
-    },
-    ga: {
-      ua: 'UA-118780906-2'
-    },
-    recaptcha: {
-      siteKey: '6LfQz2kUAAAAAIjVA4ZFmEQaURo6i2RSA27kZu7P'
     }
   },
   production: {
+    siteUrl: 'https://zsebtanar.hu/',
     api: '/api',
     firebase: {
       apiKey: 'AIzaSyAqJ6qUZfiB586kHXHZdagx-i0vzHMrqMU',
@@ -129,7 +127,21 @@ function getCSPConfig(withReport) {
     .join('; ')
 }
 
+function getRobotTxt() {
+  const server = process.env.SERVER_ENV || 'development'
+  const config = getConfig()
+  switch (server) {
+    case 'production':
+      return ['User-agent: * Disallow: /admin/*', `Sitemap: ${config.siteUrl}sitemap.xml`].join(
+        '\n'
+      )
+    default:
+      return ['User-agent: * Disallow: /'].join('\n')
+  }
+}
+
 module.exports = {
   getConfig,
-  getCSPConfig
+  getCSPConfig,
+  getRobotTxt
 }

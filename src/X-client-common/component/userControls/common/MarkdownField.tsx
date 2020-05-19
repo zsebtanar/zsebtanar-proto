@@ -9,9 +9,9 @@ import { EditButton } from './EditButton'
 interface MarkdownFieldProps {
   name: string
   label: string
-  value: MDString
+  value: MarkdownString
   cleanable?: boolean
-  onChange?: (event: { name: string; value?: MDString }) => void
+  onChange?: (event: { name: string; value?: MarkdownString }) => void
   className?: string
   placeholder?: string
   resources: MarkdownResources

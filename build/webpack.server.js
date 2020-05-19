@@ -1,9 +1,12 @@
+const webpack = require('webpack')
+
 const path = require('path')
 const fs = require('fs')
 
 const env = process.env.NODE_ENV || 'development'
 const isDev = env === 'development'
 const isProd = env === 'production'
+const serverEnv = process.env.SERVER_ENV
 
 const ROOT_PATH = path.join(__dirname, '..')
 const SRC_PATH = path.join(ROOT_PATH, 'src')
@@ -61,5 +64,11 @@ module.exports = {
     ]
   },
 
-  optimization: { minimize: false }
+  optimization: { minimize: false },
+  plugins: [
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(isDev),
+      __SERVER_ENV__: JSON.stringify(serverEnv)
+    })
+  ]
 }

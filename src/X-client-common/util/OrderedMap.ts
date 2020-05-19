@@ -5,7 +5,16 @@ const setOrder = flip(assocPath([1, 'order']))
 const sortByOrder = sortBy(path([1, 'order']))
 
 export const removeFromObjById = curry((key: string, obj: any) =>
-  pipe(dissoc(key), toPairs, sortByOrder, indexedMap(setOrder), fromPairs)(obj)
+  (pipe(
+    dissoc(key),
+    toPairs,
+    sortByOrder,
+    indexedMap(setOrder),
+    fromPairs
+  ) as (data) => any)(obj)
 )
 
-export const orderedListFromObj = pipe(toPairs, sortByOrder)
+export const orderedListFromObj = pipe(
+  toPairs,
+  sortByOrder
+)

@@ -18,11 +18,6 @@ interface StoreOptions {
 
 const db = app.firestore()
 
-// Disable deprecated features
-db.settings({
-  timestampsInSnapshots: true
-})
-
 export class Service<T extends BaseModel> {
   private readonly collectionName: string
 

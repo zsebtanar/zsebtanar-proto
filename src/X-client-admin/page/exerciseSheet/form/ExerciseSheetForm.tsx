@@ -4,7 +4,7 @@ import { FormGroup } from 'client-common/component/general/FormGroup'
 import { Icon } from 'client-common/component/general/Icon'
 import { Loading } from 'client-common/component/general/Loading'
 import { Checkbox } from 'client-common/component/input/Checkbox'
-import { pathOr, pipe, view } from 'ramda'
+import { pathOr, view } from 'ramda'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
@@ -35,13 +35,11 @@ interface DispatchProps {
 
 type RouteProps = RouteComponentProps<{ key?: string }>
 
-type AllProps = RouteProps & StoreProps & DispatchProps & FormFieldProps
-
 ///
 
 const mapStoreToProps = (state: state.AdminRoot) => state.exerciseSheet
 
-const mapDispatchToProps = {
+const mapDispatchToProps: DispatchProps = {
   createSheet: newExerciseSheet,
   loadSheet: loadExerciseSheet,
   saveSheet: saveExerciseSheet,
@@ -56,21 +54,19 @@ const numOfListedItemsL = lensPathOr(0, ['data', 'numOfListedItems'])
 
 ///
 
-export const ExerciseSheetForm = pipe(
-  withRouter,
+export const ExerciseSheetForm = withRouter(
   connect<StoreProps, DispatchProps, RouteProps & FormFieldProps>(
     mapStoreToProps,
     mapDispatchToProps
-  )
-)(
-  class ExerciseSheetFormComp extends React.PureComponent<AllProps> {
-    componentWillMount(): void {
-      this.loadSheet()
-    }
+  )(
+    class ExerciseSheetFormComp extends React.PureComponent<any> {
+      UNSAFE_componentWillMount(): void {
+        this.loadSheet()
+      }
 
-    componentWillUnmount(): void {
-      this.props.clearSheet()
-    }
+      componentWillUnmount(): void {
+        this.props.clearSheet()
+      }
 
     private loadSheet = () => {
       const { match, createSheet, loadSheet } = this.props
@@ -83,62 +79,62 @@ export const ExerciseSheetForm = pipe(
       }
     }
 
-    render(): React.ReactNode {
-      const { loading, error } = this.props
-      return (
-        <div>
-          {this.renderHeader()}
-          {loading ? (
-            <Loading />
-          ) : error ? (
-            <Alert type={'danger'}>{JSON.stringify(error)}</Alert>
-          ) : (
-            this.renderContent()
-          )}
-        </div>
-      )
-    }
-
-    private renderHeader() {
-      const { saving, changed, data } = this.props
-
-      return (
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <div className="d-flex justify-content-between align-items-center">
-            <NavLink
-              exact
-              to="/exercise-sheet"
-              className="btn btn-outline-light py-0 text-dark mx-2"
-              title="Mégsem"
-            >
-              <Icon fa="angle-left" size="2x" />
-            </NavLink>
-            <h4 className="d-inline-block m-0 mr-1">Feladatlista</h4>
-          </div>
+      render(): React.ReactNode {
+        const { loading, error } = this.props
+        return (
           <div>
-            {data &&
-              data.id && (
-                <Button
-                  className="btn btn-outline-danger"
-                  onAction={this.props.removeSheet}
-                  icon="trash"
-                >
-                  Törlés
-                </Button>
-              )}
-            <Button
-              loading={saving}
-              disabled={!changed}
-              className="btn btn-primary ml-1"
-              onAction={this.props.saveSheet}
-              icon="save"
-            >
-              Mentés
-            </Button>
+            {this.renderHeader()}
+            {loading ? (
+              <Loading />
+            ) : error ? (
+              <Alert type={'danger'}>{JSON.stringify(error)}</Alert>
+            ) : (
+              this.renderContent()
+            )}
           </div>
-        </div>
-      )
-    }
+        )
+      }
+
+      private renderHeader() {
+        const { saving, changed, data } = this.props
+
+        return (
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex justify-content-between align-items-center">
+              <NavLink
+                exact
+                to="/exercise-sheet"
+                className="btn btn-outline-light py-0 text-dark mx-2"
+                title="Mégsem"
+              >
+                <Icon fa="angle-left" size="2x" />
+              </NavLink>
+              <h4 className="d-inline-block m-0 mr-1">Feladatlista</h4>
+            </div>
+            <div>
+              {data &&
+                data.id && (
+                  <Button
+                    className="btn btn-outline-danger"
+                    onAction={this.props.removeSheet}
+                    icon="trash"
+                  >
+                    Törlés
+                  </Button>
+                )}
+              <Button
+                loading={saving}
+                disabled={!changed}
+                className="btn btn-primary ml-1"
+                onAction={this.props.saveSheet}
+                icon="save"
+              >
+                Mentés
+              </Button>
+            </div>
+          </div>
+        )
+      }
 
     private renderContent() {
       const { data, setField } = this.props
@@ -186,5 +182,5 @@ export const ExerciseSheetForm = pipe(
         </div>
       )
     }
-  }
+  })
 )

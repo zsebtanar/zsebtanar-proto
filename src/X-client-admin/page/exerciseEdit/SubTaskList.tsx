@@ -153,10 +153,7 @@ class SubTaskTab extends React.Component<any, any> {
 
     const opacity = isDragging ? 0 : 1
 
-    return pipe(
-      connectDropTarget,
-      connectDragPreview
-    )(
+    return (pipe as any)(connectDropTarget, connectDragPreview)(
       <li className="nav-item" style={{ opacity }}>
         <div
           className={`nav-link d-flex w-100 justify-content-between ${

@@ -24,7 +24,7 @@ interface HeaderDispatchProps {
   openSideNav: typeof openSideNav
 }
 
-const mapStateToProps = (state: state.Root) => ({
+const mapStateToProps = (state: state.Root): HeaderStateProps => ({
   session: state.app.session,
   sideNav: state.app.sideNav
 })
@@ -33,7 +33,7 @@ export const Header = withRouter(
   connect<HeaderStateProps, HeaderDispatchProps, HeaderProps>(
     mapStateToProps,
     { signOut, openSideNav }
-  )(function HeaderComp(props: HeaderStateProps & HeaderDispatchProps & HeaderProps) {
+  )(function HeaderComp(props: any) {
     if (!props.session.signedIn) {
       return <div />
     }

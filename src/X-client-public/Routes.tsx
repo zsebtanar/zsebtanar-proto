@@ -2,7 +2,6 @@ import { Loading } from 'client-common/component/general/Loading'
 import { Overlay } from 'client-common/component/modal/Overlay'
 import { About } from 'client-common/page/About'
 import { JoinUs } from 'client-common/page/JoinUs'
-import { Exercise } from 'client-common/page/exercise/Exercise'
 import { Page404 } from 'client-common/page/Page404'
 import { AppNotifications } from 'client-common/component/general/AppNotifications'
 import { History } from 'history'
@@ -20,6 +19,7 @@ import { Profile } from './page/Profile'
 import { Search } from 'client/app-public/pages/Search'
 import { Workarounds } from '../client-common/page/Workarounds'
 import { CookieConsent } from './component/CookieConsent'
+import { ExercisePage } from '../client/exercise/page/ExercisePage'
 
 interface RoutersProps {
   history: History
@@ -45,7 +45,7 @@ export const Routes = connect<RoutersStateProps, {}, RoutersProps>(mapStateToPro
           </div>
         ) : (
           <Switch>
-            <Route exact path="/exercise/:key" component={Exercise} />
+            <Route exact path="/exercise/:key" component={ExercisePage} />
             <Route component={App(props)} />
           </Switch>
         )}

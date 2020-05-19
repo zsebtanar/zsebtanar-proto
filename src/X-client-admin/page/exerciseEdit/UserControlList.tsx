@@ -5,7 +5,7 @@ import { fMerge, pairsInOrder } from 'shared/util/fn'
 import { connect } from 'react-redux'
 import { Icon } from 'client-common/component/general/Icon'
 import { openUserControlModal } from 'client-common/store/actions/modal'
-import { Dropdown} from 'client-common/component/general/dropdown/Dropdown'
+import { Dropdown } from 'client-common/component/general/dropdown/Dropdown'
 import { NAMES as CONTROL_TYPES } from 'client-common/component/userControls/controlTypes'
 import { DropdownMenu } from '../../../client-common/component/general/dropdown/DropdownMenu'
 import { DropdownToggle } from '../../../client-common/component/general/dropdown/DropdownToggle'
@@ -34,7 +34,7 @@ export const UserControlList = connect(
             ...controls,
             [key]: {
               order: values(controls).length,
-              ...dissocPath(['controlProps', 'solution'], value)
+              ...(dissocPath(['controlProps', 'solution'], value) as any)
             }
           }),
           solutions: solutions => ({

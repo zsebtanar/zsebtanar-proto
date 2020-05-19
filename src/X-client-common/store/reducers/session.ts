@@ -26,7 +26,7 @@ export function parseTokenAction(currentUser, force = false) {
     parseToken(currentUser, force).then(payload => dispatch({ type: USER_TOKEN, payload }))
 }
 
-const INIT_STATE = {
+const INIT_STATE: state.Session = {
   waitingForUser: true,
   signInLoading: false,
   emailSignUpLoading: false,
@@ -38,7 +38,7 @@ const INIT_STATE = {
   autoSignIn: true
 }
 
-export default function sessionWorkflow(state = INIT_STATE, action) {
+export default function sessionWorkflow(state: state.Session = INIT_STATE, action): state.Session {
   switch (action.type) {
     case AUTH_NO_USER:
       return { ...state, waitingForUser: false }
@@ -51,7 +51,7 @@ export default function sessionWorkflow(state = INIT_STATE, action) {
       return {
         ...state,
         user: action.payload.user,
-        error: null
+        error: undefined
       }
     case USER_SIGN_UP_FINISHED:
       return {
@@ -72,19 +72,22 @@ export default function sessionWorkflow(state = INIT_STATE, action) {
     case SIGN_IN_ERROR:
     case SIGN_UP_ERROR:
       return {
+        waitingForUser: false,
         signedIn: false,
-        user: null,
-        userDetails: null,
+        user: undefined,
+        userDetails: undefined,
         signInLoading: false,
         emailSignUpLoading: false,
-        error: action.payload
+        error: action.payload,
+        token: undefined,
+        autoSignIn: false
       }
     case SIGN_OUT_SUCCESS:
       return { ...INIT_STATE }
     case SIGN_OUT_ERROR:
       return { ...state, error: action.payload }
     case CLOSE_MODAL:
-      return { ...state, error: null }
+      return { ...state, error: undefined }
     default:
       return state
   }

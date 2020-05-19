@@ -20,7 +20,10 @@ const INIT_STATE = {
   error: undefined
 }
 
-export function classificationReducer(state = INIT_STATE, action) {
+export function classificationReducer(
+  state: state.Classifications = INIT_STATE,
+  action
+): state.Classifications {
   switch (action.type) {
     case CLASSIFICATION_LIST_START:
       return {

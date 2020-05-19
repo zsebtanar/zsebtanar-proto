@@ -75,10 +75,10 @@ function storeExercise() {
 
 const INIT_STATE = {
   loading: true,
-  mode: undefined, // new | update | clone
+  mode: 'new', // new | update | clone
   changed: false,
   saving: false,
-  data: undefined,
+  data: {},
   error: undefined
 }
 

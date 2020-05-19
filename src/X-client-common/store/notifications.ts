@@ -38,7 +38,10 @@ const initialState = {
   list: []
 }
 
-export function notificationReducer(state = initialState, action) {
+export function notificationReducer(
+  state: state.Notifications = initialState,
+  action
+): state.Notifications {
   switch (action.type) {
     case ADD_NOTIFICATION:
       return {

@@ -46,8 +46,8 @@ export const Profile = pipe(
             <div className="alert alert-danger d-flex align-items-center">
               <Icon fa="exclamation-triangle" size="4x" />
               <p className="ml-4 mb-0">
-                Figyelem! <br />A folyamat során visszafordíthatatlanul töröljük a felhasználói
-                adataidat és minden eddig elér eredményeidet.
+                Figyelem! <br />A folyamat során visszafordíthatatlanul törlődnek a felhasználói
+                adataidat és minden eddig elért eredményed.
               </p>
             </div>
             <p>Biztos törölni szeretnéd a profilod?</p>
@@ -82,7 +82,7 @@ export const Profile = pipe(
             <hr className="my-5" />
             <p className="text-right">
               <Button className="btn-danger" onAction={this.deleteProfile} icon="trash">
-                Felhasználói fiók törlése
+                Profil törlése
               </Button>
             </p>
           </div>

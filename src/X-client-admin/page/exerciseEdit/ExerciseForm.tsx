@@ -51,13 +51,15 @@ import {
 import { Icon } from 'client-common/component/general/Icon'
 import { isAdmin } from 'client/user/services/user'
 import { Dropdown } from 'client-common/component/general/dropdown/Dropdown'
+import { CodeEditor } from 'client-common/component/general/CodeEditor'
+import { PocketLispProvider } from 'client-common/services/generator/PocketLispProvider'
 
 const modeLabel = {
   Add: 'létrehozása',
   Update: 'módosítása',
   Clone: 'másolása'
 }
-const TABS = ['Metaadatok', 'Leírás', 'Részfeladatok', 'Előnézet']
+const TABS = ['Metaadatok', 'Kód', 'Leírás', 'Részfeladatok', 'Előnézet']
 
 const STATE_MESSAGES = {
   [EXERCISE_DRAFT]: 'Biztos, hogy szeretnéd visszállítani a feladtot vázlat állapotba?',
@@ -92,7 +94,7 @@ export const ExerciseForm = connect(
   mapDispatchToProps
 )(
   class ExerciseForm extends React.Component<any, any> {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       this.props.getClassifications().then(() => this.loadExercise())
 
       document.addEventListener('keyup', this.shiftEnter)
@@ -136,7 +138,9 @@ export const ExerciseForm = connect(
     }
 
     update = event => {
-      let { name, value } = event.currentTarget || event
+      event = event.currentTarget || event
+      const name = event.name
+      let value = event.value
       const path = name.split('.')
       if (last(path) === 'difficulty') {
         value = parseInt(value, 10)
@@ -151,7 +155,7 @@ export const ExerciseForm = connect(
         // remove all topic(s) which is not connect to any selected subject(s)
         const allNOTUsedSubjectTopics = values(
           omit(selectedValues, pathOr({}, [SUBJECT], ex.classifications))
-        ).reduce((acc, sub) => acc.concat(Object.keys(sub.topic || {})), [])
+        ).reduce((acc: any[], sub: any) => acc.concat(Object.keys(sub.topic || {})), [])
         ex = evolve(
           {
             classification: {
@@ -225,19 +229,21 @@ export const ExerciseForm = connect(
 
     renderContent() {
       return (
-        <div>
-          {this.renderHeader()}
+        <PocketLispProvider seed={1} isEdit={true}>
+          <div>
+            {this.renderHeader()}
 
-          <div className="tab-content w-100">
-            <TabNav navClassName="nav-tabs nav-fill w-100 mt-4 mb-2" defaultTab={0}>
-              {TABS.map((item, idx) => (
-                <Tab key={item} label={item}>
-                  {this.renderActiveTabContent(idx)}
-                </Tab>
-              ))}
-            </TabNav>
+            <div className="tab-content w-100">
+              <TabNav navClassName="nav-tabs nav-fill w-100 mt-4 mb-2" defaultTab={0}>
+                {TABS.map((item, idx) => (
+                  <Tab key={item} label={item}>
+                    {this.renderActiveTabContent(idx)}
+                  </Tab>
+                ))}
+              </TabNav>
+            </div>
           </div>
-        </div>
+        </PocketLispProvider>
       )
     }
 
@@ -327,10 +333,12 @@ export const ExerciseForm = connect(
         case 0:
           return this.renderMetadata()
         case 1:
-          return this.renderDescription()
+          return this.renderSourceCode()
         case 2:
-          return this.renderSubTasks()
+          return this.renderDescription()
         case 3:
+          return this.renderSubTasks()
+        case 4:
           return <ExercisePreview exercise={this.props.exercise} />
       }
     }
@@ -349,9 +357,12 @@ export const ExerciseForm = connect(
           })}
           {this.renderSelect(TAGS, 'Címkék: ', ['classification', TAGS])}
           <div className="form-group row">
-            <label className="col-4 col-form-label">Nehézségi szint</label>
+            <label className="col-4 col-form-label" htmlFor="difficulty">
+              Nehézségi szint
+            </label>
             <div className="col-8">
               <select
+                id="difficulty"
                 className="form-control"
                 name="difficulty"
                 onChange={this.update}
@@ -368,8 +379,31 @@ export const ExerciseForm = connect(
       )
     }
 
+    renderSourceCode() {
+      const { exercise } = this.props
+
+      return (
+        <div className="col-11 mx-auto">
+          <FormGroup label="Teszt seed">
+            <input
+              type="number"
+              className="form-control"
+              min={1}
+              max={Number.MAX_SAFE_INTEGER}
+              step={1}
+            />
+          </FormGroup>
+          <CodeEditor
+            name="script"
+            onChange={this.update}
+            value={pathOr('', ['script'], exercise)}
+          />
+        </div>
+      )
+    }
+
     renderDescription() {
-      const { exercise, resources } = this.props;
+      const { exercise, resources } = this.props
       return (
         <div className="col-11 mx-auto">
           <TextEditor
@@ -387,10 +421,7 @@ export const ExerciseForm = connect(
 
     renderSubTasks() {
       return (
-        <SubTaskList
-          subTasks={this.props.exercise.subTasks || {}}
-          onChange={this.updateSubTask}
-        />
+        <SubTaskList subTasks={this.props.exercise.subTasks || {}} onChange={this.updateSubTask} />
       )
     }
 
