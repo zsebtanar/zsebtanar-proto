@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { Button, Loading } from 'client/generic/components'
 import { useRadio, useInput } from 'client/generic/hooks'
-import { createFeedback } from 'client-common/services/feedbackService'
 import { Recaptcha } from 'client/app-public/providers/Recaptcha'
 import { Dialog, DialogHeader, DialogBody, DialogFooter } from 'client/overlay/components/base'
 import { useUser } from 'client/user/providers/UserProvider'
 import { useDialog } from 'client/overlay/providers'
+import { createFeedback } from '../services/feedbackService'
 
 enum FormStates {
   Init,

@@ -1,4 +1,4 @@
-import { simpleTextCheck as simpleText } from '../simpleText'
+import { simpleTextCheck as simpleText } from './simpleText'
 
 describe('simpleText', () => {
   it('should pass in the simplest case', () => {

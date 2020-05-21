@@ -1,11 +1,9 @@
-import { multiChoiceCheck as multiChoice } from '../multiChoice'
+import { multiChoiceCheck as multiChoice } from './multiChoice'
 
 describe('multiChoice', () => {
   it('should pass in the basic case', () => {
-    expect(multiChoice(null as any, { idA: true }, { idA: true })).toBe(true)
-    expect(multiChoice(null as any, { idA: false, idB: true }, { idA: false, idB: true })).toBe(
-      true
-    )
+    expect(multiChoice(null as any, [true], [true])).toBe(true)
+    expect(multiChoice(null as any, [false, true], [false, true])).toBe(true)
   })
 
   it('should fail if no solution', () => {
@@ -16,7 +14,7 @@ describe('multiChoice', () => {
 
   it('should fail if the user input empty', () => {
     ;[null, undefined, {}].map(input =>
-      expect(multiChoice(null as any, { idA: true }, input as any)).toBe(false)
+      expect(multiChoice(null as any, [true], input as any)).toBe(false)
     )
   })
 })

@@ -1,4 +1,4 @@
-import { fractionNumber } from '../fractionNumber'
+import { fractionNumber } from './fractionNumber'
 import { fractionNum } from 'server/utils/math'
 
 // eslint-disable @typescript-eslint/no-explicit-any

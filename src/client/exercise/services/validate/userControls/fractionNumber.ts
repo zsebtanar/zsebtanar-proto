@@ -1,9 +1,10 @@
 import { isValid, simplifyFractionNumber, INVALID_FRACTION_NUMBER } from 'server/utils/math'
+import { UCFractionNumber } from '../../../type'
 
 export function fractionNumber(
-  control: DB.UCFractionNumber,
-  solution: DB.UCFractionNumberSolution,
-  userInput: DB.UCFractionNumberSolution
+  control: UCFractionNumber,
+  solution: UCFractionNumber['solution'],
+  userInput: UCFractionNumber['solution']
 ): boolean {
   const a = simplifyFractionNumber(userInput || INVALID_FRACTION_NUMBER)
   const b = simplifyFractionNumber(solution || INVALID_FRACTION_NUMBER)

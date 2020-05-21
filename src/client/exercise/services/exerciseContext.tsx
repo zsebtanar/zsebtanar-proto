@@ -1,4 +1,4 @@
-import React, { ReactNode, useReducer, Reducer } from 'react'
+import React, { ReactNode, useReducer, Reducer, FormEvent } from 'react'
 import { ExerciseModel } from '../type'
 
 interface ActiveSubTask {
@@ -15,7 +15,7 @@ interface State {
 type Action = { type: 'nextSubTask' } | { type: 'validationFailed' } | { type: 'nextHelp' }
 
 interface ExerciseContextAPI {
-  checkActiveSubTask(): void
+  checkActiveSubTask(event: FormEvent<HTMLFormElement>): void
 }
 
 const activeSubTaskInit: ActiveSubTask = {

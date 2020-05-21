@@ -1,23 +1,17 @@
 import React, {
-  useState,
-  useMemo,
   useReducer,
   Reducer,
   ReactNode,
   Dispatch,
-  FormEvent
+  FormEvent, useCallback
 } from 'react'
 import * as dp from 'dot-prop-immutable'
 import {
   FieldOnChange,
   Representation,
-  FieldDefinition,
   FieldDefinitionList
 } from 'client/generic/types'
-import { useFetchData } from 'client/generic/hooks/fetchData'
-import { WikiPageModel } from 'client/wiki/types'
-import { wikiPageService } from 'client/wiki/services/wikiPageService'
-import { Service, BaseModel } from '../services'
+import { Service } from '../services'
 
 interface Field<TName, TValue> {
   name: TName
@@ -41,7 +35,7 @@ interface Props<TModel> {
 }
 
 type State<TModel> = {
-  status: 'loading' | 'idle' | 'changed' | 'submitting' | 'error'
+  status: 'loading' | 'idle' | 'changed' | 'submitting' | 'error' | 'saving'
   fields: FieldList<TModel>
   model?: TModel
   error?: Error
@@ -64,20 +58,21 @@ export function useForm<TModel>(
   getModel: (id: string) => Promise<TModel>,
   saveModel: (model: TModel) => Promise<void>
 ): Output<TModel> {
+  const saveModelFn = useCallback(saveModel, [])
   const [state, dispatch] = useReducer<Reducer<State<TModel>, FormActions<TModel>>>(formReducer, {
     status: 'loading',
     fields: [],
     model: undefined
   })
 
-  React.useEffect(() => {
-    if (state.status === 'submitting' && state.model) {
-      saveModel(state.model).then(
-        () => dispatch({ type: 'Saved' }),
-        error => dispatch({ type: 'Error', payload: { error } })
-      )
-    }
-  }, [state.status])
+  // React.useEffect(() => {
+  //   if (state.status === 'submitting' && state.model) {
+  //     saveModel(state.model).then(
+  //       () => dispatch({ type: 'Saved' }),
+  //       error => dispatch({ type: 'Error', payload: { error } })
+  //     )
+  //   }
+  // }, [saveModel, state.model, state.status])
 
   React.useEffect(() => {
     if (id === NEW_MODEL) {
@@ -101,7 +96,13 @@ export function useForm<TModel>(
     isLoading: state.status === 'loading',
     submit: event => {
       event?.preventDefault()
-      dispatch({ type: 'Submit' })
+      if (state.model) {
+        dispatch({ type: 'Submit' })
+        saveModelFn(state.model).then(
+          () => dispatch({ type: 'Saved' }),
+          error => dispatch({ type: 'Error', payload: { error } })
+        )
+      }
     }
   }
 }
@@ -114,6 +115,7 @@ function createFields<TModel>(
   return fieldDef.map(({ name, defaultValue, representation }) => {
     const value = dp.get(model, name, defaultValue ?? undefined)
     return {
+      name: name as keyof TModel,
       value,
       representation,
       onChange: value =>
@@ -124,6 +126,9 @@ function createFields<TModel>(
 
 function formReducer<TModel>(state: State<TModel>, action: FormActions<TModel>): State<TModel> {
   switch (action.type) {
+    case 'Saved':
+      // Fixme
+      return state;
     case 'Load':
       return { ...state, status: 'loading', model: undefined, fields: [] }
     case 'New':

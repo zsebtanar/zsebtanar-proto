@@ -30,3 +30,11 @@ export function pickBy<T, K extends keyof T, R>(fn: (value: T[K], key: K) => boo
 export function uid(): string {
   return (Date.now() + Math.floor(Math.random() * 0x1000000)).toString(16).substr(1)
 }
+
+export function numberSortAsc(a: number, b: number): number {
+  return a - b
+}
+
+export function floatEq(a: number, b: number): boolean {
+  return a === b || (a >= b - Number.EPSILON && a <= b + Number.EPSILON)
+}

@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.role == 1000;
+    }
+
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    match /exercise/{exerciseId} {
+      allow read: if resource.data.state == 'public';
+    }
+
+		match /wikiPage/{wikiPageId} {
+    	allow read: if true;
+    }
+
+  	match /users/{userId} {
+      allow read, update, delete: if request.auth.uid == userId || isAdmin();
+      allow create: if request.auth.uid != null;
+    }
+  }
+}

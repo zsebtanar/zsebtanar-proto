@@ -1,9 +1,10 @@
 import { all, isEmpty, isNil, keys } from 'ramda'
+import { UCMultiChoice } from '../../../type'
 
 export function multiChoiceCheck(
-  control: DB.UCMultiChoice,
-  solution: DB.UCMultiChoiceSolution,
-  userInput: DB.UCMultiChoiceSolution
+  control: UCMultiChoice,
+  solution: UCMultiChoice['solution'],
+  userInput: UCMultiChoice['solution']
 ): boolean {
   if (isNil(solution) || isEmpty(solution)) return false
 

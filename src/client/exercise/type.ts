@@ -15,7 +15,7 @@ export interface ExerciseModel extends BaseModel {
 
 enum ExerciseState {
   Draft = 'draft',
-  Active = 'active',
+  Public = 'public',
   Archived = 'archived'
 }
 
@@ -37,7 +37,7 @@ interface ExerciseAsset extends ExerciseAssetPublic {
   name: string
 }
 
-interface ExerciseSubTask {
+export interface ExerciseSubTask {
   title: string
   description: string
   controls: UserControl[]
@@ -69,7 +69,7 @@ interface BaseUserControl {
   isDynamic: boolean
 }
 
-interface UCBinaryChoice extends BaseUserControl {
+export interface UCBinaryChoice extends BaseUserControl {
   type: ExerciseSubTaskControlsType.BinaryChoice
   props: {
     randomOrder: boolean
@@ -78,13 +78,13 @@ interface UCBinaryChoice extends BaseUserControl {
   solution: boolean[]
 }
 
-interface UCBinaryChoiceOption {
+export interface UCBinaryChoiceOption {
   label: string
   trueLabel: string
   falseLabel: string
 }
 
-interface UCFractionNumber extends BaseUserControl {
+export interface UCFractionNumber extends BaseUserControl {
   type: ExerciseSubTaskControlsType.FractionNumber
   props: {
     prefix?: string
@@ -98,7 +98,7 @@ interface FractionNumber {
   denominator: number
 }
 
-interface UCMultiChoice extends BaseUserControl {
+export interface UCMultiChoice extends BaseUserControl {
   type: ExerciseSubTaskControlsType.MultiChoice
   props: {
     randomOrder: boolean
@@ -107,7 +107,7 @@ interface UCMultiChoice extends BaseUserControl {
   solution: boolean[]
 }
 
-interface UCNumberList extends BaseUserControl {
+export interface UCNumberList extends BaseUserControl {
   type: ExerciseSubTaskControlsType.NumberList
   props: {
     prefix?: string
@@ -120,12 +120,12 @@ interface UCNumberList extends BaseUserControl {
   solution: string[]
 }
 
-interface UCNumberListField {
+export interface UCNumberListField {
   prefix?: string
   postfix?: string
 }
 
-interface UCSimpleText extends BaseUserControl {
+export interface UCSimpleText extends BaseUserControl {
   type: ExerciseSubTaskControlsType.SimpleText
   props: {
     prefix?: string
@@ -136,7 +136,7 @@ interface UCSimpleText extends BaseUserControl {
   solution: string[]
 }
 
-interface UCSingleChoice extends BaseUserControl {
+export interface UCSingleChoice extends BaseUserControl {
   type: ExerciseSubTaskControlsType.SingleChoice
   props: {
     options: UCSingleChoiceOption[]
@@ -144,11 +144,11 @@ interface UCSingleChoice extends BaseUserControl {
   solution: string
 }
 
-interface UCSingleChoiceOption {
+export interface UCSingleChoiceOption {
   label: string
 }
 
-interface UCSingleNumber extends BaseUserControl {
+export interface UCSingleNumber extends BaseUserControl {
   type: ExerciseSubTaskControlsType.SingleNumber
   props: {
     prefix?: string

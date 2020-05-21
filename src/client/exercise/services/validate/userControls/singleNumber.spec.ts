@@ -1,4 +1,4 @@
-import { singleNumber } from '../singleNumber'
+import { singleNumber } from './singleNumber'
 
 describe('singleNumber', () => {
   it('should pass in the simplest case', () => {

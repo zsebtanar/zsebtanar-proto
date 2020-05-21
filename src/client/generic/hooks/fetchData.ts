@@ -1,7 +1,9 @@
 import { useReducer, Reducer, useEffect, DependencyList } from 'react'
 
+type States = 'pending' | 'loading' | 'success' | 'noResult' | 'error'
+
 interface State<T> {
-  state: 'pending' | 'loading' | 'success' | 'noResult' | 'error'
+  state: States
   error?: Error
   result?: T
 }
@@ -14,7 +16,7 @@ interface Getters {
   readonly hasNoResult: boolean
 }
 
-interface API<T> extends State<T>, Getters{}
+interface API<T> extends State<T>, Getters {}
 
 type Action<T> =
   | { type: 'loading' }
@@ -27,39 +29,47 @@ interface Options<T> {
 
 ///
 
-
 const initState: State<never> = {
   state: 'pending'
 }
 
-const getters: Getters = {
-  get isPending(this: State<never>) {return this.state === 'pending'},
-  get isLoading(this: State<never>) {return this.state === 'loading'},
-  get hasError(this: State<never>) {return this.state === 'error'},
-  get isSuccess(this: State<never>) {return this.state === 'success'},
-  get hasNoResult(this: State<never>) {return this.state === 'noResult'}
-}
-
 export function useFetchData<T>(
   loaderFn: () => Promise<T>,
-  deps?: DependencyList,
+  deps: DependencyList = [],
   options?: Options<T>
 ): API<T> {
   const [state, dispatch] = useReducer<Reducer<State<T>, Action<T>>>(userReducer, initState)
 
   useEffect(() => {
     dispatch({ type: 'loading' })
-    loaderFn().then(
-      result =>
+    loaderFn()
+      .then(result =>
         dispatch({
           type: 'success',
           payload: { result, isEmpty: options?.isEmpty?.(result) ?? isEmpty(result) }
-        }),
+        })
+      )
+      .catch(error => dispatch({ type: 'error', payload: error }))
+  }, [options?.isEmpty, ...deps])
 
-    ).catch(error => dispatch({ type: 'error', payload: error }))
-  }, deps)
-
-  return { ...state, ...getters }
+  return {
+    ...state,
+    get isPending() {
+      return state.state === 'pending'
+    },
+    get isLoading() {
+      return state.state === 'loading'
+    },
+    get hasError() {
+      return state.state === 'error'
+    },
+    get isSuccess() {
+      return state.state === 'success'
+    },
+    get hasNoResult() {
+      return state.state === 'noResult'
+    }
+  }
 }
 
 ///

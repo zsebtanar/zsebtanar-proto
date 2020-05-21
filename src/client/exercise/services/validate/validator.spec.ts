@@ -1,4 +1,4 @@
-import validator from 'server/exercise/validate/validator'
+import validator from 'client/exercise/services/validate/validator'
 
 describe('validator', () => {
   it('should return empty object if no user input in the exercise', () => {

@@ -8,12 +8,13 @@ import { FeedbackGrid } from 'client/feedback/pages/FeedbackGrid'
 import { useUser } from 'client/user/providers/UserProvider'
 import { Loading } from 'client/generic/components'
 import { WikiPageGrid } from 'client/wiki/page/WikiPageGrid'
+import { ClassificationsAdminPage } from '../categories/pages/ClassificationsAdmin'
 
 export function AdminApp() {
   const { loading } = useUser()
 
   if (loading) {
-    return <Loading/>
+    return <Loading />
   }
 
   return (
@@ -23,6 +24,7 @@ export function AdminApp() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/user" exact component={UserList} />
+          <Route path="/classifications" exact component={ClassificationsAdminPage} />
 
           {/*<Route path="/categories" exact component={MainCategoryGrid} />*/}
           {/*<Route path="/categories/:id" exact component={SubCategoryGrid} />*/}
