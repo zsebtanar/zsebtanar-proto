@@ -1,5 +1,4 @@
 import { Button } from 'client-common/component/general/Button'
-import { Icon } from 'client-common/component/general/Icon'
 import { imageUpload, UploadedFile } from 'client/file-upload/images'
 import * as React from 'react'
 import { reduceP } from 'shared/util/fn'
@@ -7,6 +6,8 @@ import { Dialog } from '../../../client/modal/components/modal/Dialog'
 import { DialogBody } from '../../../client/modal/components/modal/DialogBody'
 import { DialogHeader } from '../../../client/modal/components/modal/DialogHeader'
 import { toPairs } from 'ramda'
+import { faCheck, faClock } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 ///
 
@@ -96,21 +97,20 @@ export class FileUploadModal extends React.Component<Props, State> {
       <li className="d-flex" key={id}>
         <div>{data.name}</div>
         <div>
-          {state === undefined && <Icon fa="clock-o" />}
-          {state === 'done' && <Icon fa="check" />}
-          {state >= 0 &&
-            state <= 100 && (
-              <div className="progress" style={{ height: '20px' }}>
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{ width: `${state}%` }}
-                  aria-valuenow={state}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                />
-              </div>
-            )}
+          {state === undefined && <FontAwesomeIcon icon={faClock} />}
+          {state === 'done' && <FontAwesomeIcon icon={faCheck} />}
+          {state >= 0 && state <= 100 && (
+            <div className="progress" style={{ height: '20px' }}>
+              <div
+                className="progress-bar"
+                role="progressbar"
+                style={{ width: `${state}%` }}
+                aria-valuenow={state}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              />
+            </div>
+          )}
         </div>
       </li>
     )

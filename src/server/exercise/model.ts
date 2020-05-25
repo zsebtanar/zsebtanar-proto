@@ -1,5 +1,5 @@
-import z from 'zod'
-import { ExerciseSubTaskControlsType, ExerciseModel } from '../../shared/exercise/types'
+import * as z from 'zod'
+import { ExerciseSubTaskControlsType } from 'shared/exercise/types'
 
 const ExerciseStateEnum = z.enum(['draft', 'public', 'archived'])
 

@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useDocumentEvent } from '../../generic/hooks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUpload } from '@fortawesome/free-solid-svg-icons'
 
 const PREVENTED_EVENT = [
   'drag',
@@ -43,7 +45,7 @@ export function DnDOverlay() {
     <div className="dnd-overlay">
       <div className="msg-block">
         <div className="block-item">
-          <i className="fa fa-upload fa-5x" />
+          <FontAwesomeIcon icon={faUpload} size="5x" />
           <br />
           <br />
           Csak dobd ide a feltöltendő fájlokat.

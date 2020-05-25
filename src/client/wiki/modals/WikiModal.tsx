@@ -7,6 +7,7 @@ import { useDialog } from 'client/overlay/providers'
 import { WikiPageModel } from 'client/wiki/types'
 
 import './WikiModal.scss'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 ///
 
@@ -21,7 +22,7 @@ export function WikiModal({ pageId }: Props) {
   const [activePage, setActivePage] = useState<number>(0)
   const [history, setHistory] = useState<WikiPageModel[]>([])
 
-  const {isPending, isSuccess, isLoading, result} = useLoadWikiPage(nextPageId)
+  const { isPending, isSuccess, isLoading, result } = useLoadWikiPage(nextPageId)
 
   useEffect(() => {
     if (result !== undefined) {
@@ -43,7 +44,7 @@ export function WikiModal({ pageId }: Props) {
       <DialogHeader onClose={closeModal}>
         <Button
           className="btn-sm btn-light nav-back"
-          icon="arrow-left"
+          icon={faArrowLeft}
           onAction={navBackward}
           disabled={activePage === 0}
         />
@@ -51,7 +52,7 @@ export function WikiModal({ pageId }: Props) {
       </DialogHeader>
       <DialogBody>
         <div className="list-group">
-          {isPending || isLoading && <Loading />}
+          {isPending || (isLoading && <Loading />)}
           {isSuccess && (
             <Markdown source={page.content} resources={page.resources} onWikiLink={navForward} />
           )}

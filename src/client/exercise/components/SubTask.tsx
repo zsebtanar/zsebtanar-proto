@@ -11,8 +11,9 @@ import {
   TASK_STATUS_PREVIEW
 } from 'client-common/store/exercise'
 import { Button } from 'client-common/component/general/Button'
-import { Icon } from 'client-common/component/general/Icon'
 import { openWikiModal } from '../../store/actions/modal'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 ///
 
@@ -49,10 +50,11 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export const SubTask = connect<StateProps, DispatchProps, Props>(
-  mapStateToProps,
-  { getHintAction, checkSolutionAction, openWikiModal }
-)(
+export const SubTask = connect<StateProps, DispatchProps, Props>(mapStateToProps, {
+  getHintAction,
+  checkSolutionAction,
+  openWikiModal
+})(
   class SubTaskComponent extends React.Component<Props & StateProps & DispatchProps, State> {
     state = {
       loadingHint: false,
@@ -126,17 +128,16 @@ export const SubTask = connect<StateProps, DispatchProps, Props>(
             {!isDone && (
               <div className="exercise-footer">
                 <div className="container ">
-                  {this.state.checkCounter > 0 &&
-                    task.hintsLeft > 0 && (
-                      <Button
-                        className="btn-link"
-                        onAction={this.getHint}
-                        loading={loadingHint}
-                        disabled={loadingCheck}
-                      >
-                        Kérek segítséget ({task.hintsLeft} maradt)
-                      </Button>
-                    )}
+                  {this.state.checkCounter > 0 && task.hintsLeft > 0 && (
+                    <Button
+                      className="btn-link"
+                      onAction={this.getHint}
+                      loading={loadingHint}
+                      disabled={loadingCheck}
+                    >
+                      Kérek segítséget ({task.hintsLeft} maradt)
+                    </Button>
+                  )}
 
                   <Button
                     submit
@@ -144,7 +145,7 @@ export const SubTask = connect<StateProps, DispatchProps, Props>(
                     disabled={loadingHint}
                     className="btn btn-secondary btn-lg"
                   >
-                    <Icon fa="check" /> Ellenőrzés
+                    <FontAwesomeIcon icon={faCheck} /> Ellenőrzés
                   </Button>
                 </div>
               </div>
@@ -202,7 +203,11 @@ export const SubTask = connect<StateProps, DispatchProps, Props>(
 
     private renderHint = item => (
       <div className="mb-2" key={item.key} ref={this.scrollToHint}>
-        <Markdown source={item.hint.text} resources={this.props.resources} onWikiLink={this.openWikiModal} />
+        <Markdown
+          source={item.hint.text}
+          resources={this.props.resources}
+          onWikiLink={this.openWikiModal}
+        />
       </div>
     )
 
@@ -211,18 +216,18 @@ export const SubTask = connect<StateProps, DispatchProps, Props>(
       if (validity === true)
         return (
           <span className="text-success float-right">
-            <Icon fa="check" size="2x" />
+            <FontAwesomeIcon icon={faCheck} size="2x" />
           </span>
         )
       if (validity === false)
         return (
           <span className="text-danger float-right">
-            <Icon fa="times" size="2x" />
+            <FontAwesomeIcon icon={faTimes} size="2x" />
           </span>
         )
     }
 
-    private openWikiModal = (pageId) => {
+    private openWikiModal = pageId => {
       this.props.openWikiModal({ pageId })
     }
   }

@@ -1,4 +1,4 @@
-import z from 'zod'
+import * as z from 'zod'
 
 interface SchemaParam {
   query?: z.ZodType<unknown>

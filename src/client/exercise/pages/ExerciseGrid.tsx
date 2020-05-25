@@ -3,8 +3,9 @@ import { NavLink } from 'react-router-dom'
 import { Grid } from 'client/generic/components/grid'
 import { ExerciseModel } from '../../../shared/exercise/types'
 import { FireStoreGridDS } from 'client/generic/services'
-import { Icon } from 'client/generic/components'
 import { exerciseDataService } from '../services/exercise'
+import { faEdit, faClone, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function ExerciseGrid() {
   return (
@@ -12,7 +13,7 @@ export function ExerciseGrid() {
       <div className="btn-toolbar justify-content-between align-items-center">
         <h3>Feladatok</h3>
         <NavLink exact to="/exercise/add" className="btn btn-outline-secondary">
-          <i className="fa fa-plus" /> Új Feladat
+          <FontAwesomeIcon icon={faPlus} /> Új Feladat
         </NavLink>
       </div>
       <Grid
@@ -36,7 +37,7 @@ const renderListItem = (item: ExerciseModel) => {
         className="btn btn-sm btn-light"
         title="Wiki oldal másolása"
       >
-        <Icon fa="clone" />
+        <FontAwesomeIcon icon={faClone} />
       </NavLink>
       &nbsp;
       <NavLink
@@ -45,7 +46,7 @@ const renderListItem = (item: ExerciseModel) => {
         className="btn btn-sm btn-light"
         title="Wiki oldal szerkesztése"
       >
-        <Icon fa="edit" />
+        <FontAwesomeIcon icon={faEdit} />
       </NavLink>
     </div>
   )

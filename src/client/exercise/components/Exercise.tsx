@@ -7,6 +7,8 @@ import { ExerciseMarkdown } from './ExerciseMarkdown'
 import { toAbcIndex } from 'shared/utils/fn'
 
 import './Exercise.scss'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Props {
   exercise: ExerciseModel
@@ -125,7 +127,7 @@ function SubTask({ index, task }: SubTaskProps) {
               disabled={loadingHint}
               className="btn btn-secondary btn-lg"
             >
-              <Icon fa="check" /> Ellenőrzés
+              <FontAwesomeIcon icon={faCheck} /> Ellenőrzés
             </Button>
           </div>
         </div>

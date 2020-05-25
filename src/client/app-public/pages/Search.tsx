@@ -3,18 +3,23 @@ import * as ReactGA from 'react-ga'
 import { useParams } from 'react-router'
 import { useAlgoliaSearch } from 'client/search/services/AlgoliaSearchService'
 import { useInput } from 'client/generic/hooks'
-import { Icon, Loading, ErrorMsg, Page } from 'client/generic/components'
+import { Loading, ErrorMsg, Page } from 'client/generic/components'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
 import { NavLink } from 'react-router-dom'
 import { Markdown } from 'client/generic/components/markdown'
 import { ExerciseSearchRecord, ExerciseSearchResult } from 'client/search/types'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const MIN_TERM_LENGTH = 2
 
 export function Search() {
   const { q } = useParams()
   const { value: searchTerm, bind: bindSearch } = useInput(q ?? '')
-  const { result, hasNoResult, isLoading, isSuccess, error } = useAlgoliaSearch(searchTerm, MIN_TERM_LENGTH)
+  const { result, hasNoResult, isLoading, isSuccess, error } = useAlgoliaSearch(
+    searchTerm,
+    MIN_TERM_LENGTH
+  )
 
   useEffect(() => {
     if (result) {
@@ -25,14 +30,14 @@ export function Search() {
         value: result.nbHits
       })
     }
-  }, [result])
+  }, [result, searchTerm])
 
   return (
     <Page>
       <div className="mb-4 mx-auto col-md-8">
         <div className="search-input-group ">
           <label className="search-label" htmlFor="search-input">
-            <Icon fa="search" size="lg" />
+            <FontAwesomeIcon icon={faSearch} size="lg" />
             <span className="sr-only">Feladat keresés</span>
           </label>
           <input
@@ -53,7 +58,7 @@ export function Search() {
       {isLoading && <Loading />}
       {error && <ErrorMsg error={error} />}
       {hasNoResult && <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>}
-      {!isSuccess && result && <SearchResult term={searchTerm} data={result} />}
+      {isSuccess && result && <SearchResult term={searchTerm} data={result} />}
     </Page>
   )
 }

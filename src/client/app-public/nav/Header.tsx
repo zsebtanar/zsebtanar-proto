@@ -1,19 +1,14 @@
 import React from 'react'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'
-import {
-  Button,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  Link,
-  Icon
-} from 'client/generic/components'
+import { Button, Dropdown, DropdownToggle, DropdownMenu, Link } from 'client/generic/components'
 import { isAdmin } from 'client/user/services/user'
 
 import 'client/app-public/nav/Header.scss'
 import { useOverlayDispatch } from 'client/overlay/providers'
 import { SignInModal } from 'client/user/modals/SignInModal'
+import { faPlus, faSignInAlt, faBars, faUser } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 ///
 
@@ -45,7 +40,7 @@ export function Header({ onOpenSideNav }: Props) {
           </NavLink>
 
           <Button className="navbar-toggle" onAction={onOpenSideNav} title="Menü megnyitása">
-            <span className="fa fa-bars fa-lg" />
+            <FontAwesomeIcon icon={faBars} size="lg" />
           </Button>
         </div>
       </div>
@@ -59,10 +54,7 @@ function SignedInMenu() {
   return (
     <Dropdown elementType="li" className="user-menu" right key="user-menu">
       <DropdownToggle>
-        <span className="fa-stack fa">
-          <i className="fa fa-circle fa-stack-2x" />
-          <i className="fa fa-user fa-stack-1x fa-inverse" />
-        </span>
+        <FontAwesomeIcon icon={faUser} />
       </DropdownToggle>
       <DropdownMenu>
         <NavLink exact to="/profile" className="dropdown-item">
@@ -83,12 +75,12 @@ function AnonymousUserMenu() {
     <>
       <li className="nav-item" key="sign-up">
         <Link className="nav-link" href="/register">
-          <Icon fa="plus" /> Regisztráció
+          <FontAwesomeIcon icon={faPlus} /> Regisztráció
         </Link>
       </li>
       <li className="nav-item" key="sign-in">
         <Button onAction={() => openModal(<SignInModal />)} btn="link">
-          <Icon fa="sign-in" /> Belépés
+          <FontAwesomeIcon icon={faSignInAlt} /> Belépés
         </Button>
       </li>
     </>

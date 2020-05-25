@@ -1,7 +1,8 @@
 import React from 'react'
-import { CustomError, NotFoundError } from '../utils/error'
+import { CustomError, NotFoundError } from '../utils'
 import history from 'client/generic/utils/history'
-import { Icon } from './Icon'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSadTear, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 
 interface ShowErrorProps {
   showMenu?: boolean
@@ -23,14 +24,14 @@ function ErrorMessage({ error }) {
   if (!error || error instanceof NotFoundError) {
     return (
       <>
-        <Icon size="4x" fa="wpexplorer" />
+        <FontAwesomeIcon icon={faSadTear} size="4x" />
         <h1 className="my-5 text-center">A keresett oldal nem található.</h1>
       </>
     )
   } else {
     return (
       <>
-        <Icon size="4x" fa="exclamation-triangle" className="text-danger" />
+        <FontAwesomeIcon icon={faExclamationTriangle} size="4x" className="text-danger" />
         <h1 className="text-center">
           Ooopsz... <br /> Nem várt hiba történt :(
         </h1>

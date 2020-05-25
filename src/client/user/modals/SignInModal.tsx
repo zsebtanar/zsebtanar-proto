@@ -5,6 +5,8 @@ import { Button, Alert, Loading } from 'client/generic/components'
 import { useInput } from 'client/generic/hooks'
 import { useUserDispatch, useUser } from 'client/user/providers/UserProvider'
 import strings from 'client/localisation/strings'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 export function SignInModal() {
   const { closeModal } = useDialog()
@@ -30,24 +32,20 @@ export function SignInModal() {
       <DialogHeader>Bejelentkezés</DialogHeader>
       <form onSubmit={submit} className="mt-5 col-12">
         <DialogBody>
-          {
-            loading && <Loading/>
-          }
-          {
-            error && <Alert>
-              {strings[error.code] || "Nem várt hiba történt a bejelentkezés során'"}
-            </Alert>
-          }
+          {loading && <Loading />}
+          {error && (
+            <Alert>{strings[error.code] || "Nem várt hiba történt a bejelentkezés során'"}</Alert>
+          )}
           <div className="col-10 mx-auto my-5">
             <ul className="list-unstyled">
               <li className="my-1">
                 <Button onAction={googleSignIn} className="btn btn-outline-primary btn-block">
-                  <i className="fa fa-lg fa-google" /> Google fiókkal
+                  <FontAwesomeIcon icon={faGoogle} size="lg" /> Google fiókkal
                 </Button>
               </li>
               <li className="my-1">
                 <Button onAction={facebookSignIn} className="btn btn-outline-primary btn-block">
-                  <i className="fa fa-lg fa-facebook" /> Facebook fiókkal
+                  <FontAwesomeIcon icon={faFacebook} size="lg" /> Facebook fiókkal
                 </Button>
               </li>
             </ul>

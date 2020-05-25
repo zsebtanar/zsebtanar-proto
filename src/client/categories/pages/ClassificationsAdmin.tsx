@@ -2,6 +2,9 @@ import React from 'react'
 import { useLoadClassifications } from '../services/classificationService'
 import { Loading, Alert, Button } from '../../generic/components'
 import { sortByProp } from '../../../shared/utils/fn'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { NavLink } from 'react-router-dom'
 
 export function ClassificationsAdminPage() {
   const { isLoading, isPending, isSuccess, result, hasError, error } = useLoadClassifications()
@@ -11,7 +14,7 @@ export function ClassificationsAdminPage() {
       <div className="btn-toolbar justify-content-between align-items-center">
         <h3>Feladat címkék</h3>
         <Button className="btn btn-outline-secondary">
-          <i className="fa fa-plus" /> Új címke felvétel
+          <FontAwesomeIcon icon={faPlus} /> Új címke felvétel
         </Button>
       </div>
       <hr />

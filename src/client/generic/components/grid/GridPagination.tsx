@@ -1,7 +1,7 @@
 import React from 'react'
-import { Icon } from 'client/generic/components/Icon'
 import { range } from 'shared/utils/fn'
 import { Button } from '..'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Props {
   next: () => void
@@ -47,7 +47,7 @@ function StepBtn(text, icon, onClick, disabled) {
         onAction={onClick}
       >
         <span aria-hidden="true">
-          <Icon fa={icon} />
+          <FontAwesomeIcon icon={icon} />
         </span>
         <span className="sr-only">{text}</span>
       </Button>

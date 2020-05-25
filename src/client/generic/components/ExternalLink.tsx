@@ -1,14 +1,23 @@
 import React from 'react'
-import { Icon } from 'client/generic/components/Icon'
+import * as cx from 'classnames'
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-interface Props extends React.AnchorHTMLAttributes<{}>{
+import './ExternalLink.scss'
+
+interface Props extends React.AnchorHTMLAttributes<{}> {
   hideIcon?: boolean
 }
 
-export function ExternalLink({ hideIcon, ...props }: Props) {
+export function ExternalLink({ className, hideIcon, ...props }: Props) {
   return (
-    <a {...props} target="_blank" rel="noopener noreferrer">
-      {props.children} {!hideIcon && <Icon fa="external-link"/>}
+    <a
+      className={cx('external-link', className)}
+      {...props}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {props.children} {!hideIcon && <FontAwesomeIcon icon={faExternalLinkAlt} />}
     </a>
   )
 }

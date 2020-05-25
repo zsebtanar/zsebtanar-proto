@@ -11,6 +11,21 @@ import { RemoteFileResource } from 'client/file-upload/types'
 import { MarkdownResources } from 'client/generic/components/markdown/types'
 
 import 'client/generic/components/form/input/TextEditor.scss'
+import {
+  faBold,
+  faItalic,
+  faListUl,
+  faListOl,
+  faIndent,
+  faLink,
+  faImage,
+  faCalculator,
+  faEdit,
+  faCheck,
+  faQuestionCircle
+} from '@fortawesome/free-solid-svg-icons'
+import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 ///
 
@@ -180,9 +195,9 @@ function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: 
           btn="light"
           onAction={() => wrapText('**', 'félkövér')}
           title="Félkövér"
-          icon="bold"
+          icon={faBold}
         />
-        <Button btn="light" onAction={() => wrapText('*', 'dőlt')} title="Dőlt" icon="italic" />
+        <Button btn="light" onAction={() => wrapText('*', 'dőlt')} title="Dőlt" icon={faItalic} />
         <Button btn="light" onAction={() => wrapText('$', 'x_1=2')} title="Matematika jelölés">
           $
         </Button>
@@ -199,44 +214,49 @@ function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: 
           btn="light"
           onAction={() => multiLine('* ', 'lista\n')}
           title="Normál lista"
-          icon="list-ul"
+          icon={faListUl}
         />
         <Button
           btn="light"
           onAction={() => multiLine('1. ', 'számozott lista\n')}
           title="Számozott lista"
-          icon="list-ol"
+          icon={faListOl}
         />
         <Button
           btn="light"
           onAction={() => multiLine('    ', 'szöveg')}
           title="Behúzás"
-          icon="indent"
+          icon={faIndent}
         />
       </div>
       <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Link">
-        <Button btn="light" onAction={() => insertLink('szöveg')} title="Hivatkozás" icon="link" />
-        <Button btn="light" onAction={() => insertWikiLink} title="Wiki" icon="wikipedia-w" />
+        <Button
+          btn="light"
+          onAction={() => insertLink('szöveg')}
+          title="Hivatkozás"
+          icon={faLink}
+        />
+        <Button btn="light" onAction={() => insertWikiLink} title="Wiki" icon={faWikipediaW} />
       </div>
       <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Kép">
-        <Button btn="light" onAction={() => insertFile()} icon="image">
+        <Button btn="light" onAction={() => insertFile()} icon={faImage}>
           Kép beszűrás
         </Button>
       </div>
 
       <Dropdown className="btn-group btn-group-sm mr-2" aria-label="Link">
         <DropdownToggle className="btn btn-light text-light">
-          <i className="fa fa-question-circle" /> Súgó
+          <FontAwesomeIcon icon={faQuestionCircle} /> Súgó
         </DropdownToggle>
         <DropdownMenu>
           <Button
             className="btn btn-link text-dark"
             onAction={openEquationHelpModal}
-            icon="calculator"
+            icon={faCalculator}
           >
             Képletszerkesztő
           </Button>
-          <Button className="btn btn-link text-dark" onAction={openMarkdownHelpModal} icon="edit">
+          <Button className="btn btn-link text-dark" onAction={openMarkdownHelpModal} icon={faEdit}>
             Szövegszerkesztő
           </Button>
         </DropdownMenu>

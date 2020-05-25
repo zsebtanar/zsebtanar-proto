@@ -1,5 +1,5 @@
 import React from 'react'
-import { Loading, Alert, Icon, Button, FormGroup } from 'client/generic/components'
+import { Loading, Alert, Button, FormGroup } from 'client/generic/components'
 import { Simulate } from 'react-dom/test-utils'
 import { NavLink } from 'react-router-dom'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
@@ -7,6 +7,8 @@ import { FieldDefinition, RepresentationType } from 'client/generic/types'
 import { useForm } from 'client/generic/hooks/form'
 import { WikiPageModel } from 'client/wiki/types'
 import error = Simulate.error
+import { faAngleLeft, faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 const formFields: FieldDefinition[] = [
@@ -37,13 +39,13 @@ export function WikiPageForm() {
             className="btn btn-outline-light py-0 text-dark mx-2"
             title="Mégsem"
           >
-            <Icon fa="angle-left" size="2x" />
+            <FontAwesomeIcon icon={faAngleLeft} size="2x" />
           </NavLink>
           <h4 className="d-inline-block m-0 mr-1">Wiki oldal</h4>
         </div>
         <div>
           {data && data.id && (
-            <Button className="btn btn-outline-danger" onAction={this.props.removePage} icon="trash">
+            <Button className="btn btn-outline-danger" onAction={this.props.removePage} icon={faTrash}>
               Törlés
             </Button>
           )}
@@ -52,7 +54,7 @@ export function WikiPageForm() {
             disabled={!changed}
             className="btn btn-primary ml-1"
             onAction={this.props.savePage}
-            icon="save"
+            icon={faSave}
           >
             Mentés
           </Button>

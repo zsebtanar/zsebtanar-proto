@@ -1,11 +1,11 @@
 import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import debounce from 'client/generic/utils/debounce'
-import { Icon } from 'client/generic/components'
 import { useUser } from '../../user/providers/UserProvider'
-
 import { MainClassificationSelector } from '../components/MainClassificationSelector'
 import { PaypalButton, PatreonButton } from '../components'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function Home() {
   const history = useHistory()
@@ -22,7 +22,7 @@ export function Home() {
           <NavLink to="/search">
             <div className="search-input-group ">
               <label className="search-label" htmlFor="search-input">
-                <Icon fa="search" size="lg" />
+                <FontAwesomeIcon icon={faSearch} size="lg" />
                 <span className="sr-only">Feladat keresés</span>
               </label>
               <input

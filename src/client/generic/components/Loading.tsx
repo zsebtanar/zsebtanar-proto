@@ -1,10 +1,12 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCog } from '@fortawesome/free-solid-svg-icons'
 
 export function Loading() {
   return (
     <div className="text-center my-5">
       <span>
-        <i className="fa fa-cog fa-spin fa-2x fa-fw" />
+        <FontAwesomeIcon icon={faCog} spin size="2x" fixedWidth />
         &nbsp;Kis türelmet ...
       </span>
     </div>

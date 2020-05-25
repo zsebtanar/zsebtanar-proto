@@ -6,12 +6,23 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  Icon,
   DropdownDivider
 } from 'client/generic/components'
 import { isAdmin } from 'client/user/services/user'
 
 import 'client/app-admin/nav/Header.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faUsers,
+  faComment,
+  faExclamationTriangle,
+  faTasks,
+  faListAlt,
+  faFolder,
+  faPowerOff,
+  faBars
+} from '@fortawesome/free-solid-svg-icons'
+import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 
 ///
 
@@ -45,13 +56,13 @@ export function Header({ onOpenSideNav }: Props) {
                 <DropdownToggle>Rendszer</DropdownToggle>
                 <DropdownMenu>
                   <NavLink activeClassName="active" className="dropdown-item" to="/user">
-                    <Icon fa="users" /> Felhasználók
+                    <FontAwesomeIcon icon={faUsers} /> Felhasználók
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/feedback">
-                    <Icon fa="commenting-o" /> Visszajelzések
+                    <FontAwesomeIcon icon={faComment} /> Visszajelzések
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/utilities">
-                    <Icon fa="exclamation-triangle" /> Gépház
+                    <FontAwesomeIcon icon={faExclamationTriangle} /> Gépház
                   </NavLink>
                 </DropdownMenu>
               </Dropdown>
@@ -61,17 +72,17 @@ export function Header({ onOpenSideNav }: Props) {
               <DropdownToggle>Tartalom</DropdownToggle>
               <DropdownMenu>
                 <NavLink activeClassName="active" className="dropdown-item" to="/exercise">
-                  <Icon fa="tasks" /> Feladatok
+                  <FontAwesomeIcon icon={faTasks} /> Feladatok
                 </NavLink>
                 <NavLink activeClassName="active" className="dropdown-item" to="/exercise-sheet">
-                  <Icon fa="list-alt" /> Feladatsorok
+                  <FontAwesomeIcon icon={faListAlt} /> Feladatsorok
                 </NavLink>
                 <NavLink activeClassName="active" className="dropdown-item" to="/categories">
-                  <Icon fa="folder" /> Kategóriák
+                  <FontAwesomeIcon icon={faFolder} /> Kategóriák
                 </NavLink>
                 <DropdownDivider />
                 <NavLink activeClassName="active" className="dropdown-item" to="/wiki-page">
-                  <Icon fa="wikipedia-w" /> Wiki oldalak
+                  <FontAwesomeIcon icon={faWikipediaW} /> Wiki oldalak
                 </NavLink>
               </DropdownMenu>
             </Dropdown>
@@ -80,7 +91,7 @@ export function Header({ onOpenSideNav }: Props) {
               <DropdownToggle>Profil</DropdownToggle>
               <DropdownMenu>
                 <button className="dropdown-item btn btn-link " onClick={signOut}>
-                  <Icon fa="power-off" /> Kijelentkezés
+                  <FontAwesomeIcon icon={faPowerOff} /> Kijelentkezés
                 </button>
               </DropdownMenu>
             </Dropdown>
@@ -94,7 +105,7 @@ export function Header({ onOpenSideNav }: Props) {
           onAction={onOpenSideNav}
           title="Menü megnyitása"
         >
-          <span className="fa fa-bars fa-lg" />
+          <FontAwesomeIcon icon={faBars} size="lg" />
         </Button>
 
         <NavLink exact to="/" className="logo-link float-right" aria-label="Főoldal">

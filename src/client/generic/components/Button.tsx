@@ -1,5 +1,8 @@
 import React from 'react'
 import * as cx from 'classnames'
+import { IconDefinition } from '@fortawesome/fontawesome-common-types'
+import { faCog } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import './Button.scss'
 
@@ -7,7 +10,7 @@ interface ButtonProps {
   title?: string
   btn?: ButtonType
   className?: string
-  icon?: string
+  icon?: IconDefinition
   disabled?: boolean
   loading?: boolean
   submit?: boolean
@@ -47,9 +50,9 @@ export function Button({
       aria-label={title}
       disabled={disabled || loading}
     >
-      {icon && <i className={`fa fa-${icon} fa-fw mr-1`} />}
+      {icon && <FontAwesomeIcon icon={icon} fixedWidth className="mr-1" />}
       {children}
-      {loading && <i className="fa fa-cog fa-spin fa-fw" />}
+      {loading && <FontAwesomeIcon icon={faCog} fixedWidth spin />}
     </button>
   )
 }

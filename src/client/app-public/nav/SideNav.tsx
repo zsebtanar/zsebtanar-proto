@@ -4,6 +4,8 @@ import { CloseButton } from 'client/generic/components'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { isAdmin } from 'client/user/services/user'
 import { NavLink } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 
 import 'client/app-public/nav/SideNav.scss'
 
@@ -58,12 +60,12 @@ function AnonymousUserMenu() {
     <>
       <li className="nav-item" key="sign-up">
         <NavLink activeClassName="active" className="nav-link" to="/register">
-          <i className="fa fa-plus" /> Regisztráció
+          <FontAwesomeIcon icon={faPlus} /> Regisztráció
         </NavLink>
       </li>
       <li className="nav-item" key="sign-in">
         <NavLink activeClassName="active" className="nav-link" to="/login">
-          <i className="fa fa-sign-in" /> Belépés
+          <FontAwesomeIcon icon={faSignInAlt} /> Belépés
         </NavLink>
       </li>
     </>

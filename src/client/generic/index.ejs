@@ -37,9 +37,6 @@
     <link rel="manifest" href="/manifest.json">
     <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
     <link rel="prefetch" href="https://zsebtanar-test.firebaseapp.com/assets/logo.png" as="image" />
-    <link rel="prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as="font" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha256-uXNHy6FK52Pb83SmU45mVAg7YECmr9Lwwu1zOz31j5c=" crossorigin="anonymous" />
 
     <%= htmlWebpackPlugin.options.injectCSS(htmlWebpackPlugin, compilation) %>
 </head>
@@ -56,12 +53,26 @@
 </noscript>
 <div id="root">
     <div class="app">
-        <div class="text-center my-5">
-            <span><i class="fa fa-cog fa-spin fa-2x fa-fw"></i>&nbsp;Kis türelmet ...</span>
-        </div>
     </div>
 </div>
 
 </body>
     <%= htmlWebpackPlugin.options.injectJS(htmlWebpackPlugin) %>
+<script>
+function loadCSS(filename, integrity){
+    var link = document.createElement("link")
+    link.setAttribute("rel", "stylesheet")
+    link.setAttribute("type", "text/css")
+    link.setAttribute("href", filename)
+    if (integrity){
+      link.setAttribute("integrity", integrity)
+      link.setAttribute("crossorigin", "anonymous" )
+    }
+
+    if (typeof link!=="undefined") {
+        document.getElementsByTagName("head")[0].appendChild(link)
+    }
+}
+loadCSS('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css', 'sha256-uXNHy6FK52Pb83SmU45mVAg7YECmr9Lwwu1zOz31j5c=')
+</script>
 </html>

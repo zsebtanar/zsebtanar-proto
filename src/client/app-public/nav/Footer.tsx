@@ -4,7 +4,7 @@ import { ExternalLink, Button } from 'client/generic/components'
 import { useOverlayDispatch } from 'client/overlay/providers'
 import { FeedbackModal } from '../../feedback/modals/FeedbackModal'
 
-import 'client/app-public/nav/Footer.scss'
+import './Footer.scss'
 
 export function Footer() {
   const { openModal } = useOverlayDispatch()
@@ -13,7 +13,7 @@ export function Footer() {
       <div className="row justify-content-around">
         <div className="col-md-3 col-lg-2">
           <h5>Rólunk</h5>
-          <ul className="list-unstyled text-small">
+          <ul className="list-unstyled">
             <li className="footer-link">
               <NavLink className="text-muted" to="/about">
                 Az oldal célja
@@ -37,7 +37,7 @@ export function Footer() {
         </div>
         <div className="col-md-3 col-lg-2">
           <h5>Támogatás</h5>
-          <ul className="list-unstyled text-small">
+          <ul className="list-unstyled">
             <li className="footer-link">
               <ExternalLink className="text-muted" href={__CONFIG__.links.policy}>
                 Adatvédelem
@@ -49,7 +49,12 @@ export function Footer() {
               </NavLink>
             </li>
             <li className="footer-link">
-              <Button btn="link" inline onAction={() => openModal(<FeedbackModal />)}>
+              <Button
+                btn="link"
+                className="text-muted"
+                inline
+                onAction={() => openModal(<FeedbackModal />)}
+              >
                 Visszajelzés
               </Button>
             </li>
@@ -57,7 +62,7 @@ export function Footer() {
         </div>
         <div className="col-md-3 col-lg-2">
           <h5>Média</h5>
-          <ul className="list-unstyled text-small">
+          <ul className="list-unstyled">
             <li className="footer-link">
               <ExternalLink
                 className="text-muted"

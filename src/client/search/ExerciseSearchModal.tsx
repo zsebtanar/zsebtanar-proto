@@ -2,13 +2,14 @@ import * as React from 'react'
 import { search } from 'client/search/services/search'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
 import { Button } from 'client/generic/components/Button'
-import { Icon } from 'client/generic/components/Icon'
 import { Loading } from 'client/generic/components/Loading'
 import { Markdown } from 'client/generic/components/markdown/Markdown'
 import { Dialog } from '../../../client/modal/components/modal/Dialog'
 import { DialogBody } from '../../../client/modal/components/modal/DialogBody'
 import { DialogFooter } from '../../../client/modal/components/modal/DialogFooter'
 import { DialogHeader } from '../../../client/modal/components/modal/DialogHeader'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface ConfirmModalProps extends ui.ModalProps {
   onSuccess: (exerciseId: string) => void
@@ -73,7 +74,7 @@ export class ExerciseSearchModal extends React.Component<ConfirmModalProps> {
         <div className="mb-4 mx-auto col-md-8">
           <div className="search-input-group ">
             <label className="search-label" htmlFor="search-input">
-              <Icon fa="search" size="lg" />
+              <FontAwesomeIcon icon={faSearch} size="lg" />
               <span className="sr-only">Feladat keresés</span>
             </label>
             <input
@@ -122,13 +123,13 @@ export class ExerciseSearchModal extends React.Component<ConfirmModalProps> {
   }
 
   private renderResultItem = term => exercise => {
-    const { filterOut } = this.props;
+    const { filterOut } = this.props
     const isDisabled = !!(filterOut && filterOut.find(id => id === exercise.objectID))
     return (
       <div
         key={exercise.objectID}
         className="list-group-item list-group-item-action d-flex flex-column align-items-start"
-        style={{opacity: isDisabled ? 0.3 : 1}}
+        style={{ opacity: isDisabled ? 0.3 : 1 }}
         onClick={() => !isDisabled && this.selectExercise(exercise.objectID)}
       >
         <div className="mb-1 d-flex w-100 ">
