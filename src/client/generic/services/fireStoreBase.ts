@@ -1,13 +1,14 @@
-import { app } from 'client/generic/services/fireApp'
-import { pickBy } from '../utils/fn'
+import { app } from './fireApp'
+import { pickBy } from '../utils'
+import { BaseModel } from '../../../shared/generic/types'
 
 ///
 
 export type DocRef = firebase.firestore.DocumentReference
 export type Query = firebase.firestore.Query
 
-export interface BaseModel {
-  id?: string
+interface ServiceOptions {
+  excludeId: boolean
 }
 
 interface StoreOptions {
@@ -19,11 +20,10 @@ interface StoreOptions {
 const db = app.firestore()
 
 export class Service<T extends BaseModel> {
-  private readonly collectionName: string
-
-  constructor(collectionName: string) {
-    this.collectionName = collectionName
-  }
+  constructor(
+    private readonly collectionName: string,
+    private readonly options: ServiceOptions = { excludeId: false }
+  ) {}
 
   public async create(data: T, options?: StoreOptions): Promise<DocRef> {
     const doc = await db.collection(this.collectionName).add(omitInvalidFields(data, options))
@@ -64,7 +64,10 @@ export class Service<T extends BaseModel> {
     }
 
     const collections: Partial<T> = await this.populate(doc.id, populate || [])
-    const data = { id: doc.id, ...doc.data(), ...collections } as T
+    const data = { ...doc.data(), ...collections } as T
+    if (!this.options.excludeId) {
+      data.id = doc.id
+    }
 
     this.log('GET', id, data)
     return data

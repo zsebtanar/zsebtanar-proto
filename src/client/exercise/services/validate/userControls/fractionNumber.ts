@@ -1,5 +1,9 @@
-import { isValid, simplifyFractionNumber, INVALID_FRACTION_NUMBER } from 'server/utils/math'
-import { UCFractionNumber } from '../../../type'
+import {
+  isValid,
+  simplifyFractionNumber,
+  INVALID_FRACTION_NUMBER
+} from 'shared/math/fractionNumber'
+import { UCFractionNumber } from '../../../../../shared/exercise/types'
 
 export function fractionNumber(
   control: UCFractionNumber,

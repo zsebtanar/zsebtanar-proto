@@ -1,6 +1,6 @@
 import React from 'react'
 import { Alert } from '../../generic/components/Alert'
-import { isNotZeroInteger } from 'shared/utils/math'
+import { isNotZeroInteger } from 'shared/math/base'
 
 import './AppNotifications.scss'
 

@@ -1,5 +1,5 @@
 import { all, isEmpty, isNil, keys } from 'ramda'
-import { UCBinaryChoice } from '../../../type'
+import { UCBinaryChoice } from '../../../../../shared/exercise/types'
 
 export function binaryChoiceCheck(
   control: UCBinaryChoice,

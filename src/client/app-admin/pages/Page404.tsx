@@ -1,7 +1,9 @@
-import * as React from 'react'
+import React from 'react'
 
 export function Page404() {
   return (
-    <h1>404 - Uppsz</h1>
+    <div className="container">
+      <h1>404 - Uppsz</h1>
+    </div>
   )
 }

@@ -1,5 +1,6 @@
 import { map, pipe, slice } from 'ramda'
-import { BaseModel, Service } from './fireStoreBase'
+import { Service } from './fireStoreBase'
+import { BaseModel } from '../../../shared/generic/types'
 
 export type QuerySnapshot = firebase.firestore.QuerySnapshot
 
@@ -35,10 +36,7 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
 
     if (to <= from) throw new Error('Invalid parameters')
 
-    return pipe(
-      slice(from, to),
-      map(getRecord)
-    )(this.list?.docs ?? [])
+    return pipe(slice(from, to), map(getRecord))(this.list?.docs ?? [])
   }
 
   public async refresh() {

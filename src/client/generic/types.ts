@@ -91,7 +91,3 @@ export interface FieldModelProps<TValue, TTemplate> {
   onChange: (name: string, newValue: TValue) => void
   templateOptions: TTemplate
 }
-
-export interface ObjectMap<T> {
-  [key: string]: T
-}

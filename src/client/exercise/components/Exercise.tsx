@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import * as cx from 'classnames'
-import { ExerciseModel, ExerciseSubTask } from '../type'
+import { ExerciseModel, ExerciseSubTask } from '../../../shared/exercise/types'
 import { ExerciseProvider, useExercise, useExerciseDispatch } from '../services/exerciseContext'
 import { CloseButton, ProgressBar } from 'client/generic/components'
 import { ExerciseMarkdown } from './ExerciseMarkdown'
@@ -108,17 +108,16 @@ function SubTask({ index, task }: SubTaskProps) {
       {!isDone && (
         <div className="exercise-footer">
           <div className="container ">
-            {this.state.checkCounter > 0 &&
-              task.hintsLeft > 0 && (
-                <Button
-                  className="btn-link"
-                  onAction={this.getHint}
-                  loading={loadingHint}
-                  disabled={loadingCheck}
-                >
-                  Kérek segítséget ({task.hintsLeft} maradt)
-                </Button>
-              )}
+            {this.state.checkCounter > 0 && task.hintsLeft > 0 && (
+              <Button
+                className="btn-link"
+                onAction={this.getHint}
+                loading={loadingHint}
+                disabled={loadingCheck}
+              >
+                Kérek segítséget ({task.hintsLeft} maradt)
+              </Button>
+            )}
 
             <Button
               submit

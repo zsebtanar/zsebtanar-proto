@@ -13,15 +13,19 @@
     padding: 0.5rem 1rem;
   }
 
-  .logo {
-    background: url('/assets/logo.png') no-repeat left center;
-    background-size: contain;
-    width: 3rem;
-    height: 3rem;
+  .logo-link{
+    margin: 0.3rem;
+    .logo {
+      background: url('/assets/logo.png') no-repeat left center;
+      background-size: contain;
+      width: 3rem;
+      height: 3rem;
+    }
   }
 
   .mobile-header,
   .desktop-header {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;

@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import { Navigation, Footer } from './nav'
 import { About, Home, JoinUs, Page404, Workarounds, Search } from './pages'
 
-export function PublicApp() {
+export const PublicApp = React.memo(function PublicAppBase() {
   return (
     <div className="container page-container">
       <Navigation />
@@ -23,4 +23,4 @@ export function PublicApp() {
       <Footer />
     </div>
   )
-}
+})

@@ -1,5 +1,5 @@
 import React, { ReactNode, useReducer, Reducer, FormEvent } from 'react'
-import { ExerciseModel } from '../type'
+import { ExerciseModel } from '../../../shared/exercise/types'
 
 interface ActiveSubTask {
   numberOfAttempt: number

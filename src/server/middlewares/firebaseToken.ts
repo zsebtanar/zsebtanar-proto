@@ -9,7 +9,7 @@ import { admin } from '../utils/firebase'
  @see: https://github.com/firebase/functions-samples/tree/master/authorized-https-endpoint
  @see: https://firebase.google.com/docs/auth/admin/verify-id-tokens
  */
-export default function validateFirebaseIdToken(req, res, next) {
+export async function getToken(req, res, next) {
   const authHeader = req.headers.authorization
 
   if ((!authHeader || !authHeader.startsWith('Bearer ')) && !req.cookies.__session) {
@@ -30,15 +30,11 @@ export default function validateFirebaseIdToken(req, res, next) {
     idToken = req.cookies.__session
   }
 
-  admin
-    .auth()
-    .verifyIdToken(idToken)
-    .then(decodedIdToken => {
-      req.user = decodedIdToken
-      next()
-    })
-    .catch(error => {
-      console.error('Validation error', error)
-      res.status(401).send('Unauthorized')
-    })
+  try {
+    req.user = await admin.auth().verifyIdToken(idToken)
+    next()
+  } catch (error) {
+    console.error('Authorization error', error)
+    res.status(401).send('Unauthorized')
+  }
 }

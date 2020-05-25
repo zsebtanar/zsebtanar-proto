@@ -1,80 +1,87 @@
-import * as React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as cx from 'classnames'
 import * as CodeMirror from 'codemirror'
-import { useEffect, useRef, useState } from 'react'
-import { usePocketLisp } from 'client/generator/PocketLispProvider'
+import { usePocketLisp, InterpreterOutput } from '../providers/PocketLispProvider'
+import debounce from '../../generic/utils/debounce'
 
+// plugins
 import 'codemirror/mode/clojure/clojure'
 import 'codemirror/addon/edit/closebrackets'
 import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/addon/hint/show-hint'
 
+// style
 import 'codemirror/addon/hint/show-hint.css'
 import 'codemirror/lib/codemirror.css'
 import './CodeEditor.scss'
 
-interface Props {
+interface Props
+  extends Omit<
+    React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
+    'onChange' | 'defaultValue'
+  > {
   className?: string
   name: string
-  onChange: (event: { name: string, value: string }) => void
+  onChange: (event: { name: string; value: string }) => void
   value: string
 }
 
 ///
 
-export function CodeEditor({ className, onChange, name, value }: Props) {
+export function CodeEditor({ className, onChange, name, value, ...areaProps }: Props) {
   const interpreter = usePocketLisp()
   const textAreaEl = useRef<HTMLTextAreaElement>(null)
   const [cm, setCodeMirror] = useState<CodeMirror.EditorFromTextArea>()
+  const [output, setOutput] = useState<InterpreterOutput[]>([])
 
-  useEffect(
-    () => {
-      if (!(textAreaEl?.current) || cm) return
+  // Init CodeMirror
+  useEffect(() => {
+    if (!textAreaEl?.current || cm) return
 
-      const codeMirror = CodeMirror.fromTextArea(textAreaEl.current, {
-        lineNumbers: true,
-        mode: 'text/x-clojure',
-        extraKeys: { 'Ctrl-Space': 'autocomplete' },
-        lineWrapping: true,
-        autoCloseBrackets: true,
-        matchBrackets: true,
-        hintOptions: { hint: codeCompletion(interpreter) }
-      })
+    const codeMirror = CodeMirror.fromTextArea(textAreaEl.current, {
+      lineNumbers: true,
+      mode: 'text/x-clojure',
+      extraKeys: { 'Ctrl-Space': 'autocomplete' },
+      lineWrapping: true,
+      autoCloseBrackets: true,
+      matchBrackets: true
+    })
 
-      codeMirror.on('change', (cm) => onChange({ name, value: cm.getValue() }))
+    setCodeMirror(codeMirror)
+    return () => codeMirror.toTextArea()
+  }, [cm, textAreaEl])
 
-      setCodeMirror(codeMirror)
-    },
-    [name, onChange, textAreaEl.current]
-  )
+  // Setup codeMirror event listeners
+  useEffect(() => {
+    if (!cm) return
+    const onChangeHandler = debounce(cm => {
+      const value = cm.getValue()
+      onChange({ name, value })
+      interpreter.run(value)
+      setOutput(interpreter.getOutput())
+    }, 150)
 
-  const run = async () => {
-    const src = cm?.getValue() ?? ''
-    interpreter.run(src)
-  }
+    cm.on('change', onChangeHandler)
+    cm.setOption('hintOptions', { hint: codeCompletion(interpreter) })
+
+    return () => cm.off('change', onChangeHandler)
+  }, [cm, interpreter, name, onChange])
 
   return (
-    <form className={cx('code-editor', className)}>
+    <div className={cx('code-editor', className)}>
       <div className="row">
-        <div className="col-md-6 my-3">
+        <div className="col-md-6">
           <textarea
             ref={textAreaEl}
             name={name}
-            id="code"
-            cols={30}
-            rows={10}
             className="border"
             defaultValue={value}
+            {...areaProps}
           />
-          <div>
-            <button type="button" className="btn btn-primary mt-2" onClick={run}>
-              Futtatás
-            </button>
-          </div>
         </div>
-        <div className="col-md-6 my-3">
+        <div className="col-md-6">
           <pre className="output border rounded-sm">
-            {interpreter.getOutput().map(({ type, msg }, idx) => (
+            {output.map(({ type, msg }, idx) => (
               <div key={idx} className={type}>
                 {msg}
               </div>
@@ -82,7 +89,7 @@ export function CodeEditor({ className, onChange, name, value }: Props) {
           </pre>
         </div>
       </div>
-    </form>
+    </div>
   )
 }
 

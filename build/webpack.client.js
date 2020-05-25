@@ -5,9 +5,9 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const rhTransformer = require('react-hot-ts/lib/transformer')
 
 const env = process.env.NODE_ENV || 'development'
@@ -16,15 +16,6 @@ const isProd = env === 'production'
 const serverEnv = process.env.SERVER_ENV
 
 const envConfig = getConfig()
-
-const sassExtract = new ExtractTextPlugin({
-  filename: '[name].css',
-  allChunks: true
-})
-const cssExtract = new ExtractTextPlugin({
-  filename: '[name].css',
-  allChunks: true
-})
 
 const ROOT_PATH = path.join(__dirname, '..')
 const TARGET_PATH = path.join(ROOT_PATH, 'bin/app')
@@ -80,10 +71,7 @@ module.exports = {
     },
     //    modules: ['node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    modules: [
-      'node_modules',
-      SRC_PATH
-    ]
+    modules: ['node_modules', SRC_PATH]
   },
 
   devServer: {
@@ -129,13 +117,15 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        exclude: /node_modules/,
-        use: cssExtract.extract(['css-loader'])
-      },
-      {
         test: /\.s?css$/,
-        use: sassExtract.extract(['css-loader', 'sass-loader'])
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: { hmr: isDev }
+          },
+          'css-loader',
+          'sass-loader'
+        ]
       },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /node_modules/ }
     ]
@@ -200,7 +190,10 @@ module.exports = {
         }
       },
   plugins: [
-    sassExtract,
+    new MiniCssExtractPlugin({
+      filename: isDev ? '[name].css' : '[name].[hash].css',
+      chunkFilename: isDev ? '[id].css' : '[id].[hash].css'
+    }),
     new HtmlWebpackPlugin({
       ...commonHtmlWebpackPluginOptions,
       filename: 'admin.html',

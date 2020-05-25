@@ -30,11 +30,14 @@ export function Header({ onOpenSideNav }: Props) {
   return (
     <header className="header clearfix">
       <div className="desktop-header">
+        <NavLink exact to="/" className="logo-link" aria-label="Főoldal">
+          <div className="text-muted logo" />
+        </NavLink>
         <nav>
-          <ul className="nav nav-pills float-right">
+          <ul className="nav nav-pills">
             <li className="nav-item">
-              <a className="nav-link" href="/">
-                Publikus
+              <a className="btn btn-secondary mr-2" href="/">
+                Publikus oldal
               </a>
             </li>
             {isAdmin(userToken) && (
@@ -73,24 +76,16 @@ export function Header({ onOpenSideNav }: Props) {
               </DropdownMenu>
             </Dropdown>
 
-            <Dropdown elementType="li" right className="user-menu">
-              <DropdownToggle>
-                <span className="fa-stack fa">
-                  <i className="fa fa-circle fa-stack-2x" />
-                  <i className="fa fa-user fa-stack-1x fa-inverse" />
-                </span>
-              </DropdownToggle>
+            <Dropdown elementType="li" right>
+              <DropdownToggle>Profil</DropdownToggle>
               <DropdownMenu>
-                <a href="#" className="dropdown-item" onClick={signOut}>
+                <button className="dropdown-item btn btn-link " onClick={signOut}>
                   <Icon fa="power-off" /> Kijelentkezés
-                </a>
+                </button>
               </DropdownMenu>
             </Dropdown>
           </ul>
         </nav>
-        <NavLink exact to="/" className="logo-link" aria-label="Főoldal">
-          <div className="text-muted logo" />
-        </NavLink>
       </div>
 
       <div className="mobile-header ">

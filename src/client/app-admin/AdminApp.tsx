@@ -9,8 +9,10 @@ import { useUser } from 'client/user/providers/UserProvider'
 import { Loading } from 'client/generic/components'
 import { WikiPageGrid } from 'client/wiki/page/WikiPageGrid'
 import { ClassificationsAdminPage } from '../categories/pages/ClassificationsAdmin'
+import { ExerciseGrid } from '../exercise/pages/ExerciseGrid'
+import { ExerciseForm } from '../exercise/pages/ExerciseForm'
 
-export function AdminApp() {
+export const AdminApp = React.memo(function AdminAppBase() {
   const { loading } = useUser()
 
   if (loading) {
@@ -18,7 +20,7 @@ export function AdminApp() {
   }
 
   return (
-    <div className="container page-container">
+    <div className="page-container">
       <Navigation />
       <main className="main-content">
         <Switch>
@@ -26,25 +28,22 @@ export function AdminApp() {
           <Route path="/user" exact component={UserList} />
           <Route path="/classifications" exact component={ClassificationsAdminPage} />
 
-          {/*<Route path="/categories" exact component={MainCategoryGrid} />*/}
-          {/*<Route path="/categories/:id" exact component={SubCategoryGrid} />*/}
-
           {/*/!* Exercises *!/*/}
-          {/*<Route path="/exercise" exact component={Exercises} />*/}
+          <Route path="/exercise" exact component={ExerciseGrid} />
           {/*<Route path="/exercise/add/:clone" component={ExerciseForm} />*/}
-          {/*<Route path="/exercise/add/" component={ExerciseForm} />*/}
-          {/*<Route path="/exercise/edit/:key" component={ExerciseForm} />*/}
-          {/*<Route path="/exercise/view/:key" component={ExercisePreview} />*/}
+          <Route path="/exercise/add/" component={ExerciseForm} />
+          <Route path="/exercise/edit/:id" component={ExerciseForm} />
+          {/*<Route path="/exercise/view/:id" component={ExercisePreview} />*/}
 
           {/*/!* Exercises sheet *!/*/}
           {/*<Route path="/exercise-sheet" exact component={ExerciseSheetGrid} />*/}
           {/*<Route path="/exercise-sheet/add" component={ExerciseSheetForm} />*/}
-          {/*<Route path="/exercise-sheet/edit/:key" component={ExerciseSheetForm} />*/}
+          {/*<Route path="/exercise-sheet/edit/:id" component={ExerciseSheetForm} />*/}
 
           {/*/!* Wiki pages *!/*/}
           <Route path="/wiki-page" exact component={WikiPageGrid} />
           {/*<Route path="/wiki-page/add" exact component={WikiPageForm} />*/}
-          {/*<Route path="/wiki-page/edit/:key" exact component={WikiPageForm} />*/}
+          {/*<Route path="/wiki-page/edit/:id" exact component={WikiPageForm} />*/}
 
           <Route path="/feedback" component={FeedbackGrid} />
           <Route path="/utilities" component={AdminUtils} />
@@ -54,4 +53,4 @@ export function AdminApp() {
       <Footer />
     </div>
   )
-}
+})

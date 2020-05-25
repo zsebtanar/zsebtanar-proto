@@ -10,7 +10,7 @@ export function AdminUtils() {
   }
 
   return (
-    <div>
+    <div className="container">
       <div className="alert alert-warning col-8 mx-auto">
         <h4>
           <Icon fa="exclamation-triangle" size="2x" /> Vigyázz, veszélyes terület

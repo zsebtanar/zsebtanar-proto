@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLoadClassifications } from '../services/classificationService'
 import { Loading, Alert, Button } from '../../generic/components'
+import { sortByProp } from '../../../shared/utils/fn'
 
 export function ClassificationsAdminPage() {
   const { isLoading, isPending, isSuccess, result, hasError, error } = useLoadClassifications()
@@ -21,7 +22,7 @@ export function ClassificationsAdminPage() {
         <dl className="row">
           {Object.entries(result)
             .filter(([key]) => key !== 'id')
-            .sort(([keyA], [keyB]) => (keyA < keyB ? -1 : keyA > keyB ? 1 : 0))
+            .sort(sortByProp(0))
             .map(([key, value]) => (
               <>
                 <dt className="col-sm-3">{key}</dt>

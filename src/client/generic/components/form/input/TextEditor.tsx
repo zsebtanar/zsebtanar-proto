@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import * as cx from 'classnames'
 import { Button, Dropdown, DropdownToggle, DropdownMenu } from 'client/generic/components/index'
 import { useOverlayDispatch } from 'client/overlay/providers'
 import { Markdown } from 'client/generic/components/markdown/Markdown'
@@ -25,6 +26,7 @@ interface Props {
 
 export function TextEditor({ value, onChange, name, required, rows, className, resources }: Props) {
   const textRef = useRef<HTMLTextAreaElement>(null)
+  const [isInFocus, setIsInFocus] = useState<boolean>(false)
   const [txt, setTxt] = useState<string>(value || '')
   const { openModal } = useOverlayDispatch()
 
@@ -121,24 +123,33 @@ export function TextEditor({ value, onChange, name, required, rows, className, r
   }
 
   return (
-    <div className={className || ''}>
-      <Tools
-        wrapText={wrapText}
-        multiLine={multiLine}
-        insertLink={insertLink}
-        insertWikiLink={insertWikiLink}
-        insertFile={insertFile}
-      />
+    <div
+      className={cx(className, 'text-editor', 'form-control', { focused: isInFocus })}
+      onClick={() => textRef.current?.focus()}
+    >
+      {isInFocus && (
+        <Tools
+          wrapText={wrapText}
+          multiLine={multiLine}
+          insertLink={insertLink}
+          insertWikiLink={insertWikiLink}
+          insertFile={insertFile}
+        />
+      )}{' '}
       <textarea
-        className="form-control"
+        className={cx({ 'form-control': isInFocus })}
+        ref={textRef}
         name={name}
-        rows={rows}
+        rows={rows || 4}
         required={required}
         onChange={update}
         value={txt}
+        onFocus={() => setIsInFocus(true)}
+        onBlur={() => setIsInFocus(false)}
       />
-
-      <Preview value={txt} resources={resources} />
+      <div className="text-editor-preview">
+        <Markdown source={txt} resources={resources} />
+      </div>
     </div>
   )
 }
@@ -163,63 +174,58 @@ function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: 
   }
 
   return (
-    <div className="btn-toolbar m-2" role="toolbar" aria-label="Szövegszerkesztő eszközök">
-      <div className="btn-group mr-2" role="group" aria-label="Formázás">
+    <div className="btn-toolbar" role="toolbar" aria-label="Szövegszerkesztő eszközök">
+      <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Formázás">
         <Button
-          btn="secondary"
+          btn="light"
           onAction={() => wrapText('**', 'félkövér')}
           title="Félkövér"
           icon="bold"
         />
-        <Button btn="secondary" onAction={() => wrapText('*', 'dőlt')} title="Dőlt" icon="italic" />
-        <Button btn="secondary" onAction={() => wrapText('$', 'x_1=2')} title="Matematika jelölés">
+        <Button btn="light" onAction={() => wrapText('*', 'dőlt')} title="Dőlt" icon="italic" />
+        <Button btn="light" onAction={() => wrapText('$', 'x_1=2')} title="Matematika jelölés">
           $
         </Button>
         <Button
-          btn="secondary"
+          btn="light"
           onAction={() => multiLine('$$', 'E=mc^2')}
           title="Többsoros matematika jelölés"
         >
           $$
         </Button>
       </div>
-      <div className="btn-group mr-2" role="group" aria-label="Listák">
+      <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Listák">
         <Button
-          btn="secondary"
+          btn="light"
           onAction={() => multiLine('* ', 'lista\n')}
           title="Normál lista"
           icon="list-ul"
         />
         <Button
-          btn="secondary"
+          btn="light"
           onAction={() => multiLine('1. ', 'számozott lista\n')}
           title="Számozott lista"
           icon="list-ol"
         />
         <Button
-          btn="secondary"
+          btn="light"
           onAction={() => multiLine('    ', 'szöveg')}
           title="Behúzás"
           icon="indent"
         />
       </div>
-      <div className="btn-group mr-2" role="group" aria-label="Link">
-        <Button
-          btn="secondary"
-          onAction={() => insertLink('szöveg')}
-          title="Hivatkozás"
-          icon="link"
-        />
-        <Button btn="secondary" onAction={() => insertWikiLink} title="Wiki" icon="wikipedia-w" />
+      <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Link">
+        <Button btn="light" onAction={() => insertLink('szöveg')} title="Hivatkozás" icon="link" />
+        <Button btn="light" onAction={() => insertWikiLink} title="Wiki" icon="wikipedia-w" />
       </div>
-      <div className="btn-group mr-2" role="group" aria-label="Kép">
-        <Button btn="secondary" onAction={() => insertFile()} icon="image">
+      <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Kép">
+        <Button btn="light" onAction={() => insertFile()} icon="image">
           Kép beszűrás
         </Button>
       </div>
 
-      <Dropdown className="btn-group mr-2" aria-label="Link">
-        <DropdownToggle className="btn btn-secondary text-light">
+      <Dropdown className="btn-group btn-group-sm mr-2" aria-label="Link">
+        <DropdownToggle className="btn btn-light text-light">
           <i className="fa fa-question-circle" /> Súgó
         </DropdownToggle>
         <DropdownMenu>
@@ -236,23 +242,5 @@ function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: 
         </DropdownMenu>
       </Dropdown>
     </div>
-  )
-}
-
-interface PreviewProps {
-  value: string
-  resources: MarkdownResources
-}
-
-function Preview({ value, resources }: PreviewProps) {
-  return (
-    <>
-      <div className="mt-2 text-muted">
-        <small>Előnézet:</small>
-      </div>
-      <div className="text-editor-preview form-control disabled">
-        <Markdown source={value} resources={resources} />
-      </div>
-    </>
   )
 }

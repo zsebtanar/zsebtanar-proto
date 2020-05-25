@@ -1,5 +1,5 @@
 import { all, isEmpty, isNil, keys } from 'ramda'
-import { UCMultiChoice } from '../../../type'
+import { UCMultiChoice } from '../../../../../shared/exercise/types'
 
 export function multiChoiceCheck(
   control: UCMultiChoice,

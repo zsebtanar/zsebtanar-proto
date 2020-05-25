@@ -5,7 +5,7 @@ import { isAdmin } from 'client/user/services/user'
 export function Home() {
   const { userToken, user, loggedIn } = useUser()
   return (
-    <div className="msg-block">
+    <div className="msg-block container">
       <h2 className="text-center">
         {!loggedIn || !isAdmin(userToken) ? (
           <div>

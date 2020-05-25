@@ -7,7 +7,7 @@ export function Footer() {
   const { openModal } = useOverlayDispatch()
 
   return (
-    <footer className="footer">
+    <footer className="footer container">
       <p>
         &copy; Zsebtanár Nonprofit Alapítvány {new Date().getFullYear()}
         {' - '}

@@ -1,5 +1,5 @@
 import { fractionNumber } from './fractionNumber'
-import { fractionNum } from 'server/utils/math'
+import { fractionNum } from 'shared/math/fractionNumber'
 
 // eslint-disable @typescript-eslint/no-explicit-any
 describe('fractionNumber', () => {
