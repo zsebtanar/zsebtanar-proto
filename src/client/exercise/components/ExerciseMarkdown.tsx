@@ -1,8 +1,8 @@
 import React from 'react'
-import { useExercise } from '../service/exerciseContext'
 import { useOverlayDispatch } from '../../overlay/providers'
 import { WikiModal } from '../../wiki/modals/WikiModal'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { useExercise } from '../services/exerciseContext'
 
 interface Props {
   className?: string

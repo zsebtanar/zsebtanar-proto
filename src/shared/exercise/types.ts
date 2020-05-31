@@ -55,7 +55,7 @@ export enum ExerciseSubTaskControlsType {
   SingleNumber = 'single-number'
 }
 
-type UserControl =
+export type UserControl =
   | UCBinaryChoice
   | UCFractionNumber
   | UCMultiChoice

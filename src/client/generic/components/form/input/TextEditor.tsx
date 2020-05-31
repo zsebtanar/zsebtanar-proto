@@ -8,7 +8,7 @@ import { WikiPageModel } from 'client/wiki/types'
 import { EquationHelpModal, MarkdownHelpModal } from 'client/generic/modals'
 import { ImageBrowserModal } from 'client/file-upload/modals/ImageBrowserModal'
 import { RemoteFileResource } from 'client/file-upload/types'
-import { MarkdownResources } from 'client/generic/components/markdown/types'
+import { MarkdownResources, MarkdownProps } from 'client/generic/components/markdown/types'
 
 import 'client/generic/components/form/input/TextEditor.scss'
 import {
@@ -21,7 +21,6 @@ import {
   faImage,
   faCalculator,
   faEdit,
-  faCheck,
   faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
@@ -30,6 +29,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 ///
 
 interface Props {
+  id?: string
   value: string
   name: string
   className?: string
@@ -37,9 +37,20 @@ interface Props {
   required?: boolean
   resources: MarkdownResources
   onChange: (data: { name: string; value: string }) => void
+  preview?: React.FunctionComponent<MarkdownProps>
 }
 
-export function TextEditor({ value, onChange, name, required, rows, className, resources }: Props) {
+export function TextEditor({
+  id,
+  value,
+  onChange,
+  name,
+  required,
+  rows,
+  className,
+  resources,
+  preview: Preview
+}: Props) {
   const textRef = useRef<HTMLTextAreaElement>(null)
   const [isInFocus, setIsInFocus] = useState<boolean>(false)
   const [txt, setTxt] = useState<string>(value || '')
@@ -152,6 +163,7 @@ export function TextEditor({ value, onChange, name, required, rows, className, r
         />
       )}{' '}
       <textarea
+        id={id}
         className={cx({ 'form-control': isInFocus })}
         ref={textRef}
         name={name}
@@ -163,7 +175,11 @@ export function TextEditor({ value, onChange, name, required, rows, className, r
         onBlur={() => setIsInFocus(false)}
       />
       <div className="text-editor-preview">
-        <Markdown source={txt} resources={resources} />
+        {Preview ? (
+          <Preview source={txt} resources={resources} />
+        ) : (
+          <Markdown source={txt} resources={resources} />
+        )}
       </div>
     </div>
   )

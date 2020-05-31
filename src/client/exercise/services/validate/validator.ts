@@ -11,7 +11,7 @@ const types = {
 }
 
 type ValidatorFn = (
-  control: DB.UserControl,
+  control: UserControl,
   solution: DB.UserControlSolution,
   userSolution: DB.UserControlSolution
 ) => boolean

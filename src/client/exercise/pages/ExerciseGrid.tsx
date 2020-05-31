@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function ExerciseGrid() {
   return (
-    <div>
+    <div className="container my-5">
       <div className="btn-toolbar justify-content-between align-items-center">
         <h3>Feladatok</h3>
         <NavLink exact to="/exercise/add" className="btn btn-outline-secondary">

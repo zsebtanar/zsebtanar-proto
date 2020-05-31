@@ -5,8 +5,6 @@ import { Button, Loading } from 'client/generic/components'
 import { Markdown } from 'client/generic/components/markdown'
 import { useDialog } from 'client/overlay/providers'
 import { WikiPageModel } from 'client/wiki/types'
-
-import './WikiModal.scss'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 ///
@@ -28,7 +26,7 @@ export function WikiModal({ pageId }: Props) {
     if (result !== undefined) {
       setHistory([...history, result])
     }
-  }, [result])
+  }, [history, result])
 
   const page = history[activePage]
 

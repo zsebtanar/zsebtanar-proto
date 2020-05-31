@@ -27,7 +27,10 @@ export function MultiSelectCombobox({ name, onChange, label, options, value }: P
     removeSelectedItem,
     selectedItems
   } = useMultipleSelection<Option>({
-    initialSelectedItems: value ? options.filter(o => value.includes(o.value)) : []
+    initialSelectedItems: value ? options.filter(o => value.includes(o.value)) : [],
+    onSelectedItemsChange: ({ selectedItems }) => {
+      onChange?.({ name, value: (selectedItems ?? []).map(opt => opt.value) })
+    }
   })
 
   const getFilteredItems = () =>
@@ -61,7 +64,6 @@ export function MultiSelectCombobox({ name, onChange, label, options, value }: P
           if (selectedItem) {
             setInputValue('')
             addSelectedItem(selectedItem)
-            onChange?.({ name, value: selectedItems.map(opt => opt.value) })
           }
           break
         default:

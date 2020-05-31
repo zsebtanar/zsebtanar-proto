@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { app } from 'client/generic/services/fireApp'
 
 export function resolveSnapshot(snapshot) {
@@ -25,14 +24,13 @@ export async function cloudFnRequest(
   const authHeader = options?.withToken ? await getTokenHeader() : {}
 
   const config = {
-    baseURL: `${__CONFIG__.api}/${path}`,
     method,
     path,
     data,
     params,
     headers: { ...authHeader }
   }
-  return axios(config)
+  return fetch(`${__CONFIG__.api}/${path}`, config)
 }
 
 export const cloudFnGet = (path, params, options?) =>

@@ -36,7 +36,7 @@ export function CodeEditor({ className, onChange, name, value, ...areaProps }: P
 
   // Init CodeMirror
   useEffect(() => {
-    if (!textAreaEl?.current || cm) return
+    if (!textAreaEl?.current) return
 
     const codeMirror = CodeMirror.fromTextArea(textAreaEl.current, {
       lineNumbers: true,
@@ -49,7 +49,7 @@ export function CodeEditor({ className, onChange, name, value, ...areaProps }: P
 
     setCodeMirror(codeMirror)
     return () => codeMirror.toTextArea()
-  }, [cm, textAreaEl])
+  }, [textAreaEl])
 
   // Setup codeMirror event listeners
   useEffect(() => {

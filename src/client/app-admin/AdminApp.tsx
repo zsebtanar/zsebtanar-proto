@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router'
-import { Navigation, Footer } from 'client/app-admin/nav'
+import { Navigation } from 'client/app-admin/nav'
 import { Page404, Home } from 'client/app-admin/pages'
 import { AdminUtils } from 'client/app-admin/pages/AdminUtils'
 import { UserList } from 'client/user/pages/UserList'
@@ -50,7 +50,6 @@ export const AdminApp = React.memo(function AdminAppBase() {
           <Route component={Page404} />
         </Switch>
       </main>
-      <Footer />
     </div>
   )
 })

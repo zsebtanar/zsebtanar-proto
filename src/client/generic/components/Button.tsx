@@ -18,6 +18,7 @@ interface ButtonProps {
   inline?: boolean
   onAction?: (event: MouseEvent) => void
   children?: React.ReactNode
+  small?: boolean
 }
 
 export function Button({
@@ -31,7 +32,8 @@ export function Button({
   disabled,
   loading,
   inline,
-  children
+  children,
+  small
 }: ButtonProps) {
   const onClick =
     onAction &&
@@ -43,7 +45,10 @@ export function Button({
   return (
     <button
       type={submit ? 'submit' : 'button'}
-      className={cx(className, 'btn', `btn-${btn || 'secondary'}`, { 'btn-inline': inline })}
+      className={cx(className, 'btn', `btn-${btn || 'secondary'}`, {
+        'btn-inline': inline,
+        'btn-sm': small
+      })}
       onClick={onClick}
       tabIndex={tabIndex}
       title={title}
