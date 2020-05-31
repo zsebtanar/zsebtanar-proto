@@ -42,8 +42,10 @@ export interface ExerciseSubTask {
   title: string
   description: string
   controls: UserControl[]
-  hints: string[]
+  hints: ExerciseSubTaskHints
 }
+
+export type ExerciseSubTaskHints = string[]
 
 export enum ExerciseSubTaskControlsType {
   BinaryChoice = 'binary-choice',

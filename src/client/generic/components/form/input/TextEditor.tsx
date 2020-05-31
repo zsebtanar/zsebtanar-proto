@@ -36,7 +36,7 @@ interface Props {
   rows?: number
   required?: boolean
   resources: MarkdownResources
-  onChange: (data: { name: string; value: string }) => void
+  onChange: (name: string, value: string) => void
   preview?: React.FunctionComponent<MarkdownProps>
 }
 
@@ -53,7 +53,6 @@ export function TextEditor({
 }: Props) {
   const textRef = useRef<HTMLTextAreaElement>(null)
   const [isInFocus, setIsInFocus] = useState<boolean>(false)
-  const [txt, setTxt] = useState<string>(value || '')
   const { openModal } = useOverlayDispatch()
 
   const wrapText = (token: string, sample = '') => {
@@ -144,8 +143,7 @@ export function TextEditor({
 
     const { name, value } = ref
     ref.focus()
-    onChange({ name, value })
-    setTxt(value)
+    onChange(name, value)
   }
 
   return (
@@ -170,15 +168,15 @@ export function TextEditor({
         rows={rows || 4}
         required={required}
         onChange={update}
-        value={txt}
+        value={value}
         onFocus={() => setIsInFocus(true)}
         onBlur={() => setIsInFocus(false)}
       />
       <div className="text-editor-preview">
         {Preview ? (
-          <Preview source={txt} resources={resources} />
+          <Preview source={value} resources={resources} />
         ) : (
-          <Markdown source={txt} resources={resources} />
+          <Markdown source={value} resources={resources} />
         )}
       </div>
     </div>

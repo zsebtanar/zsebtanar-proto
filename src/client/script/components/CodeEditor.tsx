@@ -22,7 +22,7 @@ interface Props
   > {
   className?: string
   name: string
-  onChange: (event: { name: string; value: string }) => void
+  onChange: (name: string, value: string) => void
   value: string
 }
 
@@ -51,12 +51,18 @@ export function CodeEditor({ className, onChange, name, value, ...areaProps }: P
     return () => codeMirror.toTextArea()
   }, [textAreaEl])
 
+  useEffect(() => {
+    if (cm && cm.getValue() !== value) {
+      cm.setValue(value)
+    }
+  }, [cm, value])
+
   // Setup codeMirror event listeners
   useEffect(() => {
     if (!cm) return
     const onChangeHandler = debounce(cm => {
       const value = cm.getValue()
-      onChange({ name, value })
+      onChange(name, value)
       interpreter.run(value)
       setOutput(interpreter.getOutput())
     }, 150)

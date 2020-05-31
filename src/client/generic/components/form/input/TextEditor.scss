@@ -22,11 +22,14 @@
   }
 
   .text-editor-preview{
-    height: 100px;
+    min-height: 2rem;
     resize: vertical;
     overflow: auto;
     bottom: 1px;
     left: 1px;
     padding: 0.375rem 0.75rem;
+    .markdown p:last-child{
+      margin-bottom: 0;
+    }
   }
 }

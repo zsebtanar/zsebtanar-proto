@@ -3,20 +3,26 @@ import { useCombobox, useMultipleSelection } from 'downshift'
 import * as cx from 'classnames'
 import './MultiSelectCombobox.scss'
 
-interface Option {
+interface Option<TValue> {
   label: string
-  value: unknown
+  value: TValue
 }
 
-interface Props {
+interface Props<TValue> {
   label: string
-  options: Option[]
-  value: unknown[]
+  options: Option<TValue>[]
+  value: TValue[]
   name: string
-  onChange?: (event: { name: string; value: unknown[] }) => void
+  onChange?: (name: string, value: TValue[]) => void
 }
 
-export function MultiSelectCombobox({ name, onChange, label, options, value }: Props) {
+export function MultiSelectCombobox<TValue = unknown>({
+  name,
+  onChange,
+  label,
+  options,
+  value
+}: Props<TValue>) {
   const inputEl = useRef<HTMLInputElement>(null)
   const [isInFocus, setIsInFocus] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState('')
@@ -26,10 +32,13 @@ export function MultiSelectCombobox({ name, onChange, label, options, value }: P
     addSelectedItem,
     removeSelectedItem,
     selectedItems
-  } = useMultipleSelection<Option>({
+  } = useMultipleSelection<Option<TValue>>({
     initialSelectedItems: value ? options.filter(o => value.includes(o.value)) : [],
     onSelectedItemsChange: ({ selectedItems }) => {
-      onChange?.({ name, value: (selectedItems ?? []).map(opt => opt.value) })
+      onChange?.(
+        name,
+        (selectedItems ?? []).map(opt => opt.value)
+      )
     }
   })
 
