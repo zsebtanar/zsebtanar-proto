@@ -1,38 +1,36 @@
-import * as React from 'react'
-import { Markdown } from 'client-common/component/general/Markdown'
+import React from 'react'
+import { UseModelProps } from 'client/generic/hooks/model'
+import { Markdown, Input } from 'client/generic/components'
+import { UCSimpleText } from 'shared/exercise/types'
 
-export function SimpleText(props) {
-  const setSolution = e => {
-    if (props.onChange) {
-      props.onChange({
-        name: props.name,
-        value: e.currentTarget.value
-      })
-    }
-  }
+interface Props extends UseModelProps<string> {
+  ctrl: UCSimpleText
+  readonly: boolean
+}
 
+export function SimpleText({ name, value, onChange, readonly, ctrl }: Props) {
   return (
     <div className="user-control simple-text d-flex align-items-center">
       <span className="prefix">
-        <Markdown source={props.prefix} resources={props.resources} />
+        {ctrl.props.prefix && <Markdown source={ctrl.props.prefix} resources={{}} />}
       </span>
-      {props.readOnly ? (
+      {readonly ? (
         <strong>
           &nbsp;
-          {props.value}
+          {value}
           &nbsp;
         </strong>
       ) : (
-        <input
-          name={props.name}
+        <Input
+          name={name}
           type="text"
           className="form-control col-4 mx-1"
-          value={props.value || ''}
-          onChange={setSolution}
+          value={value}
+          onChange={onChange}
         />
       )}
       <span className="postfix">
-        <Markdown source={props.postfix} resources={props.resources} />
+        {ctrl.props.postfix && <Markdown source={ctrl.props.postfix} resources={{}} />}
       </span>
     </div>
   )

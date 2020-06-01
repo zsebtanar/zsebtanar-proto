@@ -1,17 +1,16 @@
 import React from 'react'
-import { OnChange } from '../../../hooks/model'
+import { UseModelProps } from '../../../hooks/model'
 
-interface Props extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange'> {
-  onChange: OnChange<string>
-}
+interface Props
+  extends UseModelProps<string>,
+    Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'name'> {}
 
-export function Input({ value, onChange, ...props }: Props) {
+export function Input({ name, value, onChange, ...props }: Props) {
   return (
     <input
+      name={name}
       defaultValue={value}
-      onChange={({ target }) => {
-        onChange(target.name, target.value)
-      }}
+      onChange={({ target }) => onChange({ name, value: target.value })}
       {...props}
     />
   )

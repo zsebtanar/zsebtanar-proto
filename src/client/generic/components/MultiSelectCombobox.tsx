@@ -2,21 +2,19 @@ import React, { useState, useRef } from 'react'
 import { useCombobox, useMultipleSelection } from 'downshift'
 import * as cx from 'classnames'
 import './MultiSelectCombobox.scss'
+import { UseModelProps } from '../hooks/model'
 
 interface Option<TValue> {
   label: string
   value: TValue
 }
 
-interface Props<TValue> {
+interface Props<TValue> extends UseModelProps<TValue[]> {
   label: string
   options: Option<TValue>[]
-  value: TValue[]
-  name: string
-  onChange?: (name: string, value: TValue[]) => void
 }
 
-export function MultiSelectCombobox<TValue = unknown>({
+export function MultiSelectCombobox<TValue>({
   name,
   onChange,
   label,
@@ -35,10 +33,7 @@ export function MultiSelectCombobox<TValue = unknown>({
   } = useMultipleSelection<Option<TValue>>({
     initialSelectedItems: value ? options.filter(o => value.includes(o.value)) : [],
     onSelectedItemsChange: ({ selectedItems }) => {
-      onChange?.(
-        name,
-        (selectedItems ?? []).map(opt => opt.value)
-      )
+      onChange?.({ name, value: (selectedItems ?? []).map(opt => opt.value) })
     }
   })
 

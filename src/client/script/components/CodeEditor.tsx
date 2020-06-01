@@ -3,6 +3,7 @@ import * as cx from 'classnames'
 import * as CodeMirror from 'codemirror'
 import { usePocketLisp, InterpreterOutput } from '../providers/PocketLispProvider'
 import debounce from '../../generic/utils/debounce'
+import { UseModelProps } from '../../generic/hooks/model'
 
 // plugins
 import 'codemirror/mode/clojure/clojure'
@@ -15,20 +16,14 @@ import 'codemirror/addon/hint/show-hint.css'
 import 'codemirror/lib/codemirror.css'
 import './CodeEditor.scss'
 
-interface Props
-  extends Omit<
-    React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
-    'onChange' | 'defaultValue'
-  > {
+interface Props extends UseModelProps<string> {
+  id?: string
   className?: string
-  name: string
-  onChange: (name: string, value: string) => void
-  value: string
 }
 
 ///
 
-export function CodeEditor({ className, onChange, name, value, ...areaProps }: Props) {
+export function CodeEditor({ className, onChange, name, value, ...props }: Props) {
   const interpreter = usePocketLisp()
   const textAreaEl = useRef<HTMLTextAreaElement>(null)
   const [cm, setCodeMirror] = useState<CodeMirror.EditorFromTextArea>()
@@ -62,7 +57,7 @@ export function CodeEditor({ className, onChange, name, value, ...areaProps }: P
     if (!cm) return
     const onChangeHandler = debounce(cm => {
       const value = cm.getValue()
-      onChange(name, value)
+      onChange({ name, value })
       interpreter.run(value)
       setOutput(interpreter.getOutput())
     }, 150)
@@ -82,7 +77,7 @@ export function CodeEditor({ className, onChange, name, value, ...areaProps }: P
             name={name}
             className="border"
             defaultValue={value}
-            {...areaProps}
+            {...props}
           />
         </div>
         <div className="col-md-6">

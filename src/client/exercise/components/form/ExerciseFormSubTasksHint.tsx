@@ -13,8 +13,8 @@ interface Props {
   onChange: OnChange<ExerciseSubTaskHints>
 }
 
-export function ExerciseFormSubTaskHint({ name, value, onChange, index }: Props) {
-  const { bind, remove } = useModel<ExerciseSubTaskHints>(value, name, onChange)
+export function ExerciseFormSubTasksHint({ name, value, onChange, index }: Props) {
+  const { bind, remove } = useModel<ExerciseSubTaskHints>({ value, name, onChange })
 
   return (
     <div className="form-group" key={name}>

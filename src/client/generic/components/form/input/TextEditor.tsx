@@ -25,18 +25,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { UseModelProps } from '../../../hooks/model'
 
 ///
 
-interface Props {
+interface Props extends UseModelProps<string> {
   id?: string
-  value: string
-  name: string
   className?: string
   rows?: number
   required?: boolean
   resources: MarkdownResources
-  onChange: (name: string, value: string) => void
   preview?: React.FunctionComponent<MarkdownProps>
 }
 
@@ -143,7 +141,7 @@ export function TextEditor({
 
     const { name, value } = ref
     ref.focus()
-    onChange(name, value)
+    onChange({ name, value })
   }
 
   return (

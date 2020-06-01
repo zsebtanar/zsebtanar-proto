@@ -6,7 +6,6 @@ import { Loading, Button } from '../../generic/components'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
 import { exerciseDataService, useExerciseModel } from '../services/exercise'
 import { ExerciseFormDetails } from '../components/form/ExerciseFormDetails'
-import { ROOT } from '../../generic/hooks/model'
 import { ExerciseFormSubTask } from '../components/form/ExerciseFormSubTasks'
 
 import './ExerciseForm.scss'
@@ -22,6 +21,7 @@ export function ExerciseForm() {
     store,
     isSaving,
     bind,
+    bindPartialModel,
     append
   } = useExerciseModel()
 
@@ -47,7 +47,7 @@ export function ExerciseForm() {
     <PocketLispProvider isEdit={true} seed={1}>
       <div className="exercise-form bg-light">
         <form className="container" onSubmit={onSave}>
-          <ExerciseFormDetails {...bind(ROOT)} />
+          <ExerciseFormDetails {...bindPartialModel()} />
           <hr />
           <h5>
             Részfeldatok{' '}

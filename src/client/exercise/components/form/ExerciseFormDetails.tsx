@@ -1,30 +1,23 @@
 import React from 'react'
-import { Input, MultiSelectCombobox, TextEditor } from '../../../generic/components'
+import { Input, MultiSelectCombobox, TextEditor, FormGroup } from '../../../generic/components'
 import { sortByProp } from 'shared/utils/fn'
 import { MarkdownWithScript, CodeEditor } from '../../../script/components'
 import { ExerciseFormBlock } from '../ExerciseFormBlock'
 import { ExerciseModel } from 'shared/exercise/types'
-import { useModel, OnChange } from '../../../generic/hooks/model'
+import { useModel, UseModelProps } from '../../../generic/hooks/model'
 import { useLoadClassifications } from '../../../categories/services/classificationService'
 
 type Model = Pick<ExerciseModel, 'title' | 'classifications' | 'description' | 'script'>
 
-interface Props {
-  name: string
-  value: Model
-  onChange: OnChange<Model>
-}
-
-export function ExerciseFormDetails({ name, value, onChange }: Props) {
+export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Model>) {
   const classifications = useLoadClassifications()
-  const { bind } = useModel<Model>(value, name, onChange)
+  const { bind } = useModel<Model>({ value, onChange, name })
 
   return (
     <ExerciseFormBlock className="card">
-      <div className="form-group">
-        <label htmlFor="exercise-title">Feledat neve</label>
-        <Input type="text" className="form-control" id="exercise-title" {...bind('title')} />
-      </div>
+      <FormGroup label="Feledat neve">
+        {id => <Input type="text" className="form-control" id={id} {...bind('title')} />}
+      </FormGroup>
 
       <div className="form-group">
         {classifications.isSuccess && (
@@ -52,10 +45,7 @@ export function ExerciseFormDetails({ name, value, onChange }: Props) {
         />
       </div>
 
-      <div className="form-group">
-        <label htmlFor="exercise-script">Script</label>
-        <CodeEditor id="exercise-script" {...bind('script')} />
-      </div>
+      <FormGroup label="Script">{id => <CodeEditor id={id} {...bind('script')} />}</FormGroup>
     </ExerciseFormBlock>
   )
 }

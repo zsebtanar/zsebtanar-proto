@@ -1,4 +1,5 @@
 import React from 'react'
+import * as dp from 'dot-prop-immutable'
 import {
   TextEditor,
   Dropdown,
@@ -9,32 +10,26 @@ import {
 import { MarkdownWithScript } from '../../../script/components'
 import { ExerciseFormBlock } from '../ExerciseFormBlock'
 import { ExerciseSubTask } from 'shared/exercise/types'
-import { useModel, OnChange } from '../../../generic/hooks/model'
+import { useModel, UseModelProps } from '../../../generic/hooks/model'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { NAMES as userControlNames } from '../userControls/controlTypes'
 import { UserControlEditModal } from '../../modals/UserControlEditModal'
 import { useOverlayDispatch } from '../../../overlay/providers'
-import { ExerciseFormSubTaskHint } from './ExerciseFormSubTaskHint'
+import { ExerciseFormSubTasksHint } from './ExerciseFormSubTasksHint'
 
-interface Props {
-  name: string
-  value: ExerciseSubTask
-  onChange: OnChange<ExerciseSubTask>
-}
-
-export function ExerciseFormSubTask({ name, value, onChange }: Props) {
+export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<ExerciseSubTask>) {
   const { openModal } = useOverlayDispatch()
-  const { bind, append } = useModel<ExerciseSubTask>(value, name, onChange)
+  const { bind, append, remove, set } = useModel<ExerciseSubTask>({ value, onChange, name })
 
-  const editUserControl = (controlType, controlData = {}) =>
-    openModal(
-      <UserControlEditModal
-        name="hello"
-        controlType={controlType}
-        controlData={controlData as never}
-        onChange={() => undefined}
-      />
+  const createUserControl = type =>
+    openModal(<UserControlEditModal value={{ type } as never} />).then(
+      newControl => newControl && append('controls', newControl)
+    )
+
+  const editUserControl = (data, idx) =>
+    openModal(<UserControlEditModal value={data} />).then(
+      control => control && set(model => dp.set(model, `controls.${idx}`, control))
     )
 
   return (
@@ -61,13 +56,31 @@ export function ExerciseFormSubTask({ name, value, onChange }: Props) {
                 key={key}
                 type="button"
                 className="dropdown-item"
-                onClick={() => editUserControl(key)}
+                onClick={() => createUserControl(key)}
               >
                 {label}
               </button>
             ))}
           </DropdownMenu>
         </Dropdown>
+        <ul>
+          {value.controls?.map((control, idx) => (
+            <li key={idx}>
+              <Button small btn="link" onAction={() => editUserControl(control, idx)}>
+                <FontAwesomeIcon icon={faEdit} />
+              </Button>
+              <Button
+                small
+                btn="link"
+                className="text-danger"
+                onAction={() => remove(`controls.${idx}`)}
+              >
+                <FontAwesomeIcon icon={faTrashAlt} />
+              </Button>
+              {control.type}
+            </li>
+          ))}
+        </ul>
       </h6>{' '}
       <hr />
       <h6>
@@ -77,7 +90,7 @@ export function ExerciseFormSubTask({ name, value, onChange }: Props) {
         </Button>
       </h6>
       {value.hints?.map((hint, hintIdx) => (
-        <ExerciseFormSubTaskHint index={hintIdx} key={hintIdx} {...bind(`hints.${hintIdx}`)} />
+        <ExerciseFormSubTasksHint index={hintIdx} key={hintIdx} {...bind(`hints.${hintIdx}`)} />
       ))}
     </ExerciseFormBlock>
   )

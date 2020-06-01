@@ -1,148 +1,99 @@
-import * as React from 'react'
-import { assocPath, dissocPath, pathOr, toPairs } from 'ramda'
-import { uid } from 'client-common/util/uuid'
-import { connect } from 'react-redux'
-import { openInputModal } from 'client-common/store/actions/modal'
-import { TrashButton } from 'client-common/component/userControls/common/TrashButton'
-import { MarkdownField } from 'client-common/component/userControls/common/MarkdownField'
-import { Button } from 'client-common/component/general/Button'
-import { Checkbox } from 'client-common/component/input/Checkbox'
+import React from 'react'
+import { useModel, UseModelProps } from '../../../../generic/hooks/model'
+import { UCSimpleText } from 'shared/exercise/types'
+import { Checkbox, Input } from '../../../../generic/components/form'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { Button, FormGroup } from '../../../../generic/components'
+import { TextEditor } from '../../../../generic/components/form'
+import { MarkdownWithScript } from '../../../../script/components'
 
-export const SimpleTextAdmin = connect(undefined, { openInputModal })(
-  class extends React.Component<any, any> {
-    constructor(props) {
-      super(props)
+export function SimpleTextAdmin({ value, onChange, name }: UseModelProps<UCSimpleText>) {
+  const { data, bind, remove, append } = useModel<UCSimpleText>({ value, onChange, name })
 
-      this.state = {
-        prefix: pathOr(null, ['value', 'prefix'], props),
-        postfix: pathOr(null, ['value', 'postfix'], props),
-        solution: pathOr(
-          {
-            ignoreSpaces: pathOr(false, ['value', 'ignoreSpaces'], props),
-            caseSensitive: pathOr(true, ['value', 'caseSensitive'], props),
-            options: false
-          },
-          ['value', 'solution'],
-          props
-        )
-      }
-    }
-
-    componentWillMount() {
-      if (!this.state.solution.options) {
-        this.addSolution()
-      }
-    }
-
-    editLabel = ({ name, value }) => this.updateState({ [name]: value })
-
-    addSolution = () => {
-      this.updateState(assocPath(['solution', 'options', uid()], 'Megoldás', this.state))
-    }
-
-    setSolution = e => {
-      const { name, value } = e.currentTarget
-      this.updateState(assocPath(['solution', 'options', name], value, this.state))
-    }
-
-    delSolution = key => () => {
-      this.updateState(dissocPath(['solution', 'options', key], this.state))
-    }
-
-    setOption = e => {
-      const { name, checked } = e.currentTarget
-      this.updateState(assocPath(['solution', name], checked, this.state))
-    }
-
-    updateState = data => {
-      const state = { ...this.state, ...data }
-      this.setState(state)
-      if (this.props.onChange) {
-        this.props.onChange({ value: state, name: this.props.name })
-      }
-    }
-
-    render() {
-      const { prefix, postfix } = this.state
-      const solution = toPairs(this.state.solution.options)
-
-      return (
-        <div className="user-control simple-text simple-text-admin">
-          <div>
-            <Checkbox
-              name="ignoreSpaces"
-              checked={this.state.solution.ignoreSpaces}
-              onChange={this.setOption}
-            >
-              Szóközök figyelmen kívül hagyása
-            </Checkbox>
-          </div>
-          <div className="my-2">
-            <Checkbox
-              name="caseSensitive"
-              checked={this.state.solution.caseSensitive}
-              onChange={this.setOption}
-            >
-              Kis- és nagybetűk megkülönböztetése
-            </Checkbox>
-          </div>
-
-          <MarkdownField
-            label="Előtag"
-            name="prefix"
-            value={prefix}
-            placeholder="Üres"
-            onChange={this.editLabel}
-            resources={this.props.resources}
-            cleanable
-          />
-          <MarkdownField
-            label="Utótag"
-            name="postfix"
-            value={postfix}
-            placeholder="Üres"
-            onChange={this.editLabel}
-            resources={this.props.resources}
-            cleanable
-          />
-          <div className="form-group row">
-            <label className="col-3 col-form-label">Megoldások:</label>
-            <div className="col-9">
-              <ol className="list-unstyled">
-                {solution.map(item => this.renderItem(item, solution.length < 2))}
-              </ol>
-            </div>
-          </div>
-          <div className="form-group row">
-            <div className="col-9 ml-auto">
-              <Button
-                className="btn-sm btn-outline-primary d-block mx-auto"
-                onAction={this.addSolution}
-              >
-                <i className="fa fa-plus" /> Alternatív megoldás megadása
-              </Button>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    renderItem = ([key, text], isLast) => {
-      return (
-        <li key={key}>
-          <div className="d-flex">
-            <input
-              type="text"
-              className="form-control mt-1"
-              value={text}
-              name={key}
+  return (
+    <div className="user-control simple-text simple-text-admin">
+      <FormGroup label="Mező neve">
+        {id => (
+          <>
+            <Input
+              id={id}
+              {...bind('name')}
               required
-              onChange={this.setSolution}
+              pattern="^[a-zA-Z_][\w-]*$"
+              aria-describedby="simple-number-name-desc"
+              className="form-control form-control-sm"
             />
-            {isLast ? '' : <TrashButton onAction={this.delSolution(key)} />}
-          </div>
-        </li>
-      )
-    }
-  }
-)
+            <small id="simple-number-name-desc" className="text-muted">
+              <ul>
+                <li>Egyedi kell legyen a feladaton belül</li>
+                <li>Csak betűvel kezdődthet </li>
+                <li>Nem tartalmazhat szóköz vagy ékezetes karakter</li>
+              </ul>
+            </small>
+          </>
+        )}
+      </FormGroup>
+
+      <div>
+        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
+      </div>
+      <hr />
+
+      <FormGroup label="Előtag">
+        {id => (
+          <TextEditor {...bind('prefix')} id={id} preview={MarkdownWithScript} resources={{}} />
+        )}
+      </FormGroup>
+      <FormGroup label="Utótag">
+        {id => (
+          <TextEditor {...bind('postfix')} id={id} preview={MarkdownWithScript} resources={{}} />
+        )}
+      </FormGroup>
+      <hr />
+
+      <div>
+        <Checkbox {...bind('ignoreSpaces')}>Szóközök figyelmen kívül hagyása</Checkbox>
+      </div>
+      <div className="my-2">
+        <Checkbox {...bind('caseSensitive')}>Kis- és nagybetűk megkülönböztetése</Checkbox>
+      </div>
+
+      <FormGroup
+        label={
+          <>
+            Megoldások{' '}
+            <Button btn="link" small onAction={() => append('solution', '')}>
+              <FontAwesomeIcon icon={faPlusCircle} /> Alternatív megoldás megadása
+            </Button>
+          </>
+        }
+      >
+        {() => (
+          <ol>
+            {data.solution?.map((item, idx) => (
+              <li key={idx}>
+                <div className="d-flex">
+                  <Input
+                    {...bind(`solution.${idx}`)}
+                    type="text"
+                    className="form-control mt-1"
+                    required
+                  />
+                  <Button
+                    small
+                    btn="link"
+                    className="text-danger"
+                    onAction={() => remove(`solution.${idx}`)}
+                  >
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
+      </FormGroup>
+    </div>
+  )
+}
