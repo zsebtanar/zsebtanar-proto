@@ -1,111 +1,94 @@
-import React from 'react'
-import { Loading, Alert, Button, FormGroup } from 'client/generic/components'
-import { Simulate } from 'react-dom/test-utils'
+import React, { useEffect } from 'react'
+import { Loading, Alert, Button, FormGroup, Input, FormCard } from 'client/generic/components'
 import { NavLink } from 'react-router-dom'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
-import { FieldDefinition, RepresentationType } from 'client/generic/types'
-import { useForm } from 'client/generic/hooks/form'
-import { WikiPageModel } from 'client/wiki/types'
-import error = Simulate.error
-import { faAngleLeft, faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
+import { useParams, useHistory } from 'react-router'
+import { useWikiPageModel, wikiPageService } from '../services/wikiPageService'
 
-
-const formFields: FieldDefinition[] = [
-  {
-    key: 'title',
-    representation: {
-      type: RepresentationType.Text
-    }
-  },
-  {
-    key: 'content',
-    representation: {
-      type: RepresentationType.Markdown
-    }
-  }
-]
+import './WikiPageForm.scss'
 
 export function WikiPageForm() {
-  const { model } = useForm<WikiPageModel>({} as any, formFields)
-  return (
-    <div>
+  const { id } = useParams()
+  const history = useHistory()
+  const {
+    load,
+    store,
+    hasError,
+    create,
+    isPending,
+    isFetching,
+    isSaving,
+    bind,
+    error
+  } = useWikiPageModel()
 
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div className="d-flex justify-content-between align-items-center">
-          <NavLink
-            exact
-            to="/wiki-page"
-            className="btn btn-outline-light py-0 text-dark mx-2"
-            title="Mégsem"
-          >
-            <FontAwesomeIcon icon={faAngleLeft} size="2x" />
-          </NavLink>
-          <h4 className="d-inline-block m-0 mr-1">Wiki oldal</h4>
-        </div>
-        <div>
-          {data && data.id && (
-            <Button className="btn btn-outline-danger" onAction={this.props.removePage} icon={faTrash}>
-              Törlés
-            </Button>
-          )}
-          <Button
-            loading={saving}
-            disabled={!changed}
-            className="btn btn-primary ml-1"
-            onAction={this.props.savePage}
-            icon={faSave}
-          >
-            Mentés
-          </Button>
-        </div>
-      </div>
-      {loading ? (
+  useEffect(() => {
+    id ? load(id) : create()
+  }, [id])
+
+  if (isPending || isFetching) {
+    return <Loading />
+  }
+
+  const onSave = async event => {
+    event.preventDefault()
+    if (!isSaving) {
+      await store()
+    }
+  }
+
+  const onDelete = async () => {
+    await wikiPageService.delete(id)
+    history.replace('wiki-page')
+  }
+
+  return (
+    <form onSubmit={onSave} className="wiki-page-form bg-light">
+      {isFetching ? (
         <Loading />
-      ) : error ? (
+      ) : hasError ? (
         <Alert type={'danger'}>{JSON.stringify(error)}</Alert>
       ) : (
-        this.renderContent()
-      )}
-    </div>
-  )
-}
+        <div className="container">
+          <h4 className="d-inline-block m-0 mr-1">Wiki oldal</h4>
+          <FormCard>
+            <FormGroup label="Cím">
+              {id => (
+                <Input id={id} {...bind('title')} className="form-control" type="text" required />
+              )}
+            </FormGroup>
 
-const renderHeader = () => {
-  const { saving, changed, data } = this.props.wiki
-
-  return (
-  )
-}
-
-const renderContent = () => {
-  const { setField, wiki, resources } = this.props
-  return (
-    <div className="row">
-      <div className="col-10 mx-auto">
-        <FormGroup label="Wiki oldal címe">
-          <input
-            className="form-control"
-            type="text"
-            name="title"
-            required
-            onChange={e => setField(titleL, e.currentTarget.value)}
-            value={view(titleL, wiki)}
-          />
-        </FormGroup>
-
-        <div>
-          <TextEditor
-            className="form-group"
-            name="description"
-            rows={10}
-            required
-            onChange={e => setField(contentL, e.value)}
-            value={view(contentL, wiki)}
-            resources={resources}
-          />
+            <FormGroup label="Tartalom">
+              {id => (
+                <TextEditor
+                  id={id}
+                  {...bind('content')}
+                  className="form-group"
+                  rows={10}
+                  required
+                  resources={{}}
+                />
+              )}
+            </FormGroup>
+          </FormCard>
+          <div className="d-flex justify-content-end my-3">
+            <div>
+              {id && (
+                <Button btn="link" className="text-danger" onAction={onDelete} icon={faTrash}>
+                  Törlés
+                </Button>
+              )}
+              <NavLink exact to="/wiki-page" className="btn btn-link">
+                Mégsem
+              </NavLink>
+              <Button btn="primary" className="ml-1" loading={isSaving} submit icon={faSave}>
+                Mentés
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </form>
   )
 }

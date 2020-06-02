@@ -1,46 +1,40 @@
-import * as React from 'react'
-import { Markdown } from 'client-common/component/general/Markdown'
+import React from 'react'
+import { UCSingleNumber } from 'shared/exercise/types'
+import { UseModelProps } from 'client/generic/hooks/model'
+import { Markdown, Input } from 'client/generic/components'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
 
-interface SingleNumberProps extends DB.UCSingleNumberProps {
-  name: string
-  value?: string
-  onChange: ({name, value}: {name: string, value: string}) => void
-  resources: MarkdownResources
-  readOnly?: boolean
+interface Props extends UseModelProps<string> {
+  ctrl: UCSingleNumber
+  readonly: boolean
 }
 
-export function SingleNumber(props: SingleNumberProps) {
-  const setSolution = e => {
-    if (props.onChange) {
-      props.onChange({ name: props.name, value: e.currentTarget.value })
-    }
-  }
-
+export function SingleNumber({ readonly, ctrl, ...bindProps }: Props) {
   return (
-    <div className="user-control single-number">
-      <div className="d-flex align-items-center">
-        <span className="prefix">
-          <Markdown source={props.prefix} resources={props.resources} />
-        </span>
-        {props.readOnly ? (
-          <strong>&nbsp;{props.value}&nbsp;</strong>
-        ) : (
-          <input
-            name={props.name}
-            type="number"
-            className="form-control col-4 mx-1"
-            onChange={setSolution}
-            value={props.value}
-            step={1 / Math.pow(10, props.fractionDigits || 0)}
-          />
-        )}
-        <span className="postfix">
-          <Markdown source={props.postfix} resources={props.resources} />
-        </span>
-      </div>
-      {props.fractionDigits > 0 &&
-      <DecimalAccuracyWarning fractionDigits={props.fractionDigits}/>}
+    <div className="user-control simple-text d-flex align-items-center">
+      <span className="prefix">
+        {ctrl.props.prefix && <Markdown source={ctrl.props.prefix} resources={{}} />}
+      </span>
+      {readonly ? (
+        <strong>
+          &nbsp;
+          {bindProps.value}
+          &nbsp;
+        </strong>
+      ) : (
+        <Input
+          {...bindProps}
+          type="number"
+          className="form-control col-4 mx-1"
+          step={1 / Math.pow(10, ctrl.props.fractionDigits || 0)}
+        />
+      )}
+      <span className="postfix">
+        {ctrl.props.postfix && <Markdown source={ctrl.props.postfix} resources={{}} />}
+      </span>
+      {ctrl.props.fractionDigits > 0 && (
+        <DecimalAccuracyWarning fractionDigits={ctrl.props.fractionDigits} />
+      )}
     </div>
   )
 }

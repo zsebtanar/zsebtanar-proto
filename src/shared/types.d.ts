@@ -216,7 +216,17 @@ declare type UIItemStyle =
   | 'success'
   | 'warning'
 
-declare type ButtonType = UIItemStyle | 'link'
+declare type ButtonType =
+  | UIItemStyle
+  | 'link'
+  | 'outline-danger'
+  | 'outline-dark'
+  | 'outline-info'
+  | 'outline-light'
+  | 'outline-primary'
+  | 'outline-secondary'
+  | 'outline-success'
+  | 'outline-warning'
 
 declare type BadgeType = UIItemStyle
 

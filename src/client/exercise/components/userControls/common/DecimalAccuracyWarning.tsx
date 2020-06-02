@@ -1,9 +1,14 @@
-import { Icon } from 'client/generic/components/Icon'
-import * as React from 'react'
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons/faExclamationTriangle'
 
-export const DecimalAccuracyWarning = ({ fractionDigits }) => (
+interface Props {
+  fractionDigits: number
+}
+
+export const DecimalAccuracyWarning = ({ fractionDigits }: Props) => (
   <small className="form-text text-warning">
-    <Icon fa="exclamation-triangle" /> Kérlek, {fractionDigits} tizedesjegy pontossággal
-    add meg a megoldást.
+    <FontAwesomeIcon icon={faExclamationTriangle} /> Kérlek, {fractionDigits} tizedesjegy
+    pontossággal add meg a megoldást.
   </small>
 )

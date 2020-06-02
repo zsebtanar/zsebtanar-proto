@@ -26,7 +26,7 @@ export function UserControlsAdmin({ controlType, controlProps, resources }) {
       return <MultiChoiceAdmin {...controlProps} resources={resources} />
     default:
       return (
-        <div className="alert alert-danger">Not implemented Admin control type "{controlType}"</div>
+        <div className="alert alert-danger">Not implemented Admin control type {controlType}</div>
       )
   }
 }

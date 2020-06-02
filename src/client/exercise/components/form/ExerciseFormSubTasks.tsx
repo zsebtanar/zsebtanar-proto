@@ -8,7 +8,7 @@ import {
   Button
 } from '../../../generic/components'
 import { MarkdownWithScript } from '../../../script/components'
-import { ExerciseFormBlock } from '../ExerciseFormBlock'
+import { FormCard } from '../../../generic/components/form/FormCard'
 import { ExerciseSubTask } from 'shared/exercise/types'
 import { useModel, UseModelProps } from '../../../generic/hooks/model'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -33,7 +33,7 @@ export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<Exe
     )
 
   return (
-    <ExerciseFormBlock className="card my-3">
+    <FormCard className="card my-3">
       <div className="form-group">
         <label htmlFor={`exercise-subtask-${name}-description`}>Leírása</label>
         <TextEditor
@@ -92,6 +92,6 @@ export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<Exe
       {value.hints?.map((hint, hintIdx) => (
         <ExerciseFormSubTasksHint index={hintIdx} key={hintIdx} {...bind(`hints.${hintIdx}`)} />
       ))}
-    </ExerciseFormBlock>
+    </FormCard>
   )
 }

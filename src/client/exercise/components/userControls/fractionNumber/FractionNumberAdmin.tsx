@@ -1,89 +1,63 @@
-import * as React from 'react'
-import { assocPath, pathOr } from 'ramda'
-import { connect } from 'react-redux'
-import { openInputModal } from 'client-common/store/actions/modal'
-import { MarkdownField } from 'client-common/component/userControls/common/MarkdownField'
+import React from 'react'
+import { useModel, UseModelProps } from '../../../../generic/hooks/model'
+import { UCFractionNumber } from 'shared/exercise/types'
+import { Checkbox, Input, TextEditor } from '../../../../generic/components/form'
+import { FormGroup } from '../../../../generic/components'
+import { MarkdownWithScript } from '../../../../script/components'
+import { UserControlNameInput } from '../common/UserControlNameInput'
 
-export const FractionNumberAdmin = connect(undefined, { openInputModal })(
-  class extends React.Component<any, any> {
-    constructor(props) {
-      super(props)
+export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>) {
+  const { bind } = useModel<UCFractionNumber>(bindProps)
 
-      this.state = {
-        prefix: pathOr(null, ['value', 'prefix'], props),
-        postfix: pathOr(null, ['value', 'postfix'], props),
-        solution: {
-          numerator: pathOr(1, ['value', 'solution', 'numerator'], props),
-          denominator: pathOr(1, ['value', 'solution', 'denominator'], props)
-        }
-      }
-    }
+  return (
+    <div className="user-control simple-text simple-text-admin">
+      <UserControlNameInput {...bind('name')} />
+      <div>
+        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
+      </div>
 
-    editLabel = ({ name, value }) => this.updateState({ [name]: value })
+      <hr />
 
-    setSolution = e => {
-      const { name, value } = e.currentTarget
-      this.updateState(assocPath(['solution', name], value, this.state))
-    }
-
-    updateState = data => {
-      const state = { ...this.state, ...data }
-      this.setState(state)
-      if (this.props.onChange) {
-        this.props.onChange({ value: state, name: this.props.name })
-      }
-    }
-
-    render() {
-      const { prefix, postfix, solution } = this.state
-      return (
-        <div className="user-control fraction-number-admin">
-          <MarkdownField
-            label="Előtag"
-            name="prefix"
-            value={prefix}
-            placeholder="Üres"
-            onChange={this.editLabel}
-            resources={this.props.resources}
-            cleanable
+      <FormGroup label="Előtag">
+        {id => (
+          <TextEditor
+            {...bind('props.prefix')}
+            id={id}
+            preview={MarkdownWithScript}
+            resources={{}}
           />
-          <MarkdownField
-            label="Utótag"
-            name="postfix"
-            value={postfix}
-            placeholder="Üres"
-            onChange={this.editLabel}
-            resources={this.props.resources}
-            cleanable
+        )}
+      </FormGroup>
+      <FormGroup label="Utótag">
+        {id => (
+          <TextEditor
+            {...bind('props.postfix')}
+            id={id}
+            preview={MarkdownWithScript}
+            resources={{}}
           />
-          <div className="form-group row">
-            <label className="col-3 col-form-label">Számláló:</label>
-            <div className="col-7">
-              <input
-                type="number"
-                name="numerator"
-                onChange={this.setSolution}
-                className="form-control"
-                value={solution.numerator}
-                step="1"
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label className="col-3 col-form-label">Nevező:</label>
-            <div className="col-7">
-              <input
-                type="number"
-                name="denominator"
-                onChange={this.setSolution}
-                className="form-control"
-                value={solution.denominator}
-                step="1"
-              />
-            </div>
-          </div>
-        </div>
-      )
-    }
-  }
-)
+        )}
+      </FormGroup>
+      <hr />
+
+      <h6>Megoldás</h6>
+
+      <FormGroup label="Számláló">
+        {id => <Input type="number" {...bind('solution.numerator')} id={id} step={1} required />}
+      </FormGroup>
+
+      <FormGroup label="Nevező">
+        {id => (
+          <Input
+            type="number"
+            {...bind('solution.denominator')}
+            id={id}
+            step={1}
+            min={0}
+            required
+          />
+        )}
+      </FormGroup>
+    </div>
+  )
+}

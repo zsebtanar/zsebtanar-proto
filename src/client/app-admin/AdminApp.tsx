@@ -7,7 +7,7 @@ import { UserList } from 'client/user/pages/UserList'
 import { FeedbackGrid } from 'client/feedback/pages/FeedbackGrid'
 import { useUser } from 'client/user/providers/UserProvider'
 import { Loading } from 'client/generic/components'
-import { WikiPageGrid } from 'client/wiki/page/WikiPageGrid'
+import { WikiPageGrid, WikiPageForm } from 'client/wiki/page'
 import { ClassificationsAdminPage } from '../categories/pages/ClassificationsAdmin'
 import { ExerciseGrid } from '../exercise/pages/ExerciseGrid'
 import { ExerciseForm } from '../exercise/pages/ExerciseForm'
@@ -42,8 +42,8 @@ export const AdminApp = React.memo(function AdminAppBase() {
 
           {/*/!* Wiki pages *!/*/}
           <Route path="/wiki-page" exact component={WikiPageGrid} />
-          {/*<Route path="/wiki-page/add" exact component={WikiPageForm} />*/}
-          {/*<Route path="/wiki-page/edit/:id" exact component={WikiPageForm} />*/}
+          {<Route path="/wiki-page/add" exact component={WikiPageForm} />}
+          {<Route path="/wiki-page/edit/:id" exact component={WikiPageForm} />}
 
           <Route path="/feedback" component={FeedbackGrid} />
           <Route path="/utilities" component={AdminUtils} />

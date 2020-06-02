@@ -2,7 +2,7 @@ import React from 'react'
 import { Input, MultiSelectCombobox, TextEditor, FormGroup } from '../../../generic/components'
 import { sortByProp } from 'shared/utils/fn'
 import { MarkdownWithScript, CodeEditor } from '../../../script/components'
-import { ExerciseFormBlock } from '../ExerciseFormBlock'
+import { FormCard } from '../../../generic/components/form/FormCard'
 import { ExerciseModel } from 'shared/exercise/types'
 import { useModel, UseModelProps } from '../../../generic/hooks/model'
 import { useLoadClassifications } from '../../../categories/services/classificationService'
@@ -14,7 +14,7 @@ export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Mod
   const { bind } = useModel<Model>({ value, onChange, name })
 
   return (
-    <ExerciseFormBlock className="card">
+    <FormCard className="card">
       <FormGroup label="Feledat neve">
         {id => <Input type="text" className="form-control" id={id} {...bind('title')} />}
       </FormGroup>
@@ -46,6 +46,6 @@ export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Mod
       </div>
 
       <FormGroup label="Script">{id => <CodeEditor id={id} {...bind('script')} />}</FormGroup>
-    </ExerciseFormBlock>
+    </FormCard>
   )
 }

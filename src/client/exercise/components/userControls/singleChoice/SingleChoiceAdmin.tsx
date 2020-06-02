@@ -1,114 +1,58 @@
-import * as React from 'react'
-import { findIndex, map, pick, propEq, update } from 'ramda'
-import { connect } from 'react-redux'
-import { openInputModal } from 'client-common/store/actions/modal'
-import { Button } from 'client-common/component/general/Button'
-import { RadioInput } from 'client-common/component/input/RadioInput'
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { UCSingleChoice } from 'shared/exercise/types'
+import { Button, Checkbox, RadioInput, TextEditor } from 'client/generic/components'
+import { useModel, UseModelProps } from 'client/generic/hooks/model'
+import { UserControlNameInput } from '../common/UserControlNameInput'
 
-export const SingleChoiceAdmin = connect(undefined, { openInputModal })(
-  class extends React.Component<any, any> {
-    state = {
-      options: [],
-      solution: ''
-    }
+export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>) {
+  const { data, bind, remove, append } = useModel<UCSingleChoice>(bindProps)
 
-    componentWillMount() {
-      if (this.props.value && this.props.value.options) {
-        this.setState(this.props.value)
-      } else if (this.state.options.length < 1) {
-        this.addItem()
-      }
-    }
+  return (
+    <div className="user-control simple-text simple-text-admin">
+      <UserControlNameInput {...bind('name')} />
 
-    addItem = () => {
-      const options = [...this.state.options, { label: `Option` }]
-      this.updateState({ options })
-    }
+      <div>
+        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
+      </div>
 
-    removeItem = value => {
-      this.updateState({ options: this.state.options.filter(x => x.value !== value) })
-    }
+      <hr />
 
-    editItem = item => {
-      const idx = findIndex(propEq('value', item.value), this.state.options)
-      const onUpdate = label => {
-        const options = update(idx, { ...item, label }, this.state.options)
-        this.updateState({ options })
-      }
-      this.props.openInputModal({
-        title: 'Válasz szövegének szerkesztése',
-        label: 'Válasz szövege',
-        value: item.label,
-        onUpdate
-      })
-    }
+      <h6>
+        Opciók{' '}
+        <Button
+          btn="link"
+          small
+          onAction={() => {
+            append('solution', false)
+          }}
+        >
+          <FontAwesomeIcon icon={faPlusCircle} /> Válasz lehetőség hozzáadása
+        </Button>
+      </h6>
 
-    selectSolution = e => {
-      const { value } = e.currentTarget
-      this.updateState({ solution: value })
-    }
-
-    updateState = data => {
-      if (data.options) {
-        data.options = data.options.map((item, idx) => ({ ...item, value: idx.toString() }))
-      }
-      const state = { ...this.state, ...data }
-      this.setState(state)
-      if (this.props.onChange) {
-        this.props.onChange({
-          value: {
-            options: map(pick(['label', 'value']), state.options),
-            solution: state.solution
-          },
-          name: this.props.name
-        })
-      }
-    }
-
-    render() {
-      const options = this.state.options
-      return (
-        <div className="user-control single-choice single-choice-admin">
-          <ol>
-            {options.map(data =>
-              this.renderItem({ ...data, name: 'admin', isLast: options.length < 2 })
-            )}
-          </ol>
-          <Button className="btn-sm btn-link" onAction={this.addItem}>
-            <i className="fa fa-plus" /> Válasz lehetőség hozzáadása
-          </Button>
-        </div>
-      )
-    }
-
-    renderItem = item => {
-      return (
-        <li key={`${item.value}-${item.label}`}>
-          <RadioInput
-            label={item.label}
-            name={item.name}
-            id={`cc-${item.value.toString()}`}
-            key={item.value}
-            value={item.value}
-            checked={item.value === this.state.solution}
-            required
-            onChange={this.selectSolution}
-            resources={this.props.resources}
-          />
-          {item.isLast ? (
-            ''
-          ) : (
-            <Button className="btn-sm btn-link" onAction={() => this.removeItem(item.value)}>
-              <span className="text-danger">
-                <i className="fa fa-trash" />
-              </span>
-            </Button>
-          )}
-          <Button className="btn-sm btn-link" onAction={() => this.editItem(item)}>
-            <i className="fa fa-edit" />
-          </Button>
-        </li>
-      )
-    }
-  }
-)
+      <ol>
+        {data.props.options?.map((item, idx) => (
+          <li key={idx}>
+            <div className="d-flex">
+              <RadioInput inputValue={idx} {...bind(`solution`)} className="form-control mt-1" />
+              <TextEditor resources={{}} {...bind(`props.options.${idx}.label`)} />
+              <Button
+                small
+                btn="link"
+                className="text-danger"
+                onAction={() => {
+                  remove(`solution.${idx}`)
+                  remove(`props.options.${idx}`)
+                }}
+              >
+                <FontAwesomeIcon icon={faTrashAlt} />
+              </Button>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}

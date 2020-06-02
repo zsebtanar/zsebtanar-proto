@@ -1,4 +1,5 @@
 import { ObjectMap, BaseModel } from '../generic/types'
+import { FractionNumber } from '../math/fractionNumber'
 
 export interface ExerciseModel extends BaseModel {
   title: string
@@ -94,11 +95,6 @@ export interface UCFractionNumber extends BaseUserControl {
     postfix?: string
   }
   solution: FractionNumber
-}
-
-interface FractionNumber {
-  numerator: number
-  denominator: number
 }
 
 export interface UCMultiChoice extends BaseUserControl {

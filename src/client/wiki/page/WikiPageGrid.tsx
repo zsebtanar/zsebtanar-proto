@@ -9,7 +9,7 @@ import { faEdit, faClone, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 export function WikiPageGrid() {
   return (
-    <div>
+    <div className="container my-5">
       <div className="btn-toolbar justify-content-between align-items-center">
         <h3>Wiki oldalak</h3>
         <NavLink exact to="/wiki-page/add" className="btn btn-outline-secondary">
