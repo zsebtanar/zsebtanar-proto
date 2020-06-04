@@ -1,59 +1,37 @@
-import * as React from 'react'
-import { find, propEq } from 'ramda'
-import { Markdown } from 'client-common/component/general/Markdown'
-import { Icon } from 'client-common/component/general/Icon'
-import { RadioInput } from 'client-common/component/input/RadioInput'
-import { uid } from 'client-common/util/uuid'
+import React from 'react'
+import { UCSingleChoice } from 'shared/exercise/types'
+import { UseModelProps } from 'client/generic/hooks/model'
+import { RadioInput } from 'client/generic/components'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck'
+import { MarkdownWithScript } from 'client/script/components'
 
-export class SingleChoice extends React.Component<any, any> {
-  // we need state here because: https://github.com/facebook/react/issues/10078
+interface Props extends UseModelProps<number> {
+  ctrl: UCSingleChoice
+  readonly: boolean
+}
 
-  state = { checked: null }
-  onChange = e => {
-    const checked = e.currentTarget.value
-    this.setState({ checked })
-
-    if (this.props.onChange) {
-      this.props.onChange({
-        name: this.props.name,
-        value: checked
-      })
-    }
-  }
-
-  render() {
-    const key = uid()
-    return (
-      <div className="user-control single-choice" id={key}>
-        {this.props.readOnly ? this.renderReadOnly() : this.renderNormal(key)}
-      </div>
-    )
-  }
-
-  renderNormal(key) {
-    const { options, value, resources } = this.props
-    return (options || []).map(item => (
-      <RadioInput
-        {...item}
-        key={key + '-' + item.value}
-        id={key + '-' + item.value}
-        name={key + '-name'}
-        onChange={this.onChange}
-        checked={(value !== undefined ? value : this.state.checked) === item.value}
-        resources={resources}
-      />
-    ))
-  }
-
-  renderReadOnly() {
-    const {value, options, resources} = this.props
-    const data = find(propEq('value', value), options) || {}
-
-    return (
-      <div className="row">
-        <Icon fa="check" className="col-1" />
-        <Markdown source={data.label} resources={resources} className="col-11" />
-      </div>
-    )
-  }
+export function SingleChoice({ readonly, ctrl, ...bindProps }: Props) {
+  return (
+    <div className="user-control uc-single-choice">
+      {readonly ? (
+        <div className="row">
+          <FontAwesomeIcon icon={faCheck} className="col-1" />
+          <MarkdownWithScript
+            source={ctrl.props.options[ctrl.solution].label}
+            resources={{}}
+            className="col-11"
+          />
+        </div>
+      ) : (
+        ctrl.props.options.map(({ label }, idx) => (
+          <div className="row" key={idx}>
+            <RadioInput inputValue={idx} {...bindProps}>
+              <MarkdownWithScript source={label} resources={{}} />
+            </RadioInput>
+          </div>
+        ))
+      )}
+    </div>
+  )
 }

@@ -1,30 +1,40 @@
 import * as React from 'react'
+import { UserControl } from 'shared/exercise/types'
+import { UseModelProps } from 'client/generic/hooks/model'
+
 import * as t from './controlTypes'
-import { SingleChoice } from './singleChoice/SingleChoice'
-import { SingleNumber } from './singleNumber/SingleNumber'
 import { SimpleText } from './simpleText/SimpleText'
-import { BinaryChoice } from './binaryChoice/BinaryChoice'
-import { MultiChoice } from './multiChoice/MultiChoice'
+import { SingleNumber } from './singleNumber/SingleNumber'
 import { FractionNumberComponent } from './fractionNumber/FractionNumberComponent'
 import { NumberList } from './numberList/NumberList'
+import { SingleChoice } from './singleChoice/SingleChoice'
+import { BinaryChoice } from './binaryChoice/BinaryChoice'
+import { MultiChoice } from './multiChoice/MultiChoice'
 
-export function UserControls({ controlType, controlProps, value, resources }) {
-  switch (controlType) {
+interface Props<TSolution> extends UseModelProps<TSolution> {
+  ctrl: UserControl
+  readonly: boolean
+}
+
+export function UserControls<TSolution>({ ...props }: Props<TSolution>) {
+  switch (props.ctrl.type) {
     case t.SIMPLE_TEXT:
-      return <SimpleText {...controlProps} value={value} resources={resources} />
+      return <SimpleText {...(props as any)} />
     case t.SINGLE_NUMBER:
-      return <SingleNumber {...controlProps} value={value} resources={resources} />
+      return <SingleNumber {...(props as any)} />
     case t.FRACTION_NUMBER:
-      return <FractionNumberComponent {...controlProps} value={value} resources={resources} />
+      return <FractionNumberComponent {...(props as any)} />
     case t.NUMBER_LIST:
-      return <NumberList {...controlProps} value={value} resources={resources} />
+      return <NumberList {...(props as any)} />
     case t.SINGLE_CHOICE:
-      return <SingleChoice {...controlProps} value={value} resources={resources} />
+      return <SingleChoice {...(props as any)} />
     case t.BINARY_CHOICE:
-      return <BinaryChoice {...controlProps} value={value} resources={resources} />
+      return <BinaryChoice {...(props as any)} />
     case t.MULTI_CHOICE:
-      return <MultiChoice {...controlProps} value={value} resources={resources} />
+      return <MultiChoice {...(props as any)} />
     default:
-      return <div className="alert alert-danger">Not implemented control type "{controlType}"</div>
+      return (
+        <div className="alert alert-danger">Not implemented control type {props.ctrl.type}</div>
+      )
   }
 }

@@ -83,7 +83,7 @@ export interface UCBinaryChoice extends BaseUserControl {
 }
 
 export interface UCBinaryChoiceOption {
-  label: string
+  statement: string
   trueLabel: string
   falseLabel: string
 }
@@ -101,9 +101,12 @@ export interface UCMultiChoice extends BaseUserControl {
   type: ExerciseSubTaskControlsType.MultiChoice
   props: {
     randomOrder: boolean
-    options: string[]
+    options: UCMultiChoiceOption[]
   }
   solution: boolean[]
+}
+export interface UCMultiChoiceOption {
+  label: string
 }
 
 export interface UCNumberList extends BaseUserControl {
@@ -140,7 +143,7 @@ export interface UCSingleChoice extends BaseUserControl {
   props: {
     options: UCSingleChoiceOption[]
   }
-  solution: string
+  solution: number
 }
 
 export interface UCSingleChoiceOption {

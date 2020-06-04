@@ -1,9 +1,9 @@
 import React from 'react'
-import { UCSingleNumber, UCFractionNumber } from 'shared/exercise/types'
+import { UCFractionNumber } from 'shared/exercise/types'
+import { FractionNumber } from 'shared/math/fractionNumber'
 import { UseModelProps, useModel } from 'client/generic/hooks/model'
-import { Markdown, Input } from 'client/generic/components'
-import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
-import { FractionNumber } from '../../../../../shared/math/fractionNumber'
+import { Input } from 'client/generic/components'
+import { MarkdownWithScript } from 'client/script/components'
 
 interface Props extends UseModelProps<FractionNumber> {
   ctrl: UCFractionNumber
@@ -14,9 +14,9 @@ export function FractionNumberComponent({ readonly, ctrl, ...bindProps }: Props)
   const { bind } = useModel<FractionNumber>(bindProps)
 
   return (
-    <div className="user-control simple-text d-flex align-items-center">
+    <div className="user-control uc-fraction-number d-flex align-items-center">
       <span className="prefix">
-        {ctrl.props.prefix && <Markdown source={ctrl.props.prefix} resources={{}} />}
+        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} resources={{}} />}
       </span>
       {readonly ? (
         <div className="mx-2 text-center">
@@ -46,7 +46,7 @@ export function FractionNumberComponent({ readonly, ctrl, ...bindProps }: Props)
         </>
       )}
       <span className="postfix">
-        {ctrl.props.postfix && <Markdown source={ctrl.props.postfix} resources={{}} />}
+        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} resources={{}} />}
       </span>
     </div>
   )

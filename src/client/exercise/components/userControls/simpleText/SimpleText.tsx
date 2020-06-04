@@ -1,7 +1,8 @@
 import React from 'react'
 import { UseModelProps } from 'client/generic/hooks/model'
-import { Markdown, Input } from 'client/generic/components'
+import { Input } from 'client/generic/components'
 import { UCSimpleText } from 'shared/exercise/types'
+import { MarkdownWithScript } from 'client/script/components'
 
 interface Props extends UseModelProps<string> {
   ctrl: UCSimpleText
@@ -10,9 +11,9 @@ interface Props extends UseModelProps<string> {
 
 export function SimpleText({ name, value, onChange, readonly, ctrl }: Props) {
   return (
-    <div className="user-control simple-text d-flex align-items-center">
+    <div className="user-control uc-simple-text d-flex align-items-center">
       <span className="prefix">
-        {ctrl.props.prefix && <Markdown source={ctrl.props.prefix} resources={{}} />}
+        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} resources={{}} />}
       </span>
       {readonly ? (
         <strong>
@@ -30,7 +31,7 @@ export function SimpleText({ name, value, onChange, readonly, ctrl }: Props) {
         />
       )}
       <span className="postfix">
-        {ctrl.props.postfix && <Markdown source={ctrl.props.postfix} resources={{}} />}
+        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} resources={{}} />}
       </span>
     </div>
   )

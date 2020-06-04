@@ -5,18 +5,20 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  Button
-} from '../../../generic/components'
-import { MarkdownWithScript } from '../../../script/components'
-import { FormCard } from '../../../generic/components/form/FormCard'
+  Button,
+  FormCard
+} from 'client/generic/components'
+import { MarkdownWithScript } from 'client/script/components'
 import { ExerciseSubTask } from 'shared/exercise/types'
-import { useModel, UseModelProps } from '../../../generic/hooks/model'
+import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { NAMES as userControlNames } from '../userControls/controlTypes'
 import { UserControlEditModal } from '../../modals/UserControlEditModal'
-import { useOverlayDispatch } from '../../../overlay/providers'
+import { useOverlayDispatch } from 'client/overlay/providers'
 import { ExerciseFormSubTasksHint } from './ExerciseFormSubTasksHint'
+import { UserControls } from '../userControls/UserControl'
+import { noop } from '../../../../shared/utils/fn'
 
 export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<ExerciseSubTask>) {
   const { openModal } = useOverlayDispatch()
@@ -66,6 +68,13 @@ export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<Exe
         <ul>
           {value.controls?.map((control, idx) => (
             <li key={idx}>
+              <UserControls
+                ctrl={control}
+                readonly
+                onChange={noop}
+                name=""
+                value={control.solution}
+              />
               <Button small btn="link" onAction={() => editUserControl(control, idx)}>
                 <FontAwesomeIcon icon={faEdit} />
               </Button>

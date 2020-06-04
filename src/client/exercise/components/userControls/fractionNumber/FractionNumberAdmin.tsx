@@ -10,10 +10,12 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>) 
   const { bind } = useModel<UCFractionNumber>(bindProps)
 
   return (
-    <div className="user-control simple-text simple-text-admin">
+    <div className="user-control uc-fraction-number uc-fraction-number-admin">
       <UserControlNameInput {...bind('name')} />
       <div>
-        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
+        <Checkbox {...bind('isDynamic')} disabled>
+          Dinamikus
+        </Checkbox>
       </div>
 
       <hr />
@@ -43,13 +45,23 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>) 
       <h6>Megoldás</h6>
 
       <FormGroup label="Számláló">
-        {id => <Input type="number" {...bind('solution.numerator')} id={id} step={1} required />}
+        {id => (
+          <Input
+            type="number"
+            {...bind('solution.numerator')}
+            id={id}
+            step={1}
+            required
+            className="form-control form-control-sm"
+          />
+        )}
       </FormGroup>
 
       <FormGroup label="Nevező">
         {id => (
           <Input
             type="number"
+            className="form-control form-control-sm"
             {...bind('solution.denominator')}
             id={id}
             step={1}

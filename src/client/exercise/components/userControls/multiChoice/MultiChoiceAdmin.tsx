@@ -5,16 +5,19 @@ import { UCMultiChoice } from 'shared/exercise/types'
 import { Button, Checkbox, TextEditor, Select } from 'client/generic/components'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
+import { MarkdownWithScript } from 'client/script/components'
 
 export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>) {
   const { data, bind, remove, append } = useModel<UCMultiChoice>(bindProps)
 
   return (
-    <div className="user-control simple-text simple-text-admin">
+    <div className="user-control uc-multi-choice uc-multi-choice-admin">
       <UserControlNameInput {...bind('name')} />
 
       <div>
-        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
+        <Checkbox {...bind('isDynamic')} disabled>
+          Dinamikus
+        </Checkbox>
       </div>
 
       <hr />
@@ -31,6 +34,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>) {
           btn="link"
           small
           onAction={() => {
+            append('props.options', {})
             append('solution', false)
           }}
         >
@@ -39,7 +43,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>) {
       </h6>
 
       <ol>
-        {data.props.options?.map((item, idx) => (
+        {data.props?.options?.map((item, idx) => (
           <li key={idx} className="d-flex">
             <Select
               {...bind('solution')}
@@ -48,7 +52,11 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>) {
                 { label: 'Hamis', value: false }
               ]}
             />
-            <TextEditor resources={{}} {...bind(`props.options.${idx}.label`)} />
+            <TextEditor
+              resources={{}}
+              {...bind(`props.options.${idx}.label`)}
+              preview={MarkdownWithScript}
+            />
             <Button
               small
               btn="link"

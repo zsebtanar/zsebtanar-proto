@@ -1,8 +1,9 @@
 import React from 'react'
 import { UCSingleNumber } from 'shared/exercise/types'
 import { UseModelProps } from 'client/generic/hooks/model'
-import { Markdown, Input } from 'client/generic/components'
+import { Input } from 'client/generic/components'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
+import { MarkdownWithScript } from 'client/script/components'
 
 interface Props extends UseModelProps<string> {
   ctrl: UCSingleNumber
@@ -11,9 +12,9 @@ interface Props extends UseModelProps<string> {
 
 export function SingleNumber({ readonly, ctrl, ...bindProps }: Props) {
   return (
-    <div className="user-control simple-text d-flex align-items-center">
+    <div className="user-control uc-simple-number d-flex align-items-center">
       <span className="prefix">
-        {ctrl.props.prefix && <Markdown source={ctrl.props.prefix} resources={{}} />}
+        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} resources={{}} />}
       </span>
       {readonly ? (
         <strong>
@@ -26,13 +27,13 @@ export function SingleNumber({ readonly, ctrl, ...bindProps }: Props) {
           {...bindProps}
           type="number"
           className="form-control col-4 mx-1"
-          step={1 / Math.pow(10, ctrl.props.fractionDigits || 0)}
+          step={1 / Math.pow(10, ctrl.props?.fractionDigits ?? 0)}
         />
       )}
       <span className="postfix">
-        {ctrl.props.postfix && <Markdown source={ctrl.props.postfix} resources={{}} />}
+        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} resources={{}} />}
       </span>
-      {ctrl.props.fractionDigits > 0 && (
+      {ctrl.props?.fractionDigits > 0 && (
         <DecimalAccuracyWarning fractionDigits={ctrl.props.fractionDigits} />
       )}
     </div>

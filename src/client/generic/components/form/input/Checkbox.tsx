@@ -3,7 +3,9 @@ import * as cx from 'classnames'
 import { UseModelProps } from '../../../hooks/model'
 import { uid } from '../../../utils'
 
-interface CheckboxProps extends UseModelProps<boolean> {
+interface CheckboxProps
+  extends UseModelProps<boolean>,
+    Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'name'> {
   className?: string
   children?: React.ReactNode
 }

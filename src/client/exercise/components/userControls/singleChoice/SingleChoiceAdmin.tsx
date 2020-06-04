@@ -5,16 +5,19 @@ import { UCSingleChoice } from 'shared/exercise/types'
 import { Button, Checkbox, RadioInput, TextEditor } from 'client/generic/components'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
+import { MarkdownWithScript } from 'client/script/components'
 
 export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>) {
   const { data, bind, remove, append } = useModel<UCSingleChoice>(bindProps)
 
   return (
-    <div className="user-control simple-text simple-text-admin">
+    <div className="user-control uc-simple-text uc-simple-text-admin">
       <UserControlNameInput {...bind('name')} />
 
       <div>
-        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
+        <Checkbox {...bind('isDynamic')} disabled>
+          Dinamikus
+        </Checkbox>
       </div>
 
       <hr />
@@ -25,6 +28,7 @@ export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>) {
           btn="link"
           small
           onAction={() => {
+            append('props.options', {})
             append('solution', false)
           }}
         >
@@ -33,11 +37,15 @@ export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>) {
       </h6>
 
       <ol>
-        {data.props.options?.map((item, idx) => (
+        {data.props?.options?.map((item, idx) => (
           <li key={idx}>
             <div className="d-flex">
               <RadioInput inputValue={idx} {...bind(`solution`)} className="form-control mt-1" />
-              <TextEditor resources={{}} {...bind(`props.options.${idx}.label`)} />
+              <TextEditor
+                resources={{}}
+                {...bind(`props.options.${idx}.label`)}
+                preview={MarkdownWithScript}
+              />
               <Button
                 small
                 btn="link"

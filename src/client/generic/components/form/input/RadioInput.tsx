@@ -3,13 +3,15 @@ import * as cx from 'classnames'
 import { UseModelProps } from '../../../hooks/model'
 import { uid } from '../../../utils'
 
-interface Props extends UseModelProps<unknown> {
-  inputValue: unknown
+interface Props<TValue>
+  extends UseModelProps<TValue>,
+    Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'name'> {
+  inputValue: TValue
   className?: string
   children?: React.ReactNode
 }
 
-export function RadioInput({
+export function RadioInput<TValue>({
   children,
   name,
   value,
@@ -17,7 +19,7 @@ export function RadioInput({
   className,
   inputValue,
   ...props
-}: Props) {
+}: Props<TValue>) {
   const id = useRef<string>(`radio-${uid()}`)
   return (
     <div className={cx('custom-control', 'custom-radio', className)}>

@@ -13,11 +13,13 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>) {
   const { data, bind, remove, append } = useModel<UCSimpleText>(bindProps)
 
   return (
-    <div className="user-control simple-text simple-text-admin">
+    <div className="user-control uc-simple-text uc-simple-text-admin">
       <UserControlNameInput {...bind('name')} />
 
       <div>
-        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
+        <Checkbox {...bind('isDynamic')} disabled>
+          Dinamikus
+        </Checkbox>
       </div>
 
       <hr />

@@ -23,6 +23,7 @@ export function DropdownToggle({ id, className, btn, children, ...props }: Props
   return (
     <button
       id={id}
+      type="button"
       className={`btn ${btn || 'link'} ${className || 'nav-link'} dropdown-toggle`}
       aria-haspopup="true"
       aria-expanded={dropdown.isOpen}

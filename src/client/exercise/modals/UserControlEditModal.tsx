@@ -4,7 +4,7 @@ import { Dialog, DialogHeader, DialogBody, DialogFooter } from 'client/overlay/c
 import { ExerciseSubTaskControlsType } from 'shared/exercise/types'
 import { Button } from 'client/generic/components'
 import { useModel } from '../../generic/hooks/model'
-import { SimpleTextAdmin } from '../components/userControls/simpleText/SimpleTextAdmin'
+import { UserControlsAdmin } from '../components/userControls/UserControlAdmin'
 
 interface Props {
   value: ExerciseSubTaskControlsType
@@ -22,7 +22,7 @@ export function UserControlEditModal({ value }: Props) {
       <DialogHeader onClose={close}>Mezőszerkesztés</DialogHeader>
       <form onSubmit={() => store(data)}>
         <DialogBody>
-          <SimpleTextAdmin {...bindPartialModel()} />
+          <UserControlsAdmin {...bindPartialModel()} />
         </DialogBody>
         <DialogFooter>
           <div>
