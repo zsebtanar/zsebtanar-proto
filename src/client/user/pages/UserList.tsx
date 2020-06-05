@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function UserList() {
   const [state, setState] = useReducer((state, newState) => ({ ...state, ...newState }), {
-    needUpdate: true,
+    counter: 0,
     loading: true,
     data: null,
     error: null
@@ -22,15 +22,13 @@ export function UserList() {
   useEffect(() => {
     setState({ loading: true })
     getAllUser()
-      .then(({ data }) =>
-        setState({ data: data.users, error: null, loading: false, needUpdate: false })
-      )
-      .catch(error => setState({ error, data: null, loaded: false, needUpdate: false }))
-  }, [state.needUpdate])
+      .then(({ users }) => setState({ data: users, error: null, loading: false }))
+      .catch(error => setState({ error, data: null, loaded: false }))
+  }, [state.counter])
 
   const setRole = async (key, e) => {
     await updateUserRole(key, parseInt(e.currentTarget.value, 10))
-    setState({ needUpdate: true })
+    setState({ counter: state.counter + 1 })
   }
 
   const renderTable = () => {
@@ -79,7 +77,7 @@ export function UserList() {
   }
 
   return (
-    <div>
+    <div className="container my-5">
       <div className="btn-toolbar justify-content-between align-items-center">
         <h3>Felhasználók</h3>
       </div>

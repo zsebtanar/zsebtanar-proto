@@ -1,10 +1,10 @@
 import React from 'react'
-import { Button } from 'client/generic/components'
 import { rePublishAllExercise } from 'client/app-admin/services/admin'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function AdminUtils() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const rePublishAll = () => {
     if (window.confirm('Gondold meg kétszer mielőtt elindítod')) {
       rePublishAllExercise().then(() => alert('Kész! Frissítsd az oldalt.'))
@@ -23,18 +23,7 @@ export function AdminUtils() {
         </div>
       </div>
 
-      <h4>DB migráció</h4>
-
-      <table className="table my-4">
-        <tbody>
-          <tr>
-            <td>Publikus feladatok újra mentése</td>
-            <td>
-              <Button onAction={rePublishAll}>Indít</Button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <h3 className="text-center">Hamarosan</h3>
     </div>
   )
 }

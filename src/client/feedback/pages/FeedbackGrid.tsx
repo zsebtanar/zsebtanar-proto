@@ -15,7 +15,7 @@ const dateFormatter = new Intl.DateTimeFormat('hu', opt)
 
 export function FeedbackGrid() {
   return (
-    <div>
+    <div className="container my-5">
       <div className="btn-toolbar justify-content-between align-items-center">
         <h3>Visszajelzések</h3>
       </div>

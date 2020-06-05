@@ -18,7 +18,7 @@ export async function cloudFnRequest(
   method: 'get' | 'post' | 'delete',
   path: string,
   params?: { [key: string]: unknown },
-  data?: unknown,
+  body?: unknown,
   options?: { withToken: boolean }
 ) {
   const authHeader = options?.withToken ? await getTokenHeader() : {}
@@ -26,15 +26,15 @@ export async function cloudFnRequest(
   const config = {
     method,
     path,
-    data,
+    body: JSON.stringify(body),
     params,
-    headers: { ...authHeader }
+    headers: { ...authHeader, 'Content-Type': 'application/json' }
   }
   return fetch(`${__CONFIG__.api}/${path}`, config)
 }
 
 export const cloudFnGet = (path, params, options?) =>
-  cloudFnRequest('get', path, params, undefined, options)
+  cloudFnRequest('get', path, params, undefined, options).then(res => res.json())
 
 export const cloudFnPost = (path, data, options?) =>
   cloudFnRequest('post', path, undefined, data, options)

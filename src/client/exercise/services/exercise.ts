@@ -25,8 +25,8 @@ export function storeExercise(data) {
   return cloudFnPost(`/exercise/${data.id ?? ''}`, data)
 }
 
-export function useExerciseModel() {
+export function useExerciseModel(id?: string) {
   const load = useCallback(id => exerciseDataService.get(id), [])
   const store = useCallback<typeof storeExercise>(data => storeExercise(data), [])
-  return useLoadAndStoreModel<ExerciseModel>(load, store)
+  return useLoadAndStoreModel<ExerciseModel>(load, store, id)
 }

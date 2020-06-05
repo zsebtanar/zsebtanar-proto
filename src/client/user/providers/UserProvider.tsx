@@ -1,21 +1,20 @@
 import React, { ReactNode, Reducer, useReducer } from 'react'
 import { app } from 'client/generic/services'
 import { logException } from 'client/generic/utils/logger'
-import { getUserDetails, parseToken } from 'client/user/services/user'
+import { parseToken, getUserDetails } from 'client/user/services/user'
+import { UserModel } from '../types'
 
 interface Props {
   children: ReactNode
 }
 
-interface UserDetails {}
-
 interface State {
   loading: boolean
   loggedIn: boolean
-  error?: any
+  error?: Error
   user?: firebase.User
   userToken?: string
-  userDetails?: UserDetails
+  userDetails?: UserModel
 }
 
 interface UserContextAPI {
@@ -26,7 +25,7 @@ interface UserContextAPI {
 
 type Action =
   | { type: 'SetUser'; payload: { user?: firebase.User } }
-  | { type: 'SetDetails'; payload: { details: UserDetails; token: string } }
+  | { type: 'SetDetails'; payload: { details: UserModel; token: string } }
   | { type: 'SingInStart' }
   | { type: 'NoUser' }
   | { type: 'Error'; payload: Error }
@@ -77,7 +76,10 @@ export function UserProvider({ children }: Props) {
       try {
         if (user) {
           dispatch({ type: 'SetUser', payload: { user } })
-          const [details, token] = await Promise.all([getUserDetails(user.uid), parseToken(user)])
+          const [details, token] = await Promise.all([
+            getUserDetails(user.uid).catch(() => ({})),
+            parseToken(user)
+          ])
           dispatch({ type: 'SetDetails', payload: { details, token } })
         } else {
           dispatch({ type: 'NoUser' })

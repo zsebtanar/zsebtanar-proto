@@ -18,8 +18,8 @@ export function useLoadWikiPages() {
   return useFetchData<WikiPageModel[]>(() => wikiPageService.getList(), [])
 }
 
-export function useWikiPageModel() {
+export function useWikiPageModel(id: string) {
   const load = useCallback(id => wikiPageService.get(id), [])
   const store = useCallback(data => wikiPageService.store(data), [])
-  return useLoadAndStoreModel<WikiPageModel>(load, store)
+  return useLoadAndStoreModel<WikiPageModel>(load, store, id)
 }

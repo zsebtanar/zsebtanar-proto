@@ -6,7 +6,7 @@ import { roleUpdateSchema } from './model'
 
 export const route = express.Router()
 
-route.get(
+route.post(
   '/role/:uid',
   [getToken, onlyAdmin, requestValidator({ body: roleUpdateSchema })],
   async (req, res) => {

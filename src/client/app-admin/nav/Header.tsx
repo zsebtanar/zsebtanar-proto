@@ -77,7 +77,7 @@ export function Header({ onOpenSideNav }: Props) {
                 <NavLink activeClassName="active" className="dropdown-item" to="/exercise-sheet">
                   <FontAwesomeIcon icon={faListAlt} /> Feladatsorok
                 </NavLink>
-                <NavLink activeClassName="active" className="dropdown-item" to="/categories">
+                <NavLink activeClassName="active" className="dropdown-item" to="/classifications">
                   <FontAwesomeIcon icon={faFolder} /> Kategóriák
                 </NavLink>
                 <DropdownDivider />

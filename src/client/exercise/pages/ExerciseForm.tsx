@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { useParams } from 'react-router'
@@ -14,33 +14,22 @@ export function ExerciseForm() {
   const { id } = useParams()
   const {
     data,
-    create,
-    load,
-    isFetching,
-    isPending,
-    store,
-    isSaving,
     bind,
     bindPartialModel,
-    append
-  } = useExerciseModel()
-
-  useEffect(() => {
-    if (id) {
-      load(id)
-    } else {
-      create()
-    }
-  }, [id])
+    append,
+    isFetching,
+    isPending,
+    isSaving,
+    save
+  } = useExerciseModel(id)
 
   if (isPending || isFetching) {
     return <Loading />
   }
 
-  const onSave = () => {
-    if (!isSaving) {
-      store()
-    }
+  const onSave = event => {
+    event.preventDefault()
+    save()
   }
 
   return (

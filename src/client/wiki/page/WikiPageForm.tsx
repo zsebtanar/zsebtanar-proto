@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Loading, Alert, Button, FormGroup, Input, FormCard } from 'client/generic/components'
 import { NavLink } from 'react-router-dom'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
@@ -11,31 +11,15 @@ import './WikiPageForm.scss'
 export function WikiPageForm() {
   const { id } = useParams()
   const history = useHistory()
-  const {
-    load,
-    store,
-    hasError,
-    create,
-    isPending,
-    isFetching,
-    isSaving,
-    bind,
-    error
-  } = useWikiPageModel()
-
-  useEffect(() => {
-    id ? load(id) : create()
-  }, [id])
+  const { save, hasError, isPending, isFetching, isSaving, bind, error } = useWikiPageModel(id)
 
   if (isPending || isFetching) {
     return <Loading />
   }
 
-  const onSave = async event => {
+  const onSave = event => {
     event.preventDefault()
-    if (!isSaving) {
-      await store()
-    }
+    save()
   }
 
   const onDelete = async () => {
