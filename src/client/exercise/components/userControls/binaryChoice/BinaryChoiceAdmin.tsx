@@ -50,17 +50,14 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>) {
               <TextEditor
                 {...bind(`props.options.${idx}.statement`)}
                 preview={MarkdownWithScript}
-                resources={{}}
               />
               <TextEditor
                 {...bind(`props.options.${idx}.trueLabel`)}
                 preview={MarkdownWithScript}
-                resources={{}}
               />
               <TextEditor
                 {...bind(`props.options.${idx}.falseLabel`)}
                 preview={MarkdownWithScript}
-                resources={{}}
               />
               <Select
                 options={[

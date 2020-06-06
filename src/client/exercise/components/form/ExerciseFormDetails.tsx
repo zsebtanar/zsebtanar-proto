@@ -39,7 +39,6 @@ export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Mod
         <label htmlFor="exercise-description">Feledat leírása</label>
         <TextEditor
           id="exercise-description"
-          resources={{}}
           preview={MarkdownWithScript}
           {...bind('description')}
         />

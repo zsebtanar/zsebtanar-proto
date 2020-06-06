@@ -31,7 +31,6 @@ export function ExerciseFormSubTasksHint({ name, value, onChange, index }: Props
       </div>
       <TextEditor
         id={`exercise-subtask-${name}-hint-${name}`}
-        resources={{}}
         preview={MarkdownWithScript}
         {...bind(`subTasks.${name}.hints.${name}`)}
       />

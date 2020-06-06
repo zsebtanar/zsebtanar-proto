@@ -6,12 +6,12 @@ import * as kbd from 'markdown-it-kbd'
 import * as centertext from 'markdown-it-center-text'
 import { imageInit } from 'shared/markdown/image-resource'
 import { wikiLinkInit } from 'shared/markdown/wiki-link'
-import { MarkdownProps } from 'client/generic/components/markdown/types'
+import { MarkdownProps } from './types'
+import { useAttachment } from 'client/attachments/providers/AttachmentProvider'
 
-import 'client/generic/components/markdown/Markdown.scss'
+import './Markdown.scss'
 
 ///
-
 
 const katexOptions = {
   displayMode: false,
@@ -25,16 +25,10 @@ interface MarkdownIt {
 
 ///
 
-export function Markdown({
-  source,
-  options,
-  resources,
-  mark,
-  onWikiLink,
-  className
-}: MarkdownProps) {
+export function Markdown({ source, options, mark, onWikiLink, className }: MarkdownProps) {
   const container = useRef<HTMLDivElement>(null)
   const [md, setMD] = useState<MarkdownIt | undefined>(undefined)
+  const attachments = useAttachment()
 
   const handleOnClick = (event: MouseEvent) => {
     const target = event.target as HTMLDivElement
@@ -46,11 +40,12 @@ export function Markdown({
   }
 
   useEffect(() => {
-    container.current?.addEventListener('click', handleOnClick, false)
+    const currentContainer = container.current
+    currentContainer?.addEventListener('click', handleOnClick, false)
     return () => {
-      container.current?.removeEventListener('click', handleOnClick, false)
+      currentContainer?.removeEventListener('click', handleOnClick, false)
     }
-  })
+  }, [container])
 
   useEffect(() => {
     setMD(
@@ -59,9 +54,9 @@ export function Markdown({
         .use(kbd)
         .use(centertext)
         .use(wikiLinkInit())
-        .use(imageInit(resources || {}))
+        .use(imageInit(attachments || {}))
     )
-  }, [options, resources])
+  }, [options, attachments])
 
   const __html = source && md ? markText(mark, md.render(source)) : undefined
 

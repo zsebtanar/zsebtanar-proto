@@ -41,7 +41,6 @@ export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<Exe
         <TextEditor
           id={`exercise-subtask-${name}-description`}
           {...bind(`description`)}
-          resources={{}}
           preview={MarkdownWithScript}
         />
       </div>

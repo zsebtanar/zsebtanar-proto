@@ -17,17 +17,13 @@ export function SingleChoice({ readonly, ctrl, ...bindProps }: Props) {
       {readonly ? (
         <div className="row">
           <FontAwesomeIcon icon={faCheck} className="col-1" />
-          <MarkdownWithScript
-            source={ctrl.props.options[ctrl.solution].label}
-            resources={{}}
-            className="col-11"
-          />
+          <MarkdownWithScript source={ctrl.props.options[ctrl.solution].label} className="col-11" />
         </div>
       ) : (
         ctrl.props.options.map(({ label }, idx) => (
           <div className="row" key={idx}>
             <RadioInput inputValue={idx} {...bindProps}>
-              <MarkdownWithScript source={label} resources={{}} />
+              <MarkdownWithScript source={label} />
             </RadioInput>
           </div>
         ))

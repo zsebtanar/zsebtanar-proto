@@ -23,24 +23,10 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>) {
       <hr />
 
       <FormGroup label="Előtag">
-        {id => (
-          <TextEditor
-            {...bind('props.prefix')}
-            id={id}
-            preview={MarkdownWithScript}
-            resources={{}}
-          />
-        )}
+        {id => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <FormGroup label="Utótag">
-        {id => (
-          <TextEditor
-            {...bind('props.postfix')}
-            id={id}
-            preview={MarkdownWithScript}
-            resources={{}}
-          />
-        )}
+        {id => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
 
       <hr />
@@ -95,16 +81,8 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>) {
         {data.solution?.map((item, idx) => (
           <li key={idx}>
             <div className="d-flex">
-              <TextEditor
-                {...bind(`props.fields.${idx}.prefix`)}
-                preview={MarkdownWithScript}
-                resources={{}}
-              />
-              <TextEditor
-                {...bind(`props.fields.${idx}.postfix`)}
-                preview={MarkdownWithScript}
-                resources={{}}
-              />
+              <TextEditor {...bind(`props.fields.${idx}.prefix`)} preview={MarkdownWithScript} />
+              <TextEditor {...bind(`props.fields.${idx}.postfix`)} preview={MarkdownWithScript} />
               <Input
                 {...bind(`solution.${idx}`)}
                 type="text"

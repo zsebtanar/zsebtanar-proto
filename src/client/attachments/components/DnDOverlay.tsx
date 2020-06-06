@@ -3,16 +3,6 @@ import { useDocumentEvent } from '../../generic/hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload } from '@fortawesome/free-solid-svg-icons'
 
-const PREVENTED_EVENT = [
-  'drag',
-  'dragstart',
-  'dragend',
-  'dragover',
-  'dragenter',
-  'dragleave',
-  'drop'
-] as const
-
 export function DnDOverlay() {
   const [counter, setCounter] = useState(0)
 
@@ -34,7 +24,15 @@ export function DnDOverlay() {
     e.stopPropagation()
   }, [])
 
-  PREVENTED_EVENT.map(eventName => useDocumentEvent(eventName, prevent))
+  // prevent envents
+  useDocumentEvent('drag', prevent)
+  useDocumentEvent('dragstart', prevent)
+  useDocumentEvent('dragend', prevent)
+  useDocumentEvent('dragover', prevent)
+  useDocumentEvent('dragenter', prevent)
+  useDocumentEvent('dragleave', prevent)
+  useDocumentEvent('drop', prevent)
+
   useDocumentEvent('dragover', addClass)
   useDocumentEvent('dragenter', addClass)
   useDocumentEvent('dragleave', removeClass)

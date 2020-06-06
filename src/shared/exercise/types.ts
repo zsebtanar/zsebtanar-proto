@@ -1,5 +1,6 @@
-import { ObjectMap, BaseModel } from '../generic/types'
+import { BaseModel } from '../generic/types'
 import { FractionNumber } from '../math/fractionNumber'
+import { AttachmentList } from '../../client/attachments/types'
 
 export interface ExerciseModel extends BaseModel {
   title: string
@@ -9,7 +10,7 @@ export interface ExerciseModel extends BaseModel {
   difficulty: number
   description: string
   script: string
-  resources: ObjectMap<ExerciseAsset>
+  attachments: AttachmentList
   subTasks: ExerciseSubTask[]
   lastUpdate: Date
 }
@@ -26,17 +27,6 @@ interface ExerciseMetadata {
   createdBy: string
   updated: Date
   updatedBy: string
-  resources: ObjectMap<ExerciseAsset>
-}
-
-interface ExerciseAssetPublic {
-  type: string
-  url: string
-}
-
-interface ExerciseAsset extends ExerciseAssetPublic {
-  fullPath: string
-  name: string
 }
 
 export interface ExerciseSubTask {

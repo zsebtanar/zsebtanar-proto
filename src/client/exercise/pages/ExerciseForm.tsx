@@ -9,6 +9,7 @@ import { ExerciseFormDetails } from '../components/form/ExerciseFormDetails'
 import { ExerciseFormSubTask } from '../components/form/ExerciseFormSubTasks'
 
 import './ExerciseForm.scss'
+import { AttachmentProvider } from 'client/attachments/providers/AttachmentProvider'
 
 export function ExerciseForm() {
   const { id } = useParams()
@@ -34,34 +35,36 @@ export function ExerciseForm() {
 
   return (
     <PocketLispProvider isEdit={true} seed={1}>
-      <div className="exercise-form bg-light">
-        <form className="container" onSubmit={onSave}>
-          <ExerciseFormDetails {...bindPartialModel()} />
-          <hr />
-          <h5>
-            Részfeldatok{' '}
-            <Button small btn="link" onAction={() => append('subTasks', {})}>
-              <FontAwesomeIcon icon={faPlusCircle} /> Rész feladat
-            </Button>
-          </h5>
-          {data.subTasks?.map((subTask, idx) => (
-            <ExerciseFormSubTask key={idx} {...bind(`subTasks.${idx}`)} />
-          ))}
-
-          <div className="row my-3">
-            <div className="col-12 d-flex justify-content-end">
-              <Button
-                submit
-                btn="primary"
-                loading={isSaving}
-                onAction={() => exerciseDataService.store(data)}
-              >
-                Mentés
+      <AttachmentProvider attachments={data.attachments}>
+        <div className="exercise-form bg-light">
+          <form className="container" onSubmit={onSave}>
+            <ExerciseFormDetails {...bindPartialModel()} />
+            <hr />
+            <h5>
+              Részfeldatok{' '}
+              <Button small btn="link" onAction={() => append('subTasks', {})}>
+                <FontAwesomeIcon icon={faPlusCircle} /> Rész feladat
               </Button>
+            </h5>
+            {data.subTasks?.map((subTask, idx) => (
+              <ExerciseFormSubTask key={idx} {...bind(`subTasks.${idx}`)} />
+            ))}
+
+            <div className="row my-3">
+              <div className="col-12 d-flex justify-content-end">
+                <Button
+                  submit
+                  btn="primary"
+                  loading={isSaving}
+                  onAction={() => exerciseDataService.store(data)}
+                >
+                  Mentés
+                </Button>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>{' '}
+      </AttachmentProvider>
     </PocketLispProvider>
   )
 }

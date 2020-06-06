@@ -21,24 +21,10 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>) 
       <hr />
 
       <FormGroup label="Előtag">
-        {id => (
-          <TextEditor
-            {...bind('props.prefix')}
-            id={id}
-            preview={MarkdownWithScript}
-            resources={{}}
-          />
-        )}
+        {id => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <FormGroup label="Utótag">
-        {id => (
-          <TextEditor
-            {...bind('props.postfix')}
-            id={id}
-            preview={MarkdownWithScript}
-            resources={{}}
-          />
-        )}
+        {id => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <hr />
 

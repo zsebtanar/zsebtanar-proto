@@ -19,13 +19,13 @@ export function MultiChoice({ readonly, ctrl, ...bindProps }: Props) {
         ? ctrl.props.options.map(({ label }, idx) => (
             <div className="row" key={idx}>
               <FontAwesomeIcon icon={ctrl.solution[idx] ? faCheck : faBan} className="col-1" />
-              <MarkdownWithScript source={label} resources={{}} className="col-11" />
+              <MarkdownWithScript source={label} className="col-11" />
             </div>
           ))
         : ctrl.props.options.map(({ label }, idx) => (
             <div className="row" key={idx}>
               <Checkbox {...bind(`${idx}`)}>
-                <MarkdownWithScript source={label} resources={{}} />
+                <MarkdownWithScript source={label} />
               </Checkbox>
             </div>
           ))}

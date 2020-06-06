@@ -52,11 +52,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>) {
                 { label: 'Hamis', value: false }
               ]}
             />
-            <TextEditor
-              resources={{}}
-              {...bind(`props.options.${idx}.label`)}
-              preview={MarkdownWithScript}
-            />
+            <TextEditor {...bind(`props.options.${idx}.label`)} preview={MarkdownWithScript} />
             <Button
               small
               btn="link"

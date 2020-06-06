@@ -5,8 +5,7 @@ import { isAdvancedUploadSupported } from 'client/generic/utils/browser'
 import { DnDOverlay } from '../components/DnDOverlay'
 import { clipboardToFile, checkFileType, checkFileSize } from '../utils/file'
 import { useDocumentEvent } from 'client/generic/hooks'
-import { FileResource } from 'client/file-upload/types'
-import { useFileResource } from 'client/file-upload/providers/FileResourceProvider'
+import { useFileResource } from '../providers/FileResourceProvider'
 
 export function ImageBrowserModal() {
   const { closeModal } = useDialog()
@@ -27,12 +26,12 @@ export function ImageBrowserModal() {
 
     if (!files.length) return
 
-    // TODO: fájlok ellenőrzése
+    // TODO: check files
     if (!files.every(checkFileType)) {
-      return // 'Érvénytelen fájlformátum'
+      return // invalid file format
     }
     if (!files.every(checkFileSize, files)) {
-      return // 'Túl nagy fájl'
+      return // too big file
     }
 
     // FIXME: map(this.props.addResource, files)
@@ -54,12 +53,19 @@ export function ImageBrowserModal() {
           ) : (
             <div>
               {files.map(file => (
-                <ImageResource
+                <button
                   key={file.id}
-                  id={file.id}
-                  file={file}
-                  onSelect={(id, file) => closeModal(file)}
-                />
+                  className="m-1 float-left btn btn-light"
+                  title={file.name}
+                  onClick={() => closeModal(file)}
+                >
+                  <figure className="figure">
+                    <div className="img" style={{ backgroundImage: `url(${file.url})` }} />
+                    <figcaption className="figure-caption text-center text-truncate">
+                      {file.name}
+                    </figcaption>
+                  </figure>
+                </button>
               ))}
             </div>
           )}
@@ -87,29 +93,5 @@ export function ImageBrowserModal() {
         </DialogFooter>
       </Dialog>
     </div>
-  )
-}
-
-///
-
-interface ImageResourceProps {
-  id: string
-  file: FileResource
-  onSelect: (id: string, file: FileResource) => void
-}
-
-function ImageResource({ id, file, onSelect }: ImageResourceProps) {
-  return (
-    <button
-      key={id}
-      className="m-1 float-left btn btn-light"
-      title={file.name}
-      onClick={() => onSelect(id, file)}
-    >
-      <figure className="figure">
-        <div className="img" style={{ backgroundImage: `url(${file.url})` }} />
-        <figcaption className="figure-caption text-center text-truncate">{file.name}</figcaption>
-      </figure>
-    </button>
   )
 }

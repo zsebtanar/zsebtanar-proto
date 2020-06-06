@@ -17,3 +17,12 @@ export interface FileResourceUploadState {
   progress: number
   error?: Error
 }
+
+export interface AttachmentModel {
+  id: string
+  url: string
+  name: string
+  type: string
+}
+
+export type AttachmentList = ObjectMap<AttachmentModel>

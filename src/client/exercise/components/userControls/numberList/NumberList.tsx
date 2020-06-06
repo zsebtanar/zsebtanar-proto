@@ -16,12 +16,12 @@ export function NumberList({ readonly, ctrl, ...bindProps }: Props) {
   return (
     <div className={cx('user-control', 'uc-number-list', { multiline: ctrl.props.multiLine })}>
       <span className="prefix">
-        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} resources={{}} />}
+        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} />}
       </span>
       {ctrl.props.fields.map((field, idx) => (
         <div key={idx}>
           <span className="prefix">
-            {field.prefix && <MarkdownWithScript source={field.prefix} resources={{}} />}
+            {field.prefix && <MarkdownWithScript source={field.prefix} />}
           </span>
           {readonly ? (
             <span className="value mx-1">{ctrl.solution[idx]}</span>
@@ -33,12 +33,12 @@ export function NumberList({ readonly, ctrl, ...bindProps }: Props) {
             />
           )}
           <span className="postfix">
-            {field.postfix && <MarkdownWithScript source={field.postfix} resources={{}} />}
+            {field.postfix && <MarkdownWithScript source={field.postfix} />}
           </span>
         </div>
       ))}
       <span className="postfix">
-        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} resources={{}} />}
+        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
       </span>
       {ctrl.props?.fractionDigits > 0 && (
         <DecimalAccuracyWarning fractionDigits={ctrl.props.fractionDigits} />

@@ -6,9 +6,7 @@ import { Markdown } from 'client/generic/components/markdown/Markdown'
 import { WikiPageSelectorModal } from 'client/wiki/modals/WikiPageSelectorModal'
 import { WikiPageModel } from 'client/wiki/types'
 import { EquationHelpModal, MarkdownHelpModal } from 'client/generic/modals'
-import { ImageBrowserModal } from 'client/file-upload/modals/ImageBrowserModal'
-import { RemoteFileResource } from 'client/file-upload/types'
-import { MarkdownResources, MarkdownProps } from 'client/generic/components/markdown/types'
+import { MarkdownProps } from 'client/generic/components/markdown/types'
 
 import 'client/generic/components/form/input/TextEditor.scss'
 import {
@@ -26,6 +24,8 @@ import {
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UseModelProps } from '../../../hooks/model'
+import { RemoteFileResource } from '../../../../attachments/types'
+import { ImageBrowserModal } from 'client/attachments/modals/ImageBrowserModal'
 
 ///
 
@@ -34,7 +34,6 @@ interface Props extends UseModelProps<string> {
   className?: string
   rows?: number
   required?: boolean
-  resources: MarkdownResources
   preview?: React.FunctionComponent<MarkdownProps>
 }
 
@@ -46,7 +45,6 @@ export function TextEditor({
   required,
   rows,
   className,
-  resources,
   preview: Preview
 }: Props) {
   const textRef = useRef<HTMLTextAreaElement>(null)
@@ -171,11 +169,7 @@ export function TextEditor({
         onBlur={() => setIsInFocus(false)}
       />
       <div className="text-editor-preview">
-        {Preview ? (
-          <Preview source={value} resources={resources} />
-        ) : (
-          <Markdown source={value} resources={resources} />
-        )}
+        {Preview ? <Preview source={value} /> : <Markdown source={value} />}
       </div>
     </div>
   )

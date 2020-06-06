@@ -14,7 +14,7 @@ export function SingleNumber({ readonly, ctrl, ...bindProps }: Props) {
   return (
     <div className="user-control uc-simple-number d-flex align-items-center">
       <span className="prefix">
-        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} resources={{}} />}
+        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} />}
       </span>
       {readonly ? (
         <strong>
@@ -31,7 +31,7 @@ export function SingleNumber({ readonly, ctrl, ...bindProps }: Props) {
         />
       )}
       <span className="postfix">
-        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} resources={{}} />}
+        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
       </span>
       {ctrl.props?.fractionDigits > 0 && (
         <DecimalAccuracyWarning fractionDigits={ctrl.props.fractionDigits} />

@@ -41,11 +41,7 @@ export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>) {
           <li key={idx}>
             <div className="d-flex">
               <RadioInput inputValue={idx} {...bind(`solution`)} className="form-control mt-1" />
-              <TextEditor
-                resources={{}}
-                {...bind(`props.options.${idx}.label`)}
-                preview={MarkdownWithScript}
-              />
+              <TextEditor {...bind(`props.options.${idx}.label`)} preview={MarkdownWithScript} />
               <Button
                 small
                 btn="link"

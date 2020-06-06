@@ -1,8 +1,6 @@
 import 'firebase/storage'
-import { identity } from '../generic/utils/fn'
-import { app, firebase } from 'client/generic/services/fireApp'
-import { resolveSnapshot } from '../generic/services/firebase'
-
+import { identity } from '../generic/utils'
+import { app, firebase, resolveSnapshot } from '../generic/services'
 
 ///
 

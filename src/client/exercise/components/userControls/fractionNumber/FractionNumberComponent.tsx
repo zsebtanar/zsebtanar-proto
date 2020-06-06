@@ -16,7 +16,7 @@ export function FractionNumberComponent({ readonly, ctrl, ...bindProps }: Props)
   return (
     <div className="user-control uc-fraction-number d-flex align-items-center">
       <span className="prefix">
-        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} resources={{}} />}
+        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} />}
       </span>
       {readonly ? (
         <div className="mx-2 text-center">
@@ -46,7 +46,7 @@ export function FractionNumberComponent({ readonly, ctrl, ...bindProps }: Props)
         </>
       )}
       <span className="postfix">
-        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} resources={{}} />}
+        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
       </span>
     </div>
   )

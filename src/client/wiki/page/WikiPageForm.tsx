@@ -51,7 +51,6 @@ export function WikiPageForm() {
                   className="form-group"
                   rows={10}
                   required
-                  resources={{}}
                 />
               )}
             </FormGroup>
