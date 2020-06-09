@@ -1,5 +1,6 @@
 
 .text-editor{
+  position: relative;
   &.form-control{
     padding: 0;
     height: auto;
@@ -17,7 +18,8 @@
 
   textarea{
     position: absolute;
-    height: 0;
+    height: 100%;
+    width: 100%;
     opacity: 0;
   }
 

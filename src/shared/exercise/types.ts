@@ -1,6 +1,6 @@
 import { BaseModel } from '../generic/types'
 import { FractionNumber } from '../math/fractionNumber'
-import { AttachmentList } from '../../client/attachments/types'
+import { AssetMap } from '../assets/types'
 
 export interface ExerciseModel extends BaseModel {
   title: string
@@ -10,7 +10,7 @@ export interface ExerciseModel extends BaseModel {
   difficulty: number
   description: string
   script: string
-  attachments: AttachmentList
+  assets: AssetMap
   subTasks: ExerciseSubTask[]
   lastUpdate: Date
 }

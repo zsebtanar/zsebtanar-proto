@@ -7,7 +7,7 @@ import * as centertext from 'markdown-it-center-text'
 import { imageInit } from 'shared/markdown/image-resource'
 import { wikiLinkInit } from 'shared/markdown/wiki-link'
 import { MarkdownProps } from './types'
-import { useAttachment } from 'client/attachments/providers/AttachmentProvider'
+import { useAsset } from 'client/assets/providers/AssetProvider'
 
 import './Markdown.scss'
 
@@ -28,7 +28,7 @@ interface MarkdownIt {
 export function Markdown({ source, options, mark, onWikiLink, className }: MarkdownProps) {
   const container = useRef<HTMLDivElement>(null)
   const [md, setMD] = useState<MarkdownIt | undefined>(undefined)
-  const attachments = useAttachment()
+  const { assets } = useAsset()
 
   const handleOnClick = (event: MouseEvent) => {
     const target = event.target as HTMLDivElement
@@ -54,9 +54,9 @@ export function Markdown({ source, options, mark, onWikiLink, className }: Markd
         .use(kbd)
         .use(centertext)
         .use(wikiLinkInit())
-        .use(imageInit(attachments || {}))
+        .use(imageInit(assets || {}))
     )
-  }, [options, attachments])
+  }, [options, assets])
 
   const __html = source && md ? markText(mark, md.render(source)) : undefined
 

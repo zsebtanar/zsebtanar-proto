@@ -18,12 +18,13 @@ export function useWindowEvent<K extends keyof WindowEventMap>(
  */
 export function useDocumentEvent<K extends keyof DocumentEventMap>(
   event: K,
-  callback: (this: Document, ev: DocumentEventMap[K]) => void
+  callback: (this: Document, ev: DocumentEventMap[K]) => void,
+  capture = false
 ) {
   useEffect(() => {
-    document.addEventListener(event, callback)
-    return () => document.removeEventListener(event, callback)
-  }, [event, callback])
+    document.addEventListener(event, callback, capture)
+    return () => document.removeEventListener(event, callback, capture)
+  }, [])
 }
 
 /**

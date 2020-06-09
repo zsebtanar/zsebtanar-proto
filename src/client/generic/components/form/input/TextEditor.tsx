@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import * as cx from 'classnames'
 import { Button, Dropdown, DropdownToggle, DropdownMenu } from 'client/generic/components/index'
 import { useOverlayDispatch } from 'client/overlay/providers'
@@ -7,8 +7,6 @@ import { WikiPageSelectorModal } from 'client/wiki/modals/WikiPageSelectorModal'
 import { WikiPageModel } from 'client/wiki/types'
 import { EquationHelpModal, MarkdownHelpModal } from 'client/generic/modals'
 import { MarkdownProps } from 'client/generic/components/markdown/types'
-
-import 'client/generic/components/form/input/TextEditor.scss'
 import {
   faBold,
   faItalic,
@@ -24,8 +22,11 @@ import {
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UseModelProps } from '../../../hooks/model'
-import { RemoteFileResource } from '../../../../attachments/types'
-import { ImageBrowserModal } from 'client/attachments/modals/ImageBrowserModal'
+import { ImageBrowserModal } from 'client/assets/modals/ImageBrowserModal'
+import { AssetModel } from 'shared/assets/types'
+import { FocusGuard } from '../../FocusGuard'
+
+import 'client/generic/components/form/input/TextEditor.scss'
 
 ///
 
@@ -118,8 +119,8 @@ export function TextEditor({
     const ref = textRef.current
     if (!ref) return
 
-    openModal<RemoteFileResource>(<ImageBrowserModal />).then(file => {
-      ref.value += `@[${file.name}](${file.id} =100x)`
+    openModal<AssetModel>(<ImageBrowserModal />).then(file => {
+      ref.value += `@[${file.fileName}](${file.id} =100x)`
       update()
     })
   }
@@ -142,36 +143,36 @@ export function TextEditor({
     onChange({ name, value })
   }
 
+  const onFocus = useCallback(() => setIsInFocus(true), [])
+  const onBlur = useCallback(() => setIsInFocus(false), [])
+
   return (
-    <div
-      className={cx(className, 'text-editor', 'form-control', { focused: isInFocus })}
-      onClick={() => textRef.current?.focus()}
-    >
-      {isInFocus && (
-        <Tools
-          wrapText={wrapText}
-          multiLine={multiLine}
-          insertLink={insertLink}
-          insertWikiLink={insertWikiLink}
-          insertFile={insertFile}
+    <FocusGuard onFocus={onFocus} onBlur={onBlur}>
+      <div className={cx(className, 'text-editor', 'form-control', { focused: isInFocus })}>
+        {isInFocus && (
+          <Tools
+            wrapText={wrapText}
+            multiLine={multiLine}
+            insertLink={insertLink}
+            insertWikiLink={insertWikiLink}
+            insertFile={insertFile}
+          />
+        )}{' '}
+        <textarea
+          id={id}
+          className={cx({ 'form-control': isInFocus })}
+          ref={textRef}
+          name={name}
+          rows={rows || 4}
+          required={required}
+          onChange={update}
+          value={value}
         />
-      )}{' '}
-      <textarea
-        id={id}
-        className={cx({ 'form-control': isInFocus })}
-        ref={textRef}
-        name={name}
-        rows={rows || 4}
-        required={required}
-        onChange={update}
-        value={value}
-        onFocus={() => setIsInFocus(true)}
-        onBlur={() => setIsInFocus(false)}
-      />
-      <div className="text-editor-preview">
-        {Preview ? <Preview source={value} /> : <Markdown source={value} />}
+        <div className="text-editor-preview">
+          {Preview ? <Preview source={value} /> : <Markdown source={value} />}
+        </div>
       </div>
-    </div>
+    </FocusGuard>
   )
 }
 

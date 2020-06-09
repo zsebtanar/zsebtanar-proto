@@ -1,6 +1,6 @@
 import React from 'react'
-import { FormGroup, Input } from '../../../../generic/components/form'
-import { UseModelProps } from '../../../../generic/hooks/model'
+import { FormGroup, Input } from 'client/generic/components/form'
+import { UseModelProps } from 'client/generic/hooks/model'
 
 export function UserControlNameInput(bindProps: UseModelProps<string>) {
   return (

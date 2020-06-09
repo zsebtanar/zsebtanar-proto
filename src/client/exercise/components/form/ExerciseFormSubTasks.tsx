@@ -18,11 +18,16 @@ import { UserControlEditModal } from '../../modals/UserControlEditModal'
 import { useOverlayDispatch } from 'client/overlay/providers'
 import { ExerciseFormSubTasksHint } from './ExerciseFormSubTasksHint'
 import { UserControls } from '../userControls/UserControl'
-import { noop } from '../../../../shared/utils/fn'
+import { noop } from 'shared/utils/fn'
 
-export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<ExerciseSubTask>) {
+interface Props extends UseModelProps<ExerciseSubTask> {
+  index: number
+  onRemove: (idx: number) => void
+}
+
+export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props) {
   const { openModal } = useOverlayDispatch()
-  const { bind, append, remove, set } = useModel<ExerciseSubTask>({ value, onChange, name })
+  const { bind, append, remove, set } = useModel<ExerciseSubTask>(bindProps)
 
   const createUserControl = type =>
     openModal(<UserControlEditModal value={{ type } as never} />).then(
@@ -36,6 +41,12 @@ export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<Exe
 
   return (
     <FormCard className="card my-3">
+      <div>
+        <label htmlFor={`exercise-subtask-${name}-hint-${name}`}>{index + 1}. Részfeladat</label>
+        <Button small btn="link" className="text-danger" onAction={() => onRemove(index)}>
+          <FontAwesomeIcon icon={faTrashAlt} />
+        </Button>
+      </div>
       <div className="form-group">
         <label htmlFor={`exercise-subtask-${name}-description`}>Leírása</label>
         <TextEditor
@@ -65,7 +76,7 @@ export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<Exe
           </DropdownMenu>
         </Dropdown>
         <ul>
-          {value.controls?.map((control, idx) => (
+          {bindProps.value.controls?.map((control, idx) => (
             <li key={idx}>
               <UserControls
                 ctrl={control}
@@ -97,8 +108,13 @@ export function ExerciseFormSubTask({ name, value, onChange }: UseModelProps<Exe
           <FontAwesomeIcon icon={faPlusCircle} /> Segítség hozzáadása
         </Button>
       </h6>
-      {value.hints?.map((hint, hintIdx) => (
-        <ExerciseFormSubTasksHint index={hintIdx} key={hintIdx} {...bind(`hints.${hintIdx}`)} />
+      {bindProps.value.hints?.map((hint, hintIdx) => (
+        <ExerciseFormSubTasksHint
+          key={hintIdx}
+          index={hintIdx}
+          onRemove={() => remove(`hints.${hintIdx}`)}
+          {...bind(`hints.${hintIdx}`)}
+        />
       ))}
     </FormCard>
   )

@@ -1,5 +1,5 @@
 export function interpretMarkdown(interpret: (src: string) => unknown, source: string): string {
-  return (source ?? '').replace(/@(.+?)@/g, (match, code: string) => {
+  return (source ?? '').toString().replace(/@(.+?)@/g, (match, code: string) => {
     try {
       const result = interpret(code) as Record<string, unknown>
       return result?.toString()
