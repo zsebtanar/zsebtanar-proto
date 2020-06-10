@@ -1,4 +1,4 @@
-import React, { ReactNode, Reducer, useReducer } from 'react'
+import React, { ReactNode, Reducer, useReducer, useMemo } from 'react'
 import { app } from 'client/generic/services'
 import { logException } from 'client/generic/utils/logger'
 import { parseToken, getUserDetails } from 'client/user/services/user'
@@ -96,34 +96,37 @@ export function UserProvider({ children }: Props) {
     }
   })
 
-  const api: UserContextAPI = {
-    async signIn(email: string, password: string): Promise<State> {
-      dispatch({ type: 'SingInStart' })
-      try {
-        await AUTH.signInWithEmailAndPassword(email, password)
-      } catch (e) {
-        dispatch({ type: 'Error', payload: e })
+  const api: UserContextAPI = useMemo(
+    {
+      async signIn(email: string, password: string): Promise<State> {
+        dispatch({ type: 'SingInStart' })
+        try {
+          await AUTH.signInWithEmailAndPassword(email, password)
+        } catch (e) {
+          dispatch({ type: 'Error', payload: e })
+        }
+        return state
+      },
+      async signUp(email: string, password: string): Promise<State> {
+        // dispatch({ type: SIGN_UP_START })
+        // const user = await AUTH.createUserWithEmailAndPassword(email, password)
+        //   .then(user => updateUserProfile(user.user.uid, { displayName }))
+        //   .then(res => dispatch({ type: USER_SIGN_UP_FINISHED, payload: { user: res.data } }))
+        //   .catch(handleError(SIGN_UP_ERROR, dispatch))
+        return state
+      },
+      async signOut(): Promise<void> {
+        try {
+          await AUTH.signOut()
+          dispatch({ type: 'NoUser' })
+          window.location.replace('/')
+        } catch (e) {
+          dispatch({ type: 'Error', payload: e })
+        }
       }
-      return state
     },
-    async signUp(email: string, password: string): Promise<State> {
-      // dispatch({ type: SIGN_UP_START })
-      // const user = await AUTH.createUserWithEmailAndPassword(email, password)
-      //   .then(user => updateUserProfile(user.user.uid, { displayName }))
-      //   .then(res => dispatch({ type: USER_SIGN_UP_FINISHED, payload: { user: res.data } }))
-      //   .catch(handleError(SIGN_UP_ERROR, dispatch))
-      return state
-    },
-    async signOut(): Promise<void> {
-      try {
-        await AUTH.signOut()
-        dispatch({ type: 'NoUser' })
-        window.location.replace('/')
-      } catch (e) {
-        dispatch({ type: 'Error', payload: e })
-      }
-    }
-  }
+    [state]
+  )
 
   return (
     <UserContext.Provider value={state}>
