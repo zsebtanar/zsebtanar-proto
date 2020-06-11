@@ -5,10 +5,10 @@ import { AssetModel } from '../../../shared/assets/types'
 
 export const assetsDataService = new Service<AssetModel>('assets')
 
-export function useAssetsForItem(itemId: string) {
+export function useGetAssetByGroup(group: string | undefined) {
   const callback = useCallback(
-    () => assetsDataService.getList({ where: [['itemId', '=', itemId]] }),
-    [itemId]
+    () => assetsDataService.getList({ where: [['group', '=', group]] }),
+    [group]
   )
-  return useFetchData<AssetModel>(callback, [itemId])
+  return useFetchData<AssetModel[]>(callback, [group])
 }

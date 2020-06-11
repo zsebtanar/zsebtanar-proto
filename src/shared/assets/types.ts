@@ -18,5 +18,4 @@ export interface AssetModel extends BaseModel {
   mimeType: string
   url: string
   group: AssetGroup
-  itemId: string
 }

@@ -8,6 +8,7 @@ import { AdminRouter } from 'client/app-admin/provider/Router'
 import { AdminApp } from 'client/app-admin/AdminApp'
 
 import './admin.scss'
+import { AssetManagerProvider } from '../assets/providers/ManageAssetProvider'
 
 initSentryLogger()
 
@@ -15,9 +16,11 @@ hot(module)(
   render(
     <UserProvider>
       <AdminRouter>
-        <OverlayProvider>
-          <AdminApp />
-        </OverlayProvider>
+        <AssetManagerProvider>
+          <OverlayProvider>
+            <AdminApp />
+          </OverlayProvider>
+        </AssetManagerProvider>
       </AdminRouter>
     </UserProvider>,
     document.getElementById('root')

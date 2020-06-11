@@ -48,7 +48,7 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
 
   useEffect(() => {
     if (cm && cm.getValue() !== value) {
-      cm.setValue(value)
+      cm.setValue(value ?? '')
     }
   }, [cm, value])
 

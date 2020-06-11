@@ -97,7 +97,7 @@ export function UserProvider({ children }: Props) {
   })
 
   const api: UserContextAPI = useMemo(
-    {
+    () => ({
       async signIn(email: string, password: string): Promise<State> {
         dispatch({ type: 'SingInStart' })
         try {
@@ -124,7 +124,7 @@ export function UserProvider({ children }: Props) {
           dispatch({ type: 'Error', payload: e })
         }
       }
-    },
+    }),
     [state]
   )
 

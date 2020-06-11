@@ -1,4 +1,5 @@
 import { useEffect, RefObject } from 'react'
+import { clipboardToFile } from '../utils/file'
 
 /**
  * Register/unregister a callback for the specified window's event
@@ -67,4 +68,11 @@ export function useOnClickOutside(
       document.removeEventListener('touchstart', listener)
     }
   }, [])
+}
+
+export function useFileDrop(callback: (files: File[]) => void) {
+  useDocumentEvent('drop', event => callback(Array.from(event?.dataTransfer?.files ?? [])))
+  useDocumentEvent('paste', event =>
+    callback(clipboardToFile(Array.from(event?.clipboardData?.items ?? [])))
+  )
 }

@@ -1,151 +1,84 @@
-import { Button } from 'client-common/component/general/Button'
-import { imageUpload, UploadedFile } from 'client/file-upload/images'
 import * as React from 'react'
-import { reduceP } from 'shared/util/fn'
-import { Dialog } from '../../../client/modal/components/modal/Dialog'
-import { DialogBody } from '../../../client/modal/components/modal/DialogBody'
-import { DialogHeader } from '../../../client/modal/components/modal/DialogHeader'
-import { toPairs } from 'ramda'
-import { faCheck, faClock } from '@fortawesome/free-solid-svg-icons'
+import * as cx from 'classnames'
+import { DialogFooter, Dialog, DialogHeader, DialogBody } from '../../overlay/components/base'
+import { AddFileButton } from '../components/AddFileButton'
+import { useManageAssetsDispatch, useManageAssets } from '../providers/ManageAssetProvider'
+import { useDialog } from '../../overlay/providers'
+import { useFileDrop } from '../../generic/hooks'
+import { formatBytes } from '../../generic/utils/file'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Alert } from 'client/generic/components'
 
-///
+import './FileUploadModal.scss'
 
-export interface FileUploadModalParams {
-  folder: string
-  onSuccess: (result: ObjectMap<UploadedFile>) => void
-  onError: (error) => void
-  resources: ObjectMap<state.ResourceFileData>
-}
+export function FileUploadModal() {
+  const { pendingAssets } = useManageAssets()
+  const { addFiles, removeFile, uploadFiles } = useManageAssetsDispatch()
+  const { closeModal } = useDialog()
+  useFileDrop(addFiles)
 
-interface Props extends ui.ModalProps, FileUploadModalParams {}
+  const close = () => closeModal()
 
-interface State {
-  allDone: boolean
-  result: ObjectMap<string>
-  progress: ObjectMap<number | string>
-  error?: any
-}
-
-///
-
-export class FileUploadModal extends React.Component<Props, State> {
-  state = {
-    result: undefined,
-    progress: {},
-    results: {},
-    allDone: false,
-    error: undefined
+  const selectFiles = ({ value: files }) => {
+    addFiles(files)
   }
-  private resources: Array<[string, state.ResourceFileData]>
+  const hasError = pendingAssets.filter(({ error }) => error).length > 0
 
-  constructor(props) {
-    super(props)
-    this.resources = toPairs(props.resources)
-  }
-
-  componentDidMount() {
-    this.uploadResources()
-  }
-
-  private uploadResources() {
-    const folder = this.props.folder
-
-    reduceP(
-      (acc, [id, data]) =>
-        imageUpload(folder, data.file, this.onProgress(id)).then(this.onUploaded(acc, id)),
-      {},
-      this.resources
-    )
-      .then(result => this.setState({ allDone: true, result }))
-      .catch(error => this.setState({ error }))
-  }
-
-  private onProgress = id => ss => {
-    this.setState({
-      progress: { ...this.state.progress, [id]: (ss.bytesTransferred / ss.totalBytes) * 100 }
-    })
-  }
-
-  private onUploaded = (acc, id) => res => {
-    this.setState({ progress: { ...this.state.progress, [id]: 'done' } })
-    return { ...acc, [id]: res }
-  }
-
-  private onFinish = () => {
-    const { onSuccess, close } = this.props
-    close()
-    onSuccess(this.state.result)
-  }
-
-  render() {
-    return (
-      <Dialog className="file-upload">
-        <DialogHeader>Fájl feltöltés</DialogHeader>
+  return (
+    <div>
+      <Dialog className="file-upload" size="large">
+        <DialogHeader onClose={close}>Fájl feltöltés</DialogHeader>
         <DialogBody>
-          <ul>{this.resources.map(this.renderFile)}</ul>
-          {this.renderSuccess()}
-          {this.renderError()}
-        </DialogBody>
-      </Dialog>
-    )
-  }
-
-  renderFile = ([id, data]) => {
-    const state = this.state.progress[id]
-    return (
-      <li className="d-flex" key={id}>
-        <div>{data.name}</div>
-        <div>
-          {state === undefined && <FontAwesomeIcon icon={faClock} />}
-          {state === 'done' && <FontAwesomeIcon icon={faCheck} />}
-          {state >= 0 && state <= 100 && (
-            <div className="progress" style={{ height: '20px' }}>
-              <div
-                className="progress-bar"
-                role="progressbar"
-                style={{ width: `${state}%` }}
-                aria-valuenow={state}
-                aria-valuemin={0}
-                aria-valuemax={100}
-              />
-            </div>
+          {hasError && (
+            <Alert type="warning">
+              Csak akkor tudod elindítani a feltöltés ha törlöd a kritériumoknak nem megfelelő
+              fájlokat
+            </Alert>
           )}
-        </div>
-      </li>
-    )
-  }
-
-  private renderSuccess() {
-    if (this.state.allDone) {
-      return (
-        <div>
-          <div className="alert alert-success my-3">Sikeres fájl feltöltés</div>
-          <div className="text-center">
-            <Button onAction={this.onFinish}>Szerkesztés folytatása</Button>
+          {!pendingAssets.length && <div className="my-5 text-center">Nincs fájl kiválasztva</div>}
+          <ul className="list-unstyled">
+            {pendingAssets.map(({ url, file, error }) => (
+              <li key={url} className={cx('p-1', 'my-1', 'd-flex', { 'has-error': error })}>
+                <img
+                  src={error ? '/assets/logo.png' : url}
+                  alt={file.name}
+                  className="img-thumbnail mr-1"
+                />
+                <div>
+                  <div>
+                    <strong>{file.name}</strong>{' '}
+                    <Button
+                      onAction={() => removeFile(file)}
+                      btn="link"
+                      small
+                      className="text-danger"
+                    >
+                      <FontAwesomeIcon icon={faTrashAlt} />
+                    </Button>
+                  </div>
+                  <div>size: {formatBytes(file.size)}</div>
+                  {error && <div className="text-danger">{error}</div>}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <small id="passwordHelpInline" className="text-muted">
+            Csak <code>jpg</code>, <code>png</code>, <code>gif</code> és <code>webp</code> tölthető
+            fel, a maximális képmáret 3Mb
+          </small>
+        </DialogBody>
+        <DialogFooter>
+          <div className="d-flex justify-content-between align-items-start w-100">
+            <div className="form-group">
+              <AddFileButton value={[]} name="files" onChange={selectFiles} />
+            </div>
+            <Button btn="primary" submit disabled={hasError} onAction={() => uploadFiles()}>
+              Feltöltés
+            </Button>
           </div>
-        </div>
-      )
-    }
-  }
-
-  private renderError() {
-    if (this.state.error) {
-      return (
-        <div>
-          <div className="alert alert-danger">
-            Hiba történt!
-            <br />
-            <pre>{JSON.stringify(this.state.error, null, 3)}</pre>
-          </div>
-          <div className="text-center">
-            <Button onAction={this.props.close}>Bezárás</Button>
-          </div>
-        </div>
-      )
-    }
-  }
+        </DialogFooter>
+      </Dialog>
+    </div>
+  )
 }
-
-// default export for dynamic import
-export default FileUploadModal

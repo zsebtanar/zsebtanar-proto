@@ -21,12 +21,10 @@ export class FocusGuard extends React.Component<Props, { focused: boolean }> {
   private handler = event => {
     const contains = this.wrapperRef?.current?.contains(event.target)
     if (contains) {
-      console.log('Focus')
       this.setState({ focused: true })
       this.props.onFocus?.()
     } else if (this.state.focused) {
       this.setState({ focused: false })
-      console.log('Blur')
       this.props.onBlur?.()
     }
   }

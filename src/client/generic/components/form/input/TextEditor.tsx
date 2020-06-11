@@ -22,7 +22,7 @@ import {
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UseModelProps } from '../../../hooks/model'
-import { ImageBrowserModal } from 'client/assets/modals/ImageBrowserModal'
+import { AssetBrowserModal } from 'client/assets/modals/AssetBrowserModal'
 import { AssetModel } from 'shared/assets/types'
 import { FocusGuard } from '../../FocusGuard'
 
@@ -119,9 +119,11 @@ export function TextEditor({
     const ref = textRef.current
     if (!ref) return
 
-    openModal<AssetModel>(<ImageBrowserModal />).then(file => {
-      ref.value += `@[${file.fileName}](${file.id} =100x)`
-      update()
+    openModal<AssetModel>(<AssetBrowserModal />).then(file => {
+      if (file) {
+        ref.value += `@[${file.fileName}](${file.id} =100x)`
+        update()
+      }
     })
   }
 
