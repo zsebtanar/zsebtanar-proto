@@ -243,8 +243,8 @@ declare interface NotificationOptions {
 }
 
 declare interface GridFilterOptions {
-  where?: [string | FieldPath, WhereFilterOp, any][]
-  orderBy?: [string | FieldPath, OrderByDirection]
+  where?: [string | FieldPath, firebase.firestore.WhereFilterOp, any][]
+  orderBy?: [string | FieldPath, firebase.firestore.OrderByDirection]
 }
 
 declare type DataSourceEvents = 'loadStart' | 'loadEnd'
@@ -252,7 +252,7 @@ declare type DataSourceEvents = 'loadStart' | 'loadEnd'
 declare interface GridDataSource<T> {
   size: number
   refresh()
-  loadList(options?: GridFilterOptions): Promise<QuerySnapshot>
+  loadList(options?: GridFilterOptions): Promise<firebase.firestore.QuerySnapshot>
   getPage(pageNumber: number, limit: number): Promise<T[]>
   on(type: DataSourceEvents, callback: () => void)
 }

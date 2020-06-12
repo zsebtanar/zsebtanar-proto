@@ -1,6 +1,6 @@
 import { app } from './fireApp'
 import { pickBy } from '../utils'
-import { BaseModel } from '../../../shared/generic/types'
+import { BaseModel } from 'shared/generic/types'
 
 ///
 
@@ -89,7 +89,7 @@ export class Service<T extends BaseModel> {
 
     this.log('GET list with filter', options, res)
 
-    return res
+    return res.docs.map(doc => doc.data())
   }
 
   public async delete(id: string): Promise<void> {

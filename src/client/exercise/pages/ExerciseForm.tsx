@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { useParams } from 'react-router'
@@ -8,9 +8,13 @@ import { exerciseDataService, useExerciseModel } from '../services/exercise'
 import { ExerciseFormDetails } from '../components/form/ExerciseFormDetails'
 import { ExerciseFormSubTask } from '../components/form/ExerciseFormSubTasks'
 import { AssetProvider } from '../../assets/providers/AssetProvider'
-import { AssetManagerProvider } from 'client/assets/providers/ManageAssetProvider'
+import {
+  AssetManagerProvider,
+  useManageAssetsDispatch
+} from 'client/assets/providers/ManageAssetProvider'
 
 import './ExerciseForm.scss'
+import { AssetGroup } from '../../../shared/assets/types'
 
 export function ExerciseForm() {
   const { id } = useParams()
@@ -25,6 +29,12 @@ export function ExerciseForm() {
     isSaving,
     save
   } = useExerciseModel(id)
+  const { addHandler, removeHandler } = useManageAssetsDispatch()
+
+  useEffect(() => {
+    addHandler(AssetGroup.Exercise, bind('assets'))
+    return () => removeHandler()
+  }, [])
 
   if (isPending || isFetching) {
     return <Loading />

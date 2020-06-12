@@ -7,7 +7,7 @@ export const assetsDataService = new Service<AssetModel>('assets')
 
 export function useGetAssetByGroup(group: string | undefined) {
   const callback = useCallback(
-    () => assetsDataService.getList({ where: [['group', '=', group]] }),
+    () => assetsDataService.getList({ where: [['group', '==', group]] }),
     [group]
   )
   return useFetchData<AssetModel[]>(callback, [group])

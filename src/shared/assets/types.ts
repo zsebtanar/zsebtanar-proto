@@ -18,4 +18,6 @@ export interface AssetModel extends BaseModel {
   mimeType: string
   url: string
   group: AssetGroup
+  createdBy: string
+  created: Date
 }
