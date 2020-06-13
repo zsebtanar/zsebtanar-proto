@@ -121,7 +121,7 @@ export function TextEditor({
 
     openModal<AssetModel>(<AssetBrowserModal />).then(file => {
       if (file) {
-        ref.value += `@[${file.fileName}](${file.id} =100x)`
+        ref.value += `@[${file.fileName}](${file.url} =100x)`
         update()
       }
     })

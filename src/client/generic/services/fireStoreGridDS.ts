@@ -47,7 +47,7 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
     this.emitEvent('loadStart')
     this.list = undefined
     this.options = options
-    this.list = await this._service.getList(options)
+    this.list = await this._service.getRawList(options)
     this.emitEvent('loadEnd')
     if (this.list) {
       return this.list

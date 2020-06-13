@@ -2,8 +2,8 @@ import Markdown from 'markdown-it'
 import katex from 'markdown-it-katex'
 import kbd from 'markdown-it-kbd'
 import centertext from 'markdown-it-center-text'
-import { imageInit } from 'shared/markdown/image-resource'
-import { wikiLinkInit } from '../../../shared/markdown/wiki-link'
+import { wikiLinkInit } from 'shared/markdown/wiki-link'
+import { assetImage } from 'shared/markdown/image-asset'
 
 export const unTokeniseMarkdown = description =>
   reduceTokenList(initMarkdown().parse(description))
@@ -20,7 +20,7 @@ const initMarkdown = () =>
     .use(kbd)
     .use(centertext)
     .use(wikiLinkInit())
-    .use(imageInit({}))
+    .use(assetImage)
 
 const reduceTokenList = tokenList =>
   tokenList.reduce((acc, i) => {

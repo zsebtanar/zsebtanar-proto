@@ -12,7 +12,7 @@ import { FileUploadModal } from './FileUploadModal'
 
 export function AssetBrowserModal() {
   const { closeModal } = useDialog()
-  const { handler } = useManageAssets()
+  const { group } = useManageAssets()
   const { openModal } = useOverlayDispatch()
   const { addFiles } = useManageAssetsDispatch()
   const {
@@ -23,7 +23,7 @@ export function AssetBrowserModal() {
     hasNoResult,
     hasError,
     error
-  } = useGetAssetByGroup(handler?.group)
+  } = useGetAssetByGroup(group)
   useFileDrop(addFiles)
 
   const close = () => closeModal()
@@ -42,26 +42,25 @@ export function AssetBrowserModal() {
           {isPending || (isLoading && <Loading />)}
           {isSuccess || (hasNoResult && <div className="msg-block">Nincs feltöltött fájl.</div>)}
           {hasError && <Alert>{JSON.stringify(error)}</Alert>}
-          {isSuccess ||
-            (result?.length && (
-              <div>
-                {result.map(file => (
-                  <button
-                    key={file.id}
-                    className="m-1 float-left btn btn-light"
-                    title={file.fileName}
-                    onClick={() => closeModal(file)}
-                  >
-                    <figure className="figure">
-                      <div className="img" style={{ backgroundImage: `url(${file.url})` }} />
-                      <figcaption className="figure-caption text-center text-truncate">
-                        {file.fileName}
-                      </figcaption>
-                    </figure>
-                  </button>
-                ))}
-              </div>
-            ))}
+          {isSuccess && result?.length && (
+            <div>
+              {result.map(file => (
+                <button
+                  key={file.id}
+                  className="m-1 float-left btn btn-light"
+                  title={file.fileName}
+                  onClick={() => closeModal(file)}
+                >
+                  <figure className="figure">
+                    <img className="img-thumbnail" src={file.url} alt={file.fileName} />
+                    <figcaption className="figure-caption text-center text-truncate">
+                      {file.fileName}
+                    </figcaption>
+                  </figure>
+                </button>
+              ))}
+            </div>
+          )}
         </DialogBody>
         <DialogFooter>
           <div className="form-group">

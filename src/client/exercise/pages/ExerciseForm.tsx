@@ -7,14 +7,13 @@ import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
 import { exerciseDataService, useExerciseModel } from '../services/exercise'
 import { ExerciseFormDetails } from '../components/form/ExerciseFormDetails'
 import { ExerciseFormSubTask } from '../components/form/ExerciseFormSubTasks'
-import { AssetProvider } from '../../assets/providers/AssetProvider'
 import {
   AssetManagerProvider,
   useManageAssetsDispatch
 } from 'client/assets/providers/ManageAssetProvider'
+import { AssetGroup } from 'shared/assets/types'
 
 import './ExerciseForm.scss'
-import { AssetGroup } from '../../../shared/assets/types'
 
 export function ExerciseForm() {
   const { id } = useParams()
@@ -29,11 +28,11 @@ export function ExerciseForm() {
     isSaving,
     save
   } = useExerciseModel(id)
-  const { addHandler, removeHandler } = useManageAssetsDispatch()
+  const { selectGroup, unSelectGroup } = useManageAssetsDispatch()
 
   useEffect(() => {
-    addHandler(AssetGroup.Exercise, bind('assets'))
-    return () => removeHandler()
+    selectGroup(AssetGroup.Exercise)
+    return () => unSelectGroup()
   }, [])
 
   if (isPending || isFetching) {
@@ -48,41 +47,39 @@ export function ExerciseForm() {
   return (
     <PocketLispProvider isEdit={true} seed={1}>
       <AssetManagerProvider {...bind('assets')}>
-        <AssetProvider attachments={data.assets}>
-          <div className="exercise-form bg-light">
-            <form className="container" onSubmit={onSave}>
-              <ExerciseFormDetails {...bindPartialModel()} />
-              <hr />
-              <h5>
-                Részfeldatok{' '}
-                <Button small btn="link" onAction={() => append('subTasks', {})}>
-                  <FontAwesomeIcon icon={faPlusCircle} /> Rész feladat
-                </Button>
-              </h5>
-              {data.subTasks?.map((subTask, idx) => (
-                <ExerciseFormSubTask
-                  key={idx}
-                  index={idx}
-                  {...bind(`subTasks.${idx}`)}
-                  onRemove={() => remove(`subTasks.${idx}`)}
-                />
-              ))}
+        <div className="exercise-form bg-light">
+          <form className="container" onSubmit={onSave}>
+            <ExerciseFormDetails {...bindPartialModel()} />
+            <hr />
+            <h5>
+              Részfeldatok{' '}
+              <Button small btn="link" onAction={() => append('subTasks', {})}>
+                <FontAwesomeIcon icon={faPlusCircle} /> Rész feladat
+              </Button>
+            </h5>
+            {data.subTasks?.map((subTask, idx) => (
+              <ExerciseFormSubTask
+                key={idx}
+                index={idx}
+                {...bind(`subTasks.${idx}`)}
+                onRemove={() => remove(`subTasks.${idx}`)}
+              />
+            ))}
 
-              <div className="row my-3">
-                <div className="col-12 d-flex justify-content-end">
-                  <Button
-                    submit
-                    btn="primary"
-                    loading={isSaving}
-                    onAction={() => exerciseDataService.store(data)}
-                  >
-                    Mentés
-                  </Button>
-                </div>
+            <div className="row my-3">
+              <div className="col-12 d-flex justify-content-end">
+                <Button
+                  submit
+                  btn="primary"
+                  loading={isSaving}
+                  onAction={() => exerciseDataService.store(data)}
+                >
+                  Mentés
+                </Button>
               </div>
-            </form>
-          </div>{' '}
-        </AssetProvider>
+            </div>
+          </form>
+        </div>{' '}
       </AssetManagerProvider>
     </PocketLispProvider>
   )

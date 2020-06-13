@@ -1,6 +1,7 @@
 import { BaseModel } from 'shared/generic/types'
 
 export enum AssetGroup {
+  None = '',
   Exercise = 'exercise',
   Wiki = 'wiki'
 }

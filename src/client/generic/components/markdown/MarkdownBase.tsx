@@ -4,10 +4,9 @@ import * as MD from 'markdown-it'
 import * as katex from 'markdown-it-katex'
 import * as kbd from 'markdown-it-kbd'
 import * as centertext from 'markdown-it-center-text'
-import { imageInit } from 'shared/markdown/image-resource'
 import { wikiLinkInit } from 'shared/markdown/wiki-link'
 import { MarkdownProps } from './types'
-import { useAsset } from 'client/assets/providers/AssetProvider'
+import { assetImage } from 'shared/markdown/image-asset'
 
 import './Markdown.scss'
 
@@ -28,7 +27,6 @@ interface MarkdownIt {
 export function Markdown({ source, options, mark, onWikiLink, className }: MarkdownProps) {
   const container = useRef<HTMLDivElement>(null)
   const [md, setMD] = useState<MarkdownIt | undefined>(undefined)
-  const { assets } = useAsset()
 
   const handleOnClick = (event: MouseEvent) => {
     const target = event.target as HTMLDivElement
@@ -54,9 +52,9 @@ export function Markdown({ source, options, mark, onWikiLink, className }: Markd
         .use(kbd)
         .use(centertext)
         .use(wikiLinkInit())
-        .use(imageInit(assets || {}))
+        .use(assetImage)
     )
-  }, [options, assets])
+  }, [options])
 
   const __html = source && md ? markText(mark, md.render(source)) : undefined
 

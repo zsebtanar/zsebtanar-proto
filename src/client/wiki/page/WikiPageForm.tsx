@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Loading, Alert, Button, FormGroup, Input, FormCard } from 'client/generic/components'
 import { NavLink } from 'react-router-dom'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
 import { useParams, useHistory } from 'react-router'
 import { useWikiPageModel, wikiPageService } from '../services/wikiPageService'
+import { useManageAssetsDispatch } from '../../assets/providers/ManageAssetProvider'
+import { AssetGroup } from 'shared/assets/types'
 
 import './WikiPageForm.scss'
 
@@ -12,6 +14,13 @@ export function WikiPageForm() {
   const { id } = useParams()
   const history = useHistory()
   const { save, hasError, isPending, isFetching, isSaving, bind, error } = useWikiPageModel(id)
+
+  const { selectGroup, unSelectGroup } = useManageAssetsDispatch()
+
+  useEffect(() => {
+    selectGroup(AssetGroup.Wiki)
+    return () => unSelectGroup()
+  }, [])
 
   if (isPending || isFetching) {
     return <Loading />

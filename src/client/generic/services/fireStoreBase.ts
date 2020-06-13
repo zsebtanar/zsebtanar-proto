@@ -73,9 +73,9 @@ export class Service<T extends BaseModel> {
     return data
   }
 
-  public async getList(options?: GridFilterOptions) {
+  public async getRawList(options?: GridFilterOptions): Promise<firebase.firestore.QuerySnapshot> {
     const collection = db.collection(this.collectionName)
-    let res
+    let res: firebase.firestore.QuerySnapshot
 
     if (options) {
       const query = (options.where ?? []).reduce(
@@ -89,7 +89,12 @@ export class Service<T extends BaseModel> {
 
     this.log('GET list with filter', options, res)
 
-    return res.docs.map(doc => doc.data())
+    return res
+  }
+
+  public async getList(options?: GridFilterOptions): Promise<T[]> {
+    const res = await this.getRawList(options)
+    return res.docs.map(doc => ({ id: doc.id, ...(doc.data() as T) }))
   }
 
   public async delete(id: string): Promise<void> {
@@ -109,7 +114,7 @@ export class Service<T extends BaseModel> {
     await Promise.all(
       populate.map(async collection => {
         const res = await new Service(`${this.collectionName}/${id}/${collection}`).getList()
-        collections[collection] = res.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        collections[collection] = res
       })
     )
     return collections

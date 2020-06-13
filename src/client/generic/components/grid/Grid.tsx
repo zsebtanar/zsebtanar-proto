@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { BaseModel } from 'client/generic/services'
 import { Alert } from '../Alert'
 import { Loading } from '../Loading'
 import { GridPagination } from './GridPagination'
@@ -8,6 +7,7 @@ import { useGridDS } from './gridProvider'
 import { GridBody } from './GridBody'
 import { genColumnDefs } from './utis'
 import { GridColumnDefinition, InternalGridColumnDefinition, RowActionFn } from './types'
+import { BaseModel } from 'shared/generic/types'
 
 interface Props<T> {
   className?: string
@@ -17,7 +17,12 @@ interface Props<T> {
   rowAction?: RowActionFn<T>
 }
 
-export function Grid<T extends BaseModel>({ dataSource, columnDefs, rowAction, defaultPageSize }: Props<T>) {
+export function Grid<T extends BaseModel>({
+  dataSource,
+  columnDefs,
+  rowAction,
+  defaultPageSize
+}: Props<T>) {
   const [pageNum, setPageNum] = useState<number>(0)
   const [colDefs, setColDefs] = useState<InternalGridColumnDefinition<T>[]>([])
   const { isPending, isLoading, error, hasNoResult, result } = useGridDS<T>(
@@ -30,7 +35,7 @@ export function Grid<T extends BaseModel>({ dataSource, columnDefs, rowAction, d
     if (colDefs.length === 0) {
       setColDefs(genColumnDefs(result?.list, columnDefs))
     }
-  })
+  }, [])
 
   if (isLoading || isPending) {
     return (

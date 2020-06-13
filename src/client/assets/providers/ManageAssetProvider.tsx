@@ -1,13 +1,12 @@
 import React, { ReactNode, useReducer, Reducer, useMemo } from 'react'
 import * as dp from 'dot-prop-immutable'
-import { AssetModel, AssetMap, AssetGroup } from 'shared/assets/types'
-import { UseModelProps } from '../../generic/hooks/model'
+import { AssetGroup } from 'shared/assets/types'
 import { fileToUrl, checkFileType, checkFileSize } from '../utils'
 import { assetUpload } from '../services/firestorage'
 import { assetsDataService } from '../services/assets'
 import { useUser } from '../../user/providers/UserProvider'
 
-enum UploadState {
+export enum UploadState {
   Pending,
   Uploading,
   Done
@@ -17,20 +16,22 @@ interface Props {
   children: ReactNode
 }
 
-interface Handler {
-  group: string
-  model: UseModelProps<AssetMap>
-}
-
 interface State {
   pendingAssets: PendingAsset[]
   uploadState: UploadState
-  handler?: Handler
+  group: AssetGroup
   error?: Error
 }
 
+interface PendingAsset {
+  file: File
+  url: string
+  error?: string
+  progress: number
+}
+
 type Action =
-  | { type: 'setHandler'; payload?: Handler }
+  | { type: 'setHandler'; payload: { group: AssetGroup } }
   | { type: 'addFiles'; payload: PendingAsset[] }
   | { type: 'removeFile'; payload: File }
   | { type: 'startUpload' }
@@ -40,17 +41,10 @@ type Action =
   | { type: 'error'; payload: Error }
   | { type: 'reset' }
 
-interface PendingAsset {
-  file: File
-  url: string
-  error: string | undefined
-}
-
 interface API {
   reset()
-  addHandler(group: AssetGroup, bind: UseModelProps<AssetMap>): void
-  removeHandler(): void
-  selectAsset(asset: AssetModel): void
+  selectGroup(group: AssetGroup): void
+  unSelectGroup(): void
   addFiles(files: File[]): void
   removeFile(file: File): void
   uploadFiles()
@@ -63,6 +57,7 @@ export const ManageAssetDispatchContext = React.createContext<API>(undefined as 
 
 const initialState = {
   pendingAssets: [],
+  group: AssetGroup.None,
   uploadState: UploadState.Pending
 }
 
@@ -74,31 +69,25 @@ export function AssetManagerProvider({ children }: Props) {
       reset() {
         dispatch({ type: 'reset' })
       },
-      addHandler(group: AssetGroup, model: UseModelProps<AssetMap>) {
-        if (state.handler) {
+      selectGroup(group: AssetGroup) {
+        if (state.group !== AssetGroup.None) {
           throw new Error('You can not add more then 1 handler!')
         }
-        dispatch({ type: 'setHandler', payload: { group, model } })
+        dispatch({ type: 'setHandler', payload: { group } })
       },
-      removeHandler() {
-        dispatch({ type: 'setHandler', payload: undefined })
-      },
-      selectAsset({ id, url }: AssetModel) {
-        if (!state.handler) {
-          throw new Error('You must add handler first')
-        }
-        if (id) {
-          const { value, name, onChange } = state.handler.model
-          onChange({ name, value: dp.set(value, id, { url }) })
-        }
+      unSelectGroup() {
+        dispatch({ type: 'setHandler', payload: { group: AssetGroup.None } })
       },
       async addFiles(files: File[]) {
         const filesWithUrl = await Promise.all(
-          files.map(async file => ({
-            file,
-            url: await fileToUrl(file),
-            error: validateFile(file)
-          }))
+          files.map(
+            async (file): Promise<PendingAsset> => ({
+              file,
+              url: await fileToUrl(file),
+              error: validateFile(file),
+              progress: 0
+            })
+          )
         )
 
         dispatch({ type: 'addFiles', payload: filesWithUrl })
@@ -107,13 +96,13 @@ export function AssetManagerProvider({ children }: Props) {
         dispatch({ type: 'removeFile', payload: file })
       },
       async uploadFiles() {
-        if (!state.handler) throw Error('You must add handler first')
+        if (state.group === AssetGroup.None) throw Error('You must select group first')
         if (!user?.uid) throw Error('Only singed in user can upload file')
 
         try {
           dispatch({ type: 'startUpload' })
 
-          const group = state.handler.group as AssetGroup
+          const group = state.group as AssetGroup
           const entries = Array.from(state.pendingAssets.entries())
           for (const [index, { file }] of entries) {
             const uploadedFile = await assetUpload(
@@ -156,7 +145,7 @@ function assetReducer(state: State, action: Action): State {
     case 'reset':
       return { ...initialState }
     case 'startUpload':
-      return dp.set(state, 'uploadState', true)
+      return { ...state, uploadState: UploadState.Uploading }
     case 'uploadFinished':
       return { ...state, pendingAssets: [], uploadState: UploadState.Done }
     case 'fileUploadProgress': {
@@ -174,7 +163,7 @@ function assetReducer(state: State, action: Action): State {
         state.pendingAssets.filter(({ file }) => file !== action.payload)
       )
     case 'setHandler':
-      return dp.set(state, 'handler', action.payload)
+      return { ...state, group: action.payload.group }
     case 'error':
       return { ...initialState, error: action.payload }
   }
