@@ -30,7 +30,6 @@ export const AdminApp = React.memo(function AdminAppBase() {
 
           {/*/!* Exercises *!/*/}
           <Route path="/exercise" exact component={ExerciseGrid} />
-          {/*<Route path="/exercise/add/:clone" component={ExerciseForm} />*/}
           <Route path="/exercise/add/" component={ExerciseForm} />
           <Route path="/exercise/edit/:id" component={ExerciseForm} />
           {/*<Route path="/exercise/view/:id" component={ExercisePreview} />*/}

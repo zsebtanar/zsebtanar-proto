@@ -155,13 +155,12 @@ function assetReducer(state: State, action: Action): State {
     case 'fileUploaded':
       return state
     case 'addFiles':
-      return dp.set(state, 'pendingAssets', state.pendingAssets.concat(action.payload))
+      return { ...state, pendingAssets: state.pendingAssets.concat(action.payload) }
     case 'removeFile':
-      return dp.set(
-        state,
-        'pendingAssets',
-        state.pendingAssets.filter(({ file }) => file !== action.payload)
-      )
+      return {
+        ...state,
+        pendingAssets: state.pendingAssets.filter(({ file }) => file !== action.payload)
+      }
     case 'setHandler':
       return { ...state, group: action.payload.group }
     case 'error':

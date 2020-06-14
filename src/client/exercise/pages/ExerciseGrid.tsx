@@ -33,7 +33,7 @@ const renderListItem = (item: ExerciseModel) => {
     <div className="text-center">
       <NavLink
         exact
-        to={`/exercise/add/${item.id}`}
+        to={`/exercise/edit/${item.id}?clone`}
         className="btn btn-sm btn-light"
         title="Wiki oldal másolása"
       >

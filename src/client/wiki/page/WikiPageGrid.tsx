@@ -33,7 +33,7 @@ const renderListItem = (item: WikiPageModel) => {
     <div className="text-center">
       <NavLink
         exact
-        to={`/wiki-page/add/${item.id}`}
+        to={`/wiki-page/edit/${item.id}?clone`}
         className="btn btn-sm btn-light"
         title="Wiki oldal másolása"
       >

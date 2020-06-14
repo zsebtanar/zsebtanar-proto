@@ -14,14 +14,14 @@ interface Getters {
 interface API<TModel> extends ModelAPI<TModel>, Getters {
   state: States
   error?: Error
-  save(): Promise<void>
+  save(clone?: boolean): Promise<TModel>
 }
 
 ///
 
 export function useLoadAndStoreModel<TModel>(
   loadFn: (id: string) => Promise<TModel>,
-  saveFn: (model: TModel) => Promise<unknown>,
+  saveFn: (model: TModel) => Promise<TModel>,
   id?: string
 ): API<TModel> {
   const model = useModel<TModel>()
@@ -50,18 +50,25 @@ export function useLoadAndStoreModel<TModel>(
     ...model,
     state,
     error,
-    async save(): Promise<void> {
+    async save(clone?: boolean): Promise<TModel> {
+      let res = model.data
       if (state === 'idle') {
         setState('saving')
 
         try {
-          await saveFn(model.data)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const data = model.data as any
+          if (clone && data.id) {
+            data.id = undefined
+          }
+          res = await saveFn(data)
           setState('idle')
         } catch (err) {
           setError(err)
           setState('error')
         }
       }
+      return res
     },
     get isPending() {
       return state === 'pending'

@@ -25,7 +25,7 @@ export const ExerciseSchema = z.object({
               randomOrder: z.boolean(),
               options: z.array(
                 z.object({
-                  label: z.string(),
+                  statement: z.string(),
                   trueLabel: z.string(),
                   falseLabel: z.string()
                 })
@@ -52,7 +52,11 @@ export const ExerciseSchema = z.object({
             isDynamic: z.boolean(),
             props: z.object({
               randomOrder: z.boolean(),
-              options: z.array(z.string())
+              options: z.array(
+                z.object({
+                  label: z.string()
+                })
+              )
             }),
             solution: z.array(z.boolean())
           }),
@@ -94,7 +98,7 @@ export const ExerciseSchema = z.object({
             props: z.object({
               options: z.array(z.object({ label: z.string() }))
             }),
-            solution: z.string()
+            solution: z.number()
           }),
           z.object({
             type: z.literal(ExerciseSubTaskControlsType.SingleNumber),

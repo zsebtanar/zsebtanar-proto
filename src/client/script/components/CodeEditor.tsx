@@ -58,7 +58,6 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
     const onChangeHandler = debounce(cm => {
       const value = cm.getValue()
       onChange({ name, value })
-      interpreter.run(value)
       setOutput(interpreter.getOutput())
     }, 150)
 

@@ -1,7 +1,7 @@
+import { useCallback } from 'react'
 import { Service, cloudFnPost } from 'client/generic/services'
 import { useFetchData } from 'client/generic/hooks'
-import { ExerciseModel } from '../../../shared/exercise/types'
-import { useCallback } from 'react'
+import { ExerciseModel } from 'shared/exercise/types'
 import { useLoadAndStoreModel } from '../../generic/hooks/loadAndStoreModel'
 
 export const exerciseDataService = new Service<ExerciseModel>('exercise')
@@ -21,8 +21,8 @@ export function useLoadExercises() {
   return useFetchData<ExerciseModel[]>(callback, [])
 }
 
-export function storeExercise(data) {
-  return cloudFnPost(`/exercise/${data.id ?? ''}`, data)
+export async function storeExercise(data) {
+  return cloudFnPost<ExerciseModel>(`/exercise/${data.id ?? ''}`, data, { withToken: true })
 }
 
 export function useExerciseModel(id?: string) {

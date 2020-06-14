@@ -17,7 +17,6 @@ route.post(
       // exercise
       const exercise: ExerciseModel = {
         ...(req.body as ExerciseSchemaType),
-        resources: {},
         state: ExerciseState.Draft,
         lastUpdate: now
       }
@@ -35,12 +34,10 @@ route.post(
         .doc('log')
         .set(metadataLog)
 
-      // FIXME add resources
-
       // search
       await indexExercise(result.id, exercise)
 
-      res.status(201).json({ id: result.id })
+      res.status(201).json({ ...exercise, id: result.id })
     } catch (error) {
       console.error('Create exercise error:', error)
       res.status(500).send('Unexpected error')

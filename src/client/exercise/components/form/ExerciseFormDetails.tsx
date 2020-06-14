@@ -31,7 +31,7 @@ export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Mod
                 }))
                 .sort(sortByProp('label')) || []
             }
-            {...bind<string[]>('classification')}
+            {...bind<string[]>('classifications')}
           />
         )}
       </div>

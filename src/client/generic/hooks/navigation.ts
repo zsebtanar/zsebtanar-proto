@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, RefObject } from 'react'
+import { useLocation } from 'react-router'
 
 /**
  * Focus lock
@@ -79,7 +80,7 @@ export function useFocusLock(ref: RefObject<Element>) {
 
 /**
  * Lock body scroll hook
- * 
+ *
  * @see https://gist.github.com/danethurber/a586dbc9097e2e5696719c390a00c683
  */
 export function useLockBodyScroll() {
@@ -89,4 +90,8 @@ export function useLockBodyScroll() {
       document.body.style.overflow = 'visible'
     }
   }, [])
+}
+
+export function useQuery() {
+  return new URLSearchParams(useLocation().search)
 }

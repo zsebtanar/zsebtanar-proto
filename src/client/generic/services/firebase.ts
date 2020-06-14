@@ -14,12 +14,15 @@ const getTokenHeader = async (): Promise<{ Authorization: string }> => {
   }
 }
 
+type Params = Record<string, unknown>
+type Options = { withToken: boolean }
+
 export async function cloudFnRequest(
   method: 'get' | 'post' | 'delete',
   path: string,
-  params?: { [key: string]: unknown },
+  params?: Params,
   body?: unknown,
-  options?: { withToken: boolean }
+  options?: Options
 ) {
   const authHeader = options?.withToken ? await getTokenHeader() : {}
 
@@ -30,14 +33,14 @@ export async function cloudFnRequest(
     params,
     headers: { ...authHeader, 'Content-Type': 'application/json' }
   }
-  return fetch(`${__CONFIG__.api}/${path}`, config)
+  return fetch(`${__CONFIG__.api}${path}`, config)
 }
 
-export const cloudFnGet = (path, params, options?) =>
+export const cloudFnGet = <T>(path: string, params: Params, options?: Options) =>
   cloudFnRequest('get', path, params, undefined, options).then(res => res.json())
 
-export const cloudFnPost = (path, data, options?) =>
-  cloudFnRequest('post', path, undefined, data, options)
+export const cloudFnPost = <T, R = T>(path: string, data: T, options?: Options): Promise<R> =>
+  cloudFnRequest('post', path, undefined, data, options).then(res => res.json())
 
-export const cloudFnDelete = (path, params, options?) =>
+export const cloudFnDelete = (path: string, params: Params, options?: Options) =>
   cloudFnRequest('delete', path, params, undefined, options)
