@@ -19,7 +19,6 @@ route.post(
       // exercise
       const exercise = {
         ...omit(req.body as ExerciseSchemaType, ['state']),
-        lastUpdate: now,
         resources: {}
       }
       const exRef = fireStore.collection('exercise').doc(id)
@@ -29,7 +28,8 @@ route.post(
       const logRef = fireStore.collection(`exercise/${id}/metadata`).doc('log')
       batch.update(logRef, {
         updated: now,
-        updatedBy: req.user.uid
+        updatedBy: req.user.uid,
+        lastUpdate: now
       })
       // FIXME add resources
 

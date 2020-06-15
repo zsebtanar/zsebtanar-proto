@@ -10,7 +10,6 @@ export interface ExerciseModel extends BaseModel {
   description: string
   script: string
   subTasks: ExerciseSubTask[]
-  lastUpdate: Date
 }
 
 export enum ExerciseState {

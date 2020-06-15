@@ -22,7 +22,8 @@ interface API<TModel> extends ModelAPI<TModel>, Getters {
 export function useLoadAndStoreModel<TModel>(
   loadFn: (id: string) => Promise<TModel>,
   saveFn: (model: TModel) => Promise<TModel>,
-  id?: string
+  id?: string,
+  initialValue?: TModel
 ): API<TModel> {
   const model = useModel<TModel>()
   const [state, setState] = useState<States>('pending')
@@ -41,7 +42,7 @@ export function useLoadAndStoreModel<TModel>(
         setState('error')
       }
     } else {
-      model.set({} as TModel)
+      model.set(({ ...initialValue } ?? {}) as TModel)
       setState('idle')
     }
   }, [loadFn, id])

@@ -13,9 +13,7 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>) {
     <div className="user-control uc-simple-number uc-simple-number-admin">
       <UserControlNameInput {...bind('name')} />
       <div>
-        <Checkbox {...bind('isDynamic')} disabled>
-          Dinamikus
-        </Checkbox>
+        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
       </div>
 
       <hr />
@@ -51,17 +49,23 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>) {
       </FormGroup>
 
       <FormGroup label="Megoldás">
-        {id => (
-          <Input
-            type="number"
-            {...bind('solution')}
-            id={id}
-            step={1 / Math.pow(10, data.props?.fractionDigits ?? 0)}
-            min={0}
-            required
-            className="form-control form-control-sm"
-          />
-        )}
+        {id =>
+          data.isDynamic ? (
+            <div className="form-control-plaintext">
+              <code>(def {data.name}-solution #&#123;...&#124;)</code>
+            </div>
+          ) : (
+            <Input
+              type="number"
+              {...bind('solution')}
+              id={id}
+              step={1 / Math.pow(10, data.props?.fractionDigits ?? 0)}
+              min={0}
+              required
+              className="form-control form-control-sm"
+            />
+          )
+        }
       </FormGroup>
     </div>
   )
