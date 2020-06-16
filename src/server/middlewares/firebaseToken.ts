@@ -1,4 +1,5 @@
 import { admin } from '../utils/firebase'
+import { ErrorHandler } from './error'
 
 /**
  Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -19,8 +20,7 @@ export async function getToken(req, res, next) {
       'Authorization: Bearer <Firebase ID Token>',
       'or by passing a "__session" cookie.'
     )
-    res.status(401).send('Unauthorized')
-    return
+    return next(new ErrorHandler(401, 'Unauthorized'))
   }
 
   let idToken
@@ -34,7 +34,6 @@ export async function getToken(req, res, next) {
     req.user = await admin.auth().verifyIdToken(idToken)
     next()
   } catch (error) {
-    console.error('Authorization error', error)
-    res.status(401).send('Unauthorized')
+    next(new ErrorHandler(401, 'Unauthorized', error))
   }
 }

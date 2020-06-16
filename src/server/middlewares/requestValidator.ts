@@ -1,4 +1,5 @@
 import * as z from 'zod'
+import { ErrorHandler } from './error'
 
 interface SchemaParam {
   query?: z.ZodType<unknown>
@@ -21,8 +22,7 @@ export function requestValidator(schemas: SchemaParam) {
       Object.entries(schemas).forEach(([key, schema]) => schema.parse(req[key]))
       next()
     } catch (error) {
-      console.error(error)
-      res.status(400).send('Bad request')
+      next(new ErrorHandler(400, 'Bad request', error))
     }
   }
 }

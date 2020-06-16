@@ -13,4 +13,6 @@ app.use('/api/user/', require('./user/index').route)
 app.use('/api/exercise/', require('./exercise/index').route)
 app.use('/api/feedback/', require('./feedback/index').route)
 
+app.use(require('./middlewares/error').mainErrorHandler)
+
 export default app

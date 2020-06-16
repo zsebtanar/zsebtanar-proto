@@ -4,13 +4,14 @@ import { getToken, requestValidator } from '../middlewares'
 import { ExerciseSchema, ExerciseSchemaType } from './model'
 import { fireStore } from '../utils/firebase'
 import { omit } from 'shared/utils/fn'
+import { ErrorHandler } from '../middlewares/error'
 
 export const route = express.Router()
 
 route.post(
   '/:exerciseId',
   [getToken, onlyEditors, requestValidator({ body: ExerciseSchema })],
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const now = new Date()
       const id = req.params.exerciseId
@@ -36,8 +37,7 @@ route.post(
       await batch.commit()
       res.status(204).send()
     } catch (error) {
-      console.error(error)
-      res.status(500).send('Unexpected error')
+      next(new ErrorHandler(500, 'Exercise update error', error))
     }
   }
 )

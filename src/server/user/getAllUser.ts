@@ -3,10 +3,11 @@ import { admin } from '../utils/firebase'
 import { evolve, map, pick } from 'ramda'
 import { getToken } from '../middlewares'
 import { onlyAdmin } from '../utils/authorization'
+import { ErrorHandler } from '../middlewares/error'
 
 export const route = express.Router()
 
-route.get('/all', [getToken, onlyAdmin], async (req, res) => {
+route.get('/all', [getToken, onlyAdmin], async (req, res, next) => {
   try {
     const nextPageToken = req.query.pageToken
     const publicFields = pick([
@@ -23,7 +24,6 @@ route.get('/all', [getToken, onlyAdmin], async (req, res) => {
     const data = await admin.auth().listUsers(1000, nextPageToken)
     res.json(evolve({ users: map(publicFields) }, data))
   } catch (error) {
-    console.error(error)
-    res.status(500).send('Unexpected error')
+    next(new ErrorHandler(500, 'User list all error', error))
   }
 })

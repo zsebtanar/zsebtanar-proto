@@ -5,13 +5,14 @@ import { fireStore } from '../utils/firebase'
 import { removeExerciseIndex, indexExercise } from './utils/search-indexing'
 import { onlyAdmin } from '../utils/authorization'
 import { ExerciseStateScheme, ExerciseStateSchemeType } from './model'
+import { ErrorHandler } from '../middlewares/error'
 
 export const route = express.Router()
 
 route.post(
   '/:exerciseId/state',
   [getToken, onlyAdmin, requestValidator({ body: ExerciseStateScheme })],
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const id = req.params.exerciseId
       const newState = (req.body as ExerciseStateSchemeType).state as ExerciseState
@@ -29,8 +30,7 @@ route.post(
       await method(exerciseRef.id, exercise)
       res.status(204).send()
     } catch (error) {
-      console.error(error)
-      res.status(500).send('Unexpected error')
+      next(new ErrorHandler(500, 'Exercise status change error', error))
     }
   }
 )

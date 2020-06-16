@@ -1,4 +1,5 @@
 import { curry, pathOr } from 'ramda'
+import { ErrorHandler } from '../middlewares/error'
 
 export const ROLE_USER = 0
 export const ROLE_TEACHER = 500
@@ -11,7 +12,7 @@ export const roleCheck = curry((roles, req, res, next) => {
     next()
   } else {
     console.warn('forbidden', JSON.stringify(req.user))
-    res.status(403).send('Forbidden')
+    next(new ErrorHandler(403, 'Forbidden'))
   }
 })
 

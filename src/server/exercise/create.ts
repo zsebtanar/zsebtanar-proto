@@ -5,13 +5,14 @@ import { onlyEditors } from '../utils/authorization'
 import { ExerciseSchema, ExerciseSchemaType } from './model'
 import { fireStore } from '../utils/firebase'
 import { indexExercise } from './utils/search-indexing'
+import { ErrorHandler } from '../middlewares/error'
 
 export const route = express.Router()
 
 route.post(
   '/',
   [getToken, onlyEditors, requestValidator({ body: ExerciseSchema })],
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const now = new Date()
       // exercise
@@ -38,8 +39,7 @@ route.post(
 
       res.status(201).json({ ...exercise, id: result.id })
     } catch (error) {
-      console.error('Create exercise error:', error)
-      res.status(500).send('Unexpected error')
+      next(new ErrorHandler(500, 'Exercise create error', error))
     }
   }
 )

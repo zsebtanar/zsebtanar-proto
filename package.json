@@ -36,8 +36,9 @@
     "::client-dev": "webpack-dev-server --config ./build/webpack.client.js",
     "::client-build": "cross-env NODE_ENV=production webpack -p --config ./build/webpack.client.js",
     "::server-build": "npm run ::server-compile",
-    "::server-dev": "concurrently --kill-others --names \"server,firebase,client\" \"SERVER_ENV=emulator npm run ::server-compile -- --watch\" \"npm run ::server-emulator\" \"SERVER_ENV=emulator npm run ::client-dev\"",
+    "::server-dev": "concurrently --kill-others --names \"server,firebase,client\" \"SERVER_ENV=emulator npm run ::server-compile-dev -- --watch\" \"npm run ::server-emulator\" \"SERVER_ENV=emulator npm run ::client-dev\"",
     "pre::server-compile": "npm run ::server-prep",
+    "::server-compile-dev": "cross-env NODE_ENV=development webpack --display-error-details --config ./build/webpack.server.js",
     "::server-compile": "cross-env NODE_ENV=production webpack --display-error-details --config ./build/webpack.server.js",
     "::server-emulator": "firebase use test && firebase functions:config:get > bin/functions/.runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"$(pwd)/tools/key.json\" firebase emulators:start --only functions",
     "::server-prep": "node build/prepare-server"

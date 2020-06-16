@@ -5,6 +5,7 @@ import { path, pick } from 'ramda'
 import * as express from 'express'
 import { requestValidator } from '../middlewares'
 import { RECAPTCHA_RESPONSE_PARAM, CreateFeedbackSchema } from './model'
+import { ErrorHandler } from '../middlewares/error'
 
 const SITE_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
 const SECRET_KEY = path(['recaptcha', 'secret_key'], functions.config())
@@ -12,7 +13,7 @@ const Feedback = fireStore.collection('feedback')
 
 export const route = express.Router()
 
-route.post('/', [requestValidator({ body: CreateFeedbackSchema })], async (req, res) => {
+route.post('/', [requestValidator({ body: CreateFeedbackSchema })], async (req, res, next) => {
   try {
     const body = req.body
 
@@ -24,8 +25,7 @@ route.post('/', [requestValidator({ body: CreateFeedbackSchema })], async (req, 
 
     res.status(204).send()
   } catch (error) {
-    console.error(error)
-    res.status(500).send('Unexpected error')
+    next(new ErrorHandler(500, 'Create feedback error', error))
   }
 })
 
