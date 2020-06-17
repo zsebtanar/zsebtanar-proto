@@ -1,26 +1,25 @@
-export class ErrorHandler extends Error {
+export class ErrorHandler<TDetails = unknown> extends Error {
   public statusCode: number
   public originalError?: Error
+  public details?: TDetails
 
-  constructor(statusCode, message: string, originalError?: Error) {
+  constructor(statusCode, message: string, details?: TDetails, originalError?: Error) {
     super(message)
     this.statusCode = statusCode
     this.originalError = originalError
+    this.details = details
   }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function mainErrorHandler(err: ErrorHandler, req, res, next) {
-  const { statusCode, message, originalError } = err
-  console.error(message, originalError)
-  if (__DEV__) {
-    res.status(statusCode).json({
-      status: 'error',
-      statusCode,
-      message,
-      details: originalError?.stack
-    })
-  } else {
-    res.status(statusCode).send(message)
-  }
+  const { statusCode, message, originalError, details } = err
+  console.error(message, details, originalError)
+  res.status(statusCode).json({
+    status: 'error',
+    statusCode,
+    message,
+    details,
+    stacktrace: __DEV__ ? originalError?.stack : undefined
+  })
 }
