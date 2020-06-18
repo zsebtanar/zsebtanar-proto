@@ -19,8 +19,7 @@ route.post(
 
       // exercise
       const exercise = {
-        ...omit(req.body as ExerciseSchemaType, ['state']),
-        resources: {}
+        ...omit(req.body as ExerciseSchemaType, ['state'])
       }
       const exRef = fireStore.collection('exercise').doc(id)
       batch.update(exRef, exercise)
@@ -35,7 +34,7 @@ route.post(
       // FIXME add resources
 
       await batch.commit()
-      res.status(204).send()
+      res.status(200).send(exercise)
     } catch (error) {
       next(new ErrorHandler(500, 'Exercise update error', error))
     }

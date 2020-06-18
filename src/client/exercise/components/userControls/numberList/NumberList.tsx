@@ -8,10 +8,11 @@ import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
 
 interface Props extends UseModelProps<string[]> {
   ctrl: UCNumberList
-  readonly: boolean
+  readonly?: boolean
+  disabled?: boolean
 }
 
-export function NumberList({ readonly, ctrl, ...bindProps }: Props) {
+export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props) {
   const { bind } = useModel(bindProps)
   return (
     <div className={cx('user-control', 'uc-number-list', { multiline: ctrl.props.multiLine })}>
@@ -29,6 +30,7 @@ export function NumberList({ readonly, ctrl, ...bindProps }: Props) {
             <Input
               {...bind(idx.toString())}
               type="number"
+              disabled={disabled}
               step={1 / Math.pow(10, ctrl.props?.fractionDigits ?? 0)}
             />
           )}

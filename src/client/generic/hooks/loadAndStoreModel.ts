@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { API as ModelAPI, useModel } from './model'
 
-type States = 'pending' | 'fetching' | 'saving' | 'idle' | 'error'
+type States = 'pending' | 'fetching' | 'saving' | 'idle'
 
 interface Getters {
   readonly isPending: boolean
@@ -39,7 +39,7 @@ export function useLoadAndStoreModel<TModel>(
         })
       } catch (err) {
         setError(err)
-        setState('error')
+        setState('idle')
       }
     } else {
       model.set(({ ...initialValue } ?? {}) as TModel)
@@ -55,7 +55,7 @@ export function useLoadAndStoreModel<TModel>(
       let res = model.data
       if (state === 'idle') {
         setState('saving')
-
+        setError(undefined)
         try {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const data = model.data as any
@@ -66,7 +66,7 @@ export function useLoadAndStoreModel<TModel>(
           setState('idle')
         } catch (err) {
           setError(err)
-          setState('error')
+          setState('idle')
         }
       }
       return res
@@ -81,7 +81,7 @@ export function useLoadAndStoreModel<TModel>(
       return state === 'saving'
     },
     get hasError() {
-      return state === 'error'
+      return !!error
     },
     get isIdle() {
       return state === 'idle'

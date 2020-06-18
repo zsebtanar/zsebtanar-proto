@@ -43,7 +43,7 @@ export function useModel<TModel>({
 
   const set = (newState: TModel | ((model: TModel) => TModel)) => {
     setState(model => {
-      const newModel = typeof newState === 'function' ? newState(model) : newState
+      const newModel = typeof newState === 'function' ? (newState as Function)(model) : newState
       onChangeCallback({ name: modelName ?? '<root>', value: newModel })
       return newModel
     })

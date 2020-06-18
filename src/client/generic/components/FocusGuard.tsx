@@ -12,10 +12,12 @@ export class FocusGuard extends React.Component<Props, { focused: boolean }> {
 
   componentDidMount() {
     document.addEventListener('focus', this.handler, true)
+    document.addEventListener('click', this.handler, true)
   }
 
   componentWillUnmount() {
     document.removeEventListener('focus', this.handler, true)
+    document.removeEventListener('click', this.handler, true)
   }
 
   private handler = event => {

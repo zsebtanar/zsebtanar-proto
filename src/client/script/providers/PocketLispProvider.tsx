@@ -20,7 +20,7 @@ interface InterpreterContextAPI {
   script: string
   current?: Interpreter
   run(source: string)
-  eval(source: string): unknown
+  evalPL(source: string): unknown
   getGlobalNames(): string[]
   getOutput(): InterpreterOutput[]
 }
@@ -76,7 +76,7 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props) {
           setOutput(result)
         }
       },
-      eval(source: string) {
+      evalPL(source: string) {
         return interpret(source)
       },
       getGlobalNames(): string[] {

@@ -8,7 +8,7 @@ interface Props extends MarkdownProps {}
 export function MarkdownWithScript({ source, ...rest }: Props) {
   const interpreter = usePocketLisp()
 
-  const newSource = interpretMarkdown(interpreter.eval, source)
+  const newSource = interpretMarkdown(interpreter.evalPL, source)
 
   return <Markdown source={newSource} {...rest} />
 }

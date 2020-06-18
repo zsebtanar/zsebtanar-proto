@@ -21,13 +21,13 @@ export function useLoadExercises() {
   return useFetchData<ExerciseModel[]>(callback, [])
 }
 
-export async function storeExercise(data) {
-  return cloudFnPost<ExerciseModel>(`/exercise/${data.id ?? ''}`, data, { withToken: true })
+export async function storeExercise({ id, ...data }: ExerciseModel) {
+  return cloudFnPost<ExerciseModel>(`/exercise/${id ?? ''}`, data, { withToken: true })
 }
 
 export function useExerciseModel(id?: string) {
   const load = useCallback(id => exerciseDataService.get(id), [])
-  const store = useCallback<typeof storeExercise>(({ id, ...data }) => storeExercise(data), [])
+  const store = useCallback<typeof storeExercise>(storeExercise, [])
   return useLoadAndStoreModel<ExerciseModel>(load, store, id, {
     title: '',
     description: '',

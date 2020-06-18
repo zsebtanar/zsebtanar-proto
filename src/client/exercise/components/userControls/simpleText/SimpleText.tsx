@@ -6,10 +6,11 @@ import { MarkdownWithScript } from 'client/script/components'
 
 interface Props extends UseModelProps<string> {
   ctrl: UCSimpleText
-  readonly: boolean
+  readonly?: boolean
+  disabled?: boolean
 }
 
-export function SimpleText({ name, value, onChange, readonly, ctrl }: Props) {
+export function SimpleText({ name, value, onChange, readonly, disabled, ctrl }: Props) {
   return (
     <div className="user-control uc-simple-text d-flex align-items-center">
       <span className="prefix">
@@ -25,6 +26,7 @@ export function SimpleText({ name, value, onChange, readonly, ctrl }: Props) {
         <Input
           name={name}
           type="text"
+          disabled={disabled}
           className="form-control col-4 mx-1"
           value={value}
           onChange={onChange}

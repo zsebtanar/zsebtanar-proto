@@ -1,7 +1,7 @@
 import React from 'react'
 import { useModel, UseModelProps } from '../../../../generic/hooks/model'
 import { UCNumberList } from 'shared/exercise/types'
-import { Checkbox, Input, TextEditor } from '../../../../generic/components/form'
+import { Checkbox, Input, TextEditor, NumberInput } from '../../../../generic/components/form'
 import { FormGroup, Button } from '../../../../generic/components'
 import { MarkdownWithScript } from '../../../../script/components'
 import { UserControlNameInput } from '../common/UserControlNameInput'
@@ -34,8 +34,7 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>) {
       <FormGroup label="Pontosság">
         {id => (
           <>
-            <Input
-              type="number"
+            <NumberInput
               {...bind('props.fractionDigits')}
               id={id}
               step={1}

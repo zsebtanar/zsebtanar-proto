@@ -13,7 +13,8 @@ import { MultiChoice } from './multiChoice/MultiChoice'
 
 interface Props<TSolution> extends UseModelProps<TSolution> {
   ctrl: UserControl
-  readonly: boolean
+  readonly?: boolean
+  disabled?: boolean
 }
 
 export function UserControls<TSolution>({ ...props }: Props<TSolution>) {

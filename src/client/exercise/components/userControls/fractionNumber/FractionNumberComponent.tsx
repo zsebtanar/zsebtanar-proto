@@ -2,15 +2,16 @@ import React from 'react'
 import { UCFractionNumber } from 'shared/exercise/types'
 import { FractionNumber } from 'shared/math/fractionNumber'
 import { UseModelProps, useModel } from 'client/generic/hooks/model'
-import { Input } from 'client/generic/components'
+import { NumberInput } from 'client/generic/components'
 import { MarkdownWithScript } from 'client/script/components'
 
 interface Props extends UseModelProps<FractionNumber> {
   ctrl: UCFractionNumber
-  readonly: boolean
+  readonly?: boolean
+  disabled?: boolean
 }
 
-export function FractionNumberComponent({ readonly, ctrl, ...bindProps }: Props) {
+export function FractionNumberComponent({ readonly, disabled, ctrl, ...bindProps }: Props) {
   const { bind } = useModel<FractionNumber>(bindProps)
 
   return (
@@ -26,18 +27,18 @@ export function FractionNumberComponent({ readonly, ctrl, ...bindProps }: Props)
         </div>
       ) : (
         <>
-          <Input
+          <NumberInput
             {...bind('numerator')}
-            type="number"
+            disabled={disabled}
             className="form-control"
             step={1}
             onKeyPress={onlyNumbers}
             placeholder="számláló"
           />
           <hr className="my-1" />
-          <Input
+          <NumberInput
             {...bind('denominator')}
-            type="number"
+            disabled={disabled}
             className="form-control"
             onKeyPress={onlyNumbers}
             step={1}

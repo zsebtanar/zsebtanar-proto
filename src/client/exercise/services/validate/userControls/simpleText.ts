@@ -1,5 +1,5 @@
 import { any, equals, identity, pipe, replace, toLower, values } from 'ramda'
-import { UCSimpleText } from '../../../../../shared/exercise/types'
+import { UCSimpleText } from 'shared/exercise/types'
 
 export function simpleTextCheck(
   control: UCSimpleText,

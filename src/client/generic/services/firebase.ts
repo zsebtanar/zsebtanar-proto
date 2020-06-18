@@ -37,10 +37,18 @@ export async function cloudFnRequest(
 }
 
 export const cloudFnGet = <T>(path: string, params: Params, options?: Options) =>
-  cloudFnRequest('get', path, params, undefined, options).then(res => res.json())
+  cloudFnRequest('get', path, params, undefined, options).then(processResponse)
 
 export const cloudFnPost = <T, R = T>(path: string, data: T, options?: Options): Promise<R> =>
-  cloudFnRequest('post', path, undefined, data, options).then(res => res.json())
+  cloudFnRequest('post', path, undefined, data, options).then(processResponse)
 
 export const cloudFnDelete = (path: string, params: Params, options?: Options) =>
-  cloudFnRequest('delete', path, params, undefined, options)
+  cloudFnRequest('delete', path, params, undefined, options).then(processResponse)
+
+async function processResponse(res: Response) {
+  if (res.ok) {
+    return res.status === 200 ? res.json() : true
+  } else {
+    throw await res.json()
+  }
+}

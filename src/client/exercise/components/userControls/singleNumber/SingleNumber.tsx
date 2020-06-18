@@ -5,34 +5,34 @@ import { Input } from 'client/generic/components'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
 import { MarkdownWithScript } from 'client/script/components'
 
+import './SingleNumber.scss'
+
 interface Props extends UseModelProps<string> {
   ctrl: UCSingleNumber
-  readonly: boolean
+  readonly?: boolean
+  disabled?: boolean
 }
 
-export function SingleNumber({ readonly, ctrl, ...bindProps }: Props) {
+export function SingleNumber({ readonly, disabled, ctrl, ...bindProps }: Props) {
   return (
     <div className="user-control uc-simple-number d-flex align-items-center">
-      <span className="prefix">
+      <div className="prefix">
         {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} />}
-      </span>
+      </div>
       {readonly ? (
-        <strong>
-          &nbsp;
-          {bindProps.value}
-          &nbsp;
-        </strong>
+        <strong>{bindProps.value}</strong>
       ) : (
         <Input
           {...bindProps}
           type="number"
+          disabled={disabled}
           className="form-control col-4 mx-1"
           step={1 / Math.pow(10, ctrl.props?.fractionDigits ?? 0)}
         />
       )}
-      <span className="postfix">
+      <div className="postfix">
         {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
-      </span>
+      </div>
       {ctrl.props?.fractionDigits > 0 && (
         <DecimalAccuracyWarning fractionDigits={ctrl.props.fractionDigits} />
       )}

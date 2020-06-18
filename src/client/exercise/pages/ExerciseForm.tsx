@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { useParams, useHistory } from 'react-router'
-import { Loading, Button } from '../../generic/components'
+import { Loading, Button, Alert } from '../../generic/components'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
 import { useExerciseModel } from '../services/exercise'
 import { ExerciseFormDetails } from '../components/form/ExerciseFormDetails'
@@ -29,7 +29,8 @@ export function ExerciseForm() {
     isFetching,
     isPending,
     isSaving,
-    save
+    save,
+    error
   } = useExerciseModel(id)
   const { selectGroup, unSelectGroup } = useManageAssetsDispatch()
 
@@ -55,11 +56,34 @@ export function ExerciseForm() {
       <AssetManagerProvider {...bind('assets')}>
         <div className="exercise-form bg-light">
           <form className="container" onSubmit={onSave}>
+            {error && (
+              <Alert type="danger">
+                <h4>{error.message}</h4>
+                <ul>
+                  {error?.['details']?.errors.map((err, idx) => (
+                    <li key={idx}>
+                      {err?.path.toString()} - {err?.message}
+                    </li>
+                  ))}
+                </ul>
+              </Alert>
+            )}
             <ExerciseFormDetails {...bindPartialModel()} />
             <hr />
             <h5>
               Részfeldatok{' '}
-              <Button small btn="link" onAction={() => append('subTasks', {})}>
+              <Button
+                small
+                btn="link"
+                onAction={() =>
+                  append('subTasks', {
+                    title: '',
+                    description: '',
+                    controls: [],
+                    hints: []
+                  })
+                }
+              >
                 <FontAwesomeIcon icon={faPlusCircle} /> Rész feladat
               </Button>
             </h5>

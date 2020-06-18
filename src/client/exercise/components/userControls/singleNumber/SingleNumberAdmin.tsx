@@ -1,7 +1,7 @@
 import React from 'react'
 import { useModel, UseModelProps } from '../../../../generic/hooks/model'
 import { UCSingleNumber } from 'shared/exercise/types'
-import { Checkbox, Input, TextEditor } from '../../../../generic/components/form'
+import { Checkbox, Input, TextEditor, NumberInput } from '../../../../generic/components/form'
 import { FormGroup } from '../../../../generic/components'
 import { MarkdownWithScript } from '../../../../script/components'
 import { UserControlNameInput } from '../common/UserControlNameInput'
@@ -55,8 +55,7 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>) {
               <code>(def {data.name}-solution #&#123;...&#124;)</code>
             </div>
           ) : (
-            <Input
-              type="number"
+            <NumberInput
               {...bind('solution')}
               id={id}
               step={1 / Math.pow(10, data.props?.fractionDigits ?? 0)}

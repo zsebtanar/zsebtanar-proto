@@ -9,7 +9,7 @@ interface State {
 }
 
 interface OverlayContextAPI {
-  openModal<R = unknown>(content: ReactNode): Promise<R>
+  openModal<R = unknown>(content: ReactNode, disableBackdropClose?: boolean): Promise<R>
   closeModal<R = unknown>(id: string, result?: R): void
   openNotification(): void
 }

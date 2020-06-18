@@ -8,10 +8,11 @@ import { MarkdownWithScript } from 'client/script/components'
 
 interface Props extends UseModelProps<boolean[]> {
   ctrl: UCMultiChoice
-  readonly: boolean
+  readonly?: boolean
+  disabled?: boolean
 }
 
-export function MultiChoice({ readonly, ctrl, ...bindProps }: Props) {
+export function MultiChoice({ readonly, ctrl, disabled, ...bindProps }: Props) {
   const { bind } = useModel(bindProps)
   return (
     <div className="user-control uc-multi-choice">
@@ -24,7 +25,7 @@ export function MultiChoice({ readonly, ctrl, ...bindProps }: Props) {
           ))
         : ctrl.props.options.map(({ label }, idx) => (
             <div className="row" key={idx}>
-              <Checkbox {...bind(`${idx}`)}>
+              <Checkbox {...bind(`${idx}`)} disabled={disabled}>
                 <MarkdownWithScript source={label} />
               </Checkbox>
             </div>

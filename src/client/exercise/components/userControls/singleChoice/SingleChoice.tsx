@@ -8,10 +8,11 @@ import { MarkdownWithScript } from 'client/script/components'
 
 interface Props extends UseModelProps<number> {
   ctrl: UCSingleChoice
-  readonly: boolean
+  readonly?: boolean
+  disabled?: boolean
 }
 
-export function SingleChoice({ readonly, ctrl, ...bindProps }: Props) {
+export function SingleChoice({ readonly, disabled, ctrl, ...bindProps }: Props) {
   return (
     <div className="user-control uc-single-choice">
       {readonly ? (
@@ -22,7 +23,7 @@ export function SingleChoice({ readonly, ctrl, ...bindProps }: Props) {
       ) : (
         ctrl.props.options.map(({ label }, idx) => (
           <div className="row" key={idx}>
-            <RadioInput inputValue={idx} {...bindProps}>
+            <RadioInput inputValue={idx} {...bindProps} disabled={disabled}>
               <MarkdownWithScript source={label} />
             </RadioInput>
           </div>

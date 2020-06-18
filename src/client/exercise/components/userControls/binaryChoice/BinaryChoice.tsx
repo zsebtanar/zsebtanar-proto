@@ -6,10 +6,11 @@ import { MarkdownWithScript } from 'client/script/components'
 
 interface Props extends UseModelProps<boolean[]> {
   ctrl: UCBinaryChoice
-  readonly: boolean
+  readonly?: boolean
+  disabled?: boolean
 }
 
-export function BinaryChoice({ readonly, ctrl, ...bindProps }: Props) {
+export function BinaryChoice({ readonly, disabled, ctrl, ...bindProps }: Props) {
   const { bind } = useModel(bindProps)
   return (
     <div className="user-control uc-binary-choice">
@@ -28,10 +29,10 @@ export function BinaryChoice({ readonly, ctrl, ...bindProps }: Props) {
             </span>
           ) : (
             <span className="value mx-1">
-              <RadioInput inputValue={true} {...bind(`${idx}`)}>
+              <RadioInput inputValue={true} {...bind(`${idx}`)} disabled={disabled}>
                 <MarkdownWithScript source={option.trueLabel} />
               </RadioInput>
-              <RadioInput inputValue={false} {...bind(`${idx}`)}>
+              <RadioInput inputValue={false} {...bind(`${idx}`)} disabled={disabled}>
                 <MarkdownWithScript source={option.trueLabel} />
               </RadioInput>
             </span>
