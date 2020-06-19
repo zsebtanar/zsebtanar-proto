@@ -39,7 +39,8 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
       extraKeys: { 'Ctrl-Space': 'autocomplete' },
       lineWrapping: true,
       autoCloseBrackets: true,
-      matchBrackets: true
+      matchBrackets: true,
+      viewportMargin: Infinity
     })
 
     setCodeMirror(codeMirror)

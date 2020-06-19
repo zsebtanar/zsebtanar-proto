@@ -27,17 +27,17 @@ interface Props extends UseModelProps<ExerciseSubTask> {
 }
 
 export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props) {
-  const { evalPL } = usePocketLisp()
+  const { evalPL, script } = usePocketLisp()
   const { openModal } = useOverlayDispatch()
   const { bind, append, remove, set } = useModel<ExerciseSubTask>(bindProps)
 
   const createUserControl = type =>
-    openModal(<UserControlEditModal value={{ type } as never} />, true).then(
+    openModal(<UserControlEditModal scriptSource={script} value={{ type } as never} />, true).then(
       newControl => newControl && append('controls', newControl)
     )
 
   const editUserControl = (data, idx) =>
-    openModal(<UserControlEditModal value={data} />, true).then(
+    openModal(<UserControlEditModal scriptSource={script} value={data} />, true).then(
       control => control && set(model => dp.set(model, `controls.${idx}`, control))
     )
 

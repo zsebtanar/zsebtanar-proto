@@ -2,7 +2,7 @@ import * as express from 'express'
 import { ExerciseModel, ExerciseState } from 'shared/exercise/types'
 import { getToken, requestValidator } from '../middlewares'
 import { onlyEditors } from '../utils/authorization'
-import { ExerciseSchema, ExerciseSchemaType } from './model'
+import { ExerciseSchema, ExerciseSchemaType, ExerciseStateSchemeType } from './model'
 import { fireStore } from '../utils/firebase'
 import { indexExercise } from './utils/search-indexing'
 import { ErrorHandler } from '../middlewares/error'
@@ -16,7 +16,7 @@ route.post(
     try {
       const now = new Date()
       // exercise
-      const exercise: ExerciseModel = {
+      const exercise: ExerciseStateSchemeType = {
         ...(req.body as ExerciseSchemaType),
         state: ExerciseState.Draft
       }

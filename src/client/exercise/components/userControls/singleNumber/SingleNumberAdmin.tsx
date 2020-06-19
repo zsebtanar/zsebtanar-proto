@@ -52,7 +52,8 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>) {
         {id =>
           data.isDynamic ? (
             <div className="form-control-plaintext">
-              <code>(def {data.name}-solution #&#123;...&#124;)</code>
+              Definiáld a megoldás függvényt:
+              <code>(def solution-{data.name} #(...))</code>
             </div>
           ) : (
             <NumberInput

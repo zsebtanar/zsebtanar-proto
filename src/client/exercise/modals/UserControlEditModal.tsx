@@ -5,12 +5,14 @@ import { ExerciseSubTaskControlsType } from 'shared/exercise/types'
 import { Button } from 'client/generic/components'
 import { useModel } from '../../generic/hooks/model'
 import { UserControlsAdmin } from '../components/userControls/UserControlAdmin'
+import { PocketLispProvider } from '../../script/providers/PocketLispProvider'
 
 interface Props {
   value: ExerciseSubTaskControlsType
+  scriptSource: string
 }
 
-export function UserControlEditModal({ value }: Props) {
+export function UserControlEditModal({ value, scriptSource }: Props) {
   const { closeModal } = useDialog()
   const { bindPartialModel, data } = useModel<ExerciseSubTaskControlsType>({ value })
 
@@ -22,7 +24,9 @@ export function UserControlEditModal({ value }: Props) {
       <DialogHeader onClose={close}>Mezőszerkesztés</DialogHeader>
       <form onSubmit={() => store(data)}>
         <DialogBody>
-          <UserControlsAdmin {...bindPartialModel()} />
+          <PocketLispProvider isEdit={true} seed={1} script={scriptSource}>
+            <UserControlsAdmin {...bindPartialModel()} />
+          </PocketLispProvider>
         </DialogBody>
         <DialogFooter>
           <div>

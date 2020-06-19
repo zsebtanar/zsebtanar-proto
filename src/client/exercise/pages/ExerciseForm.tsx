@@ -52,8 +52,8 @@ export function ExerciseForm() {
   }
 
   return (
-    <PocketLispProvider isEdit={true} seed={1} script={data.script}>
-      <AssetManagerProvider {...bind('assets')}>
+    <AssetManagerProvider {...bind('assets')}>
+      <PocketLispProvider isEdit={true} seed={1} script={data.script}>
         <div className="exercise-form bg-light">
           <form className="container" onSubmit={onSave}>
             {error && (
@@ -105,7 +105,7 @@ export function ExerciseForm() {
             </div>
           </form>
         </div>{' '}
-      </AssetManagerProvider>
-    </PocketLispProvider>
+      </PocketLispProvider>
+    </AssetManagerProvider>
   )
 }

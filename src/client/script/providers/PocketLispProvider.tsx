@@ -72,7 +72,7 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props) {
       run(source: string) {
         output = []
         const result = interpret(source)
-        if (!result) {
+        if (result) {
           setOutput(result)
         }
       },
@@ -86,11 +86,9 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props) {
         return output
       }
     }),
-    [interpret, interpreter, setOutput]
+    [interpret, interpreter, setOutput, script]
   )
-  useEffect(() => {
-    if (script) api.run(script)
-  }, [api, script])
+  if (script) api.run(script)
   return (
     <PocketLispContext.Provider value={{ ...api, script: script ?? '' }}>
       {children}
