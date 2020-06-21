@@ -27,7 +27,7 @@ export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Mod
               Object.entries(classifications.result || {})
                 .map(([value, label]) => ({
                   value,
-                  label
+                  label,
                 }))
                 .sort(sortByProp('label')) || []
             }
@@ -35,14 +35,9 @@ export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Mod
           />
         )}
       </div>
-      <div className="form-group">
-        <label htmlFor="exercise-description">Feledat leírása</label>
-        <TextEditor
-          id="exercise-description"
-          preview={MarkdownWithScript}
-          {...bind('description')}
-        />
-      </div>
+      <FormGroup label="Feledat leírása">
+        {id => <TextEditor id={id} preview={MarkdownWithScript} {...bind('description')} />}
+      </FormGroup>
 
       <FormGroup label="Script">{id => <CodeEditor id={id} {...bind('script')} />}</FormGroup>
     </FormCard>
