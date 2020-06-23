@@ -1,12 +1,12 @@
 import React from 'react'
 
-import { Page } from 'client/generic/components/Page'
+import { PublicPage } from 'client/generic/components/PublicPage'
 import { PaypalButton } from '../components/PaypalButton'
 import { PatreonButton } from '../components/PatreonButton'
 
 export function About() {
   return (
-    <Page>
+    <PublicPage>
       <div className="mx-auto">
         <div className="container">
           <h2 className="mb-4">A honlapról</h2>
@@ -111,6 +111,6 @@ export function About() {
           </div>
         </div>
       </div>
-    </Page>
+    </PublicPage>
   )
 }

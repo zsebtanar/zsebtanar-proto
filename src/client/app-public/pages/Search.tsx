@@ -3,7 +3,7 @@ import * as ReactGA from 'react-ga'
 import { useParams } from 'react-router'
 import { useAlgoliaSearch } from 'client/search/services/AlgoliaSearchService'
 import { useInput } from 'client/generic/hooks'
-import { Loading, ErrorMsg, Page } from 'client/generic/components'
+import { Loading, ErrorMsg, PublicPage } from 'client/generic/components'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
 import { NavLink } from 'react-router-dom'
 import { Markdown } from 'client/generic/components/markdown'
@@ -18,7 +18,7 @@ export function Search() {
   const { value: searchTerm, bind: bindSearch } = useInput(q ?? '')
   const { result, hasNoResult, isLoading, isSuccess, error } = useAlgoliaSearch(
     searchTerm,
-    MIN_TERM_LENGTH
+    MIN_TERM_LENGTH,
   )
 
   useEffect(() => {
@@ -27,13 +27,13 @@ export function Search() {
         category: 'User',
         action: 'Search results',
         label: searchTerm,
-        value: result.nbHits
+        value: result.nbHits,
       })
     }
   }, [result, searchTerm])
 
   return (
-    <Page>
+    <PublicPage>
       <div className="mb-4 mx-auto col-md-8">
         <div className="search-input-group ">
           <label className="search-label" htmlFor="search-input">
@@ -59,7 +59,7 @@ export function Search() {
       {error && <ErrorMsg error={error} />}
       {hasNoResult && <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>}
       {isSuccess && result && <SearchResult term={searchTerm} data={result} />}
-    </Page>
+    </PublicPage>
   )
 }
 

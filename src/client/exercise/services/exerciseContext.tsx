@@ -1,9 +1,12 @@
 import React, { ReactNode, useReducer, Reducer, FormEvent } from 'react'
 import { ExerciseModel } from '../../../shared/exercise/types'
+import { ExerciseSolution } from '../components/ExerciseBody'
 
 interface ActiveSubTask {
   numberOfAttempt: number
-  usedHints: 0
+  usedHints: number
+  hintsLeft: number
+  isHintsLeft: boolean
 }
 interface State {
   exercise: ExerciseModel
@@ -15,12 +18,15 @@ interface State {
 type Action = { type: 'nextSubTask' } | { type: 'validationFailed' } | { type: 'nextHelp' }
 
 interface ExerciseContextAPI {
-  checkActiveSubTask(event: FormEvent<HTMLFormElement>): void
+  getNextHint(): void
+  checkActiveSubTask(data: ExerciseSolution): void
 }
 
 const activeSubTaskInit: ActiveSubTask = {
   numberOfAttempt: 0,
-  usedHints: 0
+  usedHints: 0,
+  hintsLeft: 0,
+  isHintsLeft: false,
 }
 
 function reducer(state: State, action: Action): State {
@@ -54,7 +60,7 @@ function initState(exercise: ExerciseModel): State {
     activeSubTask: { ...activeSubTaskInit },
     finishedTasks: 0,
     isSingle: false,
-    numberOfTasks: exercise.subTasks.length
+    numberOfTasks: exercise.subTasks.length,
   }
 }
 
@@ -62,9 +68,13 @@ export function ExerciseProvider({ children, exercise }: Props) {
   const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, initState(exercise))
 
   const api: ExerciseContextAPI = {
-    checkActiveSubTask() {
+    checkActiveSubTask(data) {
+      console.log(data)
       throw 'not implemented yet'
-    }
+    },
+    getNextHint() {
+      throw 'not implemented yet'
+    },
   }
 
   return (

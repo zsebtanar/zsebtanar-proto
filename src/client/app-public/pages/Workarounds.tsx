@@ -1,5 +1,5 @@
 import React from 'react'
-import { Page } from 'client/generic/components/Page'
+import { PublicPage } from 'client/generic/components/PublicPage'
 import { ExternalLink, Button } from 'client/generic/components'
 import { useOverlayDispatch } from 'client/overlay/providers'
 import { FeedbackModal } from 'client/feedback/modals/FeedbackModal'
@@ -7,7 +7,7 @@ import { FeedbackModal } from 'client/feedback/modals/FeedbackModal'
 export function Workarounds() {
   const { openModal } = useOverlayDispatch()
   return (
-    <Page>
+    <PublicPage>
       <div className="col-10 mx-auto">
         <h2 className="mb-4">Hibaelhárítás</h2>
 
@@ -82,6 +82,6 @@ export function Workarounds() {
           </div>
         </section>
       </div>
-    </Page>
+    </PublicPage>
   )
 }

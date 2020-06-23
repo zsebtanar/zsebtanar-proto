@@ -14,7 +14,7 @@ interface Props {
 export function trackPage<T extends object>(page, options?: T) {
   ReactGa.set({
     page,
-    ...options
+    ...options,
   })
   ReactGa.pageview(page)
 }
@@ -23,7 +23,7 @@ function getPageName(): string {
   return location.pathname
 }
 
-export function Page({ className, children, storePosition, track, trackOptions }: Props) {
+export function PublicPage({ className, children, storePosition, track, trackOptions }: Props) {
   useEffect(() => {
     const pageName = getPageName()
 
@@ -42,7 +42,7 @@ export function Page({ className, children, storePosition, track, trackOptions }
   return <section className={cx('page', className)}>{children}</section>
 }
 
-Page.defaultProps = {
+PublicPage.defaultProps = {
   storePosition: true,
-  track: true
+  track: true,
 }

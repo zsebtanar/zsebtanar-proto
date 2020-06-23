@@ -40,7 +40,7 @@
     "pre::server-compile": "npm run ::server-prep",
     "::server-compile-dev": "cross-env NODE_ENV=development webpack --display-error-details --config ./build/webpack.server.js",
     "::server-compile": "cross-env NODE_ENV=production webpack --display-error-details --config ./build/webpack.server.js",
-    "::server-emulator": "firebase use test && firebase functions:config:get > bin/functions/.runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"$(pwd)/tools/key.json\" firebase emulators:start --only functions",
+    "::server-emulator": "firebase use test && firebase functions:config:get > bin/functions/.runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"$(pwd)/src/tools/key.json\" firebase emulators:start --only functions",
     "::server-prep": "node build/prepare-server"
   },
   "config": {

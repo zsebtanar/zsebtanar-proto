@@ -1,10 +1,10 @@
 import React from 'react'
-import { Page } from 'client/generic/components/Page'
+import { PublicPage } from 'client/generic/components/PublicPage'
 import { ExternalLink } from 'client/generic/components'
 
 export function JoinUs() {
   return (
-    <Page className="search-page">
+    <PublicPage className="search-page">
       <div className="col-10 mx-auto">
         <h2 className="mb-4">Csatlakozz!</h2>
         <p>A Zsebtanár csapatába junior webfejlesztőt keresünk!</p>
@@ -37,6 +37,6 @@ export function JoinUs() {
           />
         </div>
       </div>
-    </Page>
+    </PublicPage>
   )
 }

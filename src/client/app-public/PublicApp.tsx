@@ -7,7 +7,7 @@ import { ExercisePage } from '../exercise/pages/ExercisePage'
 export const PublicApp = React.memo(function PublicAppBase() {
   return (
     <Switch>
-      <Route exact path="/exercise/:key" component={ExercisePage} />
+      <Route exact path="/exercise/:id" component={ExercisePage} />
       <Route
         component={() => (
           <div className="container page-container">

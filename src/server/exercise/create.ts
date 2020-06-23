@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { ExerciseModel, ExerciseState } from 'shared/exercise/types'
+import { ExerciseState } from 'shared/exercise/types'
 import { getToken, requestValidator } from '../middlewares'
 import { onlyEditors } from '../utils/authorization'
 import { ExerciseSchema, ExerciseSchemaType, ExerciseStateSchemeType } from './model'
@@ -18,7 +18,7 @@ route.post(
       // exercise
       const exercise: ExerciseStateSchemeType = {
         ...(req.body as ExerciseSchemaType),
-        state: ExerciseState.Draft
+        state: ExerciseState.Draft,
       }
       const result = await fireStore.collection('exercise').add(exercise)
 
@@ -27,7 +27,7 @@ route.post(
         created: now,
         createdBy: req.user.uid,
         updated: now,
-        updatedBy: req.user.uid
+        updatedBy: req.user.uid,
       }
       await fireStore
         .collection(`exercise/${result.id}/metadata`)
@@ -41,5 +41,5 @@ route.post(
     } catch (error) {
       next(new ErrorHandler(500, 'Exercise create error', error))
     }
-  }
+  },
 )
