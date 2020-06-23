@@ -1,7 +1,7 @@
-import React, { ReactNode, useState, useEffect, useMemo, useCallback } from 'react'
+import React, { ReactNode, useState, useMemo, useCallback } from 'react'
 import { Interpreter, Parser, Scanner } from 'pocket-lisp'
 import { toJS, runtime, utils, literals } from 'pocket-lisp-stdlib'
-import { valueSet } from '../../../shared/script/shared-code'
+import { valueSet } from 'shared/script/shared-code'
 import { PseudoRandomNumberGenerator } from 'shared/math/random'
 
 interface Props {
@@ -63,7 +63,7 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props) {
       }
       return undefined
     },
-    [setOutput, interpreter]
+    [setOutput, interpreter],
   )
 
   const api = useMemo(
@@ -84,9 +84,9 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props) {
       },
       getOutput(): InterpreterOutput[] {
         return output
-      }
+      },
     }),
-    [interpret, interpreter, setOutput, script]
+    [interpret, interpreter, setOutput, script],
   )
   if (script) api.run(script)
   return (

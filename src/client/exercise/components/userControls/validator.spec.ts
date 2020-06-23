@@ -1,4 +1,4 @@
-import validator from 'client/exercise/services/validate/validator'
+import validator from 'client/exercise/components/userControls/validator'
 
 describe('validator', () => {
   it('should return empty object if no user input in the exercise', () => {
@@ -10,9 +10,9 @@ describe('validator', () => {
       expect(
         validator(input, {
           solutions: { idA: 'solution' },
-          controls: { idA: { controlType: 'simple-text' } }
-        })
-      ).toEqual({ idA: false })
+          controls: { idA: { controlType: 'simple-text' } },
+        }),
+      ).toEqual({ idA: false }),
     )
   })
 
@@ -22,9 +22,9 @@ describe('validator', () => {
         { idA: 'solution' },
         {
           solutions: { idA: 'solution' },
-          controls: { idA: { controlType: 'unknown' } }
-        }
-      )
+          controls: { idA: { controlType: 'unknown' } },
+        },
+      ),
     ).toEqual({ idA: false })
   })
 
@@ -34,9 +34,9 @@ describe('validator', () => {
         { idA: { a: true, b: false } },
         {
           solutions: { idA: { a: 'true', b: 'false' } },
-          controls: { idA: { controlType: 'binary-choice' } }
-        }
-      )
+          controls: { idA: { controlType: 'binary-choice' } },
+        },
+      ),
     ).toEqual({ idA: true })
   })
 })

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams, useHistory } from 'react-router'
-import { PublicPage, Loading } from 'client/generic/components'
+import { PublicPage, Loading, Alert } from 'client/generic/components'
 import { useLoadExercise } from '../services/exercise'
 import { Exercise } from '../components/Exercise'
 import { useQuery } from '../../generic/hooks'
@@ -24,7 +24,11 @@ export function ExercisePage() {
   return (
     <PublicPage storePosition={false}>
       {isLoading && <Loading />}
-      <pre>{JSON.stringify(error, null, 3)}</pre>
+      {error && (
+        <Alert type="danger">
+          <pre>{JSON.stringify(error, null, 3)}</pre>
+        </Alert>
+      )}
       {isSuccess && result && <Exercise seed={seed} exercise={result} onClose={onClose} />}
     </PublicPage>
   )

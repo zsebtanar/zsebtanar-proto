@@ -5,17 +5,21 @@ export const log = (...args) => {
   return args[0]
 }
 
+export const clamp = (min: number, max: number, value: number) => {
+  return Math.max(min, Math.min(max, value))
+}
+
 const littleACode = 'a'.charCodeAt(0)
 export function toAbcIndex(idx) {
-  return String.fromCharCode(littleACode + idx)
+  return String.fromCharCode(littleACode + clamp(0, 25, idx))
 }
 
 export const range = (from: number, to: number, step = 1): number[] => {
-  if (from < to) return []
+  if (from > to) return []
 
   const res = [from]
-  for (let i = from; i < to; i += step) {
-    res.push((i += step))
+  for (let i = from + step; i < to; i += step) {
+    res.push(i)
   }
   return res
 }

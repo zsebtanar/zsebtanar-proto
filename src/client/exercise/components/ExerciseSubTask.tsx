@@ -36,7 +36,7 @@ export function ExerciseSubTask({ index, task, ...bindProps }: SubTaskProps) {
       )}
 
       {task.controls.map((ctrl, idx) => (
-        <UserControls key={idx} ctrl={ctrl} {...bind(ctrl.name)} />
+        <UserControls key={idx} ctrl={ctrl} {...bind(ctrl.name)} disabled={isDone} />
       ))}
 
       {!isDone && (

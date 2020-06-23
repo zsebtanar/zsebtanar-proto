@@ -1,8 +1,9 @@
-import React, { ReactNode, useReducer, Reducer, FormEvent } from 'react'
+import React, { ReactNode, useReducer, Reducer } from 'react'
 import { ExerciseModel } from '../../../shared/exercise/types'
 import { ExerciseSolution } from '../components/ExerciseBody'
 
 interface ActiveSubTask {
+  index: number
   numberOfAttempt: number
   usedHints: number
   hintsLeft: number
@@ -23,6 +24,7 @@ interface ExerciseContextAPI {
 }
 
 const activeSubTaskInit: ActiveSubTask = {
+  index: 0,
   numberOfAttempt: 0,
   usedHints: 0,
   hintsLeft: 0,

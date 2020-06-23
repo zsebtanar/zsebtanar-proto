@@ -1,9 +1,8 @@
 import React from 'react'
-import { useModel, UseModelProps } from '../../../../generic/hooks/model'
+import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UCSingleNumber } from 'shared/exercise/types'
-import { Checkbox, Input, TextEditor, NumberInput } from '../../../../generic/components/form'
-import { FormGroup } from '../../../../generic/components'
-import { MarkdownWithScript } from '../../../../script/components'
+import { FormGroup, Checkbox, Input, TextEditor, NumberInput } from 'client/generic/components'
+import { MarkdownWithScript } from 'client/script/components'
 import { UserControlNameInput } from '../common/UserControlNameInput'
 
 export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>) {

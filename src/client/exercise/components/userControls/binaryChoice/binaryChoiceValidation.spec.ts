@@ -1,4 +1,4 @@
-import { binaryChoiceCheck as binaryChoice } from './binaryChoice'
+import { binaryChoiceCheck as binaryChoice } from './binaryChoiceValidation'
 
 describe('binaryChoice', () => {
   it('should pass in the basic case', () => {
@@ -8,7 +8,7 @@ describe('binaryChoice', () => {
     expect(binaryChoice(null, { idA: false, idB: true }, { idA: false, idB: true })).toBe(true)
     expect(
       // @ts-expect-error
-      binaryChoice(null, { idA: false, idB: true }, { idA: 'false', idB: 'true' } as any)
+      binaryChoice(null, { idA: false, idB: true }, { idA: 'false', idB: 'true' } as any),
     ).toBe(true)
   })
 
@@ -20,7 +20,7 @@ describe('binaryChoice', () => {
   it('should fail if the user input empty', () => {
     ;[null, undefined, {}].map(input =>
       // @ts-expect-error
-      expect(binaryChoice(null, { idA: true }, input)).toBe(false)
+      expect(binaryChoice(null, { idA: true }, input)).toBe(false),
     )
   })
 })

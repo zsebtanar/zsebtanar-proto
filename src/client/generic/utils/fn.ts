@@ -34,7 +34,3 @@ export function uid(): string {
 export function numberSortAsc(a: number, b: number): number {
   return a - b
 }
-
-export function floatEq(a: number, b: number): boolean {
-  return a === b || (a >= b - Number.EPSILON && a <= b + Number.EPSILON)
-}

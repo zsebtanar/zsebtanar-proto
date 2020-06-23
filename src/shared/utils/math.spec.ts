@@ -1,4 +1,4 @@
-import { floatEq } from './fn'
+import { floatEq } from './math'
 
 test('floatEq', () => {
   expect(floatEq(2, 3)).toBe(false)

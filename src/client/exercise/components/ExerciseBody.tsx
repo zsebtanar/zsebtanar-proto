@@ -11,14 +11,14 @@ type Props = UseModelProps<ExerciseSolution>
 
 export function ExerciseBody({ ...bindProps }: Props) {
   const { bind } = useModel<ExerciseSolution>(bindProps)
-  const { exercise, isSingle } = useExercise()
+  const { exercise, isSingle, finishedTasks } = useExercise()
 
   return (
     <div className="exercise-body container">
       <div className="row">
         <div className="col-lg-8 col-md-10 mx-auto my-3">
           <ExerciseMarkdown className="main-description mb-3" source={exercise.description} />
-          {exercise.subTasks.map((subTask, index) => (
+          {exercise.subTasks.slice(0, finishedTasks + 1).map((subTask, index) => (
             <div className="row" key={`subtask-${index}`}>
               <div className="sub-task-index col-md-1 mb-1 font-weight-bold">
                 {isSingle ? '' : `${toAbcIndex(index)})`}
