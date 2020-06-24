@@ -1,35 +1,37 @@
-import { simpleTextCheck } from './simpleText/simpleText'
+import { Interpreter } from './types'
+import { UserControl, ExerciseSubTask, ExerciseSubTaskControlsType } from 'shared/exercise/types'
 import { singleNumberValidation } from './singleNumber/singleNumberValidation'
-import { fractionNumber } from './fractionNumber/fractionNumber'
-import { numberList } from './numberList/numberList'
-import { singleChoice } from './singleChoice/singleChoice'
-import { binaryChoiceCheck } from './binaryChoice/binaryChoiceValidation'
-import { multiChoiceCheck } from './multiChoice/multiChoice'
-import { UserControl, ExerciseSubTask } from 'shared/exercise/types'
-
-const types: Record<string, unknown> = {
-  'simple-text': simpleTextCheck,
-  'single-number': singleNumberValidation,
-  'fraction-number': fractionNumber,
-  'number-list': numberList,
-  'single-choice': singleChoice,
-  'binary-choice': binaryChoiceCheck,
-  'multi-choice': multiChoiceCheck,
-}
-
-export type ValidatorFn = (
-  control: UserControl,
-  userInput: UserControl['solution'],
-  interpreter: (source: string) => unknown,
-) => boolean
+import { binaryChoiceValidation } from './binaryChoice/binaryChoiceValidation'
+import { singleChoiceValidation } from './singleChoice/singleChoiceValidation'
+import { simpleTextValidation } from './simpleText/simpleTextValidation'
 
 export function userControlValidator(
   userSolutions: UserControl['solution'],
   subTask: ExerciseSubTask,
-  interpreter: (source: string) => unknown,
+  interpreter: Interpreter<any>,
 ): boolean[] {
   return subTask.controls.map((ctrl, idx) => {
-    const validationFn = types[ctrl.type] as ValidatorFn
-    return validationFn(ctrl, userSolutions[idx], interpreter)
+    let solution: any = ctrl.solution
+    if (ctrl.isDynamic) {
+      solution = interpreter(`(solution-${name})`)
+    }
+    const userInput = userSolutions[idx]
+
+    switch (ctrl.type) {
+      case ExerciseSubTaskControlsType.BinaryChoice:
+        return binaryChoiceValidation(ctrl, solution, userInput)
+      case ExerciseSubTaskControlsType.FractionNumber:
+        return false
+      case ExerciseSubTaskControlsType.MultiChoice:
+        return false
+      case ExerciseSubTaskControlsType.NumberList:
+        return false
+      case ExerciseSubTaskControlsType.SimpleText:
+        return simpleTextValidation(ctrl, solution, userInput)
+      case ExerciseSubTaskControlsType.SingleChoice:
+        return singleChoiceValidation(ctrl, solution, userInput)
+      case ExerciseSubTaskControlsType.SingleNumber:
+        return singleNumberValidation(ctrl, solution, userInput)
+    }
   })
 }

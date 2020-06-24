@@ -3,11 +3,11 @@ import { UserControl } from 'shared/exercise/types'
 import { UseModelProps } from 'client/generic/hooks/model'
 
 import * as t from './controlTypes'
-import { SimpleText } from './simpleText/SimpleText'
+import { SimpleText } from './simpleText/simpleTextValidation'
 import { SingleNumber } from './singleNumber/SingleNumber'
 import { FractionNumberComponent } from './fractionNumber/FractionNumberComponent'
 import { NumberList } from './numberList/NumberList'
-import { SingleChoice } from './singleChoice/SingleChoice'
+import { SingleChoice } from './singleChoice/singleChoiceValidation'
 import { BinaryChoice } from './binaryChoice/BinaryChoice'
 import { MultiChoice } from './multiChoice/MultiChoice'
 
