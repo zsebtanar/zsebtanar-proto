@@ -6,10 +6,10 @@ import * as t from './controlTypes'
 import { SimpleText } from './simpleText/simpleTextValidation'
 import { SingleNumber } from './singleNumber/SingleNumber'
 import { FractionNumberComponent } from './fractionNumber/FractionNumberComponent'
-import { NumberList } from './numberList/NumberList'
+import { NumberList } from './numberList/numberListValidation'
 import { SingleChoice } from './singleChoice/singleChoiceValidation'
 import { BinaryChoice } from './binaryChoice/BinaryChoice'
-import { MultiChoice } from './multiChoice/MultiChoice'
+import { MultiChoice } from './multiChoice/multiChoiceValidator'
 
 interface Props<TSolution> extends UseModelProps<TSolution> {
   ctrl: UserControl

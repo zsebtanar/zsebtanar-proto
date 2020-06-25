@@ -4,6 +4,9 @@ import { singleNumberValidation } from './singleNumber/singleNumberValidation'
 import { binaryChoiceValidation } from './binaryChoice/binaryChoiceValidation'
 import { singleChoiceValidation } from './singleChoice/singleChoiceValidation'
 import { simpleTextValidation } from './simpleText/simpleTextValidation'
+import { fractionNumberValidation } from './fractionNumber/fractionNumberValidation'
+import { multiChoiceValidation } from './multiChoice/multiChoiceValidator'
+import { numberListValidation } from './numberList/numberListValidation'
 
 export function userControlValidator(
   userSolutions: UserControl['solution'],
@@ -21,11 +24,11 @@ export function userControlValidator(
       case ExerciseSubTaskControlsType.BinaryChoice:
         return binaryChoiceValidation(ctrl, solution, userInput)
       case ExerciseSubTaskControlsType.FractionNumber:
-        return false
+        return fractionNumberValidation(ctrl, solution, userInput)
       case ExerciseSubTaskControlsType.MultiChoice:
-        return false
+        return multiChoiceValidation(ctrl, solution, userInput)
       case ExerciseSubTaskControlsType.NumberList:
-        return false
+        return numberListValidation(ctrl, solution, userInput)
       case ExerciseSubTaskControlsType.SimpleText:
         return simpleTextValidation(ctrl, solution, userInput)
       case ExerciseSubTaskControlsType.SingleChoice:

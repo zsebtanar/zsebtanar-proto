@@ -1,10 +1,10 @@
-import { UCNumberList } from '../../../../../shared/exercise/types'
+import { UCNumberList } from 'shared/exercise/types'
 import { numberSortAsc, floatEq } from '../../../../generic/utils'
 
-export function numberList(
+export function numberListValidation(
   control: UCNumberList,
   solution: UCNumberList['solution'],
-  userInput: UCNumberList['solution']
+  userInput: UCNumberList['solution'],
 ): boolean {
   if (solution.length !== userInput.length) return false
 

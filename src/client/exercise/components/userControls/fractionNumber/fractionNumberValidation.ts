@@ -1,14 +1,14 @@
 import {
   isValid,
   simplifyFractionNumber,
-  INVALID_FRACTION_NUMBER
+  INVALID_FRACTION_NUMBER,
 } from 'shared/math/fractionNumber'
-import { UCFractionNumber } from '../../../../../shared/exercise/types'
+import { UCFractionNumber } from 'shared/exercise/types'
 
-export function fractionNumber(
-  control: UCFractionNumber,
+export function fractionNumberValidation(
+  ctrl: UCFractionNumber,
   solution: UCFractionNumber['solution'],
-  userInput: UCFractionNumber['solution']
+  userInput: UCFractionNumber['solution'],
 ): boolean {
   const a = simplifyFractionNumber(userInput || INVALID_FRACTION_NUMBER)
   const b = simplifyFractionNumber(solution || INVALID_FRACTION_NUMBER)
