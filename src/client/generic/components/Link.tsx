@@ -4,9 +4,16 @@ interface LinkProps extends React.AnchorHTMLAttributes<{}> {
   to?: string
 }
 
-export function Link({ tabIndex, role, className, title, to, children }: LinkProps) {
+export function Link({ tabIndex, role, className, title, to, children, ...props }: LinkProps) {
   return (
-    <a href={to || '#'} className={className} tabIndex={tabIndex} title={title} role={role}>
+    <a
+      href={to || '#'}
+      className={className}
+      tabIndex={tabIndex}
+      title={title}
+      role={role}
+      {...props}
+    >
       {children}
     </a>
   )

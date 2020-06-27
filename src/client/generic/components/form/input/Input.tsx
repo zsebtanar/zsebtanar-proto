@@ -1,11 +1,11 @@
 import React from 'react'
 import { UseModelProps } from '../../../hooks/model'
 
-interface Props
+export interface InputProps
   extends UseModelProps<string>,
     Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'name'> {}
 
-export function Input({ name, value, onChange, ...props }: Props) {
+export function Input({ name, value, onChange, ...props }: InputProps) {
   return (
     <input
       name={name}

@@ -74,7 +74,7 @@ function AnonymousUserMenu() {
   return (
     <>
       <li className="nav-item" key="sign-up">
-        <Link className="nav-link" href="/register">
+        <Link className="nav-link" href="/register" data-testid="header-reg-btn">
           <FontAwesomeIcon icon={faPlus} /> Regisztráció
         </Link>
       </li>

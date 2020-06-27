@@ -3,13 +3,13 @@ import { UserControl } from 'shared/exercise/types'
 import { UseModelProps } from 'client/generic/hooks/model'
 
 import * as t from './controlTypes'
-import { SimpleText } from './simpleText/simpleTextValidation'
+import { SimpleText } from './simpleText/SimpleText'
 import { SingleNumber } from './singleNumber/SingleNumber'
 import { FractionNumberComponent } from './fractionNumber/FractionNumberComponent'
-import { NumberList } from './numberList/numberListValidation'
-import { SingleChoice } from './singleChoice/singleChoiceValidation'
+import { NumberList } from './numberList/NumberList'
+import { SingleChoice } from './singleChoice/SingleChoice'
 import { BinaryChoice } from './binaryChoice/BinaryChoice'
-import { MultiChoice } from './multiChoice/multiChoiceValidator'
+import { MultiChoice } from './multiChoice/MultiChoice'
 
 interface Props<TSolution> extends UseModelProps<TSolution> {
   ctrl: UserControl

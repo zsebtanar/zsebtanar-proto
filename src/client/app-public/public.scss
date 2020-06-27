@@ -23,7 +23,7 @@ body,
     margin: 3rem 0;
 
     .list-group {
-      padding-left:  ($grid-gutter-width / 2);
+      padding-left: ($grid-gutter-width / 2);
     }
   }
 }
@@ -290,4 +290,10 @@ body,
 .from-announcement {
   margin: 2rem auto;
   max-width: 600px;
+}
+
+.svg-icon {
+  font-size: 0;
+  line-height: 0;
+  vertical-align: text-top;
 }

@@ -3,10 +3,12 @@ import { Route, Switch } from 'react-router-dom'
 import { Navigation, Footer } from './nav'
 import { About, Home, JoinUs, Page404, Workarounds, Search } from './pages'
 import { ExercisePage } from '../exercise/pages/ExercisePage'
+import { RegisterPage } from './pages/RegisterPage'
 
 export const PublicApp = React.memo(function PublicAppBase() {
   return (
     <Switch>
+      <Route path="/register" exact component={RegisterPage} />
       <Route exact path="/exercise/:id" component={ExercisePage} />
       <Route
         component={() => (

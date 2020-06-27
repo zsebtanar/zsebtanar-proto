@@ -29,3 +29,8 @@ service-account-credentials.json
 
 src/tools/
 ./ideas.md
+
+cypress/videos
+cypress/screenshots
+
+/examples/
