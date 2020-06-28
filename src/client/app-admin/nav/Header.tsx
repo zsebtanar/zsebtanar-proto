@@ -6,7 +6,7 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownDivider
+  DropdownDivider,
 } from 'client/generic/components'
 import { isAdmin } from 'client/user/services/user'
 
@@ -20,7 +20,7 @@ import {
   faListAlt,
   faFolder,
   faPowerOff,
-  faBars
+  faBars,
 } from '@fortawesome/free-solid-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 
@@ -53,7 +53,7 @@ export function Header({ onOpenSideNav }: Props) {
             </li>
             {isAdmin(userToken) && (
               <Dropdown elementType="li">
-                <DropdownToggle>Rendszer</DropdownToggle>
+                <DropdownToggle className="btn btn-link nav-link">Rendszer</DropdownToggle>
                 <DropdownMenu>
                   <NavLink activeClassName="active" className="dropdown-item" to="/user">
                     <FontAwesomeIcon icon={faUsers} /> Felhasználók
@@ -69,7 +69,7 @@ export function Header({ onOpenSideNav }: Props) {
             )}
 
             <Dropdown elementType="li">
-              <DropdownToggle>Tartalom</DropdownToggle>
+              <DropdownToggle className="btn btn-link nav-link">Tartalom</DropdownToggle>
               <DropdownMenu>
                 <NavLink activeClassName="active" className="dropdown-item" to="/exercise">
                   <FontAwesomeIcon icon={faTasks} /> Feladatok
@@ -88,7 +88,7 @@ export function Header({ onOpenSideNav }: Props) {
             </Dropdown>
 
             <Dropdown elementType="li" right>
-              <DropdownToggle>Profil</DropdownToggle>
+              <DropdownToggle className="btn btn-link nav-link">Profil</DropdownToggle>
               <DropdownMenu>
                 <button className="dropdown-item btn btn-link " onClick={signOut}>
                   <FontAwesomeIcon icon={faPowerOff} /> Kijelentkezés

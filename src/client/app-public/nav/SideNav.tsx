@@ -69,7 +69,12 @@ function AnonymousUserMenu() {
         </NavLink>
       </li>
       <li className="nav-item" key="sign-in">
-        <NavLink activeClassName="active" className="nav-link" to="/login">
+        <NavLink
+          activeClassName="active"
+          className="nav-link"
+          to="/login"
+          data-testid="sidenav-reg-btn"
+        >
           <FontAwesomeIcon icon={faSignInAlt} /> Belépés
         </NavLink>
       </li>

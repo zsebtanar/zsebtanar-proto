@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDropdown } from './DropdownProvider'
 
-interface Props extends Pick<React.HTMLAttributes<unknown>, 'role'> {
+interface Props extends Pick<React.HTMLAttributes<unknown>, 'role' | 'aria-label'> {
   id?: string
   className?: string
   title?: string
@@ -24,7 +24,7 @@ export function DropdownToggle({ id, className, btn, children, ...props }: Props
     <button
       id={id}
       type="button"
-      className={`btn ${btn || 'link'} ${className || 'nav-link'} dropdown-toggle`}
+      className={`${className} dropdown-toggle`}
       aria-haspopup="true"
       aria-expanded={dropdown.isOpen}
       onClick={action}

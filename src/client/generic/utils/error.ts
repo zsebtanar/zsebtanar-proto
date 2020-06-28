@@ -10,3 +10,13 @@ export class CustomError {
 }
 
 export class NotFoundError extends CustomError {}
+
+export function errorToString(error: any, codeMapping: Record<string, string>) {
+  if (error.code && codeMapping?.[error.code]) {
+    return codeMapping?.[error.code]
+  }
+  if (error.message) {
+    return error.message
+  }
+  return JSON.stringify(error)
+}

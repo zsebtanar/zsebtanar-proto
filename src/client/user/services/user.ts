@@ -25,10 +25,10 @@ export function getUserDetails(uid) {
 export const removeUserData = uid => usersService.delete(uid)
 
 export const getAllUser = () =>
-  cloudFnGet(`user/all`, {}, { withToken: true }) as Promise<{ users: FB.UserData[] }>
+  cloudFnGet(`/user/all`, {}, { withToken: true }) as Promise<{ users: FB.UserData[] }>
 
 export const updateUserRole = (uid, newRole) =>
-  cloudFnPost(`user/role/${uid}`, { newRole }, { withToken: true })
+  cloudFnPost(`/user/role/${uid}`, { newRole }, { withToken: true })
 
 export const updateUserProfile = (uid, data) =>
-  cloudFnPost(`user/profile/${uid}`, data, { withToken: true })
+  cloudFnPost(`/user/profile/${uid}`, data, { withToken: true })

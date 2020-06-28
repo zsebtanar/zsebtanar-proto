@@ -1,15 +1,23 @@
 import React, { ReactNode, Reducer, useReducer, useMemo } from 'react'
 import { app } from 'client/generic/services'
 import { logException } from 'client/generic/utils/logger'
-import { parseToken, getUserDetails } from 'client/user/services/user'
-import { UserModel } from '../types'
+import { parseToken, getUserDetails, updateUserProfile } from 'client/user/services/user'
+import { UserModel, ProviderTypes } from '../types'
+import firebase from 'firebase'
 
 interface Props {
   children: ReactNode
 }
 
-interface State {
-  loading: boolean
+enum UserStates {
+  Idle = 'idle',
+  Loading = 'loading',
+  Error = 'error',
+  RegisterUser = 'registerUser',
+}
+
+interface Store {
+  state: UserStates
   loggedIn: boolean
   error?: Error
   user?: firebase.User
@@ -18,35 +26,44 @@ interface State {
 }
 
 interface UserContextAPI {
-  signIn(email: string, password: string): Promise<State>
-  signUp(email: string, password: string, displayName: string): Promise<State>
+  signIn(email: string, password: string): Promise<Store>
+  ssoSignIn(providerType: ProviderTypes): Promise<Store>
+  signUp(email: string, password: string, displayName: string): Promise<Store>
+  forgotPassword(email: string): Promise<unknown>
   signOut(): void
+  isLoading: boolean
+  isRegistration: boolean
+  hasError: boolean
 }
 
 type Action =
   | { type: 'SetUser'; payload: { user?: firebase.User } }
   | { type: 'SetDetails'; payload: { details: UserModel; token: string } }
+  | { type: 'LoadUser' }
   | { type: 'SingInStart' }
+  | { type: 'SSOSignInStart' }
+  | { type: 'SingUpStart' }
+  | { type: 'SingUpDone' }
   | { type: 'NoUser' }
   | { type: 'Error'; payload: Error }
 
 const AUTH = app.auth()
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const UserContext = React.createContext<State>({} as any)
+export const UserContext = React.createContext<Store>({} as any)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const UserDispatchContext = React.createContext<UserContextAPI>({} as any)
 
-const defaultState: State = {
-  loading: true,
+const defaultState: Store = {
+  state: UserStates.Idle,
   loggedIn: false,
   error: undefined,
   user: undefined,
   userToken: undefined,
-  userDetails: undefined
+  userDetails: undefined,
 }
 
-function userReducer(state: State, action: Action) {
+function userReducer(state: Store, action: Action): Store {
   switch (action.type) {
     case 'SetUser': {
       const { user } = action.payload
@@ -54,31 +71,39 @@ function userReducer(state: State, action: Action) {
     }
     case 'SetDetails': {
       const { details, token } = action.payload
-      return { ...state, loading: false, userDetails: details, userToken: token }
+      return { ...state, userDetails: details, userToken: token }
     }
+    case 'SingUpStart':
+      return { ...defaultState, state: UserStates.RegisterUser }
+    case 'LoadUser':
     case 'SingInStart': {
-      return { ...defaultState }
+      return { ...defaultState, state: UserStates.Loading }
     }
     case 'NoUser': {
-      return { ...defaultState, loading: false }
+      return { ...defaultState, state: UserStates.Idle }
     }
     case 'Error': {
-      return { ...defaultState, loading: false, error: action.payload }
+      return { ...defaultState, state: UserStates.Error, error: action.payload }
     }
+    default:
+      return state
   }
 }
 
 export function UserProvider({ children }: Props) {
-  const [state, dispatch] = useReducer<Reducer<State, Action>>(userReducer, defaultState)
+  const [store, dispatch] = useReducer<Reducer<Store, Action>>(userReducer, defaultState)
 
   React.useEffect(() => {
     AUTH.onAuthStateChanged(async user => {
+      dispatch({ type: 'LoadUser' })
+
       try {
+        if (store.state === UserStates.RegisterUser) return
         if (user) {
           dispatch({ type: 'SetUser', payload: { user } })
           const [details, token] = await Promise.all([
             getUserDetails(user.uid).catch(() => ({})),
-            parseToken(user)
+            parseToken(user),
           ])
           dispatch({ type: 'SetDetails', payload: { details, token } })
         } else {
@@ -91,29 +116,65 @@ export function UserProvider({ children }: Props) {
   }, [])
 
   React.useEffect(() => {
-    if (state.error) {
-      logException(state.error)
+    if (store.error) {
+      logException(store.error)
     }
   })
 
   const api: UserContextAPI = useMemo(
     () => ({
-      async signIn(email: string, password: string): Promise<State> {
+      async signIn(email: string, password: string): Promise<Store> {
         dispatch({ type: 'SingInStart' })
         try {
           await AUTH.signInWithEmailAndPassword(email, password)
         } catch (e) {
           dispatch({ type: 'Error', payload: e })
         }
-        return state
+        return store
       },
-      async signUp(email: string, password: string): Promise<State> {
-        // dispatch({ type: SIGN_UP_START })
-        // const user = await AUTH.createUserWithEmailAndPassword(email, password)
-        //   .then(user => updateUserProfile(user.user.uid, { displayName }))
-        //   .then(res => dispatch({ type: USER_SIGN_UP_FINISHED, payload: { user: res.data } }))
-        //   .catch(handleError(SIGN_UP_ERROR, dispatch))
-        return state
+      async ssoSignIn(providerType: ProviderTypes) {
+        try {
+          dispatch({ type: 'SSOSignInStart' })
+          let provider
+          if (providerType === ProviderTypes.Google) {
+            provider = new firebase.auth.GoogleAuthProvider()
+            provider.addScope('email')
+            provider.addScope('profile')
+          } else if (providerType === ProviderTypes.Facebook) {
+            provider = new firebase.auth.FacebookAuthProvider()
+            provider.addScope('email')
+            provider.addScope('public_profile')
+          }
+          if (!provider) {
+            throw new Error(`Invalid provider: ${providerType}`)
+          }
+          await AUTH.signInWithPopup(provider)
+        } catch (e) {
+          dispatch({ type: 'Error', payload: e })
+          return Promise.reject(e)
+        }
+
+        return store
+      },
+      async signUp(email: string, password: string, displayName: string): Promise<Store> {
+        try {
+          dispatch({ type: 'SingUpStart' })
+          const userCredential = await AUTH.createUserWithEmailAndPassword(email, password)
+          if (!(userCredential && userCredential.user)) {
+            throw new Error('Create user failed')
+          }
+          dispatch({ type: 'SetUser', payload: { user: userCredential.user } })
+          const [details, token] = await Promise.all([
+            updateUserProfile(userCredential.user.uid, { displayName }),
+            parseToken(userCredential.user),
+          ])
+          dispatch({ type: 'SetDetails', payload: { details, token } })
+        } catch (e) {
+          dispatch({ type: 'Error', payload: e })
+          return Promise.reject(e)
+        }
+
+        return store
       },
       async signOut(): Promise<void> {
         try {
@@ -123,19 +184,33 @@ export function UserProvider({ children }: Props) {
         } catch (e) {
           dispatch({ type: 'Error', payload: e })
         }
-      }
+      },
+      forgotPassword(email: string) {
+        return AUTH.sendPasswordResetEmail(email, {
+          url: window.location.href.replace('/forgotten-password', '') + '/login',
+        })
+      },
+      get hasError() {
+        return store.state === UserStates.Error
+      },
+      get isLoading() {
+        return store.state === UserStates.Loading || store.state === UserStates.RegisterUser
+      },
+      get isRegistration() {
+        return store.state === UserStates.RegisterUser
+      },
     }),
-    [state]
+    [store],
   )
 
   return (
-    <UserContext.Provider value={state}>
+    <UserContext.Provider value={store}>
       <UserDispatchContext.Provider value={api}>{children}</UserDispatchContext.Provider>
     </UserContext.Provider>
   )
 }
 
-export function useUser() {
+export function useUserState() {
   const context = React.useContext(UserContext)
   if (context === undefined) {
     throw new Error('useUser must be used within a UserContext')
@@ -150,46 +225,18 @@ export function useUserDispatch() {
   }
   return context
 }
-//
-// export function signUp(email, password, { displayName }): any {
-//   return dispatch => {
-//     dispatch({ type: SIGN_UP_START })
-//     return AUTH.createUserWithEmailAndPassword(email, password)
-//       .then(user => updateUserProfile(user.user.uid, { displayName }))
-//       .then(res => dispatch({ type: USER_SIGN_UP_FINISHED, payload: { user: res.data } }))
-//       .catch(handleError(SIGN_UP_ERROR, dispatch))
-//   }
-// }
-//
-// export function signIn(email, password): any {
-//   return dispatch => {
-//
-//   }
-// }
-//
+
+export function useUser() {
+  const user = useUserState()
+  const dispatch = useUserDispatch()
+  return { ...user, ...dispatch }
+}
+
 // export function forgotPassword(email: string): Promise<any> {
 //   return AUTH.sendPasswordResetEmail(email, { url: window.location.href })
 // }
 //
-// export function googleSignIn(): any {
-//   return dispatch => {
-//     dispatch({ type: SSO_SIGN_IN_START })
-//     const provider = new firebase.auth.GoogleAuthProvider()
-//     provider.addScope('email')
-//     provider.addScope('profile')
-//     return AUTH.signInWithPopup(provider).catch(handleError(SSO_SIGN_IN_ERROR, dispatch))
-//   }
-// }
-//
-// export function facebookSignIn(): any {
-//   return dispatch => {
-//     dispatch({ type: SSO_SIGN_IN_START })
-//     const provider = new firebase.auth.FacebookAuthProvider()
-//     provider.addScope('email')
-//     provider.addScope('public_profile')
-//     return AUTH.signInWithPopup(provider).catch(handleError(SSO_SIGN_IN_ERROR, dispatch))
-//   }
-// }
+
 //
 // export function deleteUser() {
 //   return () =>

@@ -297,3 +297,21 @@ body,
   line-height: 0;
   vertical-align: text-top;
 }
+
+.auth-page {
+  .header .desktop-header {
+    display: flex;
+  }
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  min-height: 100vh;
+  background: var(--light);
+
+  form {
+    width: 100%;
+    max-width: 420px;
+    padding: 15px;
+    margin: auto;
+  }
+}

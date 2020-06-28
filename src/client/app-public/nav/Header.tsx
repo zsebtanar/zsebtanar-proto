@@ -3,12 +3,10 @@ import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'
 import { Button, Dropdown, DropdownToggle, DropdownMenu, Link } from 'client/generic/components'
 import { isAdmin } from 'client/user/services/user'
-
-import 'client/app-public/nav/Header.scss'
-import { useOverlayDispatch } from 'client/overlay/providers'
-import { SignInModal } from 'client/user/modals/SignInModal'
 import { faPlus, faSignInAlt, faBars, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import './Header.scss'
 
 ///
 
@@ -53,14 +51,14 @@ function SignedInMenu() {
 
   return (
     <Dropdown elementType="li" className="user-menu" right key="user-menu">
-      <DropdownToggle>
+      <DropdownToggle aria-label="Felhasználói menü" className="nav-link btn btn-link">
         <FontAwesomeIcon icon={faUser} />
       </DropdownToggle>
       <DropdownMenu>
         <NavLink exact to="/profile" className="dropdown-item">
           Profile
         </NavLink>
-        <button className="dropdown-item" onClick={user.signOut}>
+        <button className="dropdown-item" onClick={user.signOut} data-testid="header-signout-btn">
           Kijelentkezés
         </button>
       </DropdownMenu>
@@ -69,19 +67,21 @@ function SignedInMenu() {
 }
 
 function AnonymousUserMenu() {
-  const { openModal } = useOverlayDispatch()
-
   return (
     <>
       <li className="nav-item" key="sign-up">
-        <Link className="nav-link" href="/register" data-testid="header-reg-btn">
+        <Link
+          className="btn btn-outline-primary mx-2"
+          href="/register"
+          data-testid="header-reg-btn"
+        >
           <FontAwesomeIcon icon={faPlus} /> Regisztráció
         </Link>
       </li>
       <li className="nav-item" key="sign-in">
-        <Button onAction={() => openModal(<SignInModal />)} btn="link">
-          <FontAwesomeIcon icon={faSignInAlt} /> Belépés
-        </Button>
+        <Link className="btn btn-primary" href="/login" data-testid="header-login-btn">
+          <FontAwesomeIcon icon={faUser} /> Belépés
+        </Link>
       </li>
     </>
   )
@@ -90,7 +90,7 @@ function AnonymousUserMenu() {
 function AdminMenu() {
   return (
     <li className="nav-item" key="admin">
-      <a href={'/admin/exercise'} className="nav-link">
+      <a href={'/admin/exercise'} className="btn btn-outline-secondary mx-2">
         Admin
       </a>
     </li>
