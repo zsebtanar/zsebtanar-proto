@@ -6,7 +6,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   Button,
-  FormCard
+  FormCard,
 } from 'client/generic/components'
 import { MarkdownWithScript } from 'client/script/components'
 import { ExerciseSubTask } from 'shared/exercise/types'
@@ -33,12 +33,12 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props) {
 
   const createUserControl = type =>
     openModal(<UserControlEditModal scriptSource={script} value={{ type } as never} />, true).then(
-      newControl => newControl && append('controls', newControl)
+      newControl => newControl && append('controls', newControl),
     )
 
   const editUserControl = (data, idx) =>
     openModal(<UserControlEditModal scriptSource={script} value={data} />, true).then(
-      control => control && set(model => dp.set(model, `controls.${idx}`, control))
+      control => control && set(model => dp.set(model, `controls.${idx}`, control)),
     )
 
   return (
@@ -48,7 +48,7 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props) {
           {index + 1}. Részfeladat
           {' - '}
           <Dropdown elementType="div" className="d-inline-block">
-            <DropdownToggle className="btn-link btn-sm">
+            <DropdownToggle className="btn btn-link btn-sm">
               <FontAwesomeIcon icon={faPlusCircle} /> Mező hozzáadása
             </DropdownToggle>
             <DropdownMenu>
@@ -92,6 +92,7 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props) {
                 />
               </div>
               <div className="col-2 text-right">
+                <span className="badge badge-secondary">{userControlNames[control.type]}</span>
                 <Button small btn="link" onAction={() => editUserControl(control, idx)}>
                   <FontAwesomeIcon icon={faEdit} />
                 </Button>

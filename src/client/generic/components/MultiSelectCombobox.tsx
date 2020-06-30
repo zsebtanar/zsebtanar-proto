@@ -12,6 +12,7 @@ interface Option<TValue> {
 interface Props<TValue> extends UseModelProps<TValue[]> {
   label: string
   options: Option<TValue>[]
+  itemRenderer?: (item: Option<TValue>) => React.ReactNode
 }
 
 export function MultiSelectCombobox<TValue>({
@@ -19,7 +20,8 @@ export function MultiSelectCombobox<TValue>({
   onChange,
   label,
   options,
-  value
+  value,
+  itemRenderer,
 }: Props<TValue>) {
   const inputEl = useRef<HTMLInputElement>(null)
   const [isInFocus, setIsInFocus] = useState<boolean>(false)
@@ -29,18 +31,19 @@ export function MultiSelectCombobox<TValue>({
     getDropdownProps,
     addSelectedItem,
     removeSelectedItem,
-    selectedItems
+    selectedItems,
   } = useMultipleSelection<Option<TValue>>({
     initialSelectedItems: value ? options.filter(o => value.includes(o.value)) : [],
     onSelectedItemsChange: ({ selectedItems }) => {
       onChange?.({ name, value: (selectedItems ?? []).map(opt => opt.value) })
-    }
+    },
   })
 
   const getFilteredItems = () =>
     options.filter(
       item =>
-        !selectedItems.includes(item) && item.label.toLowerCase().includes(inputValue.toLowerCase())
+        !selectedItems.includes(item) &&
+        item.label.toLowerCase().includes(inputValue.toLowerCase()),
     )
 
   const {
@@ -51,7 +54,7 @@ export function MultiSelectCombobox<TValue>({
     getInputProps,
     getComboboxProps,
     highlightedIndex,
-    getItemProps
+    getItemProps,
   } = useCombobox({
     inputValue,
     selectedItem: null,
@@ -73,7 +76,7 @@ export function MultiSelectCombobox<TValue>({
         default:
           break
       }
-    }
+    },
   })
 
   const filteredItems = getFilteredItems()
@@ -111,8 +114,8 @@ export function MultiSelectCombobox<TValue>({
                 preventKeyAction: isOpen,
                 ref: inputEl,
                 onFocus: () => setIsInFocus(true),
-                onBlur: () => setIsInFocus(false)
-              })
+                onBlur: () => setIsInFocus(false),
+              }),
             })}
           />
           <button
@@ -134,7 +137,7 @@ export function MultiSelectCombobox<TValue>({
             key={`${item.value}${index}`}
             {...getItemProps({ item, index })}
           >
-            {item.label}
+            {itemRenderer?.(item) ?? item.label}
           </li>
         ))}
       </ul>

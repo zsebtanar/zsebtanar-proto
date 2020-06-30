@@ -1,4 +1,5 @@
 .multi-select-combobox {
+  position: relative;
   .form-control {
     height: auto;
     position: relative;
@@ -14,7 +15,7 @@
 
   .dropdown-toggle {
     position: absolute;
-    top:0 ;
+    top: 0;
     right: 0;
     height: 100%;
     width: 2rem;
@@ -35,6 +36,8 @@
     top: auto;
     left: auto;
     width: 100%;
+    max-height: 15rem;
+    overflow: auto;
   }
   input {
     border: none;
@@ -42,5 +45,4 @@
       outline: none;
     }
   }
-
 }

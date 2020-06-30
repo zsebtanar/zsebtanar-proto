@@ -29,9 +29,14 @@ export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Mod
                   value,
                   label,
                 }))
-                .sort(sortByProp('label')) || []
+                .sort(sortByProp('value')) || []
             }
             {...bind<string[]>('classifications')}
+            itemRenderer={({ label, value }) => (
+              <div>
+                <span className="badge badge-info">{value.split('/')[1]}</span> {label}
+              </div>
+            )}
           />
         )}
       </div>
