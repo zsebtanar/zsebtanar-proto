@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { identity } from 'ramda'
+import { identity } from '../../generic/utils'
 
 interface Props {
   children: ReactNode

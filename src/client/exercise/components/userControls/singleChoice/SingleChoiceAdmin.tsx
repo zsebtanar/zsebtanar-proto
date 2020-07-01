@@ -9,7 +9,7 @@ import { MarkdownWithScript } from 'client/script/components'
 
 export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>) {
   const { data, bind, remove, append } = useModel<UCSingleChoice>(bindProps)
-
+  console.log(data)
   return (
     <div className="user-control uc-simple-text uc-simple-text-admin">
       <UserControlNameInput {...bind('name')} />
@@ -40,7 +40,7 @@ export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>) {
         {data.props?.options?.map((item, idx) => (
           <li key={idx}>
             <div className="d-flex">
-              <RadioInput inputValue={idx} {...bind(`solution`)} className="form-control mt-1" />
+              <RadioInput inputValue={idx} {...bind(`solution`)} className="mt-1" />
               <TextEditor {...bind(`props.options.${idx}.label`)} preview={MarkdownWithScript} />
               <Button
                 small

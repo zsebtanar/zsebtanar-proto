@@ -21,14 +21,15 @@ export function Grid<T extends BaseModel>({
   dataSource,
   columnDefs,
   rowAction,
-  defaultPageSize
+  defaultPageSize,
 }: Props<T>) {
+  defaultPageSize = defaultPageSize || 25
   const [pageNum, setPageNum] = useState<number>(0)
   const [colDefs, setColDefs] = useState<InternalGridColumnDefinition<T>[]>([])
   const { isPending, isLoading, error, hasNoResult, result } = useGridDS<T>(
     dataSource,
     pageNum,
-    defaultPageSize || 25
+    defaultPageSize,
   )
 
   useEffect(() => {
@@ -54,7 +55,12 @@ export function Grid<T extends BaseModel>({
       <div>
         <table className="table table-hover table-sm mt-3">
           <GridHeader columnDefs={colDefs} />
-          <GridBody columnDefs={colDefs} list={result?.list ?? []} rowAction={rowAction} />
+          <GridBody
+            columnDefs={colDefs}
+            list={result?.list ?? []}
+            rowAction={rowAction}
+            firstIdx={pageNum * defaultPageSize}
+          />
         </table>
         <GridPagination
           current={pageNum}

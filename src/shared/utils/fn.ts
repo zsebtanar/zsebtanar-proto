@@ -30,9 +30,9 @@ export const sortByProp = prop => (A, B) => {
   return a < b ? -1 : a > b ? 1 : 0
 }
 
+const hasOwnProp = Object.prototype.hasOwnProperty
 export const omit = <T, K extends string>(obj: T, props: readonly K[]): Omit<T, K> => {
   const result = {} as Record<string, unknown>
-  const hasOwnProp = Object.prototype.hasOwnProperty
   for (const key in obj) {
     if (hasOwnProp.call(obj, key) && !props.includes(key as any)) {
       result[key] = obj[key]

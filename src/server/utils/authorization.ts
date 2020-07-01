@@ -1,4 +1,4 @@
-import { curry, pathOr } from 'ramda'
+import { curry } from 'ramda'
 import { ErrorHandler } from '../middlewares/error'
 
 export const ROLE_USER = 0
@@ -6,7 +6,7 @@ export const ROLE_TEACHER = 500
 export const ROLE_ADMIN = 1000
 
 export const roleCheck = curry((roles, req, res, next) => {
-  const userRole = pathOr(ROLE_USER, ['user', 'role'], req)
+  const userRole = req?.user?.role ?? ROLE_USER
 
   if (roles.includes(userRole)) {
     next()

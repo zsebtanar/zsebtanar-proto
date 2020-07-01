@@ -20,7 +20,7 @@ export function UserControlEditModal({ value, scriptSource }: Props) {
   const store = (data: unknown) => closeModal(data)
 
   return (
-    <Dialog className="feedback">
+    <Dialog className="user-controls-modal" size="large">
       <DialogHeader onClose={close}>Mezőszerkesztés</DialogHeader>
       <form onSubmit={() => store(data)}>
         <DialogBody>

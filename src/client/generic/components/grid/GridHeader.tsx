@@ -1,6 +1,6 @@
 import React from 'react'
 import { InternalGridColumnDefinition } from './types'
-import { BaseModel } from 'client/generic/services'
+import { BaseModel } from 'shared/generic/types'
 
 interface Props<T> {
   columnDefs: InternalGridColumnDefinition<T>[]

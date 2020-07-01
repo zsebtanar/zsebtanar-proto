@@ -2,6 +2,7 @@ import React from 'react'
 import { range } from 'shared/utils/fn'
 import { Button } from '..'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   next: () => void
@@ -14,43 +15,46 @@ interface Props {
 export function GridPagination({ prev, next, jump, current, length }: Props) {
   if (length <= 1) return null
 
-  const pages = range(1, length + 1)
+  const pages = range(0, length)
   return (
-    <nav aria-label="Page navigation example">
-      <ul className="pagination justify-content-center">
-        {StepBtn('Előző', 'chevron-left', prev, current !== 1)}
+    <nav aria-label="Lapozás" className="d-flex justify-content-center">
+      <div className="btn-group">
+        {StepBtn('Előző', faChevronLeft, prev, current === 0)}
         {pages.map(page => jumpBtn(page, jump, current === page))}
-        {StepBtn('Következő', 'chevron-right', next, current !== length)}
-      </ul>
+        {StepBtn('Következő', faChevronRight, next, current === length - 1)}
+      </div>
     </nav>
   )
 }
 
 function jumpBtn(page, onClick, active) {
   return (
-    <li className="page-item" key={page}>
-      <Button className={`page-link ${active ? 'active' : ''}`} onAction={() => onClick(page)}>
-        {page}
-        {active && <span className="sr-only">(aktuális)</span>}
-      </Button>
-    </li>
+    <Button
+      btn="light"
+      className={` ${active ? 'active' : ''}`}
+      onAction={() => onClick(page)}
+      key={page}
+    >
+      {page + 1}
+      {active && <span className="sr-only">(aktuális)</span>}
+    </Button>
   )
 }
 
 function StepBtn(text, icon, onClick, disabled) {
   return (
-    <li className={`page-item ${disabled ? 'disabled' : ''}`}>
-      <Button
-        className="page-link"
-        aria-label="Next"
-        tabIndex={disabled ? -1 : 0}
-        onAction={onClick}
-      >
-        <span aria-hidden="true">
-          <FontAwesomeIcon icon={icon} />
-        </span>
-        <span className="sr-only">{text}</span>
-      </Button>
-    </li>
+    <Button
+      btn="light"
+      className="page-link"
+      aria-label="Next"
+      tabIndex={disabled ? -1 : 0}
+      onAction={onClick}
+      disabled={disabled}
+    >
+      <span aria-hidden="true">
+        <FontAwesomeIcon icon={icon} />
+      </span>
+      <span className="sr-only">{text}</span>
+    </Button>
   )
 }
