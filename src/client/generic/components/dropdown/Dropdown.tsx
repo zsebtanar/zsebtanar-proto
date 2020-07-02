@@ -1,5 +1,5 @@
 import React, { createElement, ReactNode } from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { DropdownProvider, useDropdown } from './DropdownProvider'
 
 interface Props {
@@ -27,12 +27,12 @@ function DropdownInner({ className, elementType, dropUp, children }: Props) {
       className: cx('nav-item', className, {
         dropdown: !dropUp,
         dropup: dropUp,
-        show: dropdown.isOpen
+        show: dropdown.isOpen,
       }),
       onMouseEnter: dropdown.open,
       onMouseLeave: dropdown.close,
-      onMouseUp: dropdown.close
+      onMouseUp: dropdown.close,
     },
-    children
+    children,
   )
 }

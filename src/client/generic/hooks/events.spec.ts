@@ -9,10 +9,10 @@ test('should register and unregister event listener on document', () => {
 
   const { unmount } = renderHook(() => useDocumentEvent('drag', cb))
 
-  expect(mocked(document.addEventListener).mock.calls).toEqual([['drag', cb]])
+  expect(mocked(document.addEventListener).mock.calls).toEqual([['drag', cb, false]])
 
   unmount()
-  expect(mocked(document.removeEventListener).mock.calls).toEqual([['drag', cb]])
+  expect(mocked(document.removeEventListener).mock.calls).toEqual([['drag', cb, false]])
 })
 
 test('should register and unregister event listener on window', () => {
@@ -23,11 +23,11 @@ test('should register and unregister event listener on window', () => {
   const { unmount } = renderHook(() => useWindowEvent('click', cb))
 
   expect(mocked(window.addEventListener).mock.calls.filter(([t]) => t === 'click')).toEqual([
-    ['click', cb]
+    ['click', cb],
   ])
 
   unmount()
   expect(mocked(window.removeEventListener).mock.calls.filter(([t]) => t === 'click')).toEqual([
-    ['click', cb]
+    ['click', cb],
   ])
 })

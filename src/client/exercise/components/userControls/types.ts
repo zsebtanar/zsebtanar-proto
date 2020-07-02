@@ -1,4 +1,4 @@
-import { UserControl } from '../../../../shared/exercise/types'
+import { UserControl } from 'shared/exercise/types'
 
 export type Interpreter<T = unknown> = (source: string) => T
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { useExercise, useExerciseDispatch } from '../services/exerciseContext'
 import { ExerciseMarkdown } from './ExerciseMarkdown'
 import { Button } from '../../generic/components'

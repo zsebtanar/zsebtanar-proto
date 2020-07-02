@@ -51,9 +51,7 @@ export function WikiModal({ pageId }: Props) {
       <DialogBody>
         <div className="list-group">
           {isPending || (isLoading && <Loading />)}
-          {isSuccess && (
-            <Markdown source={page.content} resources={page.resources} onWikiLink={navForward} />
-          )}
+          {isSuccess && <Markdown source={page.content} onWikiLink={navForward} />}
         </div>
       </DialogBody>
     </Dialog>

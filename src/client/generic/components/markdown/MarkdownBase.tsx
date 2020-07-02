@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { matchAllHunVowel, TAG_REGEXP } from 'shared/utils/string'
-import * as MD from 'markdown-it'
-import * as katex from 'markdown-it-katex'
-import * as kbd from 'markdown-it-kbd'
-import * as centertext from 'markdown-it-center-text'
+import MD from 'markdown-it'
+import katex from 'markdown-it-katex'
+import kbd from 'markdown-it-kbd'
+import centertext from 'markdown-it-center-text'
 import { wikiLinkInit } from 'shared/markdown/wiki-link'
 import { MarkdownProps } from './types'
 import { assetImage } from 'shared/markdown/image-asset'
@@ -14,7 +14,7 @@ import './Markdown.scss'
 
 const katexOptions = {
   displayMode: false,
-  unicodeTextInMathMode: true
+  unicodeTextInMathMode: true,
 }
 
 interface MarkdownIt {
@@ -24,7 +24,13 @@ interface MarkdownIt {
 
 ///
 
-export function Markdown({ source, options, mark, onWikiLink, className }: MarkdownProps) {
+export function Markdown({
+  source,
+  options,
+  mark,
+  onWikiLink,
+  className,
+}: MarkdownProps): JSX.Element {
   const container = useRef<HTMLDivElement>(null)
   const [md, setMD] = useState<MarkdownIt | undefined>(undefined)
 
@@ -52,7 +58,7 @@ export function Markdown({ source, options, mark, onWikiLink, className }: Markd
         .use(kbd)
         .use(centertext)
         .use(wikiLinkInit())
-        .use(assetImage)
+        .use(assetImage),
     )
   }, [options])
 

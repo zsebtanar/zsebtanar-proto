@@ -7,19 +7,19 @@ service cloud.firestore {
     }
 
     match /{document=**} {
-      allow read, write: false;
+      allow read, write: if isAdmin();
     }
 
     match /exercise/{exerciseId} {
       allow read: if resource.data.state == 'public';
     }
 
-	match /wikiPage/{wikiPageId} {
+		match /wikiPage/{wikiPageId} {
     	allow read: if true;
     }
 
   	match /users/{userId} {
-      allow read, update, delete: if request.auth.uid == userId;
+      allow read, update, delete: if request.auth.uid == userId || isAdmin();
       allow create: if request.auth.uid != null;
     }
   }

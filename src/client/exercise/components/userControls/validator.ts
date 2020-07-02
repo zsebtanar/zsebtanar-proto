@@ -9,16 +9,20 @@ import { multiChoiceValidation } from './multiChoice/multiChoiceValidator'
 import { numberListValidation } from './numberList/numberListValidation'
 
 export function userControlValidator(
-  userSolutions: UserControl['solution'],
+  userSolutions: UserControl['solution'][],
   subTask: ExerciseSubTask,
   interpreter: Interpreter<any>,
 ): boolean[] {
+  if (!Array.isArray(userSolutions) || !subTask || !Array.isArray(subTask.controls)) {
+    return []
+  }
+
   return subTask.controls.map((ctrl, idx) => {
     let solution: any = ctrl.solution
     if (ctrl.isDynamic) {
       solution = interpreter(`(solution-${name})`)
     }
-    const userInput = userSolutions[idx]
+    const userInput = userSolutions[idx] as any
 
     switch (ctrl.type) {
       case ExerciseSubTaskControlsType.BinaryChoice:
@@ -35,6 +39,8 @@ export function userControlValidator(
         return singleChoiceValidation(ctrl, solution, userInput)
       case ExerciseSubTaskControlsType.SingleNumber:
         return singleNumberValidation(ctrl, solution, userInput)
+      default:
+        return false
     }
   })
 }

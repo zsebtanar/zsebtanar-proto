@@ -1,5 +1,5 @@
 import React from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { UCNumberList } from 'shared/exercise/types'
 import { UseModelProps, useModel } from 'client/generic/hooks/model'
 import { Input } from 'client/generic/components'

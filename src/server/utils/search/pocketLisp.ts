@@ -1,8 +1,8 @@
-import { interpretMarkdown } from 'shared/script/pocketLispMarkdown'
-import { PseudoRandomNumberGenerator } from '../../../shared/math/random'
 import { runtime, utils, literals } from 'pocket-lisp-stdlib'
-import { valueSet } from '../../../shared/script/shared-code'
 import { Interpreter, Parser, Scanner } from 'pocket-lisp'
+import { valueSet } from 'shared/script/shared-code'
+import { interpretMarkdown } from 'shared/script/pocketLispMarkdown'
+import { PseudoRandomNumberGenerator } from 'shared/math/random'
 
 export function interpretExerciseMarkdown(source: string, markdown: string, seed = 1) {
   const prng = new PseudoRandomNumberGenerator(seed)

@@ -1,11 +1,11 @@
 import * as React from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { DialogFooter, Dialog, DialogHeader, DialogBody } from '../../overlay/components/base'
 import { AddFileButton } from '../components/AddFileButton'
 import {
   useManageAssetsDispatch,
   useManageAssets,
-  UploadState
+  UploadState,
 } from '../providers/ManageAssetProvider'
 import { useDialog } from '../../overlay/providers'
 import { useFileDrop } from '../../generic/hooks'

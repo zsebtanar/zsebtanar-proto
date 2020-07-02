@@ -1,8 +1,8 @@
-import { Service } from 'client/generic/services'
+import { useCallback } from 'react'
 import { WikiPageModel } from '../types'
+import { Service } from 'client/generic/services'
 import { useFetchData } from 'client/generic/hooks'
 import { useLoadAndStoreModel } from '../../generic/hooks/loadAndStoreModel'
-import { useCallback } from 'react'
 
 export const wikiPageService = new Service<WikiPageModel>('wikiPage')
 
@@ -20,6 +20,6 @@ export function useLoadWikiPages() {
 
 export function useWikiPageModel(id: string) {
   const load = useCallback(id => wikiPageService.get(id), [])
-  const store = useCallback(data => wikiPageService.store(data), [])
+  const store = useCallback(data => wikiPageService.store(data).then(() => data), [])
   return useLoadAndStoreModel<WikiPageModel>(load, store, id)
 }

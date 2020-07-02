@@ -12,7 +12,7 @@ describe('requestValidator', () => {
     requestValidator({
       params: z.string(),
       query: z.array(z.number()),
-      body: z.object({ a: z.number() })
+      body: z.object({ a: z.number() }),
     })({ params: 'hello world', query: [1], body: { a: 42 } }, { status: mockStatus }, mockNext)
 
     expect(mockNext).toBeCalledTimes(1)
@@ -27,11 +27,12 @@ describe('requestValidator', () => {
     requestValidator({
       params: z.string(),
       query: z.array(z.number()),
-      body: z.object({ a: z.number() })
+      body: z.object({ a: z.number() }),
     })({}, { status: mockStatus }, mockNext)
 
-    expect(mockNext).toBeCalledTimes(0)
-    expect(mockStatus).toBeCalledTimes(1)
-    expect(mockSend).toBeCalledTimes(1)
+    expect(mockNext).toBeCalledTimes(1)
+    expect(mockNext.mock.calls[0][0] instanceof Error).toEqual(true)
+    expect(mockStatus).toBeCalledTimes(0)
+    expect(mockSend).toBeCalledTimes(0)
   })
 })

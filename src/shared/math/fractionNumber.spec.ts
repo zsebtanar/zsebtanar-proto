@@ -2,7 +2,7 @@ import {
   fractionNum,
   INVALID_FRACTION_NUMBER,
   isValid,
-  simplifyFractionNumber
+  simplifyFractionNumber,
 } from './fractionNumber'
 
 describe('math', () => {
@@ -14,7 +14,7 @@ describe('math', () => {
           { numerator: -1, denominator: 1 },
           { numerator: 1, denominator: 3 },
           { numerator: 1, denominator: 3.5 },
-          { numerator: 0, denominator: 1 }
+          { numerator: 0, denominator: 1 },
         ]
         values.map(value => expect(isValid(value)).toEqual(true))
       })
@@ -25,9 +25,10 @@ describe('math', () => {
           { numerator: 1, denominator: null },
           { numerator: 1, denominator: undefined },
           { numerator: 1, denominator: {} },
-          { numerator: 1, denominator: 0 }
+          { numerator: 1, denominator: 0 },
         ]
-        values.map(value => expect(isValid(value as any)).toEqual(false))
+        // @ts-expect-error
+        values.map(value => expect(isValid(value)).toEqual(false))
       })
     })
 
@@ -48,6 +49,7 @@ describe('math', () => {
         const values = [null, undefined, NaN, 0, 'asd', '']
 
         values.map(value => {
+          // @ts-expect-error
           expect(fractionNum('1', value)).toEqual(INVALID_FRACTION_NUMBER)
         })
       })
@@ -58,24 +60,24 @@ describe('math', () => {
         const values = [
           [
             { numerator: 1, denominator: 1 },
-            { numerator: 1, denominator: 1 }
+            { numerator: 1, denominator: 1 },
           ],
           [
             { numerator: 10, denominator: 10 },
-            { numerator: 1, denominator: 1 }
+            { numerator: 1, denominator: 1 },
           ],
           [
             { numerator: 15, denominator: 9 },
-            { numerator: 5, denominator: 3 }
+            { numerator: 5, denominator: 3 },
           ],
           [
             { numerator: 9, denominator: 15 },
-            { numerator: 3, denominator: 5 }
+            { numerator: 3, denominator: 5 },
           ],
           [
             { numerator: 0, denominator: 1 },
-            { numerator: 0, denominator: 1 }
-          ]
+            { numerator: 0, denominator: 1 },
+          ],
         ]
         values.map(([value, expected]) => {
           const actual = simplifyFractionNumber(value)

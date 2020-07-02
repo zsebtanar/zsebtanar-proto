@@ -1,5 +1,6 @@
+import { floatEq } from 'shared/utils/math'
 import { UCNumberList } from 'shared/exercise/types'
-import { numberSortAsc, floatEq } from '../../../../generic/utils'
+import { numberSortAsc } from '../../../../generic/utils'
 
 export function numberListValidation(
   control: UCNumberList,

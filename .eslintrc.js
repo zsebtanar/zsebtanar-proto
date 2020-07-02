@@ -2,24 +2,24 @@ const path = require('path')
 
 module.exports = {
   parserOptions: {
-    ecmaVersion: 2018
+    ecmaVersion: 2018,
   },
   extends: ['eslint:recommended', 'plugin:jsx-a11y/recommended', 'prettier'],
   env: {
-    node: true
+    node: true,
   },
   overrides: [
     {
       files: '**/*.+(ts|tsx)',
       parser: '@typescript-eslint/parser',
       env: {
-        browser: true
+        browser: true,
       },
       parserOptions: {
         ecmaFeatures: {
-          jsx: true
+          jsx: true,
         },
-        project: './build/ts/tsconfig.eslint.json'
+        project: './build/ts/tsconfig.eslint.json',
       },
       plugins: ['@typescript-eslint/eslint-plugin', 'jsx-a11y', 'react-hooks'],
       extends: [
@@ -27,7 +27,7 @@ module.exports = {
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'prettier/@typescript-eslint',
-        'prettier/react'
+        'prettier/react',
       ],
       rules: {
         'jsx-a11y/anchor-is-valid': 'warn',
@@ -39,18 +39,21 @@ module.exports = {
         '@typescript-eslint/no-empty-interface': 'off',
         '@typescript-eslint/no-use-before-define': 'off',
         'react-hooks/rules-of-hooks': 'error',
-        'react-hooks/exhaustive-deps': 'warn'
-      }
+        'react-hooks/exhaustive-deps': 'warn',
+      },
     },
     {
-      files: ['**/__test_/**'],
+      files: ['**/*.+(spec.ts|spec.tsx)'],
       settings: {
         'import/resolver': {
           jest: {
-            jestConfigFile: path.join(__dirname, './jest.config.js')
-          }
-        }
-      }
-    }
-  ]
+            jestConfigFile: path.join(__dirname, './jest.config.js'),
+          },
+        },
+      },
+      rules: {
+        '@typescript-eslint/ban-ts-comment': 'off',
+      },
+    },
+  ],
 }

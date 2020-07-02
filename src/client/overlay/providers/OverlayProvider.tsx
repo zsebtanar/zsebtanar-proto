@@ -1,5 +1,5 @@
 import React, { ReactNode, Reducer, useReducer, useContext } from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { uid } from '../../generic/utils'
 import { DialogProvider, useDialog } from './DialogProvider'
 import { DialogData } from 'client/overlay/types'
@@ -31,7 +31,7 @@ export const OverlayContext = React.createContext<State>({} as any)
 export const OverlayDispatchContext = React.createContext<OverlayContextAPI>({} as any)
 
 const defaultState: State = {
-  modals: []
+  modals: [],
 }
 
 function overlayReducer(state: State, action: OverlayActions): State {
@@ -57,8 +57,8 @@ export function OverlayProvider({ children }: Props) {
             id: uid(),
             content,
             disableBackdropClose,
-            resolve
-          }
+            resolve,
+          },
         })
       })
     },
@@ -71,7 +71,7 @@ export function OverlayProvider({ children }: Props) {
     },
     openNotification(): void {
       // FIXME: implement openNotification
-    }
+    },
   }
 
   return (

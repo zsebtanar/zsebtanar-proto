@@ -1,12 +1,13 @@
 import { stringUtils } from './stringUtils'
+import { plString } from 'pocket-lisp-stdlib'
 
 describe('string utils', () => {
   test('to-capital', () => {
     const fn = stringUtils['to-capital']
-    expect(fn('')).toEqual('')
-    expect(fn('a')).toEqual('A')
-    expect(fn('abc')).toEqual('Abc')
-    expect(fn('Abc')).toEqual('Abc')
-    expect(fn('😀🐧')).toEqual('🐧😀')
+    expect(fn(plString(''))).toEqual(plString(''))
+    expect(fn(plString('a'))).toEqual(plString('A'))
+    expect(fn(plString('abc'))).toEqual(plString('Abc'))
+    expect(fn(plString('Abc'))).toEqual(plString('Abc'))
+    expect(fn(plString('😀🐧'))).toEqual(plString('😀🐧'))
   })
 })

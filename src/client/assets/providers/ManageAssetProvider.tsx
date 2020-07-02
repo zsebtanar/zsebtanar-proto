@@ -9,7 +9,7 @@ import { useUser } from '../../user/providers/UserProvider'
 export enum UploadState {
   Pending,
   Uploading,
-  Done
+  Done,
 }
 
 interface Props {
@@ -58,7 +58,7 @@ export const ManageAssetDispatchContext = React.createContext<API>(undefined as 
 const initialState = {
   pendingAssets: [],
   group: AssetGroup.None,
-  uploadState: UploadState.Pending
+  uploadState: UploadState.Pending,
 }
 
 export function AssetManagerProvider({ children }: Props) {
@@ -85,9 +85,9 @@ export function AssetManagerProvider({ children }: Props) {
               file,
               url: await fileToUrl(file),
               error: validateFile(file),
-              progress: 0
-            })
-          )
+              progress: 0,
+            }),
+          ),
         )
 
         dispatch({ type: 'addFiles', payload: filesWithUrl })
@@ -105,20 +105,23 @@ export function AssetManagerProvider({ children }: Props) {
           const group = state.group as AssetGroup
           const entries = Array.from(state.pendingAssets.entries())
           for (const [index, { file }] of entries) {
+            const id = assetsDataService.createId()
             const uploadedFile = await assetUpload(
+              id,
               group,
               file,
               ({ bytesTransferred, totalBytes }) =>
                 dispatch({
                   type: 'fileUploadProgress',
-                  payload: { index, progress: bytesTransferred / totalBytes }
-                })
+                  payload: { index, progress: bytesTransferred / totalBytes },
+                }),
             )
-            await assetsDataService.store({
+            await assetsDataService.update({
+              id,
               group,
               created: new Date(),
               createdBy: user.uid,
-              ...uploadedFile
+              ...uploadedFile,
             })
             dispatch({ type: 'fileUploaded', payload: { index } })
           }
@@ -126,9 +129,9 @@ export function AssetManagerProvider({ children }: Props) {
         } catch (error) {
           dispatch({ type: 'error', payload: error })
         }
-      }
+      },
     }),
-    [state]
+    [state],
   )
 
   return (
@@ -159,7 +162,7 @@ function assetReducer(state: State, action: Action): State {
     case 'removeFile':
       return {
         ...state,
-        pendingAssets: state.pendingAssets.filter(({ file }) => file !== action.payload)
+        pendingAssets: state.pendingAssets.filter(({ file }) => file !== action.payload),
       }
     case 'setHandler':
       return { ...state, group: action.payload.group }

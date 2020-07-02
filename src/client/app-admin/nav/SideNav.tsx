@@ -1,5 +1,5 @@
 import React from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { CloseButton, Button } from 'client/generic/components'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'

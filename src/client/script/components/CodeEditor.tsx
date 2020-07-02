@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import * as CodeMirror from 'codemirror'
 import { usePocketLisp, InterpreterOutput } from '../providers/PocketLispProvider'
 import debounce from '../../generic/utils/debounce'
@@ -40,7 +40,7 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
       lineWrapping: true,
       autoCloseBrackets: true,
       matchBrackets: true,
-      viewportMargin: Infinity
+      viewportMargin: Infinity,
     })
 
     setCodeMirror(codeMirror)
@@ -107,7 +107,7 @@ const codeCompletion = interpreter => {
     return {
       list: interpreter.getGlobalNames().filter(name => name.includes(word)),
       from: CodeMirror.Pos(cursor.line, start),
-      to: CodeMirror.Pos(cursor.line, end)
+      to: CodeMirror.Pos(cursor.line, end),
     }
   }
 }

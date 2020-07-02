@@ -3,7 +3,6 @@ import { app } from 'client/generic/services'
 import { logException } from 'client/generic/utils/logger'
 import { parseToken, getUserDetails, updateUserProfile } from 'client/user/services/user'
 import { UserModel, ProviderTypes } from '../types'
-import firebase from 'firebase'
 
 interface Props {
   children: ReactNode

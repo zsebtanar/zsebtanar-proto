@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { Button, Dropdown, DropdownToggle, DropdownMenu } from 'client/generic/components/index'
 import { useOverlayDispatch } from 'client/overlay/providers'
 import { Markdown } from 'client/generic/components/markdown/Markdown'
@@ -17,7 +17,7 @@ import {
   faImage,
   faCalculator,
   faEdit,
-  faQuestionCircle
+  faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -46,7 +46,7 @@ export function TextEditor({
   required,
   rows,
   className,
-  preview: Preview
+  preview: Preview,
 }: Props) {
   const textRef = useRef<HTMLTextAreaElement>(null)
   const [isInFocus, setIsInFocus] = useState<boolean>(false)

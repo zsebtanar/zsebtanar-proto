@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react'
 import * as ReactGa from 'react-ga'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { getScrollPos, storeScrollPos } from '../utils/localStore'
 
 interface Props {

@@ -38,7 +38,7 @@
     <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
     <link rel="prefetch" href="https://zsebtanar-test.firebaseapp.com/assets/logo.png" as="image" />
 
-    <%= htmlWebpackPlugin.options.injectCSS(htmlWebpackPlugin, compilation) %>
+    <%= htmlWebpackPlugin.tags.headTags %>
 </head>
 <body>
 <noscript>
@@ -57,8 +57,9 @@
 </div>
 
 </body>
-    <%= htmlWebpackPlugin.options.injectJS(htmlWebpackPlugin) %>
-<script>
+
+<%= htmlWebpackPlugin.tags.bodyTags %>
+<script defer>
 function loadCSS(filename, integrity){
     var link = document.createElement("link")
     link.setAttribute("rel", "stylesheet")

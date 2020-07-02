@@ -22,8 +22,12 @@ const db = app.firestore()
 export class Service<T extends BaseModel> {
   constructor(
     private readonly collectionName: string,
-    private readonly options: ServiceOptions = { excludeId: false }
+    private readonly options: ServiceOptions = { excludeId: false },
   ) {}
+
+  public createId() {
+    return db.collection(this.collectionName).doc().id
+  }
 
   public async create(data: T, options?: StoreOptions): Promise<DocRef> {
     const doc = await db.collection(this.collectionName).add(omitInvalidFields(data, options))
@@ -38,7 +42,7 @@ export class Service<T extends BaseModel> {
 
     await Promise.all([
       doc.set(omitInvalidFields(data, options)),
-      this.storeSubCollection(doc, data, options)
+      this.storeSubCollection(doc, data, options),
     ])
 
     this.log('UPDATE', doc.id, data)
@@ -80,7 +84,7 @@ export class Service<T extends BaseModel> {
     if (options) {
       const query = (options.where ?? []).reduce(
         (q, [prop, op, val]) => q.where(prop, op, val),
-        collection as Query
+        collection as Query,
       )
       res = await query.get()
     } else {
@@ -115,7 +119,7 @@ export class Service<T extends BaseModel> {
       populate.map(async collection => {
         const res = await new Service(`${this.collectionName}/${id}/${collection}`).getList()
         collections[collection] = res
-      })
+      }),
     )
     return collections
   }
@@ -124,8 +128,8 @@ export class Service<T extends BaseModel> {
     const subCollections = options?.subCollections ?? []
     return Promise.all(
       subCollections.map(collection =>
-        new Service(`${this.collectionName}/${doc.id}/${collection}`).storeAll(data[collection])
-      )
+        new Service(`${this.collectionName}/${doc.id}/${collection}`).storeAll(data[collection]),
+      ),
     )
   }
 
@@ -148,6 +152,6 @@ function omitInvalidFields<T>(data: T, options?: StoreOptions): T {
   return pickBy(
     (val: unknown, key: unknown) =>
       val !== undefined && key !== 'id' && !subCollections.includes(key as string),
-    data
+    data,
   )
 }

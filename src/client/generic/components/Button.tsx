@@ -1,5 +1,5 @@
 import React from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { IconDefinition } from '@fortawesome/fontawesome-common-types'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -33,7 +33,7 @@ export function Button({
   loading,
   inline,
   children,
-  small
+  small,
 }: ButtonProps) {
   const onClick =
     onAction &&
@@ -47,7 +47,7 @@ export function Button({
       type={submit ? 'submit' : 'button'}
       className={cx(className, 'btn', `btn-${btn || 'secondary'}`, {
         'btn-inline': inline,
-        'btn-sm': small
+        'btn-sm': small,
       })}
       onClick={onClick}
       tabIndex={tabIndex}

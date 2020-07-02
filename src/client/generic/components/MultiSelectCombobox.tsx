@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { useCombobox, useMultipleSelection } from 'downshift'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import './MultiSelectCombobox.scss'
 import { UseModelProps } from '../hooks/model'
 

@@ -13,9 +13,9 @@ import { ExerciseGrid } from '../exercise/pages/ExerciseGrid'
 import { ExerciseForm } from '../exercise/pages/ExerciseForm'
 
 export const AdminApp = React.memo(function AdminAppBase() {
-  const { loading } = useUser()
+  const { isLoading } = useUser()
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />
   }
 

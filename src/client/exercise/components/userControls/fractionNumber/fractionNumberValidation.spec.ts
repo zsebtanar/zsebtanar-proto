@@ -2,7 +2,6 @@ import { fractionNumberValidation } from './fractionNumberValidation'
 import { fractionNum } from 'shared/math/fractionNumber'
 import { ExerciseSubTaskControlsType, UCFractionNumber } from 'shared/exercise/types'
 
-// eslint-disable @typescript-eslint/no-explicit-any
 describe('fractionNumber', () => {
   const baseCtrl: UCFractionNumber = {
     type: ExerciseSubTaskControlsType.FractionNumber,

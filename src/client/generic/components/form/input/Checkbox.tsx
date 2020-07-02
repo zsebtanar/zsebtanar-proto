@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import * as cx from 'classnames'
+import cx from 'classnames'
 import { UseModelProps } from '../../../hooks/model'
 import { uid } from '../../../utils'
 

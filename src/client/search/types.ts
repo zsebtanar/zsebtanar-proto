@@ -1,17 +1,12 @@
-
 // FIXME: fix exercise search type
-import * as algoliasearch from 'algoliasearch'
+import { SearchResponse } from '@algolia/client-search'
 
 export type ExerciseSearchRecord = {
-  grade: string[]
-  subject: string[]
-  topic: string[]
-  tags: string[]
+  classification: string[]
   difficulty: number
   description: string
   searchableDescription: string
   objectID: string
 }
 
-export type ExerciseSearchResult = algoliasearch.Response<ExerciseSearchRecord>
-
+export type ExerciseSearchResult = SearchResponse<ExerciseSearchRecord>

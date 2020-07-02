@@ -1,17 +1,18 @@
-import { BaseModel, Service, cloudFnPost } from 'client/generic/services'
+import { BaseModel } from 'shared/generic/types'
+import { Service, cloudFnPost } from 'client/generic/services'
 
 export enum FeedbackType {
   note = 'note',
-  error = 'error'
+  error = 'error',
 }
 
 export enum FeedbackState {
-  new = 'new'
+  new = 'new',
 }
 
 export enum FeedbackSite {
   public = 'public',
-  admin = 'admin'
+  admin = 'admin',
 }
 
 export interface FeedbackDataModel extends BaseModel {

@@ -1,11 +1,10 @@
-const { injectJS, injectCSS } = require('./utils')
 const { getConfig } = require('./config')
 
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const rhTransformer = require('react-hot-ts/lib/transformer')
@@ -33,8 +32,6 @@ const commonHtmlWebpackPluginOptions = {
   chunksSortMode: 'none',
   inject: false,
   inlineCSSRegex: isDev ? [] : ['.css$'],
-  injectJS,
-  injectCSS
 }
 
 module.exports = {
@@ -44,19 +41,19 @@ module.exports = {
     admin: [
       isDev && 'webpack-dev-server/client?http://localhost:8080',
       isDev && 'webpack/hot/only-dev-server',
-      path.join(ADMIN_SRC_PATH, 'admin.tsx')
+      path.join(ADMIN_SRC_PATH, 'admin.tsx'),
     ].filter(Boolean),
     public: [
       isDev && 'webpack-dev-server/client?http://localhost:8080',
       isDev && 'webpack/hot/only-dev-server',
-      path.join(PUBLIC_SRC_PATH, 'public.tsx')
-    ].filter(Boolean)
+      path.join(PUBLIC_SRC_PATH, 'public.tsx'),
+    ].filter(Boolean),
   },
   output: {
     path: TARGET_PATH,
     filename: `[name]-${isProd ? '[hash:8]' : ''}.js`,
     publicPath: '/',
-    pathinfo: false
+    pathinfo: false,
   },
 
   // Enable sourcemaps for debugging webpack's output.
@@ -67,18 +64,18 @@ module.exports = {
   target: 'web',
   resolve: {
     alias: {
-      shared: path.join(SRC_PATH, 'shared')
+      shared: path.join(SRC_PATH, 'shared'),
     },
     //    modules: ['node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    modules: ['node_modules', SRC_PATH]
+    modules: ['node_modules', SRC_PATH],
   },
 
   devServer: {
     contentBase: [ADMIN_SRC_PATH, PUBLIC_SRC_PATH, SRC_PATH, RESOURCES_PATH],
     overlay: {
       warnings: true,
-      errors: true
+      errors: true,
     },
     hot: true,
     inline: true,
@@ -90,9 +87,9 @@ module.exports = {
         { from: /^\/assets\/.*(.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname },
         { from: /^\/.*\.js$/, to: ctx => '/' + ctx.parsedUrl.pathname.split('/').pop() },
         { from: /^\/admin/, to: '/admin.html' },
-        { from: /^\//, to: '/index.html' }
-      ]
-    }
+        { from: /^\//, to: '/index.html' },
+      ],
+    },
     // headers: {
     //   'Content-Security-Policy': envConfig.csp.join('; ')
     // }
@@ -108,46 +105,34 @@ module.exports = {
           configFile: path.join(ROOT_PATH, 'build/ts/tsconfig.client.json'),
           experimentalWatchApi: !isProd,
           compilerOptions: {
-            noUnusedLocals: !isProd
+            noUnusedLocals: !isProd,
           },
           transpileOnly: isDev,
           getCustomTransformers: {
-            before: [rhTransformer({})]
-          }
-        }
+            before: [rhTransformer({})],
+          },
+        },
       },
       {
         test: /\.s?css$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: { hmr: isDev }
+            options: { hmr: isDev },
           },
           'css-loader',
-          'sass-loader'
-        ]
+          'sass-loader',
+        ],
       },
-      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /node_modules/ }
-    ]
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /node_modules/ },
+    ],
   },
 
   optimization: !isProd
     ? undefined
     : {
-        minimizer: [
-          new UglifyJsPlugin({
-            parallel: 2,
-            uglifyOptions: {
-              compress: {
-                warnings: false,
-                drop_console: true
-              },
-              output: {
-                comments: false
-              }
-            }
-          })
-        ],
+        minimize: true,
+        minimizer: [new TerserPlugin({ parallel: true, extractComments: true })],
         splitChunks: {
           minSize: 10000, // doesn't seem enforced...
           maxInitialRequests: 3, // only app and libs
@@ -160,66 +145,63 @@ module.exports = {
               name: 'firebase',
               chunks: 'initial',
               minSize: 1,
-              priority: 3
+              priority: 3,
             },
             admin: {
               test: /[\\/]src[\\/]clint[\\/]app-admin[\\/]/,
               name: 'admin',
               chunks: 'initial',
               minSize: 1000,
-              priority: 1
+              priority: 1,
             },
             public: {
               test: /[\\/]src[\\/]clint[\\/]app-public[\\/]/,
               name: 'public',
               chunks: 'initial',
               minSize: 1000,
-              priority: 1
+              priority: 1,
             },
             common: {
               test: /[\\/]node_modules[\\/]/,
               name: 'common',
               chunks: 'initial',
               minSize: 10000,
-              priority: -100
-            }
-          }
+              priority: -100,
+            },
+          },
         },
         runtimeChunk: {
-          name: 'manifest'
-        }
+          name: 'manifest',
+        },
       },
   plugins: [
     new MiniCssExtractPlugin({
       filename: isDev ? '[name].css' : '[name].[hash].css',
-      chunkFilename: isDev ? '[id].css' : '[id].[hash].css'
+      chunkFilename: isDev ? '[id].css' : '[id].[hash].css',
     }),
     new HtmlWebpackPlugin({
       ...commonHtmlWebpackPluginOptions,
       filename: 'admin.html',
-      title: 'Zsebtanár - Tanár',
+      title: 'Zsebtanár - Admin',
       site: 'admin',
-      excludeChunks: ['public', 'public-modal']
+      excludeChunks: ['public'],
     }),
     new HtmlWebpackPlugin({
       ...commonHtmlWebpackPluginOptions,
       filename: 'index.html',
       site: 'public',
       title: 'Zsebtanár',
-      excludeChunks: ['admin', 'admin-modal']
+      excludeChunks: ['admin'],
     }),
-    // new InlineChunkManifestHtmlWebpackPlugin({
-    //   dropAsset: true
-    // }),
     new HtmlWebpackHarddiskPlugin(),
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(!isProd),
       __PRODUCTION__: JSON.stringify(isProd),
       __CONFIG__: JSON.stringify(envConfig),
-      __SERVER_ENV__: JSON.stringify(serverEnv)
+      __SERVER_ENV__: JSON.stringify(serverEnv),
     }),
     isDev && new webpack.HotModuleReplacementPlugin(),
-    isDev && new webpack.NamedModulesPlugin()
+    isDev && new webpack.NamedModulesPlugin(),
     // isDev && new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true })
-  ].filter(Boolean)
+  ].filter(Boolean),
 }

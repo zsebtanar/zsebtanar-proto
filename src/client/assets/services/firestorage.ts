@@ -1,5 +1,5 @@
 import 'firebase/storage'
-import { resolveSnapshot, app, firebase } from 'client/generic/services'
+import { app, firebase } from 'client/generic/services'
 import { identity } from '../../generic/utils'
 
 ///
@@ -12,7 +12,6 @@ interface UploadProgress {
 }
 
 export interface UploadedFile {
-  id: string
   mimeType: string
   fileName: string
   fullPath: string
@@ -22,37 +21,27 @@ export interface UploadedFile {
 ///
 
 const storageRef = app.storage().ref()
-const DB = app.database()
-const Storage = DB.ref('storage')
 
 const STATE_CHANGED = firebase.storage.TaskEvent.STATE_CHANGED
 
 ///
 
 export async function assetUpload(
+  id: string,
   path: string,
   file: File,
-  progressCb: (up: UploadProgress) => void = identity
+  progressCb: (up: UploadProgress) => void = identity,
 ): Promise<UploadedFile> {
-  const id = Storage.push().key
   const snapshot = await createUploadTask(file, id, path, progressCb)
+
   const url = await getFileUrl(snapshot.metadata.fullPath)
 
-  if (!id) {
-    throw Error('Invalid storage key')
-  }
-
   return {
-    id,
     fileName: file.name,
     mimeType: file.type,
     fullPath: snapshot.metadata.fullPath,
-    url
+    url,
   }
-}
-
-export function getFiles(folder) {
-  return (folder ? Storage.child(folder) : Storage).once('value').then(resolveSnapshot)
 }
 
 export function getFileUrl(filePath) {
@@ -69,7 +58,7 @@ async function createUploadTask(file, key, path, progressCb): Promise<UTS> {
       STATE_CHANGED, // or 'state_changed'
       progressCb,
       reject,
-      () => resolve(uploadTask.snapshot)
-    )
+      () => resolve(uploadTask.snapshot),
+    ),
   )
 }
