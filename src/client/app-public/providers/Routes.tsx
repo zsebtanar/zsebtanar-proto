@@ -8,6 +8,6 @@ interface Props {
 
 const history = initHistory('/')
 
-export function PublicRouter({ children }: Props) {
+export function PublicRouter({ children }: Props): JSX.Element {
   return <Router history={history}>{children}</Router>
 }

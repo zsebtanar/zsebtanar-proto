@@ -2,16 +2,15 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { initSentryLogger } from 'client/generic/utils/logger'
 import { UserProvider } from 'client/user/providers/UserProvider'
-import { OverlayProvider } from 'client/overlay/providers'
+import { OverlayProvider } from 'client/overlay/providers/OverlayProvider'
 import { PublicRouter } from 'client/app-public/providers/Routes'
 import { PublicApp } from './PublicApp'
 
 import './public.scss'
-import { hot } from 'react-hot-ts'
 
 initSentryLogger()
 
-hot(module)(
+const appRender = () =>
   render(
     <UserProvider>
       <PublicRouter>
@@ -20,6 +19,12 @@ hot(module)(
         </OverlayProvider>
       </PublicRouter>
     </UserProvider>,
-    document.getElementById('root')
+    document.getElementById('root'),
   )
-)
+
+if (__DEV__) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  require('react-hot-ts').hot(module)(appRender())
+} else {
+  appRender()
+}

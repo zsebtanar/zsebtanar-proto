@@ -1,6 +1,6 @@
 import 'firebase/storage'
-import { app, firebase } from 'client/generic/services'
-import { identity } from '../../generic/utils'
+import { app, firebase } from 'client/generic/services/fireApp'
+import { identity } from 'client/generic/utils/fn'
 
 ///
 
@@ -44,7 +44,7 @@ export async function assetUpload(
   }
 }
 
-export function getFileUrl(filePath) {
+export function getFileUrl(filePath: string): Promise<string> {
   return storageRef.child(filePath).getDownloadURL()
 }
 

@@ -1,16 +1,21 @@
 import React from 'react'
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from 'client/overlay/components'
-import { useDialog, useOverlayDispatch } from 'client/overlay/providers'
 import { isAdvancedUploadSupported } from 'client/generic/utils/browser'
 import { DnDOverlay } from '../components/DnDOverlay'
-import { useFileDrop } from 'client/generic/hooks'
 import { AddFileButton } from '../components/AddFileButton'
 import { useManageAssetsDispatch, useManageAssets } from '../providers/ManageAssetProvider'
 import { useGetAssetByGroup } from '../services/assets'
-import { Loading, Alert } from '../../generic/components'
 import { FileUploadModal } from './FileUploadModal'
+import { useDialog } from '../../overlay/providers/DialogProvider'
+import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
+import { useFileDrop } from '../../generic/hooks/events'
+import { Dialog } from 'client/overlay/components/base/Dialog'
+import { DialogHeader } from 'client/overlay/components/base/DialogHeader'
+import { DialogBody } from 'client/overlay/components/base/DialogBody'
+import { Loading } from 'client/generic/components/Loading'
+import { Alert } from 'client/generic/components/Alert'
+import { DialogFooter } from 'client/overlay/components/base/DialogFooter'
 
-export function AssetBrowserModal() {
+export function AssetBrowserModal(): JSX.Element {
   const { closeModal } = useDialog()
   const { group } = useManageAssets()
   const { openModal } = useOverlayDispatch()
@@ -22,7 +27,7 @@ export function AssetBrowserModal() {
     result,
     hasNoResult,
     hasError,
-    error
+    error,
   } = useGetAssetByGroup(group)
   useFileDrop(addFiles)
 
@@ -44,7 +49,7 @@ export function AssetBrowserModal() {
           {hasError && <Alert>{JSON.stringify(error)}</Alert>}
           {isSuccess && result?.length && (
             <div>
-              {result.map(file => (
+              {result.map((file) => (
                 <button
                   key={file.id}
                   className="m-1 float-left btn btn-light"

@@ -1,8 +1,8 @@
 import React from 'react'
 import { PublicPage } from 'client/generic/components/PublicPage'
-import { ExternalLink } from 'client/generic/components'
+import { ExternalLink } from 'client/generic/components/ExternalLink'
 
-export function JoinUs() {
+export function JoinUs(): JSX.Element {
   return (
     <PublicPage className="search-page">
       <div className="col-10 mx-auto">

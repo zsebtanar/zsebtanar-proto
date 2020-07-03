@@ -1,10 +1,10 @@
-import { Service } from '../../generic/services'
-import { ClassificationModel } from '../type'
-import { useFetchData } from '../../generic/hooks'
 import { useCallback } from 'react'
+import { ClassificationModel } from '../type'
+import { Service } from 'client/generic/services/fireStoreBase'
+import { useFetchData } from 'client/generic/hooks/fetchData'
 
 export const classificationService = new Service<ClassificationModel>('category', {
-  excludeId: true
+  excludeId: true,
 })
 
 export function useLoadClassifications() {

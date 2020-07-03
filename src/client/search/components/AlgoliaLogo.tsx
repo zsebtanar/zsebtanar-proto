@@ -1,13 +1,12 @@
 import React from 'react'
+import { ExternalLink } from 'client/generic/components/ExternalLink'
 
-export function AlgoliaLogo() {
+export function AlgoliaLogo(): JSX.Element {
   return (
-    <a
+    <ExternalLink
       href="https://www.algolia.com/?utm_source=instantsearch.js&amp;utm_medium=website&amp;utm_campaign=poweredby"
-      target="_blank"
       className="algolia-logo ais-PoweredBy-link"
       aria-label="Search by Algolia"
-      rel="noopener noreferrer"
     >
       <svg viewBox="0 0 485 120" xmlns="http://www.w3.org/2000/svg">
         <g fill="none">
@@ -25,6 +24,6 @@ export function AlgoliaLogo() {
           />
         </g>
       </svg>
-    </a>
+    </ExternalLink>
   )
 }

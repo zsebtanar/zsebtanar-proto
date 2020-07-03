@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useLoadWikiPage } from '../services/wikiPageService'
-import { Dialog, DialogHeader, DialogBody } from 'client/overlay/components'
-import { Button, Loading } from 'client/generic/components'
-import { Markdown } from 'client/generic/components/markdown'
-import { useDialog } from 'client/overlay/providers'
 import { WikiPageModel } from 'client/wiki/types'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { useDialog } from '../../overlay/providers/DialogProvider'
+import { Dialog } from 'client/overlay/components/base/Dialog'
+import { Button } from 'client/generic/components/Button'
+import { DialogHeader } from 'client/overlay/components/base/DialogHeader'
+import { DialogBody } from 'client/overlay/components/base/DialogBody'
+import { Loading } from 'client/generic/components/Loading'
+import { Markdown } from 'client/generic/components/markdown/Markdown'
 
 ///
 
@@ -13,7 +16,7 @@ interface Props {
   pageId: string
 }
 
-export function WikiModal({ pageId }: Props) {
+export function WikiModal({ pageId }: Props): JSX.Element {
   const { closeModal } = useDialog()
 
   const [nextPageId, setNextPageId] = useState<string>(pageId)

@@ -1,5 +1,5 @@
 import { app } from './fireApp'
-import { pickBy } from '../utils'
+import { pickBy } from '../utils/fn'
 import { BaseModel } from 'shared/generic/types'
 
 ///
@@ -25,7 +25,7 @@ export class Service<T extends BaseModel> {
     private readonly options: ServiceOptions = { excludeId: false },
   ) {}
 
-  public createId() {
+  public createId(): string {
     return db.collection(this.collectionName).doc().id
   }
 
@@ -54,14 +54,11 @@ export class Service<T extends BaseModel> {
   }
 
   public async storeAll(data: T[]): Promise<DocRef[]> {
-    return Promise.all(data.map(d => this.store(d)))
+    return Promise.all(data.map((d) => this.store(d)))
   }
 
   public async get(id: string, populate?: string[]): Promise<T> {
-    const doc = await db
-      .collection(this.collectionName)
-      .doc(id)
-      .get()
+    const doc = await db.collection(this.collectionName).doc(id).get()
 
     if (!doc.exists) {
       throw new Error('Not found')
@@ -98,25 +95,22 @@ export class Service<T extends BaseModel> {
 
   public async getList(options?: GridFilterOptions): Promise<T[]> {
     const res = await this.getRawList(options)
-    return res.docs.map(doc => ({ id: doc.id, ...(doc.data() as T) }))
+    return res.docs.map((doc) => ({ id: doc.id, ...(doc.data() as T) }))
   }
 
   public async delete(id: string): Promise<void> {
-    return db
-      .collection(this.collectionName)
-      .doc(id)
-      .delete()
+    return db.collection(this.collectionName).doc(id).delete()
   }
 
   public async deleteAll(ids: string[]): Promise<void> {
     const coll = db.collection(this.collectionName)
-    await Promise.all(ids.map(id => coll.doc(id).delete()))
+    await Promise.all(ids.map((id) => coll.doc(id).delete()))
   }
 
   private async populate(id, populate: string[] = []): Promise<Partial<T>> {
     const collections: Partial<T> = {}
     await Promise.all(
-      populate.map(async collection => {
+      populate.map(async (collection) => {
         const res = await new Service(`${this.collectionName}/${id}/${collection}`).getList()
         collections[collection] = res
       }),
@@ -127,7 +121,7 @@ export class Service<T extends BaseModel> {
   private async storeSubCollection(doc: DocRef, data: T, options?: StoreOptions) {
     const subCollections = options?.subCollections ?? []
     return Promise.all(
-      subCollections.map(collection =>
+      subCollections.map((collection) =>
         new Service(`${this.collectionName}/${doc.id}/${collection}`).storeAll(data[collection]),
       ),
     )
@@ -137,9 +131,9 @@ export class Service<T extends BaseModel> {
     if (__DEV__) {
       const lightText = 'color: gray; font-weight: lighter;'
       const boldText = 'color: black; font-weight: bold;'
-      const groupLabel = `%c firestore %c${op.toUpperCase()} %c${
-        this.collectionName
-      }/${JSON.stringify(id) || ''}`
+      const groupLabel = `%c firestore %c${op.toUpperCase()} %c${this.collectionName}/${
+        JSON.stringify(id) || ''
+      }`
       console.groupCollapsed(groupLabel, lightText, boldText, lightText)
       console.log(data)
       console.groupEnd()

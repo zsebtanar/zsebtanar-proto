@@ -2,8 +2,8 @@ import React from 'react'
 import { UCFractionNumber } from 'shared/exercise/types'
 import { FractionNumber } from 'shared/math/fractionNumber'
 import { UseModelProps, useModel } from 'client/generic/hooks/model'
-import { NumberInput } from 'client/generic/components'
-import { MarkdownWithScript } from 'client/script/components'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 
 interface Props extends UseModelProps<FractionNumber> {
   ctrl: UCFractionNumber
@@ -11,7 +11,12 @@ interface Props extends UseModelProps<FractionNumber> {
   disabled?: boolean
 }
 
-export function FractionNumberComponent({ readonly, disabled, ctrl, ...bindProps }: Props) {
+export function FractionNumberComponent({
+  readonly,
+  disabled,
+  ctrl,
+  ...bindProps
+}: Props): JSX.Element {
   const { bind } = useModel<FractionNumber>(bindProps)
 
   return (
@@ -53,6 +58,6 @@ export function FractionNumberComponent({ readonly, disabled, ctrl, ...bindProps
   )
 }
 
-const onlyNumbers = event => {
+const onlyNumbers = (event) => {
   if (!/[-0-9]/.test(event.key)) event.preventDefault()
 }

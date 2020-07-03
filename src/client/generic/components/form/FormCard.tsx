@@ -6,7 +6,7 @@ interface Props {
   children: ReactNode
 }
 
-export function FormCard({ className, children }: Props) {
+export function FormCard({ className, children }: Props): JSX.Element {
   return (
     <div className={cx('card', className)}>
       <div className="card-body">{children}</div>

@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react'
-import { useDocumentEvent } from '../../generic/hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload } from '@fortawesome/free-solid-svg-icons'
+import { useDocumentEvent } from 'client/generic/hooks/events'
 
-export function DnDOverlay() {
+export function DnDOverlay(): JSX.Element {
   const [counter, setCounter] = useState(0)
 
   const addClass = useCallback(() => {
@@ -11,7 +11,7 @@ export function DnDOverlay() {
     document.body.classList.add('is-dragover')
   }, [])
 
-  const removeClass = useCallback(e => {
+  const removeClass = useCallback((e) => {
     setCounter(counter - 1)
     if (e.type === 'drop') setCounter(0)
     if (!counter) {
@@ -19,7 +19,7 @@ export function DnDOverlay() {
     }
   }, [])
 
-  const prevent = useCallback(e => {
+  const prevent = useCallback((e) => {
     e.preventDefault()
     e.stopPropagation()
   }, [])

@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router'
-import { PublicPage, FormGroupLabel, Button, Alert } from 'client/generic/components'
 import { useModel } from '../../../generic/hooks/model'
 import { useUser } from '../../../user/providers/UserProvider'
 import { AuthPageHeader } from '../../nav/AuthPageHeader'
+import { FormGroupLabel } from 'client/generic/components/form/FormGroupLabel'
+import { PublicPage } from 'client/generic/components/PublicPage'
+import { Button } from 'client/generic/components/Button'
+import { Alert } from 'client/generic/components/Alert'
 
 interface ForgotPasswordPageData {
   email: string
 }
 
-export function ForgottenPasswordPage() {
+export function ForgottenPasswordPage(): JSX.Element {
   const [state, setState] = useState<string>('init')
   const { bind, data: forgotPasswordData } = useModel<ForgotPasswordPageData>()
   const { loggedIn, forgotPassword } = useUser()
@@ -22,7 +25,7 @@ export function ForgottenPasswordPage() {
     history.replace('/')
   }
 
-  const submit = async e => {
+  const submit = async (e) => {
     e.preventDefault()
     setState('loading')
     await forgotPassword(forgotPasswordData.email)

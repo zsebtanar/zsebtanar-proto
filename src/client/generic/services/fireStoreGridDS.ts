@@ -1,10 +1,10 @@
 import { map, pipe, slice } from 'ramda'
 import { Service } from './fireStoreBase'
-import { BaseModel } from '../../../shared/generic/types'
+import { BaseModel } from 'shared/generic/types'
 
 export type QuerySnapshot = firebase.firestore.QuerySnapshot
 
-const getRecord = d => ({ id: d.id, ...d.data() })
+const getRecord = (d) => ({ id: d.id, ...d.data() })
 
 export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
   private readonly _service: Service<T>
@@ -20,7 +20,7 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
     return this._service
   }
 
-  public get size() {
+  public get size(): number {
     return this.list?.size ?? 0
   }
 
@@ -39,7 +39,7 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
     return pipe(slice(from, to), map(getRecord))(this.list?.docs ?? [])
   }
 
-  public async refresh() {
+  public async refresh(): Promise<QuerySnapshot> {
     return this.loadList(this.options)
   }
 
@@ -56,7 +56,7 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
     }
   }
 
-  on(type: DataSourceEvents, callback: () => void) {
+  on(type: DataSourceEvents, callback: () => void): void {
     if (!this.listeners.has(type)) {
       this.listeners.set(type, new Set())
     }

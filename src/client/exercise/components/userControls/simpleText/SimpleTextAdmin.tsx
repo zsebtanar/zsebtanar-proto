@@ -1,15 +1,17 @@
 import React from 'react'
-import { useModel, UseModelProps } from '../../../../generic/hooks/model'
-import { UCSimpleText } from 'shared/exercise/types'
-import { Checkbox, Input } from '../../../../generic/components/form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
-import { Button, FormGroup } from '../../../../generic/components'
-import { TextEditor } from '../../../../generic/components/form'
-import { MarkdownWithScript } from '../../../../script/components'
+import { UCSimpleText } from 'shared/exercise/types'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
+import { Checkbox } from 'client/generic/components/form/input/Checkbox'
+import { FormGroup } from 'client/generic/components/form/FormGroup'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { Button } from 'client/generic/components/Button'
+import { Input } from 'client/generic/components/form/input/Input'
 
-export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>) {
+export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCSimpleText>(bindProps)
 
   return (
@@ -25,10 +27,10 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>) {
       <hr />
 
       <FormGroup label="Előtag">
-        {id => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
+        {(id) => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <FormGroup label="Utótag">
-        {id => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
+        {(id) => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <hr />
 

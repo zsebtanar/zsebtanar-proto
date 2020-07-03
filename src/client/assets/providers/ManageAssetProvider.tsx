@@ -61,7 +61,7 @@ const initialState = {
   uploadState: UploadState.Pending,
 }
 
-export function AssetManagerProvider({ children }: Props) {
+export function AssetManagerProvider({ children }: Props): JSX.Element {
   const { user } = useUser()
   const [state, dispatch] = useReducer<Reducer<State, Action>>(assetReducer, initialState)
   const api: API = useMemo(

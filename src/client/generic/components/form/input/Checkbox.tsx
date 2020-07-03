@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import cx from 'classnames'
 import { UseModelProps } from '../../../hooks/model'
-import { uid } from '../../../utils'
+import { uid } from '../../../utils/fn'
 
 interface CheckboxProps
   extends UseModelProps<boolean>,
@@ -10,7 +10,14 @@ interface CheckboxProps
   children?: React.ReactNode
 }
 
-export function Checkbox({ name, value, onChange, className, children, ...props }: CheckboxProps) {
+export function Checkbox({
+  name,
+  value,
+  onChange,
+  className,
+  children,
+  ...props
+}: CheckboxProps): JSX.Element {
   const id = useRef<string>(`radio-${uid()}`)
   return (
     <div className={cx('custom-control', 'custom-checkbox', className)}>

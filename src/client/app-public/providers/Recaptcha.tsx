@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { identity } from '../../generic/utils'
+import { identity } from 'client/generic/utils/fn'
 
 interface Props {
   children: ReactNode
@@ -11,7 +11,7 @@ const executeGRecaptcha = () => {
 
 export const RecaptchaContext = React.createContext(identity as () => void)
 
-export function Recaptcha({ children }: Props) {
+export function Recaptcha({ children }: Props): JSX.Element {
   return (
     <>
       <div

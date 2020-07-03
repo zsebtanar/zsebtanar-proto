@@ -1,10 +1,9 @@
 import React from 'react'
+import { Markdown } from 'client/generic/components/markdown/Markdown'
+import { AlertModal } from 'client/overlay/components/AlertModal'
+import { ExternalLink } from 'client/generic/components/ExternalLink'
 
-import { Markdown } from 'client/generic/components/markdown'
-import { AlertModal } from 'client/overlay/components'
-import { ExternalLink } from 'client/generic/components'
-
-export function MarkdownHelpModal() {
+export function MarkdownHelpModal(): JSX.Element {
   return (
     <AlertModal title="Szövegszerkesztő használata" size="large">
       <div className="row">

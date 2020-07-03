@@ -7,7 +7,13 @@ interface Props
   options: { label: string; value: unknown }[]
 }
 
-export function Select({ name, value: selectedValue, onChange, options, ...props }: Props) {
+export function Select({
+  name,
+  value: selectedValue,
+  onChange,
+  options,
+  ...props
+}: Props): JSX.Element {
   return (
     <select
       name={name}

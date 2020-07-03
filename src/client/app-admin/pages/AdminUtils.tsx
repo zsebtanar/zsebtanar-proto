@@ -1,16 +1,8 @@
 import React from 'react'
-import { rePublishAllExercise } from 'client/app-admin/services/admin'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export function AdminUtils() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const rePublishAll = () => {
-    if (window.confirm('Gondold meg kétszer mielőtt elindítod')) {
-      rePublishAllExercise().then(() => alert('Kész! Frissítsd az oldalt.'))
-    }
-  }
-
+export function AdminUtils(): JSX.Element {
   return (
     <div className="container">
       <div className="alert alert-warning col-8 mx-auto">

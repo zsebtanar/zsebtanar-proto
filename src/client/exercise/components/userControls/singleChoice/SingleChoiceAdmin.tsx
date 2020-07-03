@@ -2,12 +2,15 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { UCSingleChoice } from 'shared/exercise/types'
-import { Button, Checkbox, RadioInput, TextEditor } from 'client/generic/components'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
-import { MarkdownWithScript } from 'client/script/components'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { Checkbox } from 'client/generic/components/form/input/Checkbox'
+import { Button } from 'client/generic/components/Button'
+import { RadioInput } from 'client/generic/components/form/input/RadioInput'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 
-export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>) {
+export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCSingleChoice>(bindProps)
   console.log(data)
   return (

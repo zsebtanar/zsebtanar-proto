@@ -1,7 +1,7 @@
-export const clipboardToFile = (data: DataTransferItem[]) =>
-  data.filter(d => d.kind === 'file').map(data => data.getAsFile()) as File[]
+export const clipboardToFile = (data: DataTransferItem[]): File[] =>
+  data.filter((d) => d.kind === 'file').map((data) => data.getAsFile()) as File[]
 
-export function formatBytes(bytes, decimals = 2) {
+export function formatBytes(bytes: number, decimals = 2): string {
   if (bytes === 0) return '0 Bytes'
 
   const k = 1024

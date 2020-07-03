@@ -1,21 +1,21 @@
 import React from 'react'
-import { useOverlayDispatch } from '../../overlay/providers'
 import { WikiModal } from '../../wiki/modals/WikiModal'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { useOverlayDispatch } from 'client/overlay/providers/OverlayProvider'
 
 interface Props {
   className?: string
   source: string
 }
 
-export function ExerciseMarkdown({ source, className }: Props) {
+export function ExerciseMarkdown({ source, className }: Props): JSX.Element {
   const { openModal } = useOverlayDispatch()
 
   return (
     <MarkdownWithScript
       className={className}
       source={source}
-      onWikiLink={pageId => openModal(WikiModal({ pageId }))}
+      onWikiLink={(pageId) => openModal(WikiModal({ pageId }))}
     />
   )
 }

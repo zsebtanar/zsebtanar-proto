@@ -6,7 +6,7 @@ interface Props {
   label: string
 }
 
-export function HrWithLabel({ label }: Props) {
+export function HrWithLabel({ label }: Props): JSX.Element {
   return (
     <div className="hr-with-text">
       <div className="line" />

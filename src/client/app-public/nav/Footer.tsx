@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { NavLink } from 'react-router-dom'
-import { ExternalLink, Button } from 'client/generic/components'
-import { useOverlayDispatch } from 'client/overlay/providers'
 import { FeedbackModal } from '../../feedback/modals/FeedbackModal'
+import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
+import { ExternalLink } from 'client/generic/components/ExternalLink'
+import { Button } from 'client/generic/components/Button'
 
 import './Footer.scss'
 
-export function Footer() {
+export function Footer(): JSX.Element {
   const { openModal } = useOverlayDispatch()
   return (
     <footer className="footer container">

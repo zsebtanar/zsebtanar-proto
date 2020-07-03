@@ -1,22 +1,23 @@
 import React from 'react'
 import cx from 'classnames'
-import { CloseButton, Button } from 'client/generic/components'
-import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'
+import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
+import { isAdmin } from 'client/user/services/user'
+import { CloseButton } from 'client/generic/components/CloseButton'
+import { Button } from 'client/generic/components/Button'
 
 import 'client/app-admin/nav/SideNav.scss'
-import { isAdmin } from 'client/user/services/user'
 
 interface Props {
   isOpen: boolean
   onCloseSideNav: () => void
 }
 
-export function SideNav({ isOpen, onCloseSideNav }: Props) {
+export function SideNav({ isOpen, onCloseSideNav }: Props): JSX.Element | null {
   const { loggedIn, userToken } = useUser()
   const { signOut } = useUserDispatch()
 
-  if (!loggedIn || !isAdmin(userToken)) {
+  if (!loggedIn || !userToken || !isAdmin(userToken)) {
     return null
   }
 

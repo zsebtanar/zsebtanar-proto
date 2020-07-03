@@ -30,7 +30,7 @@ export const PocketLispContext = React.createContext<InterpreterContextAPI>({} a
 
 let output: InterpreterOutput[] = []
 
-export function PocketLispProvider({ children, seed, isEdit, script }: Props) {
+export function PocketLispProvider({ children, seed, isEdit, script }: Props): JSX.Element {
   const [interpreter, setInterpreter] = useState<Interpreter>()
 
   const setOutput = useCallback((msg, type: InterpreterOutput['type'] = 'normal') => {
@@ -54,7 +54,7 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props) {
       }
       const parserResult = new Parser(new Scanner(source), literals).parse()
       if (parserResult.hasError) {
-        return parserResult.errors.map(err => setOutput(err.message, 'error'))
+        return parserResult.errors.map((err) => setOutput(err.message, 'error'))
       }
       try {
         return interpreter.interpret(parserResult.program)

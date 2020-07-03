@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { ExternalLink, Button } from 'client/generic/components'
-import { useOverlayDispatch } from 'client/overlay/providers'
-
 import { CookieModal } from '../modals/CookieModal'
+import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
+import { ExternalLink } from 'client/generic/components/ExternalLink'
+import { Button } from 'client/generic/components/Button'
 
 const CONSENT_KEY = 'zsebtanar-consent-accepted'
 
-export function CookieConsent() {
+export function CookieConsent(): JSX.Element | undefined {
   const [isAccepted, setCookieConsent] = useState<boolean>(true)
   const { openModal } = useOverlayDispatch()
 
@@ -30,9 +30,9 @@ export function CookieConsent() {
             <ExternalLink href={__CONFIG__.links.policy}>Adatvédelmi tájékoztatónkban</ExternalLink>{' '}
             megtalálod, hogyan gondoskodunk adataid védelméről. Oldalunkon HTTP-sütiket használunk a
             jobb működésért.{' '}
-            <a onClick={() => openModal(<CookieModal />)} href="#">
+            <Button onAction={() => openModal(<CookieModal />)} btn="link">
               További információk
-            </a>
+            </Button>
           </div>
           <div className="col-md-3 col-sm-10 offset-sm-1 offset-md-0">
             <Button className="btn btn-warning w-100" onAction={accept}>

@@ -1,14 +1,18 @@
 import React from 'react'
-import { useModel, UseModelProps } from '../../../../generic/hooks/model'
-import { UCNumberList } from 'shared/exercise/types'
-import { Checkbox, Input, TextEditor, NumberInput } from '../../../../generic/components/form'
-import { FormGroup, Button } from '../../../../generic/components'
-import { MarkdownWithScript } from '../../../../script/components'
-import { UserControlNameInput } from '../common/UserControlNameInput'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { UCNumberList } from 'shared/exercise/types'
+import { useModel, UseModelProps } from 'client/generic/hooks/model'
+import { UserControlNameInput } from '../common/UserControlNameInput'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { Checkbox } from 'client/generic/components/form/input/Checkbox'
+import { FormGroup } from 'client/generic/components/form/FormGroup'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { Button } from 'client/generic/components/Button'
+import { NumberInput } from 'client/generic/components/form/input/NumberInput'
+import { Input } from 'client/generic/components/form/input/Input'
 
-export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>) {
+export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCNumberList>(bindProps)
 
   return (
@@ -23,16 +27,16 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>) {
       <hr />
 
       <FormGroup label="Előtag">
-        {id => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
+        {(id) => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <FormGroup label="Utótag">
-        {id => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
+        {(id) => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
 
       <hr />
 
       <FormGroup label="Pontosság">
-        {id => (
+        {(id) => (
           <>
             <NumberInput
               {...bind('props.fractionDigits')}

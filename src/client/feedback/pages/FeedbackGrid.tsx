@@ -1,7 +1,7 @@
 import React from 'react'
 import { FireStoreGridDS } from 'client/generic/services/fireStoreGridDS'
-import { Grid } from 'client/generic/components'
 import { FeedbackService } from '../services/feedbackService'
+import { Grid } from 'client/generic/components/grid/Grid'
 
 const opt = {
   year: 'numeric',
@@ -9,11 +9,11 @@ const opt = {
   day: 'numeric',
   hour: 'numeric',
   minute: 'numeric',
-  second: 'numeric'
+  second: 'numeric',
 }
 const dateFormatter = new Intl.DateTimeFormat('hu', opt)
 
-export function FeedbackGrid() {
+export function FeedbackGrid(): JSX.Element {
   return (
     <div className="container my-5">
       <div className="btn-toolbar justify-content-between align-items-center">
@@ -31,9 +31,9 @@ export function FeedbackGrid() {
             key: 'created',
             title: 'Létrehozva',
             width: 200,
-            renderer: renderDate
+            renderer: renderDate,
           },
-          { key: 'description', title: 'Visszajelzés szövege' }
+          { key: 'description', title: 'Visszajelzés szövege' },
         ]}
       />
     </div>

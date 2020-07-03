@@ -9,7 +9,7 @@ interface Props extends Pick<React.HTMLAttributes<unknown>, 'role'> {
   children: React.ReactNode
 }
 
-export function DropdownMenu({ id, className, right, children, ...props }: Props) {
+export function DropdownMenu({ id, className, right, children, ...props }: Props): JSX.Element {
   const dropdown = useDropdown()
 
   return (

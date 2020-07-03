@@ -9,7 +9,7 @@ export type ExerciseSolution = SubTaskSolution[]
 
 type Props = UseModelProps<ExerciseSolution>
 
-export function ExerciseBody({ ...bindProps }: Props) {
+export function ExerciseBody({ ...bindProps }: Props): JSX.Element {
   const { bind } = useModel<ExerciseSolution>(bindProps)
   const { exercise, isSingle, finishedTasks } = useExercise()
 

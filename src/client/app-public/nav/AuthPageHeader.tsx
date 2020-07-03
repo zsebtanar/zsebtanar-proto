@@ -5,7 +5,7 @@ interface Props {
   children?: React.ReactNode
 }
 
-export function AuthPageHeader({ children }: Props) {
+export function AuthPageHeader({ children }: Props): JSX.Element {
   return (
     <header className="header clearfix">
       <div className="container">
@@ -16,7 +16,7 @@ export function AuthPageHeader({ children }: Props) {
           {children && (
             <nav>
               <ul className="nav nav-pills">
-                {React.Children.map(children, item => (
+                {React.Children.map(children, (item) => (
                   <li>{item}</li>
                 ))}
               </ul>

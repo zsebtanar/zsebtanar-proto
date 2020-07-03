@@ -1,9 +1,10 @@
 import * as express from 'express'
-import { getToken, requestValidator } from '../middlewares'
 import { admin } from '../utils/firebase'
 import { onlyUser } from '../utils/authorization'
 import { profileUpdateSchema } from './model'
 import { ErrorHandler } from '../middlewares/error'
+import { getToken } from '../middlewares/firebaseToken'
+import { requestValidator } from '../middlewares/requestValidator'
 
 export const route = express.Router()
 
@@ -20,5 +21,5 @@ route.post(
     } catch (error) {
       next(new ErrorHandler(500, 'User update error', error))
     }
-  }
+  },
 )

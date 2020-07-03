@@ -1,20 +1,20 @@
 import React from 'react'
 import cx from 'classnames'
-import { CloseButton } from 'client/generic/components'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { isAdmin } from 'client/user/services/user'
 import { NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import { CloseButton } from 'client/generic/components/CloseButton'
 
-import 'client/app-public/nav/SideNav.scss'
+import './SideNav.scss'
 
 interface Props {
   isOpen: boolean
   onCloseSideNav: () => void
 }
 
-export function SideNav({ isOpen, onCloseSideNav }: Props) {
+export function SideNav({ isOpen, onCloseSideNav }: Props): JSX.Element {
   const { loggedIn, userToken } = useUser()
 
   return (

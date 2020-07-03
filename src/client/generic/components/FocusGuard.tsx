@@ -10,17 +10,17 @@ export class FocusGuard extends React.Component<Props, { focused: boolean }> {
   state = { focused: false }
   private wrapperRef = createRef<HTMLDivElement>()
 
-  componentDidMount() {
+  componentDidMount(): void {
     document.addEventListener('focus', this.handler, true)
     document.addEventListener('click', this.handler, true)
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     document.removeEventListener('focus', this.handler, true)
     document.removeEventListener('click', this.handler, true)
   }
 
-  private handler = event => {
+  private handler = (event) => {
     const contains = this.wrapperRef?.current?.contains(event.target)
     if (contains) {
       this.setState({ focused: true })
@@ -31,7 +31,7 @@ export class FocusGuard extends React.Component<Props, { focused: boolean }> {
     }
   }
 
-  render() {
+  render(): JSX.Element {
     return <div ref={this.wrapperRef}>{this.props.children}</div>
   }
 }

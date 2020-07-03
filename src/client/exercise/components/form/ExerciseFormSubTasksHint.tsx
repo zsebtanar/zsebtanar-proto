@@ -1,16 +1,17 @@
 import React from 'react'
-import { TextEditor, Button } from '../../../generic/components'
-import { MarkdownWithScript } from '../../../script/components'
-import { UseModelProps } from '../../../generic/hooks/model'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { UseModelProps } from 'client/generic/hooks/model'
+import { Button } from 'client/generic/components/Button'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 
 interface Props extends UseModelProps<string> {
   index: number
   onRemove: (idx: number) => void
 }
 
-export function ExerciseFormSubTasksHint({ index, onRemove, ...bindProps }: Props) {
+export function ExerciseFormSubTasksHint({ index, onRemove, ...bindProps }: Props): JSX.Element {
   return (
     <div className="form-group" key={name}>
       <div>

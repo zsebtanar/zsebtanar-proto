@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import cx from 'classnames'
 import { UseModelProps } from '../../../hooks/model'
-import { uid } from '../../../utils'
+import { uid } from '../../../utils/fn'
 
 interface Props<TValue>
   extends UseModelProps<TValue>,
@@ -19,7 +19,7 @@ export function RadioInput<TValue>({
   className,
   inputValue,
   ...props
-}: Props<TValue>) {
+}: Props<TValue>): JSX.Element {
   const id = useRef<string>(`radio-${uid()}`)
   return (
     <div className={cx('custom-control', 'custom-radio', className)}>

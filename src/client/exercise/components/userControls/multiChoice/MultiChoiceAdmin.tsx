@@ -2,12 +2,15 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { UCMultiChoice } from 'shared/exercise/types'
-import { Button, Checkbox, TextEditor, Select } from 'client/generic/components'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
-import { MarkdownWithScript } from 'client/script/components'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { Checkbox } from 'client/generic/components/form/input/Checkbox'
+import { Button } from 'client/generic/components/Button'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { Select } from 'client/generic/components/form/input/Select'
 
-export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>) {
+export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCMultiChoice>(bindProps)
 
   return (
@@ -49,7 +52,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>) {
               {...bind('solution')}
               options={[
                 { label: 'Igaz', value: true },
-                { label: 'Hamis', value: false }
+                { label: 'Hamis', value: false },
               ]}
             />
             <TextEditor {...bind(`props.options.${idx}.label`)} preview={MarkdownWithScript} />

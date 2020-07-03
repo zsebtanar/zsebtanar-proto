@@ -1,8 +1,8 @@
 import React from 'react'
 import { UCBinaryChoice } from 'shared/exercise/types'
 import { UseModelProps, useModel } from 'client/generic/hooks/model'
-import { RadioInput } from 'client/generic/components'
-import { MarkdownWithScript } from 'client/script/components'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { RadioInput } from 'client/generic/components/form/input/RadioInput'
 
 interface Props extends UseModelProps<boolean[]> {
   ctrl: UCBinaryChoice
@@ -10,7 +10,7 @@ interface Props extends UseModelProps<boolean[]> {
   disabled?: boolean
 }
 
-export function BinaryChoice({ readonly, disabled, ctrl, ...bindProps }: Props) {
+export function BinaryChoice({ readonly, disabled, ctrl, ...bindProps }: Props): JSX.Element {
   const { bind } = useModel(bindProps)
   return (
     <div className="user-control uc-binary-choice">

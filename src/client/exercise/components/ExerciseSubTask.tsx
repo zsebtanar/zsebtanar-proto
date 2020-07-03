@@ -2,10 +2,10 @@ import React from 'react'
 import cx from 'classnames'
 import { useExercise, useExerciseDispatch } from '../services/exerciseContext'
 import { ExerciseMarkdown } from './ExerciseMarkdown'
-import { Button } from '../../generic/components'
 import { ExerciseSubTask } from 'shared/exercise/types'
 import { UserControls } from './userControls/UserControl'
-import { UseModelProps, useModel } from '../../generic/hooks/model'
+import { UseModelProps, useModel } from 'client/generic/hooks/model'
+import { Button } from 'client/generic/components/Button'
 
 export type SubTaskSolution = Record<string, unknown>
 
@@ -27,7 +27,7 @@ export function ExerciseSubTask({ index, task, ...bindProps }: SubTaskProps) {
       <ExerciseMarkdown source={task.description} />
       {!isDone && (
         <div className="form-group hints">
-          {task.hints.map(hint => (
+          {task.hints.map((hint) => (
             <div className="mb-2" key={hint}>
               <ExerciseMarkdown source={hint} />
             </div>

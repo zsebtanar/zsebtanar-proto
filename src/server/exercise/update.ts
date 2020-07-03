@@ -1,10 +1,11 @@
 import * as express from 'express'
 import { onlyEditors } from '../utils/authorization'
-import { getToken, requestValidator } from '../middlewares'
 import { ExerciseSchema, ExerciseSchemaType } from './model'
 import { fireStore } from '../utils/firebase'
 import { omit } from 'shared/utils/fn'
 import { ErrorHandler } from '../middlewares/error'
+import { getToken } from '../middlewares/firebaseToken'
+import { requestValidator } from '../middlewares/requestValidator'
 
 export const route = express.Router()
 
@@ -19,7 +20,7 @@ route.post(
 
       // exercise
       const exercise = {
-        ...omit(req.body as ExerciseSchemaType, ['state'])
+        ...omit(req.body as ExerciseSchemaType, ['state']),
       }
       const exRef = fireStore.collection('exercise').doc(id)
       batch.update(exRef, exercise)
@@ -29,7 +30,7 @@ route.post(
       batch.update(logRef, {
         updated: now,
         updatedBy: req.user.uid,
-        lastUpdate: now
+        lastUpdate: now,
       })
       // FIXME add resources
 
@@ -38,5 +39,5 @@ route.post(
     } catch (error) {
       next(new ErrorHandler(500, 'Exercise update error', error))
     }
-  }
+  },
 )

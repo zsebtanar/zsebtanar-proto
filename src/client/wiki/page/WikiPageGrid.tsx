@@ -1,13 +1,13 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Grid } from 'client/generic/components/grid'
 import { WikiPageModel } from 'client/wiki/types'
 import { wikiPageService } from 'client/wiki/services/wikiPageService'
-import { FireStoreGridDS } from 'client/generic/services'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faClone, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { Grid } from 'client/generic/components/grid/Grid'
+import { FireStoreGridDS } from '../../generic/services/fireStoreGridDS'
 
-export function WikiPageGrid() {
+export function WikiPageGrid(): JSX.Element {
   return (
     <div className="container my-5">
       <div className="btn-toolbar justify-content-between align-items-center">
@@ -21,7 +21,11 @@ export function WikiPageGrid() {
         columnDefs={[
           { title: '#', width: 100, renderer: (data, row, idx) => idx + 1 },
           { key: 'title', title: 'Név' },
-          { title: 'Opciók', width: 200, renderer: (_, row) => renderListItem(row) }
+          {
+            title: 'Opciók',
+            width: 200,
+            renderer: (_, row) => renderListItem(row as WikiPageModel),
+          },
         ]}
       />
     </div>

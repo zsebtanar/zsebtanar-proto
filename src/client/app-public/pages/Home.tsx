@@ -3,14 +3,15 @@ import { NavLink, useHistory } from 'react-router-dom'
 import debounce from 'client/generic/utils/debounce'
 import { useUser } from '../../user/providers/UserProvider'
 import { MainClassificationSelector } from '../components/MainClassificationSelector'
-import { PaypalButton, PatreonButton } from '../components'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { PatreonButton } from '../components/PatreonButton'
+import { PaypalButton } from '../components/PaypalButton'
 
-export function Home() {
+export function Home(): JSX.Element {
   const history = useHistory()
 
-  const searchInputChange = debounce(e => {
+  const searchInputChange = debounce((e) => {
     history.push({ pathname: '/search', search: `?q=${e.currentTarget.value}` })
   }, 800)
 

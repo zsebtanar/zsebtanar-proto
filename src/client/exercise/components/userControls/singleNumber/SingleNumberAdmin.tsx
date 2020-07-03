@@ -1,11 +1,15 @@
 import React from 'react'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UCSingleNumber } from 'shared/exercise/types'
-import { FormGroup, Checkbox, Input, TextEditor, NumberInput } from 'client/generic/components'
-import { MarkdownWithScript } from 'client/script/components'
 import { UserControlNameInput } from '../common/UserControlNameInput'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { Checkbox } from 'client/generic/components/form/input/Checkbox'
+import { FormGroup } from 'client/generic/components/form/FormGroup'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { Input } from 'client/generic/components/form/input/Input'
+import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 
-export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>) {
+export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX.Element {
   const { bind, data } = useModel<UCSingleNumber>(bindProps)
 
   return (
@@ -18,16 +22,16 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>) {
       <hr />
 
       <FormGroup label="Előtag">
-        {id => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
+        {(id) => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <FormGroup label="Utótag">
-        {id => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
+        {(id) => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
 
       <hr />
 
       <FormGroup label="Pontosság">
-        {id => (
+        {(id) => (
           <>
             <Input
               type="number"
@@ -48,7 +52,7 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>) {
       </FormGroup>
 
       <FormGroup label="Megoldás">
-        {id =>
+        {(id) =>
           data.isDynamic ? (
             <div className="form-control-plaintext">
               Definiáld a megoldás függvényt:

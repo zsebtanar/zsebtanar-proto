@@ -1,12 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react'
 import cx from 'classnames'
-import { Button, Dropdown, DropdownToggle, DropdownMenu } from 'client/generic/components/index'
-import { useOverlayDispatch } from 'client/overlay/providers'
-import { Markdown } from 'client/generic/components/markdown/Markdown'
-import { WikiPageSelectorModal } from 'client/wiki/modals/WikiPageSelectorModal'
-import { WikiPageModel } from 'client/wiki/types'
-import { EquationHelpModal, MarkdownHelpModal } from 'client/generic/modals'
-import { MarkdownProps } from 'client/generic/components/markdown/types'
 import {
   faBold,
   faItalic,
@@ -21,10 +14,21 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { AssetModel } from 'shared/assets/types'
+import { Markdown } from 'client/generic/components/markdown/Markdown'
+import { WikiPageSelectorModal } from 'client/wiki/modals/WikiPageSelectorModal'
+import { WikiPageModel } from 'client/wiki/types'
+import { MarkdownProps } from 'client/generic/components/markdown/types'
 import { UseModelProps } from '../../../hooks/model'
 import { AssetBrowserModal } from 'client/assets/modals/AssetBrowserModal'
-import { AssetModel } from 'shared/assets/types'
 import { FocusGuard } from '../../FocusGuard'
+import { useOverlayDispatch } from 'client/overlay/providers/OverlayProvider'
+import { EquationHelpModal } from 'client/generic/modals/EquationHelpModal'
+import { Button } from '../../Button'
+import { MarkdownHelpModal } from 'client/generic/modals/MarkdownHelpModal'
+import { Dropdown } from '../../dropdown/Dropdown'
+import { DropdownToggle } from '../../dropdown/DropdownToggle'
+import { DropdownMenu } from '../../dropdown/DropdownMenu'
 
 import 'client/generic/components/form/input/TextEditor.scss'
 
@@ -47,7 +51,7 @@ export function TextEditor({
   rows,
   className,
   preview: Preview,
-}: Props) {
+}: Props): JSX.Element {
   const textRef = useRef<HTMLTextAreaElement>(null)
   const [isInFocus, setIsInFocus] = useState<boolean>(false)
   const { openModal } = useOverlayDispatch()
@@ -84,7 +88,7 @@ export function TextEditor({
     const text = noSelection ? sample : value.slice(start, end)
     const result = text
       .split('\n')
-      .map(x => `${token}${x}`)
+      .map((x) => `${token}${x}`)
       .join('\n')
     const after = value.slice(end)
     ref.value = `${before}${result}${after}`
@@ -119,7 +123,7 @@ export function TextEditor({
     const ref = textRef.current
     if (!ref) return
 
-    openModal<AssetModel>(<AssetBrowserModal />).then(file => {
+    openModal<AssetModel>(<AssetBrowserModal />).then((file) => {
       if (file) {
         ref.value += `@[${file.fileName}](${file.url} =100x)`
         update()

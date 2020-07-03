@@ -1,9 +1,11 @@
 import React from 'react'
-import { Button } from '../../generic/components'
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from './base'
-import { useDialog } from '../providers'
 import { DialogSize } from '../types'
-
+import { useDialog } from '../providers/DialogProvider'
+import { Dialog } from './base/Dialog'
+import { DialogHeader } from './base/DialogHeader'
+import { DialogBody } from './base/DialogBody'
+import { DialogFooter } from './base/DialogFooter'
+import { Button } from 'client/generic/components/Button'
 
 interface Props {
   title?: string
@@ -12,7 +14,7 @@ interface Props {
   size?: DialogSize
 }
 
-export function AlertModal({size, children, buttonType, title }: Props) {
+export function AlertModal({ size, children, buttonType, title }: Props): JSX.Element {
   const { closeModal } = useDialog()
 
   const close = () => closeModal()

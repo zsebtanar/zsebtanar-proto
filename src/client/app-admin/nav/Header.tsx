@@ -1,13 +1,6 @@
 import React from 'react'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'
-import {
-  Button,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownDivider,
-} from 'client/generic/components'
 import { isAdmin } from 'client/user/services/user'
 
 import 'client/app-admin/nav/Header.scss'
@@ -23,6 +16,11 @@ import {
   faBars,
 } from '@fortawesome/free-solid-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
+import { Dropdown } from 'client/generic/components/dropdown/Dropdown'
+import { DropdownToggle } from 'client/generic/components/dropdown/DropdownToggle'
+import { DropdownMenu } from 'client/generic/components/dropdown/DropdownMenu'
+import { DropdownDivider } from 'client/generic/components/dropdown/DropdownDivider'
+import { Button } from 'client/generic/components/Button'
 
 ///
 
@@ -30,11 +28,11 @@ interface Props {
   onOpenSideNav: () => void
 }
 
-export function Header({ onOpenSideNav }: Props) {
+export function Header({ onOpenSideNav }: Props): JSX.Element | null {
   const { loggedIn, userToken } = useUser()
   const { signOut } = useUserDispatch()
 
-  if (!loggedIn || !isAdmin(userToken)) {
+  if (!loggedIn || !userToken || !isAdmin(userToken)) {
     return null
   }
 

@@ -6,9 +6,11 @@ interface Props {
   fractionDigits: number
 }
 
-export const DecimalAccuracyWarning = ({ fractionDigits }: Props) => (
-  <small className="form-text text-warning">
-    <FontAwesomeIcon icon={faExclamationTriangle} /> Kérlek, {fractionDigits} tizedesjegy
-    pontossággal add meg a megoldást.
-  </small>
-)
+export function DecimalAccuracyWarning({ fractionDigits }: Props): JSX.Element {
+  return (
+    <small className="form-text text-warning">
+      <FontAwesomeIcon icon={faExclamationTriangle} /> Kérlek, {fractionDigits} tizedesjegy
+      pontossággal add meg a megoldást.
+    </small>
+  )
+}

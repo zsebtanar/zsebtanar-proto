@@ -9,11 +9,16 @@ interface Props<T> {
   firstIdx?: number
 }
 
-export function GridBody<T extends BaseModel>({ list, rowAction, columnDefs, firstIdx }: Props<T>) {
+export function GridBody<T extends BaseModel>({
+  list,
+  rowAction,
+  columnDefs,
+  firstIdx,
+}: Props<T>): JSX.Element {
   return (
     <tbody>
       {list.map((rowData, rIdx) => {
-        const action = rowAction && (e => rowAction(e, rowData))
+        const action = rowAction && ((e) => rowAction(e, rowData))
         return (
           <tr key={rowData.id} onClick={action}>
             {columnDefs.map((def, cIdx) => {

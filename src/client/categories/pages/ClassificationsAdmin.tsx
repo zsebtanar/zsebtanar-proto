@@ -1,15 +1,18 @@
 import React from 'react'
 import { useLoadClassifications } from '../services/classificationService'
-import { Loading, Alert, Button, FormCard } from '../../generic/components'
-import { sortByProp } from '../../../shared/utils/fn'
+import { sortByProp } from 'shared/utils/fn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons'
-import { useOverlayDispatch } from '../../overlay/providers'
 import { UpdateClassificationModal } from '../modals/UpdateClassificationModal'
+import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
+import { FormCard } from 'client/generic/components/form/FormCard'
+import { Button } from 'client/generic/components/Button'
+import { Loading } from 'client/generic/components/Loading'
+import { Alert } from 'client/generic/components/Alert'
 
 import './ClassificationsAdmin.scss'
 
-export function ClassificationsAdminPage() {
+export function ClassificationsAdminPage(): JSX.Element {
   const { isLoading, isPending, isSuccess, result, hasError, error } = useLoadClassifications()
   const { openModal } = useOverlayDispatch()
 

@@ -23,7 +23,7 @@ interface Props extends UseModelProps<string> {
 
 ///
 
-export function CodeEditor({ className, onChange, name, value, ...props }: Props) {
+export function CodeEditor({ className, onChange, name, value, ...props }: Props): JSX.Element {
   const interpreter = usePocketLisp()
   const textAreaEl = useRef<HTMLTextAreaElement>(null)
   const [cm, setCodeMirror] = useState<CodeMirror.EditorFromTextArea>()
@@ -56,7 +56,7 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
   // Setup codeMirror event listeners
   useEffect(() => {
     if (!cm) return
-    const onChangeHandler = debounce(cm => {
+    const onChangeHandler = debounce((cm) => {
       const value = cm.getValue()
       onChange({ name, value })
       setOutput(interpreter.getOutput())
@@ -94,8 +94,8 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
   )
 }
 
-const codeCompletion = interpreter => {
-  return cm => {
+const codeCompletion = (interpreter) => {
+  return (cm) => {
     const cursor = cm.getCursor()
     const line = cm.getLine(cursor.line)
     let start = cursor.ch
@@ -105,7 +105,7 @@ const codeCompletion = interpreter => {
     const word = line.slice(start, end).toLowerCase()
 
     return {
-      list: interpreter.getGlobalNames().filter(name => name.includes(word)),
+      list: interpreter.getGlobalNames().filter((name) => name.includes(word)),
       from: CodeMirror.Pos(cursor.line, start),
       to: CodeMirror.Pos(cursor.line, end),
     }

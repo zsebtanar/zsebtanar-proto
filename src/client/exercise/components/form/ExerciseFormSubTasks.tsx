@@ -1,44 +1,42 @@
 import React from 'react'
 import * as dp from 'dot-prop-immutable'
-import {
-  TextEditor,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  Button,
-  FormCard,
-} from 'client/generic/components'
-import { MarkdownWithScript } from 'client/script/components'
+import { noop } from 'shared/utils/fn'
 import { ExerciseSubTask } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { NAMES as userControlNames } from '../userControls/controlTypes'
 import { UserControlEditModal } from '../../modals/UserControlEditModal'
-import { useOverlayDispatch } from 'client/overlay/providers'
 import { ExerciseFormSubTasksHint } from './ExerciseFormSubTasksHint'
 import { UserControls } from '../userControls/UserControl'
-import { noop } from 'shared/utils/fn'
-import { usePocketLisp } from '../../../script/providers/PocketLispProvider'
+import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
+import { useOverlayDispatch } from 'client/overlay/providers/OverlayProvider'
+import { FormCard } from 'client/generic/components/form/FormCard'
+import { Dropdown } from 'client/generic/components/dropdown/Dropdown'
+import { DropdownToggle } from 'client/generic/components/dropdown/DropdownToggle'
+import { DropdownMenu } from 'client/generic/components/dropdown/DropdownMenu'
+import { Button } from 'client/generic/components/Button'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 
 interface Props extends UseModelProps<ExerciseSubTask> {
   index: number
   onRemove: (idx: number) => void
 }
 
-export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props) {
+export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): JSX.Element {
   const { evalPL, script } = usePocketLisp()
   const { openModal } = useOverlayDispatch()
   const { bind, append, remove, set } = useModel<ExerciseSubTask>(bindProps)
 
-  const createUserControl = type =>
+  const createUserControl = (type) =>
     openModal(<UserControlEditModal scriptSource={script} value={{ type } as never} />, true).then(
-      newControl => newControl && append('controls', newControl),
+      (newControl) => newControl && append('controls', newControl),
     )
 
   const editUserControl = (data, idx) =>
     openModal(<UserControlEditModal scriptSource={script} value={data} />, true).then(
-      control => control && set(model => dp.set(model, `controls.${idx}`, control)),
+      (control) => control && set((model) => dp.set(model, `controls.${idx}`, control)),
     )
 
   return (

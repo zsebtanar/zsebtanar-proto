@@ -9,7 +9,7 @@ interface Props {
   children: ReactNode | string
 }
 
-export function Alert({ type, className, children, onDismiss }: Props) {
+export function Alert({ type, className, children, onDismiss }: Props): JSX.Element {
   return (
     <div className={cx('alert', `alert-${type}`, className)}>
       {children}

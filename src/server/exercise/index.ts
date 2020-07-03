@@ -1,6 +1,9 @@
 import * as express from 'express'
 
+import { route as create } from './create'
+import { route as update } from './update'
+
 export const route = express.Router()
 
-route.use('/', require('./create').route)
-route.use('/', require('./update').route)
+route.use('/', create.route)
+route.use('/', update.route)

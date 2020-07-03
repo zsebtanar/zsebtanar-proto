@@ -1,18 +1,21 @@
 import React from 'react'
-import { useDialog } from '../../overlay/providers'
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from 'client/overlay/components'
 import { ExerciseSubTaskControlsType } from 'shared/exercise/types'
-import { Button } from 'client/generic/components'
-import { useModel } from '../../generic/hooks/model'
+import { useModel } from 'client/generic/hooks/model'
+import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
+import { useDialog } from 'client/overlay/providers/DialogProvider'
+import { DialogHeader } from 'client/overlay/components/base/DialogHeader'
+import { Dialog } from 'client/overlay/components/base/Dialog'
+import { DialogBody } from 'client/overlay/components/base/DialogBody'
+import { DialogFooter } from 'client/overlay/components/base/DialogFooter'
+import { Button } from 'client/generic/components/Button'
 import { UserControlsAdmin } from '../components/userControls/UserControlAdmin'
-import { PocketLispProvider } from '../../script/providers/PocketLispProvider'
 
 interface Props {
   value: ExerciseSubTaskControlsType
   scriptSource: string
 }
 
-export function UserControlEditModal({ value, scriptSource }: Props) {
+export function UserControlEditModal({ value, scriptSource }: Props): JSX.Element {
   const { closeModal } = useDialog()
   const { bindPartialModel, data } = useModel<ExerciseSubTaskControlsType>({ value })
 

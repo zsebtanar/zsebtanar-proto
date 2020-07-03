@@ -5,11 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import './ExternalLink.scss'
 
-interface Props extends React.AnchorHTMLAttributes<{}> {
+interface Props extends Omit<React.HTMLProps<HTMLAnchorElement>, 'target' | 'rel'> {
   hideIcon?: boolean
 }
 
-export function ExternalLink({ className, hideIcon, ...props }: Props) {
+export function ExternalLink({ className, hideIcon, ...props }: Props): JSX.Element {
   return (
     <a
       className={cx('external-link', className)}

@@ -1,15 +1,14 @@
 import React from 'react'
 import { useDropdown } from './DropdownProvider'
 
-interface Props extends Pick<React.HTMLAttributes<unknown>, 'role' | 'aria-label'> {
+interface Props extends Omit<React.HTMLProps<HTMLButtonElement>, 'type'> {
   id?: string
   className?: string
   title?: string
-  btn?: ButtonType
   children?: React.ReactNode
 }
 
-export function DropdownToggle({ id, className, btn, children, ...props }: Props) {
+export function DropdownToggle({ id, className, children, ...props }: Props): JSX.Element {
   const dropdown = useDropdown()
 
   const action = () => {

@@ -1,8 +1,8 @@
 import React from 'react'
 import { range } from 'shared/utils/fn'
-import { Button } from '..'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { Button } from '../Button'
 
 interface Props {
   next: () => void
@@ -12,7 +12,7 @@ interface Props {
   length: number
 }
 
-export function GridPagination({ prev, next, jump, current, length }: Props) {
+export function GridPagination({ prev, next, jump, current, length }: Props): JSX.Element | null {
   if (length <= 1) return null
 
   const pages = range(0, length)
@@ -20,7 +20,7 @@ export function GridPagination({ prev, next, jump, current, length }: Props) {
     <nav aria-label="Lapozás" className="d-flex justify-content-center">
       <div className="btn-group">
         {StepBtn('Előző', faChevronLeft, prev, current === 0)}
-        {pages.map(page => jumpBtn(page, jump, current === page))}
+        {pages.map((page) => jumpBtn(page, jump, current === page))}
         {StepBtn('Következő', faChevronRight, next, current === length - 1)}
       </div>
     </nav>

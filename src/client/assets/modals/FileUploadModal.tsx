@@ -1,22 +1,27 @@
 import * as React from 'react'
 import cx from 'classnames'
-import { DialogFooter, Dialog, DialogHeader, DialogBody } from '../../overlay/components/base'
 import { AddFileButton } from '../components/AddFileButton'
 import {
   useManageAssetsDispatch,
   useManageAssets,
   UploadState,
 } from '../providers/ManageAssetProvider'
-import { useDialog } from '../../overlay/providers'
-import { useFileDrop } from '../../generic/hooks'
 import { formatBytes } from '../../generic/utils/file'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Alert, ProgressBar } from 'client/generic/components'
+import { useDialog } from '../../overlay/providers/DialogProvider'
+import { Dialog } from 'client/overlay/components/base/Dialog'
+import { DialogHeader } from 'client/overlay/components/base/DialogHeader'
+import { DialogBody } from 'client/overlay/components/base/DialogBody'
+import { Button } from 'client/generic/components/Button'
+import { ProgressBar } from 'client/generic/components/Progress'
+import { DialogFooter } from 'client/overlay/components/base/DialogFooter'
+import { useFileDrop } from '../../generic/hooks/events'
+import { Alert } from 'client/generic/components/Alert'
 
 import './FileUploadModal.scss'
 
-export function FileUploadModal() {
+export function FileUploadModal(): JSX.Element {
   const { pendingAssets, uploadState } = useManageAssets()
   const { addFiles, removeFile, uploadFiles, reset } = useManageAssetsDispatch()
   const { closeModal } = useDialog()

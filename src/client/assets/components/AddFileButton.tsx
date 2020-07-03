@@ -3,8 +3,8 @@ import { UseModelProps } from '../../generic/hooks/model'
 
 interface Props extends UseModelProps<File[]> {}
 
-export function AddFileButton({ onChange, name }: Props) {
-  const fileSelect = event => {
+export function AddFileButton({ onChange, name }: Props): JSX.Element {
+  const fileSelect = (event) => {
     onChange({ name, value: Array.from(event.currentTarget.files) })
   }
 

@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
-import { Service, cloudFnPost } from 'client/generic/services'
-import { useFetchData } from 'client/generic/hooks'
 import { ExerciseModel, ExerciseState } from 'shared/exercise/types'
 import { useLoadAndStoreModel } from '../../generic/hooks/loadAndStoreModel'
+import { Service } from 'client/generic/services/fireStoreBase'
+import { useFetchData } from 'client/generic/hooks/fetchData'
+import { cloudFnPost } from 'client/generic/services/firebase'
 
 export const exerciseDataService = new Service<ExerciseModel>('exercise')
 
@@ -26,7 +27,7 @@ export async function storeExercise({ id, ...data }: ExerciseModel) {
 }
 
 export function useExerciseModel(id?: string) {
-  const load = useCallback(id => exerciseDataService.get(id), [])
+  const load = useCallback((id) => exerciseDataService.get(id), [])
   const store = useCallback<typeof storeExercise>(storeExercise, [])
   return useLoadAndStoreModel<ExerciseModel>(load, store, id, {
     title: '',
@@ -35,6 +36,6 @@ export function useExerciseModel(id?: string) {
     difficulty: 0,
     state: ExerciseState.Draft,
     script: '',
-    subTasks: []
+    subTasks: [],
   })
 }

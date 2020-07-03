@@ -1,13 +1,13 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Grid } from 'client/generic/components/grid'
-import { ExerciseModel } from '../../../shared/exercise/types'
-import { FireStoreGridDS } from 'client/generic/services'
+import { ExerciseModel } from 'shared/exercise/types'
 import { exerciseDataService } from '../services/exercise'
 import { faEdit, faClone, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Grid } from 'client/generic/components/grid/Grid'
+import { FireStoreGridDS } from 'client/generic/services/fireStoreGridDS'
 
-export function ExerciseGrid() {
+export function ExerciseGrid(): JSX.Element {
   return (
     <div className="container my-5">
       <div className="btn-toolbar justify-content-between align-items-center">
@@ -21,7 +21,7 @@ export function ExerciseGrid() {
         columnDefs={[
           { title: '#', width: 100, renderer: (data, row, idx) => idx + 1 },
           { key: 'title', title: 'Név' },
-          { title: 'Opciók', width: 200, renderer: (_, row) => renderListItem(row) }
+          { title: 'Opciók', width: 200, renderer: (_, row) => renderListItem(row) },
         ]}
       />
     </div>

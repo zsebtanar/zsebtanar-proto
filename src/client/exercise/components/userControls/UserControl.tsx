@@ -17,7 +17,7 @@ interface Props<TSolution> extends UseModelProps<TSolution> {
   disabled?: boolean
 }
 
-export function UserControls<TSolution>({ ...props }: Props<TSolution>) {
+export function UserControls<TSolution>({ ...props }: Props<TSolution>): JSX.Element {
   switch (props.ctrl.type) {
     case t.SIMPLE_TEXT:
       return <SimpleText {...(props as any)} />

@@ -22,7 +22,7 @@ export function Grid<T extends BaseModel>({
   columnDefs,
   rowAction,
   defaultPageSize,
-}: Props<T>) {
+}: Props<T>): JSX.Element {
   defaultPageSize = defaultPageSize || 25
   const [pageNum, setPageNum] = useState<number>(0)
   const [colDefs, setColDefs] = useState<InternalGridColumnDefinition<T>[]>([])
@@ -67,7 +67,7 @@ export function Grid<T extends BaseModel>({
           length={result?.numberOfPage ?? 0}
           next={() => setPageNum(pageNum + 1)}
           prev={() => setPageNum(pageNum - 1)}
-          jump={num => setPageNum(num)}
+          jump={(num) => setPageNum(num)}
         />
       </div>
     )

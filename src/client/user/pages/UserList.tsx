@@ -1,29 +1,28 @@
-import * as React from 'react'
-import { useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
+import { faCheck, faBan } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   getAllUser,
   ROLE_ADMIN,
   ROLE_TEACHER,
   ROLE_USER,
-  updateUserRole
+  updateUserRole,
 } from 'client/user/services/user'
-import { Loading } from 'client/generic/components'
-import { faCheck, faBan } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Loading } from 'client/generic/components/Loading'
 
-export function UserList() {
+export function UserList(): JSX.Element {
   const [state, setState] = useReducer((state, newState) => ({ ...state, ...newState }), {
     counter: 0,
     loading: true,
     data: null,
-    error: null
+    error: null,
   })
 
   useEffect(() => {
     setState({ loading: true })
     getAllUser()
       .then(({ users }) => setState({ data: users, error: null, loading: false }))
-      .catch(error => setState({ error, data: null, loaded: false }))
+      .catch((error) => setState({ error, data: null, loaded: false }))
   }, [state.counter])
 
   const setRole = async (key, e) => {
@@ -51,7 +50,7 @@ export function UserList() {
                 <select
                   className="form-control form-control-sm"
                   value={user?.customClaims?.role ?? ROLE_USER}
-                  onChange={e => setRole(user.uid, e)}
+                  onChange={(e) => setRole(user.uid, e)}
                 >
                   <option value={ROLE_USER}>Diák</option>
                   <option value={ROLE_TEACHER}>Tanár</option>

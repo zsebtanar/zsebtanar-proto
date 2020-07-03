@@ -1,9 +1,9 @@
 import React from 'react'
-import { ExternalLink } from 'client/generic/components'
-import { AlertModal } from 'client/overlay/components'
-import { Markdown } from 'client/generic/components/markdown'
+import { Markdown } from 'client/generic/components/markdown/Markdown'
+import { AlertModal } from 'client/overlay/components/AlertModal'
+import { ExternalLink } from 'client/generic/components/ExternalLink'
 
-export function EquationHelpModal() {
+export function EquationHelpModal(): JSX.Element {
   return (
     <AlertModal title="Képletszerkesztő használata" size="large">
       {' '}

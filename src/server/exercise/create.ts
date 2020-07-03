@@ -1,11 +1,12 @@
 import * as express from 'express'
 import { ExerciseState } from 'shared/exercise/types'
-import { getToken, requestValidator } from '../middlewares'
 import { onlyEditors } from '../utils/authorization'
 import { ExerciseSchema, ExerciseSchemaType, ExerciseStateSchemeType } from './model'
 import { fireStore } from '../utils/firebase'
 import { indexExercise } from './utils/search-indexing'
 import { ErrorHandler } from '../middlewares/error'
+import { getToken } from '../middlewares/firebaseToken'
+import { requestValidator } from '../middlewares/requestValidator'
 
 export const route = express.Router()
 
@@ -29,10 +30,7 @@ route.post(
         updated: now,
         updatedBy: req.user.uid,
       }
-      await fireStore
-        .collection(`exercise/${result.id}/metadata`)
-        .doc('log')
-        .set(metadataLog)
+      await fireStore.collection(`exercise/${result.id}/metadata`).doc('log').set(metadataLog)
 
       // search
       await indexExercise(result.id, exercise)

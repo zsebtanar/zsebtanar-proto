@@ -2,21 +2,23 @@ import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { useParams, useHistory } from 'react-router'
-import { Loading, Button, Alert } from '../../generic/components'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
 import { useExerciseModel } from '../services/exercise'
 import { ExerciseFormDetails } from '../components/form/ExerciseFormDetails'
 import { ExerciseFormSubTask } from '../components/form/ExerciseFormSubTasks'
 import {
   AssetManagerProvider,
-  useManageAssetsDispatch
+  useManageAssetsDispatch,
 } from 'client/assets/providers/ManageAssetProvider'
 import { AssetGroup } from 'shared/assets/types'
-import { useQuery } from '../../generic/hooks'
+import { useQuery } from 'client/generic/hooks/navigation'
+import { Loading } from 'client/generic/components/Loading'
+import { Alert } from 'client/generic/components/Alert'
+import { Button } from 'client/generic/components/Button'
 
 import './ExerciseForm.scss'
 
-export function ExerciseForm() {
+export function ExerciseForm(): JSX.Element {
   const history = useHistory()
   const { id } = useParams()
   const query = useQuery()
@@ -30,7 +32,7 @@ export function ExerciseForm() {
     isPending,
     isSaving,
     save,
-    error
+    error,
   } = useExerciseModel(id)
   const { selectGroup, unSelectGroup } = useManageAssetsDispatch()
 
@@ -43,7 +45,7 @@ export function ExerciseForm() {
     return <Loading />
   }
 
-  const onSave = async event => {
+  const onSave = async (event) => {
     event.preventDefault()
     const res = await save(query.get('clone') !== null)
     if (res.id && res.id !== id) {
@@ -80,7 +82,7 @@ export function ExerciseForm() {
                     title: '',
                     description: '',
                     controls: [],
-                    hints: []
+                    hints: [],
                   })
                 }
               >

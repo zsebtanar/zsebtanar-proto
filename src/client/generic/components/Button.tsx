@@ -6,18 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import './Button.scss'
 
-interface ButtonProps {
-  title?: string
+interface ButtonProps extends Omit<React.HTMLProps<HTMLButtonElement>, 'type' | 'onClick'> {
   btn?: ButtonType
-  className?: string
   icon?: IconDefinition
-  disabled?: boolean
   loading?: boolean
   submit?: boolean
-  tabIndex?: number
   inline?: boolean
   onAction?: (event: MouseEvent) => void
-  children?: React.ReactNode
   small?: boolean
 }
 
@@ -34,10 +29,10 @@ export function Button({
   inline,
   children,
   small,
-}: ButtonProps) {
+}: ButtonProps): JSX.Element {
   const onClick =
     onAction &&
-    (event => {
+    ((event) => {
       event.preventDefault()
       onAction?.(event)
     })

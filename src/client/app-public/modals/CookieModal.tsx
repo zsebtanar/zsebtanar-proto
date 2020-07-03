@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { ExternalLink } from '../../generic/components'
-import { AlertModal } from 'client/overlay/components'
+import { AlertModal } from 'client/overlay/components/AlertModal'
+import { ExternalLink } from 'client/generic/components/ExternalLink'
 
-export function CookieModal() {
+export function CookieModal(): JSX.Element {
   return (
     <AlertModal title="Értesítés a sütik használatáról">
       <div>

@@ -1,12 +1,14 @@
 import React from 'react'
 import { useParams, useHistory } from 'react-router'
-import { PublicPage, Loading, Alert } from 'client/generic/components'
+import { randomInt } from 'shared/utils/math'
 import { useLoadExercise } from '../services/exercise'
 import { Exercise } from '../components/Exercise'
-import { useQuery } from '../../generic/hooks'
-import { randomInt } from 'shared/utils/math'
+import { useQuery } from 'client/generic/hooks/navigation'
+import { PublicPage } from 'client/generic/components/PublicPage'
+import { Loading } from 'client/generic/components/Loading'
+import { Alert } from 'client/generic/components/Alert'
 
-export function ExercisePage() {
+export function ExercisePage(): JSX.Element {
   const history = useHistory()
   const { id } = useParams()
   const query = useQuery()

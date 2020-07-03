@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function PaypalButton() {
+export function PaypalButton(): JSX.Element {
   return (
     <div className="text-center">
       <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

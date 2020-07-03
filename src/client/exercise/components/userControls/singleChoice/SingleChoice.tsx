@@ -1,10 +1,10 @@
 import React from 'react'
-import { UCSingleChoice } from 'shared/exercise/types'
-import { UseModelProps } from 'client/generic/hooks/model'
-import { RadioInput } from 'client/generic/components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck'
-import { MarkdownWithScript } from 'client/script/components'
+import { UCSingleChoice } from 'shared/exercise/types'
+import { UseModelProps } from 'client/generic/hooks/model'
+import { RadioInput } from 'client/generic/components/form/input/RadioInput'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 
 interface Props extends UseModelProps<number> {
   ctrl: UCSingleChoice
@@ -12,7 +12,7 @@ interface Props extends UseModelProps<number> {
   disabled?: boolean
 }
 
-export function SingleChoice({ readonly, disabled, ctrl, ...bindProps }: Props) {
+export function SingleChoice({ readonly, disabled, ctrl, ...bindProps }: Props): JSX.Element {
   return (
     <div className="user-control uc-single-choice">
       {readonly ? (

@@ -1,7 +1,10 @@
 import React from 'react'
-import { Button } from '../../generic/components'
-import { useDialog } from '../providers'
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from './base'
+import { useDialog } from '../providers/DialogProvider'
+import { DialogHeader } from './base/DialogHeader'
+import { Dialog } from './base/Dialog'
+import { DialogBody } from './base/DialogBody'
+import { DialogFooter } from './base/DialogFooter'
+import { Button } from 'client/generic/components/Button'
 
 interface Props {
   title?: string
@@ -9,7 +12,7 @@ interface Props {
   children: React.ReactNode
 }
 
-export function ConfirmModal({ children, title, buttonType }: Props) {
+export function ConfirmModal({ children, title, buttonType }: Props): JSX.Element {
   const { closeModal } = useDialog()
 
   const close = () => closeModal()

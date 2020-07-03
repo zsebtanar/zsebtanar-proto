@@ -47,7 +47,8 @@
     "precommit": "lint-staged",
     "predeploy": "npm run test",
     "deploy": "npm run build && firebase --project=test deploy",
-    "deploy:server": "npm run build:server && ./node_modules/.bin/firebase --project=test deploy --only functions"
+    "deploy:server": "npm run build:server && ./node_modules/.bin/firebase --project=test deploy --only functions",
+    "build:profile": "cross-env NODE_ENV=production webpack -p --profile --json --config ./build/webpack.client.js"
   },
   "config": {
     "firebaseFunctionDepencies": [

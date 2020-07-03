@@ -6,12 +6,12 @@ import { getScrollPos, storeScrollPos } from '../utils/localStore'
 interface Props {
   storePosition?: boolean
   track?: boolean
-  trackOptions?: object
+  trackOptions?: Record<string, unknown>
   className?: string
   children: ReactNode
 }
 
-export function trackPage<T extends object>(page, options?: T) {
+export function trackPage<T extends Record<string, unknown>>(page: string, options?: T): void {
   ReactGa.set({
     page,
     ...options,
@@ -23,7 +23,13 @@ function getPageName(): string {
   return location.pathname
 }
 
-export function PublicPage({ className, children, storePosition, track, trackOptions }: Props) {
+export function PublicPage({
+  className,
+  children,
+  storePosition,
+  track,
+  trackOptions,
+}: Props): JSX.Element {
   useEffect(() => {
     const pageName = getPageName()
 

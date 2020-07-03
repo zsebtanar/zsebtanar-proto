@@ -22,7 +22,7 @@ export function MultiSelectCombobox<TValue>({
   options,
   value,
   itemRenderer,
-}: Props<TValue>) {
+}: Props<TValue>): JSX.Element {
   const inputEl = useRef<HTMLInputElement>(null)
   const [isInFocus, setIsInFocus] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState('')
@@ -33,15 +33,15 @@ export function MultiSelectCombobox<TValue>({
     removeSelectedItem,
     selectedItems,
   } = useMultipleSelection<Option<TValue>>({
-    initialSelectedItems: value ? options.filter(o => value.includes(o.value)) : [],
+    initialSelectedItems: value ? options.filter((o) => value.includes(o.value)) : [],
     onSelectedItemsChange: ({ selectedItems }) => {
-      onChange?.({ name, value: (selectedItems ?? []).map(opt => opt.value) })
+      onChange?.({ name, value: (selectedItems ?? []).map((opt) => opt.value) })
     },
   })
 
   const getFilteredItems = () =>
     options.filter(
-      item =>
+      (item) =>
         !selectedItems.includes(item) &&
         item.label.toLowerCase().includes(inputValue.toLowerCase()),
     )
@@ -98,7 +98,7 @@ export function MultiSelectCombobox<TValue>({
             {selectedItem.label}
             <button
               className="close"
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation()
                 removeSelectedItem(selectedItem)
               }}

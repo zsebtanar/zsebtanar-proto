@@ -2,18 +2,20 @@ import React, { useEffect } from 'react'
 import * as ReactGA from 'react-ga'
 import { useParams } from 'react-router'
 import { useAlgoliaSearch } from 'client/search/services/AlgoliaSearchService'
-import { useInput } from 'client/generic/hooks'
-import { Loading, ErrorMsg, PublicPage } from 'client/generic/components'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
 import { NavLink } from 'react-router-dom'
-import { Markdown } from 'client/generic/components/markdown'
 import { ExerciseSearchRecord, ExerciseSearchResult } from 'client/search/types'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useInput } from '../../generic/hooks/input'
+import { Loading } from 'client/generic/components/Loading'
+import { ErrorMsg } from 'client/generic/components/ErrorMsg'
+import { Markdown } from 'client/generic/components/markdown/Markdown'
+import { PublicPage } from 'client/generic/components/PublicPage'
 
 const MIN_TERM_LENGTH = 2
 
-export function Search() {
+export function Search(): JSX.Element {
   const { q } = useParams()
   const { value: searchTerm, bind: bindSearch } = useInput(q ?? '')
   const { result, hasNoResult, isLoading, isSuccess, error } = useAlgoliaSearch(
@@ -80,7 +82,7 @@ function SearchResult({ data, term }: SearchResultProps) {
         </div>
       </div>
 
-      {data.hits.map(exercise => (
+      {data.hits.map((exercise) => (
         <NavLink
           key={exercise.objectID}
           to={`/exercise/${exercise.objectID}`}
@@ -108,7 +110,7 @@ interface SearchBadgeProps {
 }
 
 function SearchBadge({ exercise, category, type }: SearchBadgeProps) {
-  return (exercise[category] || []).map(tag => (
+  return (exercise[category] || []).map((tag) => (
     <span className={`badge badge-${type} mx-1`} key={tag}>
       {tag}
     </span>

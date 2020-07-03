@@ -1,23 +1,21 @@
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import {
-  PublicPage,
-  FormGroupLabel,
-  Button,
-  GoogleIcon,
-  FacebookIcon,
-  HrWithLabel,
-  Alert,
-  Link,
-} from 'client/generic/components'
 import { useModel } from '../../../generic/hooks/model'
 import { useUser } from '../../../user/providers/UserProvider'
 import { ProviderTypes } from '../../../user/types'
-import { errorToString } from '../../../generic/utils'
 import strings from '../../../localisation/strings'
 import { AuthPageHeader } from '../../nav/AuthPageHeader'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { PublicPage } from 'client/generic/components/PublicPage'
+import { Link } from 'client/generic/components/Link'
+import { Alert } from 'client/generic/components/Alert'
+import { errorToString } from '../../../generic/utils/error'
+import { FormGroupLabel } from 'client/generic/components/form/FormGroupLabel'
+import { Button } from 'client/generic/components/Button'
+import { HrWithLabel } from 'client/generic/components/HrWithLabel'
+import { FacebookIcon } from 'client/generic/components/icons/FacebookIcon'
+import { GoogleIcon } from 'client/generic/components/icons/GoogleIcon'
 
 interface RegistrationData {
   email: string
@@ -25,7 +23,7 @@ interface RegistrationData {
   password: string
 }
 
-export function RegisterPage() {
+export function RegisterPage(): JSX.Element {
   const { bind, data: registrationData } = useModel<RegistrationData>()
   const { isRegistration, loggedIn, signUp, ssoSignIn, hasError, error } = useUser()
   const history = useHistory()
@@ -34,7 +32,7 @@ export function RegisterPage() {
     history.replace('/')
   }
 
-  const register = e => {
+  const register = (e) => {
     e.preventDefault()
     const { email, password, name } = registrationData
     signUp(email, password, name)
@@ -46,7 +44,7 @@ export function RegisterPage() {
   return (
     <PublicPage className="page-register auth-page">
       <AuthPageHeader>
-        <Link href="/login" className="btn btn-outline-primary">
+        <Link to="/login" className="btn btn-outline-primary">
           <FontAwesomeIcon icon={faUser} /> Belépés
         </Link>
       </AuthPageHeader>

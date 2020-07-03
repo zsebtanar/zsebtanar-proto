@@ -84,8 +84,8 @@ module.exports = {
     historyApiFallback: {
       verbose: true,
       rewrites: [
-        { from: /^\/assets\/.*(.css|.png|.ico)$/, to: ctx => ctx.parsedUrl.pathname },
-        { from: /^\/.*\.js$/, to: ctx => '/' + ctx.parsedUrl.pathname.split('/').pop() },
+        { from: /^\/assets\/.*(.css|.png|.ico)$/, to: (ctx) => ctx.parsedUrl.pathname },
+        { from: /^\/.*\.js$/, to: (ctx) => '/' + ctx.parsedUrl.pathname.split('/').pop() },
         { from: /^\/admin/, to: '/admin.html' },
         { from: /^\//, to: '/index.html' },
       ],
@@ -133,43 +133,43 @@ module.exports = {
     : {
         minimize: true,
         minimizer: [new TerserPlugin({ parallel: true, extractComments: true })],
-        splitChunks: {
-          minSize: 10000, // doesn't seem enforced...
-          maxInitialRequests: 3, // only app and libs
-          maxAsyncRequests: 2,
-          cacheGroups: {
-            default: false,
-            vendors: false,
-            firebase: {
-              test: /[\\/]node_modules[\\/]@firebase[\\/]/,
-              name: 'firebase',
-              chunks: 'initial',
-              minSize: 1,
-              priority: 3,
-            },
-            admin: {
-              test: /[\\/]src[\\/]clint[\\/]app-admin[\\/]/,
-              name: 'admin',
-              chunks: 'initial',
-              minSize: 1000,
-              priority: 1,
-            },
-            public: {
-              test: /[\\/]src[\\/]clint[\\/]app-public[\\/]/,
-              name: 'public',
-              chunks: 'initial',
-              minSize: 1000,
-              priority: 1,
-            },
-            common: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'common',
-              chunks: 'initial',
-              minSize: 10000,
-              priority: -100,
-            },
-          },
-        },
+        // splitChunks: {
+        //   minSize: 10000, // doesn't seem enforced...
+        //   maxInitialRequests: 3, // only app and libs
+        //   maxAsyncRequests: 2,
+        //   cacheGroups: {
+        //     default: false,
+        //     vendors: false,
+        //     firebase: {
+        //       test: /[\\/]node_modules[\\/]@firebase[\\/]/,
+        //       name: 'firebase',
+        //       chunks: 'initial',
+        //       minSize: 1,
+        //       priority: 3,
+        //     },
+        //     admin: {
+        //       test: /[\\/]src[\\/]clint[\\/]app-admin[\\/]/,
+        //       name: 'admin',
+        //       chunks: 'initial',
+        //       minSize: 1000,
+        //       priority: 1,
+        //     },
+        //     public: {
+        //       test: /[\\/]src[\\/]clint[\\/]app-public[\\/]/,
+        //       name: 'public',
+        //       chunks: 'initial',
+        //       minSize: 1000,
+        //       priority: 1,
+        //     },
+        //     common: {
+        //       test: /[\\/]node_modules[\\/]/,
+        //       name: 'common',
+        //       chunks: 'initial',
+        //       minSize: 10000,
+        //       priority: -100,
+        //     },
+        //   },
+        // },
         runtimeChunk: {
           name: 'manifest',
         },
@@ -201,7 +201,7 @@ module.exports = {
       __SERVER_ENV__: JSON.stringify(serverEnv),
     }),
     isDev && new webpack.HotModuleReplacementPlugin(),
-    isDev && new webpack.NamedModulesPlugin(),
-    // isDev && new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true })
+    new webpack.NamedModulesPlugin(),
+    !isDev && new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true }),
   ].filter(Boolean),
 }

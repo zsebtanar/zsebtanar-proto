@@ -5,7 +5,7 @@ export interface InputProps
   extends UseModelProps<string>,
     Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'name'> {}
 
-export function Input({ name, value, onChange, ...props }: InputProps) {
+export function Input({ name, value, onChange, ...props }: InputProps): JSX.Element {
   return (
     <input
       name={name}

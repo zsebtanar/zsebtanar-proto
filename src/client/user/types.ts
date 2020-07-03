@@ -6,3 +6,7 @@ export enum ProviderTypes {
   Google = 'google',
   Facebook = 'facebook',
 }
+
+export interface UserToken {
+  role: number
+}

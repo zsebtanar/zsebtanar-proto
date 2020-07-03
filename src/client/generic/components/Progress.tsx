@@ -7,7 +7,7 @@ interface ProgressBarProps {
   max?: number
 }
 
-export function ProgressBar({ min, max, className, value }: ProgressBarProps) {
+export function ProgressBar({ min, max, className, value }: ProgressBarProps): JSX.Element {
   const style = { width: `${value}%` }
   return (
     <div className={`progress ${className || ''}`}>

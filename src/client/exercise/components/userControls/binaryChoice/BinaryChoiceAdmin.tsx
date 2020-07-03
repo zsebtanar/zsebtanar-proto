@@ -1,13 +1,16 @@
 import React from 'react'
 import { UCBinaryChoice } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
-import { Button, Checkbox, TextEditor, Select } from 'client/generic/components'
-import { MarkdownWithScript } from 'client/script/components'
 import { UserControlNameInput } from '../common/UserControlNameInput'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { Checkbox } from 'client/generic/components/form/input/Checkbox'
+import { Button } from 'client/generic/components/Button'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { Select } from 'client/generic/components/form/input/Select'
 
-export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>) {
+export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCBinaryChoice>(bindProps)
 
   return (
@@ -62,7 +65,7 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>) {
               <Select
                 options={[
                   { label: item.trueLabel, value: true },
-                  { label: item.falseLabel, value: false }
+                  { label: item.falseLabel, value: false },
                 ]}
                 {...bind(`solution.${idx}`)}
               />

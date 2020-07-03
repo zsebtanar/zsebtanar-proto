@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
-import { SearchResponse } from '@algolia/client-search'
-import { useFetchData } from 'client/generic/hooks'
 import { algoliaSearch } from './search'
 import { ExerciseSearchResult } from 'client/search/types'
+import { useFetchData } from '../../generic/hooks/fetchData'
 
 export function useAlgoliaSearch(searchTerm: string, limit = 2) {
   const callback = useCallback(() => {

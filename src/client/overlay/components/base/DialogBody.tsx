@@ -4,6 +4,6 @@ interface Props {
   children?: ReactNode
 }
 
-export function DialogBody({ children }: Props) {
+export function DialogBody({ children }: Props): JSX.Element {
   return <div className="modal-body">{children}</div>
 }

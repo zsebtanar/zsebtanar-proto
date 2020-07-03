@@ -11,7 +11,7 @@ import { MultiChoiceAdmin } from './multiChoice/MultiChoiceAdmin'
 import { FractionNumberAdmin } from './fractionNumber/FractionNumberAdmin'
 import { NumberListAdmin } from './numberList/NumberListAdmin'
 
-export function UserControlsAdmin({ ...bindProps }: UseModelProps<UserControl>) {
+export function UserControlsAdmin({ ...bindProps }: UseModelProps<UserControl>): JSX.Element {
   switch (bindProps.value.type) {
     case t.SIMPLE_TEXT:
       return <SimpleTextAdmin {...(bindProps as any)} />

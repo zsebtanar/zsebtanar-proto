@@ -18,7 +18,7 @@ const modalSize = (size?: DialogSize) => {
   }
 }
 
-export function Dialog({ size, className, children }: Props) {
+export function Dialog({ size, className, children }: Props): JSX.Element {
   return (
     <div className={`modal-dialog ${modalSize(size)} ${className || ''}`} role="document">
       <div className="modal-content">{children}</div>

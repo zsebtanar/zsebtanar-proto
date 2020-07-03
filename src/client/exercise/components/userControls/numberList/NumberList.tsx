@@ -2,9 +2,9 @@ import React from 'react'
 import cx from 'classnames'
 import { UCNumberList } from 'shared/exercise/types'
 import { UseModelProps, useModel } from 'client/generic/hooks/model'
-import { Input } from 'client/generic/components'
-import { MarkdownWithScript } from 'client/script/components'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { Input } from 'client/generic/components/form/input/Input'
 
 interface Props extends UseModelProps<string[]> {
   ctrl: UCNumberList
@@ -12,7 +12,7 @@ interface Props extends UseModelProps<string[]> {
   disabled?: boolean
 }
 
-export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props) {
+export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props): JSX.Element {
   const { bind } = useModel(bindProps)
   return (
     <div className={cx('user-control', 'uc-number-list', { multiline: ctrl.props.multiLine })}>

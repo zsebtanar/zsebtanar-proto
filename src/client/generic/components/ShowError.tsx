@@ -1,15 +1,15 @@
 import React from 'react'
-import { CustomError, NotFoundError } from '../utils'
-import history from 'client/generic/utils/history'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSadTear, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import history from 'client/generic/utils/history'
+import { CustomError, NotFoundError } from '../utils/error'
 
 interface ShowErrorProps {
   showMenu?: boolean
   error?: CustomError
 }
 
-export function ShowError({ error, showMenu }: ShowErrorProps) {
+export function ShowError({ error, showMenu }: ShowErrorProps): JSX.Element {
   return (
     <div className="d-flex h-100">
       <div className="m-auto d-flex align-items-center flex-column">
@@ -52,7 +52,7 @@ function ErrorMenu() {
           <a
             className="nav-link"
             href="/"
-            ref={el => el && el.focus()}
+            ref={(el) => el && el.focus()}
             onClick={() => history.back()}
           >
             Vissza az előző oldalra

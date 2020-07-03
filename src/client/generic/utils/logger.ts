@@ -1,21 +1,25 @@
-import { captureException } from '@sentry/browser'
-import { init as sentryInit } from '@sentry/browser/dist/sdk'
+let sentryCaptureException
 
-export function logException(ex) {
-  if (!__DEV__) {
-    captureException(ex)
-  } else {
+export function logException(ex: Error): void {
+  if (__DEV__) {
     window.console && console.error && console.error(ex)
+  } else if (sentryCaptureException) {
+    sentryCaptureException(ex)
   }
 }
 
-export function initSentryLogger() {
+export async function initSentryLogger(): Promise<void> {
+  const [{ init: sentryInit }, { captureException }] = await Promise.all([
+    import(/* webpackChunkName: 'sentry' */ '@sentry/browser/dist/sdk'),
+    import(/* webpackChunkName: 'sentry' */ '@sentry/browser'),
+  ])
   if (__CONFIG__.sentry.dsn) {
+    sentryCaptureException = captureException
     sentryInit({
       dsn: __CONFIG__.sentry.dsn,
       environment: 'prototype',
       maxBreadcrumbs: 10,
-      ignoreErrors: ['top.GLOBALS']
+      ignoreErrors: ['top.GLOBALS'],
     })
   }
 }

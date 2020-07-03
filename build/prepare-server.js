@@ -25,15 +25,15 @@ function createFunctionPackageJSON() {
     name: 'functions',
     description: 'Zsebtanár szerver',
     dependencies: {
-      ...functionsDeps.reduce((acc, key) => Object.assign(acc, { [key]: deps[key] }), {})
+      ...functionsDeps.reduce((acc, key) => Object.assign(acc, { [key]: deps[key] }), {}),
     },
     devDependencies: functionsDeps.reduce(
       (acc, key) => Object.assign(acc, { [key]: devDeps[key] }),
-      {}
+      {},
     ),
     private: true,
-    engines: { node: '8' },
-    main: 'index.js'
+    engines: { node: '12' },
+    main: 'index.js',
   }
 
   fs.writeFileSync(path.join(functions, 'package.json'), JSON.stringify(json), 'utf8')

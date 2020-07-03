@@ -1,8 +1,8 @@
 import React from 'react'
 import { UseModelProps } from 'client/generic/hooks/model'
-import { Input } from 'client/generic/components'
 import { UCSimpleText } from 'shared/exercise/types'
-import { MarkdownWithScript } from 'client/script/components'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { Input } from 'client/generic/components/form/input/Input'
 
 interface Props extends UseModelProps<string> {
   ctrl: UCSimpleText
@@ -10,7 +10,14 @@ interface Props extends UseModelProps<string> {
   disabled?: boolean
 }
 
-export function SimpleText({ name, value, onChange, readonly, disabled, ctrl }: Props) {
+export function SimpleText({
+  name,
+  value,
+  onChange,
+  readonly,
+  disabled,
+  ctrl,
+}: Props): JSX.Element {
   return (
     <div className="user-control uc-simple-text d-flex align-items-center">
       <span className="prefix">

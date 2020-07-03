@@ -1,16 +1,21 @@
 import React, { useEffect } from 'react'
-import { Loading, Alert, Button, FormGroup, Input, FormCard } from 'client/generic/components'
-import { NavLink } from 'react-router-dom'
-import { TextEditor } from 'client/generic/components/form/input/TextEditor'
-import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
 import { useParams, useHistory } from 'react-router'
+import { NavLink } from 'react-router-dom'
+import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
+import { AssetGroup } from 'shared/assets/types'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { useWikiPageModel, wikiPageService } from '../services/wikiPageService'
 import { useManageAssetsDispatch } from '../../assets/providers/ManageAssetProvider'
-import { AssetGroup } from 'shared/assets/types'
+import { Loading } from 'client/generic/components/Loading'
+import { Alert } from 'client/generic/components/Alert'
+import { FormCard } from 'client/generic/components/form/FormCard'
+import { FormGroup } from 'client/generic/components/form/FormGroup'
+import { Button } from 'client/generic/components/Button'
+import { Input } from 'client/generic/components/form/input/Input'
 
 import './WikiPageForm.scss'
 
-export function WikiPageForm() {
+export function WikiPageForm(): JSX.Element {
   const { id } = useParams()
   const history = useHistory()
   const { save, hasError, isPending, isFetching, isSaving, bind, error } = useWikiPageModel(id)
@@ -26,7 +31,7 @@ export function WikiPageForm() {
     return <Loading />
   }
 
-  const onSave = event => {
+  const onSave = (event) => {
     event.preventDefault()
     save()
   }
@@ -47,13 +52,13 @@ export function WikiPageForm() {
           <h4 className="d-inline-block m-0 mr-1">Wiki oldal</h4>
           <FormCard>
             <FormGroup label="Cím">
-              {id => (
+              {(id) => (
                 <Input id={id} {...bind('title')} className="form-control" type="text" required />
               )}
             </FormGroup>
 
             <FormGroup label="Tartalom">
-              {id => (
+              {(id) => (
                 <TextEditor
                   id={id}
                   {...bind('content')}

@@ -1,9 +1,9 @@
 import * as express from 'express'
 import { admin } from '../utils/firebase'
 import { evolve, map, pick } from 'ramda'
-import { getToken } from '../middlewares'
 import { onlyAdmin } from '../utils/authorization'
 import { ErrorHandler } from '../middlewares/error'
+import { getToken } from '../middlewares/firebaseToken'
 
 export const route = express.Router()
 
@@ -18,7 +18,7 @@ route.get('/all', [getToken, onlyAdmin], async (req, res, next) => {
       'metadata',
       'providerData',
       'displayName',
-      'customClaims'
+      'customClaims',
     ])
 
     const data = await admin.auth().listUsers(1000, nextPageToken)

@@ -2,7 +2,7 @@ import React from 'react'
 import { prop, sortBy, values } from 'ramda'
 import { NavLink } from 'react-router-dom'
 
-export function MainClassificationSelector() {
+export function MainClassificationSelector(): JSX.Element {
   // FIXME: MainClassificationSelector
   const classification = { grade: [] as any, subject: [] as any }
   if (!classification) return <div />
@@ -14,8 +14,8 @@ export function MainClassificationSelector() {
         <h4 className="col-md-3">Osztályok</h4>
         <div className="col-md-9">
           {sortBy(prop('order'))(values(grade))
-            .filter(grade => grade.exercise)
-            .map(g => (
+            .filter((grade) => grade.exercise)
+            .map((g) => (
               <NavLink
                 to={`/grade/${g._key}`}
                 key={g._key}
@@ -27,8 +27,8 @@ export function MainClassificationSelector() {
         </div>
       </div>
       {sortBy(prop('order'))(subjectArray)
-        .filter(sub => sub.exercise)
-        .map(sub => (
+        .filter((sub) => sub.exercise)
+        .map((sub) => (
           <div className="tab-content" key={sub._key}>
             <hr />
             <div className="tab-pane active" id={sub._key} role="tabpanel">
@@ -36,8 +36,8 @@ export function MainClassificationSelector() {
                 <h4 className="col-md-3">{sub.name}</h4>
                 <div className="col-md-9">
                   {sortBy(prop('name'))(values(sub.topic))
-                    .filter(topic => topic.exercise)
-                    .map(topic => (
+                    .filter((topic) => topic.exercise)
+                    .map((topic) => (
                       <NavLink
                         to={`/subject/${sub._key}/${topic._key}`}
                         key={topic._key}

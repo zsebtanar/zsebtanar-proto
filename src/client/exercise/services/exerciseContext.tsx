@@ -1,5 +1,5 @@
 import React, { ReactNode, useReducer, Reducer } from 'react'
-import { ExerciseModel } from '../../../shared/exercise/types'
+import { ExerciseModel } from 'shared/exercise/types'
 import { ExerciseSolution } from '../components/ExerciseBody'
 
 interface ActiveSubTask {

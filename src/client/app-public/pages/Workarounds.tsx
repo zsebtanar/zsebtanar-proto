@@ -1,10 +1,11 @@
 import React from 'react'
 import { PublicPage } from 'client/generic/components/PublicPage'
-import { ExternalLink, Button } from 'client/generic/components'
-import { useOverlayDispatch } from 'client/overlay/providers'
 import { FeedbackModal } from 'client/feedback/modals/FeedbackModal'
+import { Button } from 'client/generic/components/Button'
+import { ExternalLink } from 'client/generic/components/ExternalLink'
+import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
 
-export function Workarounds() {
+export function Workarounds(): JSX.Element {
   const { openModal } = useOverlayDispatch()
   return (
     <PublicPage>

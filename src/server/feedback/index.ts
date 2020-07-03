@@ -3,9 +3,9 @@ import { simpleGet } from '../utils/http'
 import * as functions from 'firebase-functions'
 import { pick } from 'ramda'
 import * as express from 'express'
-import { requestValidator } from '../middlewares'
 import { RECAPTCHA_RESPONSE_PARAM, CreateFeedbackSchema } from './model'
 import { ErrorHandler } from '../middlewares/error'
+import { requestValidator } from '../middlewares/requestValidator'
 
 const SITE_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
 const SECRET_KEY = functions.config()?.recaptcha?.secret_key

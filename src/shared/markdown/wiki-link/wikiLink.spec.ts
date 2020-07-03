@@ -1,5 +1,5 @@
 import Markdown from 'markdown-it'
-import { wikiLinkInit } from '../index'
+import { wikiLinkInit } from './index'
 
 describe('wikiLink', () => {
   let md: Markdown = undefined

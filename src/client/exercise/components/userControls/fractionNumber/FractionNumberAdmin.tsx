@@ -1,12 +1,14 @@
 import React from 'react'
-import { useModel, UseModelProps } from '../../../../generic/hooks/model'
+import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UCFractionNumber } from 'shared/exercise/types'
-import { Checkbox, Input, TextEditor } from '../../../../generic/components/form'
-import { FormGroup } from '../../../../generic/components'
-import { MarkdownWithScript } from '../../../../script/components'
 import { UserControlNameInput } from '../common/UserControlNameInput'
+import { Checkbox } from 'client/generic/components/form/input/Checkbox'
+import { FormGroup } from 'client/generic/components/form/FormGroup'
+import { TextEditor } from 'client/generic/components/form/input/TextEditor'
+import { MarkdownWithScript } from '../../../../script/components/MarkdownWithCode'
+import { Input } from 'client/generic/components/form/input/Input'
 
-export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>) {
+export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>): JSX.Element {
   const { bind } = useModel<UCFractionNumber>(bindProps)
 
   return (
@@ -21,17 +23,17 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>) 
       <hr />
 
       <FormGroup label="Előtag">
-        {id => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
+        {(id) => <TextEditor {...bind('props.prefix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <FormGroup label="Utótag">
-        {id => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
+        {(id) => <TextEditor {...bind('props.postfix')} id={id} preview={MarkdownWithScript} />}
       </FormGroup>
       <hr />
 
       <h6>Megoldás</h6>
 
       <FormGroup label="Számláló">
-        {id => (
+        {(id) => (
           <Input
             type="number"
             {...bind('solution.numerator')}
@@ -44,7 +46,7 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>) 
       </FormGroup>
 
       <FormGroup label="Nevező">
-        {id => (
+        {(id) => (
           <Input
             type="number"
             className="form-control form-control-sm"

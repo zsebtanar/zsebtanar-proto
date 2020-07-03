@@ -1,10 +1,14 @@
 import React from 'react'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'
-import { Button, Dropdown, DropdownToggle, DropdownMenu, Link } from 'client/generic/components'
 import { isAdmin } from 'client/user/services/user'
-import { faPlus, faSignInAlt, faBars, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faBars, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Link } from 'client/generic/components/Link'
+import { Button } from 'client/generic/components/Button'
+import { Dropdown } from 'client/generic/components/dropdown/Dropdown'
+import { DropdownToggle } from 'client/generic/components/dropdown/DropdownToggle'
+import { DropdownMenu } from 'client/generic/components/dropdown/DropdownMenu'
 
 import './Header.scss'
 
@@ -14,7 +18,7 @@ interface Props {
   onOpenSideNav: () => void
 }
 
-export function Header({ onOpenSideNav }: Props) {
+export function Header({ onOpenSideNav }: Props): JSX.Element {
   const { loggedIn, userToken } = useUser()
 
   return (
@@ -70,16 +74,12 @@ function AnonymousUserMenu() {
   return (
     <>
       <li className="nav-item" key="sign-up">
-        <Link
-          className="btn btn-outline-primary mx-2"
-          href="/register"
-          data-testid="header-reg-btn"
-        >
+        <Link className="btn btn-outline-primary mx-2" to="/register" data-testid="header-reg-btn">
           <FontAwesomeIcon icon={faPlus} /> Regisztráció
         </Link>
       </li>
       <li className="nav-item" key="sign-in">
-        <Link className="btn btn-primary" href="/login" data-testid="header-login-btn">
+        <Link className="btn btn-primary" to="/login" data-testid="header-login-btn">
           <FontAwesomeIcon icon={faUser} /> Belépés
         </Link>
       </li>

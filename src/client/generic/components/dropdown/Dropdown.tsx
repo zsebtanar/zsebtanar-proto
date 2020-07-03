@@ -10,7 +10,7 @@ interface Props {
   children?: ReactNode
 }
 
-export function Dropdown(props: Props) {
+export function Dropdown(props: Props): JSX.Element {
   return (
     <DropdownProvider>
       <DropdownInner {...props} />

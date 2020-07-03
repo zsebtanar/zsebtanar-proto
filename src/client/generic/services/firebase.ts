@@ -1,9 +1,5 @@
 import { app } from 'client/generic/services/fireApp'
 
-export function resolveSnapshot(snapshot) {
-  return snapshot.val()
-}
-
 const getTokenHeader = async (): Promise<{ Authorization: string }> => {
   const user = app.auth().currentUser
   if (user) {
@@ -22,8 +18,8 @@ export async function cloudFnRequest(
   path: string,
   params?: Params,
   body?: unknown,
-  options?: Options
-) {
+  options?: Options,
+): Promise<Response> {
   const authHeader = options?.withToken ? await getTokenHeader() : {}
 
   const config = {
@@ -31,18 +27,18 @@ export async function cloudFnRequest(
     path,
     body: JSON.stringify(body),
     params,
-    headers: { ...authHeader, 'Content-Type': 'application/json' }
+    headers: { ...authHeader, 'Content-Type': 'application/json' },
   }
   return fetch(`${__CONFIG__.api}${path}`, config)
 }
 
-export const cloudFnGet = <T>(path: string, params: Params, options?: Options) =>
+export const cloudFnGet = <T>(path: string, params: Params, options?: Options): Promise<T> =>
   cloudFnRequest('get', path, params, undefined, options).then(processResponse)
 
 export const cloudFnPost = <T, R = T>(path: string, data: T, options?: Options): Promise<R> =>
   cloudFnRequest('post', path, undefined, data, options).then(processResponse)
 
-export const cloudFnDelete = (path: string, params: Params, options?: Options) =>
+export const cloudFnDelete = (path: string, params: Params, options?: Options): Promise<void> =>
   cloudFnRequest('delete', path, params, undefined, options).then(processResponse)
 
 async function processResponse(res: Response) {

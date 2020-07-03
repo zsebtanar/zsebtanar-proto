@@ -1,11 +1,11 @@
 import React from 'react'
 import { UCSingleNumber } from 'shared/exercise/types'
 import { UseModelProps } from 'client/generic/hooks/model'
-import { Input } from 'client/generic/components'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
-import { MarkdownWithScript } from 'client/script/components'
 
 import './SingleNumber.scss'
+import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { Input } from 'client/generic/components/form/input/Input'
 
 interface Props extends UseModelProps<string> {
   ctrl: UCSingleNumber
@@ -13,7 +13,7 @@ interface Props extends UseModelProps<string> {
   disabled?: boolean
 }
 
-export function SingleNumber({ readonly, disabled, ctrl, ...bindProps }: Props) {
+export function SingleNumber({ readonly, disabled, ctrl, ...bindProps }: Props): JSX.Element {
   return (
     <div className="user-control uc-simple-number d-flex align-items-center">
       <div className="prefix">

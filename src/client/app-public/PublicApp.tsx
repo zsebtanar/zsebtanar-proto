@@ -1,20 +1,20 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Navigation, Footer } from './nav'
-import {
-  About,
-  Home,
-  JoinUs,
-  Page404,
-  Workarounds,
-  Search,
-  RegisterPage,
-  LoginPage,
-  ForgottenPasswordPage,
-  UserProfilePage,
-} from './pages'
+
 import { ExercisePage } from '../exercise/pages/ExercisePage'
 import { useUser } from '../user/providers/UserProvider'
+import { LoginPage } from './pages/auth/LoginPage'
+import { RegisterPage } from './pages/auth/RegisterPage'
+import { ForgottenPasswordPage } from './pages/auth/ForgottenPasswordPage'
+import { Home } from './pages/Home'
+import { UserProfilePage } from './pages/UserProfilePage'
+import { Search } from './pages/Search'
+import { About } from './pages/About'
+import { JoinUs } from './pages/JoinUs'
+import { Workarounds } from './pages/Workarounds'
+import { Page404 } from './pages/Page404'
+import { Footer } from './nav/Footer'
+import { Navigation } from './nav/Navigation'
 
 export const PublicApp = React.memo(function PublicAppBase() {
   const { loggedIn } = useUser()

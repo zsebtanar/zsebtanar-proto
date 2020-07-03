@@ -1,21 +1,25 @@
 import React, { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { Button, Loading } from 'client/generic/components'
-import { useRadio, useInput } from 'client/generic/hooks'
 import { Recaptcha } from 'client/app-public/providers/Recaptcha'
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from 'client/overlay/components/base'
 import { useUser } from 'client/user/providers/UserProvider'
-import { useDialog } from 'client/overlay/providers'
-import { createFeedback } from '../services/feedbackService'
+import { createFeedback, FeedbackSite, FeedbackType } from '../services/feedbackService'
+import { useRadio, useInput } from 'client/generic/hooks/input'
+import { useDialog } from 'client/overlay/providers/DialogProvider'
+import { Dialog } from 'client/overlay/components/base/Dialog'
+import { DialogHeader } from 'client/overlay/components/base/DialogHeader'
+import { DialogBody } from 'client/overlay/components/base/DialogBody'
+import { DialogFooter } from 'client/overlay/components/base/DialogFooter'
+import { Loading } from 'client/generic/components/Loading'
+import { Button } from 'client/generic/components/Button'
 
 enum FormStates {
   Init,
   Loading,
   Finished,
-  Error
+  Error,
 }
 
-export function FeedbackModal() {
+export function FeedbackModal(): JSX.Element {
   const session = useUser()
   const { closeModal } = useDialog()
   const [formState, setFormState] = useState<FormStates>(FormStates.Init)
@@ -28,18 +32,18 @@ export function FeedbackModal() {
 
   const close = () => closeModal()
 
-  const saveDetails = async event => {
+  const saveDetails = async (event) => {
     event?.preventDefault()
     setFormState(FormStates.Loading)
     try {
       await createFeedback({
-        type,
+        type: type as FeedbackType,
         email,
         description,
         // FIXME: add admin too
-        site: 'public',
+        site: FeedbackSite.public,
         pathname: window.location.pathname,
-        'g-recaptcha-response': capthca
+        'g-recaptcha-response': capthca,
       })
 
       setFormState(FormStates.Finished)

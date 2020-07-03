@@ -1,11 +1,12 @@
 import React from 'react'
-import { FormGroup, Input } from 'client/generic/components/form'
 import { UseModelProps } from 'client/generic/hooks/model'
+import { Input } from 'client/generic/components/form/input/Input'
+import { FormGroup } from 'client/generic/components/form/FormGroup'
 
-export function UserControlNameInput(bindProps: UseModelProps<string>) {
+export function UserControlNameInput(bindProps: UseModelProps<string>): JSX.Element {
   return (
     <FormGroup label="Mező neve">
-      {id => (
+      {(id) => (
         <>
           <Input
             id={id}

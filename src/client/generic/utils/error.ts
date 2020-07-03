@@ -4,14 +4,14 @@ export class CustomError {
     this._message = message
   }
 
-  get message() {
+  get message(): string {
     return this._message
   }
 }
 
 export class NotFoundError extends CustomError {}
 
-export function errorToString(error: any, codeMapping: Record<string, string>) {
+export function errorToString(error: any, codeMapping: Record<string, string>): string {
   if (error.code && codeMapping?.[error.code]) {
     return codeMapping?.[error.code]
   }

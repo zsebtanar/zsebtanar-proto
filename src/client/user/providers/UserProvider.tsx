@@ -1,8 +1,8 @@
 import React, { ReactNode, Reducer, useReducer, useMemo } from 'react'
-import { app } from 'client/generic/services'
 import { logException } from 'client/generic/utils/logger'
 import { parseToken, getUserDetails, updateUserProfile } from 'client/user/services/user'
-import { UserModel, ProviderTypes } from '../types'
+import { UserModel, ProviderTypes, UserToken } from '../types'
+import { firebase, app } from '../../generic/services/fireApp'
 
 interface Props {
   children: ReactNode
@@ -20,8 +20,11 @@ interface Store {
   loggedIn: boolean
   error?: Error
   user?: firebase.User
-  userToken?: string
+  userToken?: UserToken
   userDetails?: UserModel
+  isLoading: boolean
+  isRegistration: boolean
+  hasError: boolean
 }
 
 interface UserContextAPI {
@@ -30,14 +33,11 @@ interface UserContextAPI {
   signUp(email: string, password: string, displayName: string): Promise<Store>
   forgotPassword(email: string): Promise<unknown>
   signOut(): void
-  isLoading: boolean
-  isRegistration: boolean
-  hasError: boolean
 }
 
 type Action =
   | { type: 'SetUser'; payload: { user?: firebase.User } }
-  | { type: 'SetDetails'; payload: { details: UserModel; token: string } }
+  | { type: 'SetDetails'; payload: { details: UserModel; token: UserToken } }
   | { type: 'LoadUser' }
   | { type: 'SingInStart' }
   | { type: 'SSOSignInStart' }
@@ -60,40 +60,52 @@ const defaultState: Store = {
   user: undefined,
   userToken: undefined,
   userDetails: undefined,
+  isLoading: false,
+  hasError: false,
+  isRegistration: false,
+}
+
+function updateState(state: UserStates) {
+  return {
+    state,
+    isLoading: state === UserStates.Loading,
+    isRegistration: state === UserStates.RegisterUser,
+    hasError: state === UserStates.Error,
+  }
 }
 
 function userReducer(state: Store, action: Action): Store {
   switch (action.type) {
     case 'SetUser': {
       const { user } = action.payload
-      return { ...state, user: user, loggedIn: !!user }
+      return { ...state, user: user, loggedIn: !!user, ...updateState(UserStates.Idle) }
     }
     case 'SetDetails': {
       const { details, token } = action.payload
       return { ...state, userDetails: details, userToken: token }
     }
     case 'SingUpStart':
-      return { ...defaultState, state: UserStates.RegisterUser }
+      return { ...defaultState, ...updateState(UserStates.RegisterUser) }
     case 'LoadUser':
     case 'SingInStart': {
-      return { ...defaultState, state: UserStates.Loading }
+      return { ...defaultState, ...updateState(UserStates.Loading) }
     }
     case 'NoUser': {
-      return { ...defaultState, state: UserStates.Idle }
+      return { ...defaultState, ...updateState(UserStates.Idle) }
     }
     case 'Error': {
-      return { ...defaultState, state: UserStates.Error, error: action.payload }
+      return { ...defaultState, error: action.payload, ...updateState(UserStates.Error) }
     }
     default:
       return state
   }
 }
 
-export function UserProvider({ children }: Props) {
+export function UserProvider({ children }: Props): JSX.Element {
   const [store, dispatch] = useReducer<Reducer<Store, Action>>(userReducer, defaultState)
 
   React.useEffect(() => {
-    AUTH.onAuthStateChanged(async user => {
+    AUTH.onAuthStateChanged(async (user) => {
       dispatch({ type: 'LoadUser' })
 
       try {
@@ -164,8 +176,9 @@ export function UserProvider({ children }: Props) {
           }
           dispatch({ type: 'SetUser', payload: { user: userCredential.user } })
           const [details, token] = await Promise.all([
-            updateUserProfile(userCredential.user.uid, { displayName }),
+            getUserDetails(userCredential.user.uid).catch(() => ({})),
             parseToken(userCredential.user),
+            updateUserProfile(userCredential.user.uid, { displayName }),
           ])
           dispatch({ type: 'SetDetails', payload: { details, token } })
         } catch (e) {
@@ -188,15 +201,6 @@ export function UserProvider({ children }: Props) {
         return AUTH.sendPasswordResetEmail(email, {
           url: window.location.href.replace('/forgotten-password', '') + '/login',
         })
-      },
-      get hasError() {
-        return store.state === UserStates.Error
-      },
-      get isLoading() {
-        return store.state === UserStates.Loading || store.state === UserStates.RegisterUser
-      },
-      get isRegistration() {
-        return store.state === UserStates.RegisterUser
       },
     }),
     [store],

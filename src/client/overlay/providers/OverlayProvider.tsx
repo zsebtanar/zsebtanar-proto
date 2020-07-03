@@ -1,6 +1,6 @@
 import React, { ReactNode, Reducer, useReducer, useContext } from 'react'
 import cx from 'classnames'
-import { uid } from '../../generic/utils'
+import { uid } from '../../generic/utils/fn'
 import { DialogProvider, useDialog } from './DialogProvider'
 import { DialogData } from 'client/overlay/types'
 
@@ -40,17 +40,17 @@ function overlayReducer(state: State, action: OverlayActions): State {
       return { modals: [...state.modals, action.payload] }
     }
     case 'CloseModal': {
-      return { modals: state.modals.filter(m => m.id !== action.payload.id) }
+      return { modals: state.modals.filter((m) => m.id !== action.payload.id) }
     }
   }
 }
 
-export function OverlayProvider({ children }: Props) {
+export function OverlayProvider({ children }: Props): JSX.Element {
   const [state, dispatch] = useReducer<Reducer<State, OverlayActions>>(overlayReducer, defaultState)
 
   const api: OverlayContextAPI = {
     openModal<R>(content: ReactNode, disableBackdropClose = false): Promise<R> {
-      return new Promise<R>(resolve => {
+      return new Promise<R>((resolve) => {
         dispatch({
           type: 'OpenModal',
           payload: {
@@ -63,7 +63,7 @@ export function OverlayProvider({ children }: Props) {
       })
     },
     closeModal<R>(id: string, result?: R): void {
-      const modal = state.modals.find(m => m.id === id)
+      const modal = state.modals.find((m) => m.id === id)
       if (modal) {
         modal.resolve(result)
         dispatch({ type: 'CloseModal', payload: { id: modal.id } })
@@ -138,7 +138,7 @@ interface ModalProps {
 function Modal({ children, isActive, disableBackdropClose }: ModalProps) {
   const { closeModal } = useDialog()
 
-  const close = event => {
+  const close = (event) => {
     if (!disableBackdropClose && event.target === event.currentTarget) {
       closeModal()
     }

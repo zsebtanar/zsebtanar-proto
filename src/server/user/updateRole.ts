@@ -1,9 +1,10 @@
 import * as express from 'express'
-import { getToken, requestValidator } from '../middlewares'
 import { admin } from '../utils/firebase'
 import { onlyAdmin } from '../utils/authorization'
 import { roleUpdateSchema } from './model'
 import { ErrorHandler } from '../middlewares/error'
+import { getToken } from '../middlewares/firebaseToken'
+import { requestValidator } from '../middlewares/requestValidator'
 
 export const route = express.Router()
 
@@ -16,7 +17,7 @@ route.post(
       const uid = req.params.uid
 
       const customClaims = {
-        role: data.newRole
+        role: data.newRole,
       }
 
       await admin.auth().setCustomUserClaims(uid, customClaims)
@@ -24,5 +25,5 @@ route.post(
     } catch (error) {
       next(new ErrorHandler(500, 'User role change error', error))
     }
-  }
+  },
 )

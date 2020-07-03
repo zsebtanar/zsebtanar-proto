@@ -34,7 +34,7 @@ describe('USer with email can password,', () => {
       .clear()
       .type(user.password)
     cy.findByText(/Belépés/i).click()
-    cy.findByText(new RegExp(`Szia ${user.username}`, 'i')).should('be.visible')
+    cy.findByText(new RegExp(`Szia ${user.email}`, 'i')).should('be.visible')
 
     // sign out
     cy.findByLabelText(/Felhasználói menü/i).trigger('mouseover')

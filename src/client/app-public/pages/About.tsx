@@ -4,7 +4,7 @@ import { PublicPage } from 'client/generic/components/PublicPage'
 import { PaypalButton } from '../components/PaypalButton'
 import { PatreonButton } from '../components/PatreonButton'
 
-export function About() {
+export function About(): JSX.Element {
   return (
     <PublicPage>
       <div className="mx-auto">

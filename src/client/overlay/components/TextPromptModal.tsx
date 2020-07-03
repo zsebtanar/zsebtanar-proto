@@ -1,8 +1,11 @@
 import React from 'react'
 import { Button } from 'client/generic/components/Button'
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from './base'
-import { useInput } from 'client/generic/hooks'
-import { useDialog } from 'client/overlay/providers'
+import { useDialog } from '../providers/DialogProvider'
+import { useInput } from '../../generic/hooks/input'
+import { Dialog } from './base/Dialog'
+import { DialogHeader } from './base/DialogHeader'
+import { DialogBody } from './base/DialogBody'
+import { DialogFooter } from './base/DialogFooter'
 
 ///
 
@@ -16,7 +19,7 @@ interface Props {
 
 ///
 
-export function TextPromptModal({ title, children, label, value, buttonType }: Props) {
+export function TextPromptModal({ title, children, label, value, buttonType }: Props): JSX.Element {
   const { closeModal } = useDialog()
   const { value: text, bind: bindText } = useInput(value)
 
