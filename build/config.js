@@ -78,7 +78,7 @@ const envConfig = {
   },
   test: {
     ...baseTestConfig,
-    siteUrl: 'https://zsebtanar-test.firebaseapp.com',
+    siteUrl: '',
     api: '/api',
     sentry: {
       dsn: 'https://51329885b5704f2d8b19d4c29cad3e9a@sentry.io/275144',

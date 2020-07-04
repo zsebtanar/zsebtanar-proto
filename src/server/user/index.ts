@@ -6,6 +6,6 @@ import { route as updateProfile } from './updateProfile'
 
 export const route = express.Router()
 
-route.use('/', getAllUsers.route)
-route.use('/', updateRole.route)
-route.use('/', updateProfile.route)
+route.use('/', getAllUsers)
+route.use('/', updateRole)
+route.use('/', updateProfile)

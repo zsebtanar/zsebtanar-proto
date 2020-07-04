@@ -32,7 +32,7 @@ function createFunctionPackageJSON() {
       {},
     ),
     private: true,
-    engines: { node: '12' },
+    engines: { node: '10' },
     main: 'index.js',
   }
 

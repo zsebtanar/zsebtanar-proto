@@ -22,8 +22,10 @@ route.get('/all', [getToken, onlyAdmin], async (req, res, next) => {
     ])
 
     const data = await admin.auth().listUsers(1000, nextPageToken)
+    console.log(data)
     res.json(evolve({ users: map(publicFields) }, data))
   } catch (error) {
+    console.log(error)
     next(new ErrorHandler(500, 'User list all error', error))
   }
 })

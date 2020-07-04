@@ -15,9 +15,9 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(cors({ origin: true }))
 
-app.use('/api/user/', user.route)
-app.use('/api/exercise/', exercise.route)
-app.use('/api/feedback/', feedback.route)
+app.use('/api/user/', user)
+app.use('/api/exercise/', exercise)
+app.use('/api/feedback/', feedback)
 
 app.use(mainErrorHandler)
 
