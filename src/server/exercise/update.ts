@@ -6,6 +6,7 @@ import { omit } from 'shared/utils/fn'
 import { ErrorHandler } from '../middlewares/error'
 import { getToken } from '../middlewares/firebaseToken'
 import { requestValidator } from '../middlewares/requestValidator'
+import { indexExercise } from './utils/search-indexing'
 
 export const route = express.Router()
 
@@ -32,9 +33,9 @@ route.post(
         updatedBy: req.user.uid,
         lastUpdate: now,
       })
-      // FIXME add resources
 
       await batch.commit()
+      await indexExercise(id, exercise as ExerciseSchemaType)
       res.status(200).send(exercise)
     } catch (error) {
       next(new ErrorHandler(500, 'Exercise update error', error))

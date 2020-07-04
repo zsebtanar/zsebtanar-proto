@@ -13,7 +13,7 @@
     padding: 0.5rem 1rem;
   }
 
-  .logo-link{
+  .logo-link {
     margin: 0.3rem;
     .logo {
       background: url('/assets/logo.png') no-repeat left center;
@@ -36,7 +36,7 @@
     .user-menu {
       .dropdown-menu {
         position: absolute;
-        transform: translate3d(-80px, 44px, 0px);
+        transform: translate3d(-100px, 42px, 0px);
         top: 0;
         left: 0;
         will-change: transform;
