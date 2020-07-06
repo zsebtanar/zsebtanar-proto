@@ -123,57 +123,20 @@ module.exports = {
           'css-loader',
           'sass-loader',
         ],
+        sideEffects: true,
       },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /node_modules/ },
     ],
   },
 
-  optimization: !isProd
-    ? undefined
-    : {
-        minimize: true,
-        minimizer: [new TerserPlugin({ parallel: true, extractComments: true })],
-        // splitChunks: {
-        //   minSize: 10000, // doesn't seem enforced...
-        //   maxInitialRequests: 3, // only app and libs
-        //   maxAsyncRequests: 2,
-        //   cacheGroups: {
-        //     default: false,
-        //     vendors: false,
-        //     firebase: {
-        //       test: /[\\/]node_modules[\\/]@firebase[\\/]/,
-        //       name: 'firebase',
-        //       chunks: 'initial',
-        //       minSize: 1,
-        //       priority: 3,
-        //     },
-        //     admin: {
-        //       test: /[\\/]src[\\/]clint[\\/]app-admin[\\/]/,
-        //       name: 'admin',
-        //       chunks: 'initial',
-        //       minSize: 1000,
-        //       priority: 1,
-        //     },
-        //     public: {
-        //       test: /[\\/]src[\\/]clint[\\/]app-public[\\/]/,
-        //       name: 'public',
-        //       chunks: 'initial',
-        //       minSize: 1000,
-        //       priority: 1,
-        //     },
-        //     common: {
-        //       test: /[\\/]node_modules[\\/]/,
-        //       name: 'common',
-        //       chunks: 'initial',
-        //       minSize: 10000,
-        //       priority: -100,
-        //     },
-        //   },
-        // },
-        runtimeChunk: {
-          name: 'manifest',
-        },
-      },
+  optimization: {
+    minimize: true,
+    usedExports: true,
+    minimizer: [new TerserPlugin({ parallel: true, extractComments: true })],
+    runtimeChunk: {
+      name: 'manifest',
+    },
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: isDev ? '[name].css' : '[name].[hash].css',

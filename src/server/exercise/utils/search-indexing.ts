@@ -3,8 +3,12 @@ import { getClient } from '../../utils/search/algolia'
 import { unTokeniseMarkdown } from '../../utils/search/markdown'
 import { interpretExerciseMarkdown } from '../../utils/search/pocketLisp'
 import { ExerciseSchemaType } from '../model'
+import { SaveObjectResponse } from '@algolia/client-search'
 
-export async function indexExercise(id: string, exercise: ExerciseSchemaType): Promise<void> {
+export async function indexExercise(
+  id: string,
+  exercise: ExerciseSchemaType,
+): Promise<SaveObjectResponse> {
   return getClient()
     .initIndex('exercises')
     .saveObject({
@@ -13,8 +17,14 @@ export async function indexExercise(id: string, exercise: ExerciseSchemaType): P
     })
 }
 
-export function removeExerciseIndex(id: string): Promise<void> {
-  return getClient().initIndex('exercises').deleteObjects([id])
+export async function removeExerciseIndex(id: string): Promise<void> {
+  await getClient().initIndex('exercises').deleteObjects([id])
+  return
+}
+
+export async function clearExerciseIndexes(): Promise<void> {
+  await getClient().initIndex('exercises').clearObjects()
+  return
 }
 
 const getIndexData = async (exercise: ExerciseSchemaType) => {

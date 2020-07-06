@@ -1,6 +1,6 @@
 ![Zsebtanár][logo]
 
-# [Zsebtanár 3.0][website]
+# [Zsebtanár][website]
 
 
 [![License: GPL v2][license-shield]][license-link]

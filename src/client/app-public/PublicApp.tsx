@@ -15,6 +15,7 @@ import { Workarounds } from './pages/Workarounds'
 import { Page404 } from './pages/Page404'
 import { Footer } from './nav/Footer'
 import { Navigation } from './nav/Navigation'
+import { ListPage } from './pages/ListPage'
 
 export const PublicApp = React.memo(function PublicAppBase() {
   const { loggedIn } = useUser()
@@ -33,8 +34,7 @@ export const PublicApp = React.memo(function PublicAppBase() {
               <Switch>
                 <Route path="/" exact component={Home} />
                 {loggedIn && <Route path="/profile" component={UserProfilePage} />}
-                {/*<Route path="/subject/:subject/:topic" component={ExercisesByTopic} />*/}
-                {/*<Route path="/grade/:grade" component={ExercisesByGrade} />*/}
+                <Route path="/list" component={ListPage} />
                 <Route path="/search" component={Search} />
                 <Route path="/about" component={About} />
                 <Route path="/joinus" component={JoinUs} />

@@ -2,7 +2,8 @@
 import { SearchResponse } from '@algolia/client-search'
 
 export type ExerciseSearchRecord = {
-  classification: string[]
+  classifications: string[]
+  classificationLabels: string[]
   difficulty: number
   description: string
   searchableDescription: string

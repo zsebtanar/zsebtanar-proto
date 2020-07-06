@@ -33,7 +33,7 @@ route.post(
       await fireStore.collection(`exercise/${result.id}/metadata`).doc('log').set(metadataLog)
 
       // search
-      await indexExercise(result.id, exercise)
+      await indexExercise(result.id, exercise as ExerciseSchemaType)
 
       res.status(201).json({ ...exercise, id: result.id })
     } catch (error) {

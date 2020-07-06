@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { useAlgoliaSearch } from 'client/search/services/AlgoliaSearchService'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
 import { NavLink } from 'react-router-dom'
-import { ExerciseSearchRecord, ExerciseSearchResult } from 'client/search/types'
+import { ExerciseSearchResult } from 'client/search/types'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useInput } from '../../generic/hooks/input'
@@ -12,6 +12,7 @@ import { Loading } from 'client/generic/components/Loading'
 import { ErrorMsg } from 'client/generic/components/ErrorMsg'
 import { Markdown } from 'client/generic/components/markdown/Markdown'
 import { PublicPage } from 'client/generic/components/PublicPage'
+import { Badge } from '../../generic/components/Badge'
 
 const MIN_TERM_LENGTH = 2
 
@@ -92,27 +93,14 @@ function SearchResult({ data, term }: SearchResultProps) {
             <Markdown source={exercise.description} mark={term} />
           </div>
           <div>
-            <SearchBadge exercise={exercise} category={'grade'} type={'light'} />
-            <SearchBadge exercise={exercise} category={'subject'} type={'primary'} />
-            <SearchBadge exercise={exercise} category={'topic'} type={'info'} />
-            <SearchBadge exercise={exercise} category={'tags'} type={'secondary'} />
+            {exercise.classificationLabels.map((cls) => (
+              <Badge type="light" key={cls}>
+                {cls}
+              </Badge>
+            ))}
           </div>
         </NavLink>
       ))}
     </div>
   )
-}
-
-interface SearchBadgeProps {
-  exercise: ExerciseSearchRecord
-  category: string
-  type: string
-}
-
-function SearchBadge({ exercise, category, type }: SearchBadgeProps) {
-  return (exercise[category] || []).map((tag) => (
-    <span className={`badge badge-${type} mx-1`} key={tag}>
-      {tag}
-    </span>
-  ))
 }

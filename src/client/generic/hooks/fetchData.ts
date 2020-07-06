@@ -16,7 +16,7 @@ interface Getters {
   readonly hasNoResult: boolean
 }
 
-interface API<T> extends State<T>, Getters {}
+export interface FetchDataAPI<T> extends State<T>, Getters {}
 
 type Action<T> =
   | { type: 'loading' }
@@ -30,26 +30,26 @@ interface Options<T> {
 ///
 
 const initState: State<never> = {
-  state: 'pending'
+  state: 'pending',
 }
 
 export function useFetchData<T>(
   loaderFn: () => Promise<T>,
   deps: DependencyList = [],
-  options?: Options<T>
-): API<T> {
+  options?: Options<T>,
+): FetchDataAPI<T> {
   const [state, dispatch] = useReducer<Reducer<State<T>, Action<T>>>(userReducer, initState)
 
   useEffect(() => {
     dispatch({ type: 'loading' })
     loaderFn()
-      .then(result =>
+      .then((result) =>
         dispatch({
           type: 'success',
-          payload: { result, isEmpty: options?.isEmpty?.(result) ?? isEmpty(result) }
-        })
+          payload: { result, isEmpty: options?.isEmpty?.(result) ?? isEmpty(result) },
+        }),
       )
-      .catch(error => dispatch({ type: 'error', payload: error }))
+      .catch((error) => dispatch({ type: 'error', payload: error }))
   }, [options?.isEmpty, ...deps])
 
   return {
@@ -68,7 +68,7 @@ export function useFetchData<T>(
     },
     get hasNoResult() {
       return state.state === 'noResult'
-    }
+    },
   }
 }
 

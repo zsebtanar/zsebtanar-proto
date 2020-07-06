@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import debounce from 'client/generic/utils/debounce'
 import { useUser } from '../../user/providers/UserProvider'
-import { MainClassificationSelector } from '../components/MainClassificationSelector'
+import { ClassificationSelector } from '../components/ClassificationSelector'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { PatreonButton } from '../components/PatreonButton'
@@ -39,7 +39,7 @@ export function Home(): JSX.Element {
         </div>
       </div>
 
-      <MainClassificationSelector />
+      <ClassificationSelector title="Osztály" rootCategory="hu/grade/" />
 
       <div className="text-center pt-5 my-5">
         <p>

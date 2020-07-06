@@ -32,7 +32,7 @@ export async function cloudFnRequest(
   return fetch(`${__CONFIG__.api}${path}`, config)
 }
 
-export const cloudFnGet = <T>(path: string, params: Params, options?: Options): Promise<T> =>
+export const cloudFnGet = <T>(path: string, params?: Params, options?: Options): Promise<T> =>
   cloudFnRequest('get', path, params, undefined, options).then(processResponse)
 
 export const cloudFnPost = <T, R = T>(path: string, data: T, options?: Options): Promise<R> =>
