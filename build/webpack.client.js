@@ -129,14 +129,15 @@ module.exports = {
     ],
   },
 
-  optimization: {
-    minimize: true,
-    usedExports: true,
-    minimizer: [new TerserPlugin({ parallel: true, extractComments: true })],
-    runtimeChunk: {
-      name: 'manifest',
-    },
-  },
+  optimization: isProd
+    ? {
+        minimize: true,
+        minimizer: [new TerserPlugin({ parallel: true, extractComments: true })],
+        runtimeChunk: {
+          name: 'manifest',
+        },
+      }
+    : undefined,
   plugins: [
     new MiniCssExtractPlugin({
       filename: isDev ? '[name].css' : '[name].[hash].css',

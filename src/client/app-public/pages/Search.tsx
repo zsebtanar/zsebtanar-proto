@@ -13,6 +13,9 @@ import { ErrorMsg } from 'client/generic/components/ErrorMsg'
 import { Markdown } from 'client/generic/components/markdown/Markdown'
 import { PublicPage } from 'client/generic/components/PublicPage'
 import { Badge } from '../../generic/components/Badge'
+import { Link } from '../../generic/components/Link'
+import { toClassificationList } from '../../categories/utils'
+import { ClassificationLinkList } from '../../categories/components/ClassificationLinkList'
 
 const MIN_TERM_LENGTH = 2
 
@@ -93,11 +96,7 @@ function SearchResult({ data, term }: SearchResultProps) {
             <Markdown source={exercise.description} mark={term} />
           </div>
           <div>
-            {exercise.classificationLabels.map((cls) => (
-              <Badge type="light" key={cls}>
-                {cls}
-              </Badge>
-            ))}
+            <ClassificationLinkList classifications={exercise.classifications} />
           </div>
         </NavLink>
       ))}

@@ -11,7 +11,7 @@ interface Getters {
   readonly isIdle: boolean
 }
 
-interface API<TModel> extends ModelAPI<TModel>, Getters {
+export interface LoadAndStoreModelAPI<TModel> extends ModelAPI<TModel>, Getters {
   state: States
   error?: Error
   save(clone?: boolean): Promise<TModel>
@@ -23,8 +23,8 @@ export function useLoadAndStoreModel<TModel>(
   loadFn: (id: string) => Promise<TModel>,
   saveFn: (model: TModel) => Promise<TModel>,
   id?: string,
-  initialValue?: TModel
-): API<TModel> {
+  initialValue?: TModel,
+): LoadAndStoreModelAPI<TModel> {
   const model = useModel<TModel>()
   const [state, setState] = useState<States>('pending')
   const [error, setError] = useState<Error | undefined>(undefined)
@@ -33,7 +33,7 @@ export function useLoadAndStoreModel<TModel>(
     if (id) {
       setState('fetching')
       try {
-        loadFn(id).then(data => {
+        loadFn(id).then((data) => {
           model.set(data)
           setState('idle')
         })
@@ -85,6 +85,6 @@ export function useLoadAndStoreModel<TModel>(
     },
     get isIdle() {
       return state === 'idle'
-    }
+    },
   }
 }

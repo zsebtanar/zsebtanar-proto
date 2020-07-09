@@ -1,7 +1,8 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { useLoadClassifications } from '../../categories/services/classificationService'
 import { sortByProp } from 'shared/utils/fn'
+import { useClassification } from '../provider/ClassificationProvider'
+import { toClassificationList } from '../utils'
 
 interface Props {
   title?: string
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export function ClassificationSelector({ title, rootCategory }: Props): JSX.Element | null {
-  const { result } = useLoadClassifications()
+  const { result } = useClassification()
   const filtered = Object.entries<string>(result || {})
     .filter(([key]) => !rootCategory || key.startsWith(rootCategory))
     .sort(sortByProp(0))
@@ -24,7 +25,7 @@ export function ClassificationSelector({ title, rootCategory }: Props): JSX.Elem
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4">
         {filtered.map(([key, label]) => (
           <div className="col" key={key}>
-            <NavLink to={`list?cls=${key}`}>{label}</NavLink>
+            <NavLink to={toClassificationList(key)}>{label}</NavLink>
           </div>
         ))}
       </div>

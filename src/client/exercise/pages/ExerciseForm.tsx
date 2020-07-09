@@ -47,7 +47,8 @@ export function ExerciseForm(): JSX.Element {
 
   const onSave = async (event) => {
     event.preventDefault()
-    const res = await save(query.get('clone') !== null)
+    const saveClone = query.get('clone') !== null
+    const res = await save(saveClone)
     if (res.id && res.id !== id) {
       history.replace(`/exercise/edit/${res.id}`)
     }

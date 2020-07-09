@@ -17,7 +17,7 @@ const FOCUSABLE_SELECTORS = [
   'input',
   'select',
   'textarea',
-  'video[controls]'
+  'video[controls]',
 ]
 
 const hasNegativeTabIndex = (el: Element) =>
@@ -27,10 +27,10 @@ const getFocusableChildNodes = (el: Element) => {
   const selectAll = FOCUSABLE_SELECTORS.join(',')
   const nodeList = el.querySelectorAll(selectAll)
 
-  return Array.from(nodeList || []).filter(node => !hasNegativeTabIndex(node))
+  return Array.from(nodeList || []).filter((node) => !hasNegativeTabIndex(node))
 }
 
-export function useFocusLock(ref: RefObject<Element>) {
+export function useFocusLock(ref: RefObject<Element>): void {
   useEffect(() => {
     const prevFocusedElement = document.activeElement
 
@@ -43,7 +43,7 @@ export function useFocusLock(ref: RefObject<Element>) {
       if (firstNode) firstNode.focus()
     }
 
-    const onKeyDown = event => {
+    const onKeyDown = (event) => {
       const isTab = event.key === 'Tab'
       const withShiftKey = event.shiftKey
 
@@ -83,7 +83,7 @@ export function useFocusLock(ref: RefObject<Element>) {
  *
  * @see https://gist.github.com/danethurber/a586dbc9097e2e5696719c390a00c683
  */
-export function useLockBodyScroll() {
+export function useLockBodyScroll(): void {
   useLayoutEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
@@ -92,6 +92,6 @@ export function useLockBodyScroll() {
   }, [])
 }
 
-export function useQuery() {
+export function useQuery(): URLSearchParams {
   return new URLSearchParams(useLocation().search)
 }
