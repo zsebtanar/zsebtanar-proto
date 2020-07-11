@@ -5,18 +5,20 @@ export interface ExerciseModel extends BaseModel {
   title: string
   state: ExerciseState
   metadata?: ExerciseMetadata
-  classifications: string[]
+  classifications: Classifications
   difficulty: number
   description: string
   script: string
   subTasks: ExerciseSubTask[]
 }
 
+export type Classifications = string[]
+
 export enum ExerciseState {
   Draft = 'draft',
   Public = 'public',
   Archived = 'archived',
-  Remove = 'remove'
+  Remove = 'remove',
 }
 
 interface ExerciseMetadata {
@@ -42,7 +44,7 @@ export enum ExerciseSubTaskControlsType {
   NumberList = 'number-list',
   SimpleText = 'simple-text',
   SingleChoice = 'single-choice',
-  SingleNumber = 'single-number'
+  SingleNumber = 'single-number',
 }
 
 export type UserControl =

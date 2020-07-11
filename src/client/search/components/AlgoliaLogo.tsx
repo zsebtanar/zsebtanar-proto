@@ -1,6 +1,8 @@
 import React from 'react'
 import { ExternalLink } from 'client/generic/components/ExternalLink'
 
+import './AlgoliaLogo.scss'
+
 export function AlgoliaLogo(): JSX.Element {
   return (
     <ExternalLink

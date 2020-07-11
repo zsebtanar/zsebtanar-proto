@@ -8,7 +8,7 @@ import { wikiLinkInit } from 'shared/markdown/wiki-link'
 import { MarkdownProps } from './types'
 import { assetImage } from 'shared/markdown/image-asset'
 
-import './Markdown.scss'
+import './MarkdownBase.scss'
 
 ///
 
@@ -80,7 +80,7 @@ function markText(mark, text) {
     const markRE = mark && new RegExp(`(${matchAllHunVowel(mark)})`, 'gi')
     return text
       .split(TAG_REGEXP)
-      .map(txt => (txt && txt[0] !== '<' ? txt.replace(markRE, '<mark>$1</mark>') : txt))
+      .map((txt) => (txt && txt[0] !== '<' ? txt.replace(markRE, '<mark>$1</mark>') : txt))
       .join('')
   }
   return text

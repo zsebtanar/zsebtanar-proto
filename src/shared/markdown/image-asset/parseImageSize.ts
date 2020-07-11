@@ -10,7 +10,7 @@ function parseNextNumber(str, pos, max) {
     result = {
       ok: false,
       pos: pos,
-      value: ''
+      value: '',
     }
 
   code = str.charCodeAt(pos)
@@ -26,14 +26,14 @@ function parseNextNumber(str, pos, max) {
   return result
 }
 
-export function parseImageSize(str, pos, max) {
+export function parseImageSize(str: string, pos: number, max: number) {
   let code,
     // eslint-disable-next-line prefer-const
     result = {
       ok: false,
       pos: 0,
       width: '',
-      height: ''
+      height: '',
     }
 
   if (pos >= max) {
@@ -61,7 +61,7 @@ export function parseImageSize(str, pos, max) {
   const resultW = parseNextNumber(str, pos, max)
   pos = resultW.pos
 
-  // next charactor must be 'x'
+  // next character must be 'x'
   code = str.charCodeAt(pos)
   if (code !== 0x78 /* x */) {
     return result

@@ -3,19 +3,14 @@ import * as ReactGA from 'react-ga'
 import { useParams } from 'react-router'
 import { useAlgoliaSearch } from 'client/search/services/AlgoliaSearchService'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
-import { NavLink } from 'react-router-dom'
 import { ExerciseSearchResult } from 'client/search/types'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useInput } from '../../generic/hooks/input'
 import { Loading } from 'client/generic/components/Loading'
 import { ErrorMsg } from 'client/generic/components/ErrorMsg'
-import { Markdown } from 'client/generic/components/markdown/Markdown'
 import { PublicPage } from 'client/generic/components/PublicPage'
-import { Badge } from '../../generic/components/Badge'
-import { Link } from '../../generic/components/Link'
-import { toClassificationList } from '../../categories/utils'
-import { ClassificationLinkList } from '../../categories/components/ClassificationLinkList'
+import { ExerciseListItem } from 'client/exercise/components/ExerciseListItem'
 
 const MIN_TERM_LENGTH = 2
 
@@ -87,18 +82,13 @@ function SearchResult({ data, term }: SearchResultProps) {
       </div>
 
       {data.hits.map((exercise) => (
-        <NavLink
+        <ExerciseListItem
           key={exercise.objectID}
-          to={`/exercise/${exercise.objectID}`}
-          className="list-group-item list-group-item-action d-flex flex-column align-items-start"
-        >
-          <div className="mb-1 d-flex w-100 ">
-            <Markdown source={exercise.description} mark={term} />
-          </div>
-          <div>
-            <ClassificationLinkList classifications={exercise.classifications} />
-          </div>
-        </NavLink>
+          id={exercise.objectID}
+          mark={term}
+          classifications={exercise.classifications}
+          description={exercise.description}
+        />
       ))}
     </div>
   )
