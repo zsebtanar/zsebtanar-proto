@@ -5,6 +5,7 @@ import { fileToUrl, checkFileType, checkFileSize } from '../utils'
 import { assetUpload } from '../services/firestorage'
 import { assetsDataService } from '../services/assets'
 import { useUser } from '../../user/providers/UserProvider'
+import { firebase } from '../../generic/services/fireApp'
 
 export enum UploadState {
   Pending,
@@ -119,7 +120,7 @@ export function AssetManagerProvider({ children }: Props): JSX.Element {
             await assetsDataService.update({
               id,
               group,
-              created: new Date(),
+              created: firebase.firestore.FieldValue.serverTimestamp() as any,
               createdBy: user.uid,
               ...uploadedFile,
             })
@@ -172,7 +173,7 @@ function assetReducer(state: State, action: Action): State {
   return state
 }
 
-export function useManageAssets() {
+export function useManageAssets(): State {
   const context = React.useContext(ManageAssetContext)
   if (context === undefined) {
     throw new Error('useManageAssets must be used within a ManageAssetContext')
@@ -180,7 +181,7 @@ export function useManageAssets() {
   return context
 }
 
-export function useManageAssetsDispatch() {
+export function useManageAssetsDispatch(): API {
   const context = React.useContext(ManageAssetDispatchContext)
   if (context === undefined) {
     throw new Error('useManageAssetsDispatch must be used within a ManageAssetDispatchContext')

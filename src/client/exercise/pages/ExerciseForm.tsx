@@ -9,7 +9,7 @@ import { ExerciseFormSubTask } from '../components/form/ExerciseFormSubTasks'
 import {
   AssetManagerProvider,
   useManageAssetsDispatch,
-} from 'client/assets/providers/ManageAssetProvider'
+} from 'client/asset/providers/ManageAssetProvider'
 import { AssetGroup } from 'shared/assets/types'
 import { useQuery } from 'client/generic/hooks/navigation'
 import { Loading } from 'client/generic/components/Loading'

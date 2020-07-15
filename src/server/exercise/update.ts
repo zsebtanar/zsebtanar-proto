@@ -7,6 +7,12 @@ import { ErrorHandler } from '../middlewares/error'
 import { getToken } from '../middlewares/firebaseToken'
 import { requestValidator } from '../middlewares/requestValidator'
 import { indexExercise } from './utils/search-indexing'
+import { difference } from '../../shared/utils/data'
+import { ExerciseModel } from '../../shared/exercise/types'
+import {
+  addExerciseToClassifications,
+  removeExerciseFromClassifications,
+} from '../classification/utils'
 
 export const route = express.Router()
 
@@ -23,8 +29,24 @@ route.post(
       const exercise = {
         ...omit(req.body as ExerciseSchemaType, ['state']),
       }
-      const exRef = fireStore.collection('exercise').doc(id)
-      batch.update(exRef, exercise)
+      const exerciseRef = fireStore.collection('exercise').doc(id)
+      const previousExercise = (await exerciseRef.get()).data() as ExerciseModel
+
+      batch.update(exerciseRef, exercise)
+
+      if (previousExercise) {
+        const removedClassifications = difference(
+          previousExercise.classifications,
+          exercise.classifications,
+        )
+        await removeExerciseFromClassifications(batch, id, removedClassifications)
+
+        const addedClassifications = difference(
+          exercise.classifications,
+          previousExercise.classifications,
+        )
+        await addExerciseToClassifications(batch, id, addedClassifications)
+      }
 
       // metadata - log
       const logRef = fireStore.collection(`exercise/${id}/metadata`).doc('log')

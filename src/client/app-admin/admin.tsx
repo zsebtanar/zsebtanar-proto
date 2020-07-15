@@ -4,7 +4,7 @@ import { initSentryLogger } from 'client/generic/utils/logger'
 import { UserProvider } from 'client/user/providers/UserProvider'
 import { AdminRouter } from 'client/app-admin/provider/Router'
 import { AdminApp } from 'client/app-admin/AdminApp'
-import { AssetManagerProvider } from '../assets/providers/ManageAssetProvider'
+import { AssetManagerProvider } from '../asset/providers/ManageAssetProvider'
 import { OverlayProvider } from 'client/overlay/providers/OverlayProvider'
 
 import './admin.scss'

@@ -50,6 +50,8 @@ const baseTestConfig = {
     projectId: 'zsebtanar-test',
     storageBucket: 'zsebtanar-test.appspot.com',
     messagingSenderId: '650562716671',
+    appId: '1:650562716671:web:439500a14468a2bf3eddca',
+    measurementId: 'G-Z8RJZZFER8',
   },
   algolia: {
     appId: 'J8PWVF536F',
@@ -95,6 +97,8 @@ const envConfig = {
       projectId: 'zsebtanar-prod',
       storageBucket: 'zsebtanar-prod.appspot.com',
       messagingSenderId: '294861517279',
+      appId: '1:294861517279:web:9fe7129fd7336d19f1946a',
+      measurementId: 'G-87809P2WWK',
     },
     sentry: {
       dsn: 'https://1cdfdee0c0f5468a8b1ae6d207271688@sentry.io/275143',

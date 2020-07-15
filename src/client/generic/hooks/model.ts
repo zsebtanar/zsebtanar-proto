@@ -18,8 +18,8 @@ export type API<TModel> = {
   set: Dispatch<SetStateAction<TModel>>
   append<TValue>(path: Path, value: TValue): void
   remove<TValue>(path: Path): void
-  bind<TValue>(name: string): BindAPI<TValue>
-  bindPartialModel<TValue>(): BindAPI<TValue>
+  bind<TValue>(name: string, defaultValue?: unknown): BindAPI<TValue>
+  bindPartialModel<TValue>(defaultValue?: unknown): BindAPI<TValue>
 }
 
 interface Options<TModel> {
@@ -36,13 +36,14 @@ const noop = () => undefined
 export function useModel<TModel>({
   value: initialData,
   name: modelName,
-  onChange
+  onChange,
 }: Options<TModel> = {}): API<TModel> {
   const onChangeCallback = useCallback<OnChange<TModel>>(onChange ?? noop, [onChange])
   const [data, setState] = useState<TModel>(initialData ?? ({} as TModel))
 
   const set = (newState: TModel | ((model: TModel) => TModel)) => {
-    setState(model => {
+    setState((model) => {
+      // eslint-disable-next-line @typescript-eslint/ban-types
       const newModel = typeof newState === 'function' ? (newState as Function)(model) : newState
       onChangeCallback({ name: modelName ?? '<root>', value: newModel })
       return newModel
@@ -53,24 +54,24 @@ export function useModel<TModel>({
     data,
     set,
     append<TValue>(path: Path, value: TValue) {
-      set(model => dp.set(model, path, [...dp.get(model, path, []), value]))
+      set((model) => dp.set(model, path, [...dp.get(model, path, []), value]))
     },
     remove<TValue>(path: Path) {
-      set(model => dp.delete(model, path) as never)
+      set((model) => dp.delete(model, path) as never)
     },
-    bind<TValue>(name: string): BindAPI<TValue> {
+    bind<TValue>(name: string, defaultValue?: unknown): BindAPI<TValue> {
       return {
         name,
-        onChange: ({ name, value }) => set(model => dp.set(model, name, value)),
-        value: dp.get(data, name)
+        onChange: ({ name, value }) => set((model) => dp.set(model, name, value ?? defaultValue)),
+        value: dp.get(data, name),
       }
     },
-    bindPartialModel<TValue>(): BindAPI<TValue> {
+    bindPartialModel<TValue>(defaultValue?: unknown): BindAPI<TValue> {
       return {
         name: ROOT,
-        onChange: ({ value }) => set(model => Object.assign({}, model, value)),
-        value: data as never
+        onChange: ({ value }) => set((model) => Object.assign({}, model, value ?? defaultValue)),
+        value: data as never,
       }
-    }
+    },
   }
 }

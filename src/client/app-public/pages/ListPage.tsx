@@ -1,7 +1,7 @@
 import React from 'react'
 import { PublicPage } from 'client/generic/components/PublicPage'
 import { useQuery } from '../../generic/hooks/navigation'
-import { CLASSIFICATION_PARAM } from '../../categories/values'
+import { CLASSIFICATION_PARAM } from '../../classification/values'
 import { useLoadExercises } from '../../exercise/services/exercise'
 import { Loading } from '../../generic/components/Loading'
 import { ExerciseListItem } from 'client/exercise/components/ExerciseListItem'

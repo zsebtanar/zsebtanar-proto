@@ -16,7 +16,7 @@ export function ClassificationLink({ classificationKey }: Props): JSX.Element {
       to={toClassificationList(classificationKey)}
       badge={classificationBadgeType(classificationKey)}
     >
-      {classifications?.[classificationKey]}
+      {classifications?.map[classificationKey]?.label}
     </Link>
   )
 }

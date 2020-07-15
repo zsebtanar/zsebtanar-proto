@@ -8,20 +8,16 @@ import { FormGroup } from 'client/generic/components/form/FormGroup'
 import { Input } from 'client/generic/components/form/input/Input'
 import { DialogFooter } from 'client/overlay/components/base/DialogFooter'
 import { Button } from 'client/generic/components/Button'
-
-interface ClassificationItem {
-  key?: string
-  value?: string
-}
+import { ClassificationModel } from 'shared/categories/type'
 
 interface Props {
-  value: ClassificationItem
+  value?: ClassificationModel
 }
 
 export function UpdateClassificationModal({ value }: Props): JSX.Element {
   const { closeModal } = useDialog()
-  const { bind, data } = useModel<ClassificationItem>({ value })
-  const isNew = !value.key
+  const { bind, data } = useModel<ClassificationModel>({ value })
+  const isNew = !value?.id
 
   const close = () => closeModal()
   const store = (data: unknown) => closeModal(data)
@@ -33,18 +29,27 @@ export function UpdateClassificationModal({ value }: Props): JSX.Element {
         <DialogBody>
           <FormGroup label="ID">
             {(id) => (
-              <Input
-                type="text"
-                className="form-control"
-                id={id}
-                {...bind('key')}
-                disabled={!isNew}
-                pattern="[a-z0-9/]+"
-              />
+              <React.Fragment>
+                <Input
+                  type="text"
+                  className="form-control"
+                  id={id}
+                  {...bind('key')}
+                  disabled={!isNew}
+                  pattern="[a-z0-9|]+"
+                />
+                <small className="text-muted">Pl.: hu|grade|99</small>
+              </React.Fragment>
             )}
           </FormGroup>
           <FormGroup label="Név">
             {(id) => <Input type="text" className="form-control" id={id} {...bind('value')} />}
+          </FormGroup>
+          <FormGroup label="Háttér szín">
+            {(id) => <Input type="color" className="form-control" id={id} {...bind('value')} />}
+          </FormGroup>
+          <FormGroup label="Betű szín">
+            {(id) => <Input type="color" className="form-control" id={id} {...bind('value')} />}
           </FormGroup>
         </DialogBody>
         <DialogFooter>

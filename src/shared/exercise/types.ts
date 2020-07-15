@@ -5,14 +5,12 @@ export interface ExerciseModel extends BaseModel {
   title: string
   state: ExerciseState
   metadata?: ExerciseMetadata
-  classifications: Classifications
+  classifications: string[]
   difficulty: number
   description: string
   script: string
   subTasks: ExerciseSubTask[]
 }
-
-export type Classifications = string[]
 
 export enum ExerciseState {
   Draft = 'draft',

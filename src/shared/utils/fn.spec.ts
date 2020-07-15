@@ -1,4 +1,4 @@
-import { log, noop, toAbcIndex, clamp, range, sortByProp, omit } from './fn'
+import { log, noop, toAbcIndex, clamp, range, sortByProp, omit, list2map } from './fn'
 
 describe('utility fn', () => {
   describe('log', () => {
@@ -58,6 +58,33 @@ describe('utility fn', () => {
 
       expect(base).not.toEqual(result)
       expect(result).toEqual({ a: 1, c: 3 })
+    })
+  })
+
+  describe('list2map', () => {
+    it('should handle empty list', () => {
+      expect(list2map('', [])).toEqual({})
+    })
+
+    it('should handle invalid props', () => {
+      expect(
+        list2map('idd', [
+          { id: 'a', value: 1 },
+          { id: 'b', value: 2 },
+        ]),
+      ).toEqual({})
+    })
+
+    it('should handle invalid props', () => {
+      expect(
+        list2map('id', [
+          { id: 'a', value: 1 },
+          { id: 'b', value: 2 },
+        ]),
+      ).toEqual({
+        a: { id: 'a', value: 1 },
+        b: { id: 'b', value: 2 },
+      })
     })
   })
 })

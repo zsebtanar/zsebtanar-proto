@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons/faPlay'
 import { Markdown } from '../../generic/components/markdown/Markdown'
-import { ClassificationLinkList } from '../../categories/components/ClassificationLinkList'
+import { ClassificationLinkList } from '../../classification/components/ClassificationLinkList'
 import { Classifications } from 'shared/exercise/types'
 import { Link } from '../../generic/components/Link'
 

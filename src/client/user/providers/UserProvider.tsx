@@ -2,7 +2,7 @@ import React, { ReactNode, Reducer, useReducer, useMemo } from 'react'
 import { logException } from 'client/generic/utils/logger'
 import { parseToken, getUserDetails, updateUserProfile } from 'client/user/services/user'
 import { UserModel, ProviderTypes, UserToken } from '../types'
-import { firebase, app } from '../../generic/services/fireApp'
+import { firebase, auth } from '../../generic/services/fireApp'
 
 interface Props {
   children: ReactNode
@@ -45,8 +45,6 @@ type Action =
   | { type: 'SingUpDone' }
   | { type: 'NoUser' }
   | { type: 'Error'; payload: Error }
-
-const AUTH = app.auth()
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const UserContext = React.createContext<Store>({} as any)
@@ -105,7 +103,7 @@ export function UserProvider({ children }: Props): JSX.Element {
   const [store, dispatch] = useReducer<Reducer<Store, Action>>(userReducer, defaultState)
 
   React.useEffect(() => {
-    AUTH.onAuthStateChanged(async (user) => {
+    auth.onAuthStateChanged(async (user) => {
       dispatch({ type: 'LoadUser' })
 
       try {
@@ -137,7 +135,7 @@ export function UserProvider({ children }: Props): JSX.Element {
       async signIn(email: string, password: string): Promise<Store> {
         dispatch({ type: 'SingInStart' })
         try {
-          await AUTH.signInWithEmailAndPassword(email, password)
+          await auth.signInWithEmailAndPassword(email, password)
         } catch (e) {
           dispatch({ type: 'Error', payload: e })
         }
@@ -159,7 +157,7 @@ export function UserProvider({ children }: Props): JSX.Element {
           if (!provider) {
             throw new Error(`Invalid provider: ${providerType}`)
           }
-          await AUTH.signInWithPopup(provider)
+          await auth.signInWithPopup(provider)
         } catch (e) {
           dispatch({ type: 'Error', payload: e })
           return Promise.reject(e)
@@ -170,7 +168,7 @@ export function UserProvider({ children }: Props): JSX.Element {
       async signUp(email: string, password: string, displayName: string): Promise<Store> {
         try {
           dispatch({ type: 'SingUpStart' })
-          const userCredential = await AUTH.createUserWithEmailAndPassword(email, password)
+          const userCredential = await auth.createUserWithEmailAndPassword(email, password)
           if (!(userCredential && userCredential.user)) {
             throw new Error('Create user failed')
           }
@@ -190,7 +188,7 @@ export function UserProvider({ children }: Props): JSX.Element {
       },
       async signOut(): Promise<void> {
         try {
-          await AUTH.signOut()
+          await auth.signOut()
           dispatch({ type: 'NoUser' })
           window.location.replace('/')
         } catch (e) {
@@ -198,7 +196,7 @@ export function UserProvider({ children }: Props): JSX.Element {
         }
       },
       forgotPassword(email: string) {
-        return AUTH.sendPasswordResetEmail(email, {
+        return auth.sendPasswordResetEmail(email, {
           url: window.location.href.replace('/forgotten-password', '') + '/login',
         })
       },
@@ -236,14 +234,14 @@ export function useUser() {
 }
 
 // export function forgotPassword(email: string): Promise<any> {
-//   return AUTH.sendPasswordResetEmail(email, { url: window.location.href })
+//   return auth.sendPasswordResetEmail(email, { url: window.location.href })
 // }
 //
 
 //
 // export function deleteUser() {
 //   return () =>
-//     Promise.all([AUTH.currentUser.delete(), removeUserData(AUTH.currentUser.uid)])
+//     Promise.all([auth.currentUser.delete(), removeUserData(auth.currentUser.uid)])
 //       .then(() => window.location.replace('/'))
 //       .catch(logException)
 // }

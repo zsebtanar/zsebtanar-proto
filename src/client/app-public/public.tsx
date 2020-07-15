@@ -4,7 +4,7 @@ import { initSentryLogger } from 'client/generic/utils/logger'
 import { UserProvider } from 'client/user/providers/UserProvider'
 import { OverlayProvider } from 'client/overlay/providers/OverlayProvider'
 import { PublicRouter } from 'client/app-public/providers/Routes'
-import { ClassificationProvider } from 'client/categories/provider/ClassificationProvider'
+import { ClassificationProvider } from 'client/classification/provider/ClassificationProvider'
 import { PublicApp } from './PublicApp'
 
 import './public.scss'

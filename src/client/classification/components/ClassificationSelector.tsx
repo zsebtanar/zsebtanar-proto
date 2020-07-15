@@ -11,9 +11,11 @@ interface Props {
 
 export function ClassificationSelector({ title, rootCategory }: Props): JSX.Element | null {
   const { result } = useClassification()
-  const filtered = Object.entries<string>(result || {})
-    .filter(([key]) => !rootCategory || key.startsWith(rootCategory))
-    .sort(sortByProp(0))
+  const filtered = (result?.list ?? [])
+    .filter(
+      ({ id, exercises }) => exercises?.length && (!rootCategory || id?.startsWith(rootCategory)),
+    )
+    .sort(sortByProp('id'))
 
   if (!filtered.length) {
     return null
@@ -23,9 +25,9 @@ export function ClassificationSelector({ title, rootCategory }: Props): JSX.Elem
     <div className="classification-selector">
       {title && <h2>{title}</h2>}
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-        {filtered.map(([key, label]) => (
-          <div className="col" key={key}>
-            <NavLink to={toClassificationList(key)}>{label}</NavLink>
+        {filtered.map(({ id, label }) => (
+          <div className="col" key={id}>
+            <NavLink to={toClassificationList(id ?? '')}>{label}</NavLink>
           </div>
         ))}
       </div>

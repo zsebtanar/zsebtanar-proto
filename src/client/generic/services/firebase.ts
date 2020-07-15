@@ -1,7 +1,7 @@
-import { app } from 'client/generic/services/fireApp'
+import { auth } from 'client/generic/services/fireApp'
 
 const getTokenHeader = async (): Promise<{ Authorization: string }> => {
-  const user = app.auth().currentUser
+  const user = auth.currentUser
   if (user) {
     const token = await user.getIdToken()
     return { Authorization: `Bearer ${token}` }
