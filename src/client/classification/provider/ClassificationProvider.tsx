@@ -22,7 +22,6 @@ export function ClassificationProvider({ children }: Props): JSX.Element {
 
   const list = state.result ?? []
   const map = list2map('id', list)
-  debugger
   const value = { ...state, result: { list, map } }
 
   return <ClassificationContext.Provider value={value}>{children}</ClassificationContext.Provider>

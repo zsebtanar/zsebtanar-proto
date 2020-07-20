@@ -1,5 +1,8 @@
 import React from 'react'
-import { useLoadClassifications } from '../services/classificationService'
+import {
+  useLoadClassifications,
+  remove as removeClassification,
+} from '../services/classificationService'
 import { sortByProp } from 'shared/utils/fn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
@@ -25,13 +28,14 @@ export function ClassificationsAdminPage(): JSX.Element {
     openModal(<UpdateClassificationModal value={cls} />, true)
 
   const remove = (cls: ClassificationModel) => {
+    if (!cls.id) return
     openModal(
       <ConfirmModal>
         Biztos törlöd a kategóriát?
         <br />
         Jelenleg {cls.exercises?.length} feladathoz van hozzárendelve.
       </ConfirmModal>,
-    ).then((res) => (res ? fn() : undefined))
+    ).then((res) => (res ? removeClassification(cls.id as string) : undefined))
   }
 
   return (

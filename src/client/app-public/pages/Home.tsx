@@ -39,7 +39,7 @@ export function Home(): JSX.Element {
         </div>
       </div>
 
-      <ClassificationSelector title="Osztály" rootCategory="hu/grade/" />
+      <ClassificationSelector title="Osztály" rootCategory="hu|grade|" />
 
       <div className="text-center pt-5 my-5">
         <p>

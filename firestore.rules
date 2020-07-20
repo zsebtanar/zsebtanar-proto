@@ -10,18 +10,18 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
-	match /classification/** {
+	match /classification/{document=**} {
       allow read: if true;
-      allow write: if false; // saved bz API
+      allow write: if false; // saved by API
     }
 
 
     match /exercise/{exerciseId} {
       allow read: if resource.data.state == 'public';
-      allow write: if false; // saved bz API
+      allow write: if false; // saved by API
     }
 
-	match /wikiPage/{wikiPageId} {
+		match /wikiPage/{wikiPageId} {
     	allow read: if true;
     }
 
