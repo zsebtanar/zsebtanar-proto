@@ -1,7 +1,7 @@
 import { PLNumber, PLFractionNumber } from 'pocket-lisp-stdlib'
 import { assertInteger, typeCheck } from './utils'
 
-export const suffixTimes = (num: number) => {
+export const suffixTimes = (num: number): string => {
   assertInteger(num)
 
   const absNum = Math.abs(num)
@@ -53,7 +53,7 @@ export const suffixTimes = (num: number) => {
  *
  * @return string $suffix Suffix
  */
-export const suffixTimes2 = (num: number) => {
+export const suffixTimes2 = (num: number): string => {
   assertInteger(num)
 
   const absNum = Math.abs(num)
@@ -104,7 +104,7 @@ export const suffixTimes2 = (num: number) => {
  * @param num Fraction number
  * @return string $suffix Suffix
  */
-const baseSuffixFraction = (num: number) => {
+const baseSuffixFraction = (num: number): string => {
   const absNum = Math.abs(num)
 
   switch (absNum % 10) {
@@ -148,7 +148,7 @@ const baseSuffixFraction = (num: number) => {
   }
 }
 
-function suffixFloat(num: PLNumber) {
+function suffixFloat(num: PLNumber): string {
   typeCheck(PLNumber, num)
 
   const floatPart = parseInt(num.value.toString().split('.')[1] || '0')
@@ -160,7 +160,7 @@ function suffixFloat(num: PLNumber) {
   }
 }
 
-function suffixFraction(num: PLFractionNumber) {
+function suffixFraction(num: PLFractionNumber): string {
   typeCheck(PLFractionNumber, num)
   assertInteger(num.denominator)
 
@@ -171,11 +171,9 @@ function suffixFraction(num: PLFractionNumber) {
  * Add article to number
  *
  *
- * @param capital
  * @param value
- * @param capital
  */
-function article(value: number, capital = false): string {
+export function article(value: number): string {
   const text = num2text(value)
   return /^[aáeéiíoóöőuúüű]/.test(text) ? 'az' : 'a'
 }
@@ -190,10 +188,7 @@ function article(value: number, capital = false): string {
 function num2text(value: number) {
   assertInteger(value)
   const absNum = Math.abs(value)
-  const digits = absNum
-    .toString()
-    .split('')
-    .reverse()
+  const digits = absNum.toString().split('').reverse()
 
   const numGroups = ['', 'ezer', 'millió', 'milliárd']
   const num1a = ['', 'egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc']
@@ -208,7 +203,7 @@ function num2text(value: number) {
     'hatvan',
     'hetven',
     'nyolcvan',
-    'kilencven'
+    'kilencven',
   ]
   const num2b = [
     '',
@@ -220,7 +215,7 @@ function num2text(value: number) {
     'hatvan',
     'hetven',
     'nyolcvan',
-    'kilencven'
+    'kilencven',
   ]
 
   const text = digits.reduce(
@@ -238,7 +233,7 @@ function num2text(value: number) {
       }
       return { group, text }
     },
-    { group: 0, text: '' }
+    { group: 0, text: '' },
   ).text
 
   return text
@@ -255,7 +250,7 @@ function num2text(value: number) {
  * @return string $suffix Suffix
  * @param value
  */
-const dativus = (value: number) => {
+export const dativus = (value: number) => {
   const absNum = Math.abs(value)
 
   switch (absNum % 10) {
@@ -308,20 +303,11 @@ export const listJoinLocal = (list, lastSrt = 'vagy') => {
   return `${list.join(', ')} ${lastSrt} ${last}`
 }
 
-function numberFormatter(num: PLNumber | PLFractionNumber, format: string[]): string {
-  if (num instanceof PLNumber) {
-    return article(num.value) + dativus(num.value)
-  } else {
-    return ''
-  }
-}
-
 export const langUtils = {
   ['suffix-times']: suffixTimes,
   ['suffix-times2']: suffixTimes2,
   ['suffix-float']: suffixFloat,
   ['suffix-fraction']: suffixFraction,
-  ['num-fmt']: numberFormatter
 }
 ;`
 

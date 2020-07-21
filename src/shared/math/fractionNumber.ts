@@ -7,7 +7,7 @@ export const INVALID_FRACTION_NUMBER: FractionNumber = { numerator: NaN, denomin
 
 export function fractionNum(
   numerator: number | string,
-  denominator: number | string
+  denominator: number | string,
 ): FractionNumber {
   const a = typeof numerator === 'string' ? parseInt(numerator, 10) : numerator
   const b = typeof denominator === 'string' ? parseInt(denominator, 10) : denominator
@@ -24,11 +24,11 @@ export function fractionNum(
  * @param {number} b
  * @returns {number}
  */
-export function gcd(a: number, b: number) {
+export function gcd(a: number, b: number): number {
   return a === b || !a || !b ? a : gcd(b, a % b)
 }
 
-export function simplifyFractionNumber(fractionNumber: FractionNumber) {
+export function simplifyFractionNumber(fractionNumber: FractionNumber): FractionNumber {
   if (!isValid(fractionNumber) || fractionNumber.numerator === 0) return fractionNumber
   const { numerator, denominator } = fractionNumber
 
@@ -36,7 +36,7 @@ export function simplifyFractionNumber(fractionNumber: FractionNumber) {
   return fractionNum(numerator / divisor, denominator / divisor)
 }
 
-export function isValid({ numerator, denominator }: FractionNumber) {
+export function isValid({ numerator, denominator }: FractionNumber): boolean {
   return !(
     isNaN(numerator) ||
     isNaN(denominator) ||

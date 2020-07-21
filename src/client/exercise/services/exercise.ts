@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { ExerciseModel, ExerciseState } from 'shared/exercise/types'
 import { useLoadAndStoreModel, LoadAndStoreModelAPI } from '../../generic/hooks/loadAndStoreModel'
 import { Service } from 'client/generic/services/fireStoreBase'
@@ -22,12 +22,14 @@ interface ListQueryParams {
 }
 
 export function useLoadExercises(params: ListQueryParams): FetchDataAPI<ExerciseModel[]> {
-  const options: GridFilterOptions = { where: [] }
-  if (params.classifications) {
-    options?.where?.push(['classifications', 'array-contains-any', params.classifications])
-  }
-  const callback = useCallback(() => exerciseDataService.getList(options), [])
-  return useFetchData<ExerciseModel[]>(callback, [])
+  const callback = useCallback(() => {
+    const options: GridFilterOptions = { where: [] }
+    if (params.classifications) {
+      options?.where?.push(['classifications', 'array-contains-any', params.classifications])
+    }
+    return exerciseDataService.getList(options)
+  }, [JSON.stringify(params)])
+  return useFetchData<ExerciseModel[]>(callback, [callback])
 }
 
 export async function storeExercise({ id, ...data }: ExerciseModel): Promise<ExerciseModel> {

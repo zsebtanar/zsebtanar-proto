@@ -6,18 +6,27 @@ import { useLoadExercises } from '../../exercise/services/exercise'
 import { Loading } from '../../generic/components/Loading'
 import { ExerciseListItem } from 'client/exercise/components/ExerciseListItem'
 import { Alert } from '../../generic/components/Alert'
+import { ClassificationLink } from '../../classification/components/ClassificationLink'
 
 export function ListPage(): JSX.Element {
   const query = useQuery()
   const classifications = (query.get(CLASSIFICATION_PARAM) ?? '').split(',')
-
   const { isLoading, isSuccess, hasNoResult, result } = useLoadExercises({
     classifications,
   })
 
   return (
     <PublicPage className="list-page">
-      <h1>Faldatok</h1>
+      <h2 className="mb-4">
+        <small>
+          Összes{' '}
+          {classifications.map((cls) => (
+            <ClassificationLink key={cls} classificationKey={cls} />
+          ))}{' '}
+          címkével megjelölt feladat:
+        </small>
+      </h2>
+
       {isLoading && <Loading />}
       {hasNoResult && <Alert type="info">Nincs elem a listában.</Alert>}
       {isSuccess &&
@@ -32,3 +41,4 @@ export function ListPage(): JSX.Element {
     </PublicPage>
   )
 }
+;(ListPage as any).whyDidYouRender = true

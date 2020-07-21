@@ -1,3 +1,6 @@
+import 'client/tools/why-did-you-render.ts'
+import { initApp } from '../tools/react-hot-loader'
+
 import * as React from 'react'
 import { render } from 'react-dom'
 import { initSentryLogger } from 'client/generic/utils/logger'
@@ -11,7 +14,7 @@ import './admin.scss'
 
 initSentryLogger()
 
-const appRender = () =>
+initApp(() =>
   render(
     <UserProvider>
       <AdminRouter>
@@ -23,10 +26,5 @@ const appRender = () =>
       </AdminRouter>
     </UserProvider>,
     document.getElementById('root'),
-  )
-if (__DEV__) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  require('react-hot-ts').hot(module)(appRender())
-} else {
-  appRender()
-}
+  ),
+)

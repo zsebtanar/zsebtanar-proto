@@ -28,11 +28,11 @@ export class PseudoRandomNumberGenerator {
     return this.seed
   }
 
-  public randomInt(num = 10) {
-    return ((this.next() - 1) % num) + 1
+  public randomInt(num = 10): number {
+    return (this.next() - 1) % num
   }
 
-  public randomFloat() {
+  public randomFloat(): number {
     return this.randomInt(m) / m
   }
 }

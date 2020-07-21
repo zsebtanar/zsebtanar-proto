@@ -1,3 +1,6 @@
+import 'client/tools/why-did-you-render.ts'
+import { initApp } from '../tools/react-hot-loader'
+
 import * as React from 'react'
 import { render } from 'react-dom'
 import { initSentryLogger } from 'client/generic/utils/logger'
@@ -11,23 +14,17 @@ import './public.scss'
 
 initSentryLogger()
 
-const appRender = () =>
+initApp(() =>
   render(
-    <UserProvider>
-      <PublicRouter>
+    <ClassificationProvider>
+      <UserProvider>
         <OverlayProvider>
-          <ClassificationProvider>
+          <PublicRouter>
             <PublicApp />
-          </ClassificationProvider>
+          </PublicRouter>
         </OverlayProvider>
-      </PublicRouter>
-    </UserProvider>,
+      </UserProvider>
+    </ClassificationProvider>,
     document.getElementById('root'),
-  )
-
-if (__DEV__) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  require('react-hot-ts').hot(module)(appRender())
-} else {
-  appRender()
-}
+  ),
+)

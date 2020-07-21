@@ -17,9 +17,8 @@ import { Footer } from './nav/Footer'
 import { Navigation } from './nav/Navigation'
 import { ListPage } from './pages/ListPage'
 
-export const PublicApp = React.memo(function PublicAppBase() {
-  const { loggedIn } = useUser()
-
+export function PublicApp(): JSX.Element {
+  console.log('public app')
   return (
     <Switch>
       <Route path="/login" exact component={LoginPage} />
@@ -33,7 +32,7 @@ export const PublicApp = React.memo(function PublicAppBase() {
             <main className="main-content">
               <Switch>
                 <Route path="/" exact component={Home} />
-                {loggedIn && <Route path="/profile" component={UserProfilePage} />}
+                <Route path="/profile" component={UserProfilePage} />
                 <Route path="/list" component={ListPage} />
                 <Route path="/search" component={Search} />
                 <Route path="/about" component={About} />
@@ -48,4 +47,4 @@ export const PublicApp = React.memo(function PublicAppBase() {
       />
     </Switch>
   )
-})
+}

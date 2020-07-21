@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from '../../generic/components/Link'
-import { toClassificationList, classificationBadgeType } from '../utils'
+import { toClassificationList } from '../utils'
 import { useClassification } from '../provider/ClassificationProvider'
 
 interface Props {
@@ -11,11 +11,7 @@ export function ClassificationLink({ classificationKey }: Props): JSX.Element {
   const { result: classifications } = useClassification()
 
   return (
-    <Link
-      type="light"
-      to={toClassificationList(classificationKey)}
-      badge={classificationBadgeType(classificationKey)}
-    >
+    <Link to={toClassificationList(classificationKey)} badge="light">
       {classifications?.map[classificationKey]?.label}
     </Link>
   )
