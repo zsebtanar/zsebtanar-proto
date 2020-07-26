@@ -34,3 +34,6 @@ export function getReward(id) {
 
 export const addExerciseToReward = (exerciseId, rewardId) =>
   cloudFnPost(`rewards/addExerciseToReward`, { exerciseId, rewardId } , { withToken: true })
+
+export const addReward = (reward) =>
+  cloudFnPost(`rewards/addReward`, reward , { withToken: true })

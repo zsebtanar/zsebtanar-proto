@@ -25,6 +25,7 @@ import { ExerciseSheetGrid } from './page/exerciseSheet/grid/ExerciseSheetGrid'
 import { UserList } from './page/user/UserList'
 import { WikiPageForm } from './page/wiki/form/WikiPageForm'
 import { WikiPageGrid } from './page/wiki/grid/WikiPageGrid'
+import EditRewards from './page/EditRewards'
 
 interface RoutesProps {
   history: History
@@ -90,12 +91,13 @@ function AdminRoutes() {
             <Route path="/exercise-sheet" exact component={ExerciseSheetGrid} />
             <Route path="/exercise-sheet/add" component={ExerciseSheetForm} />
             <Route path="/exercise-sheet/edit/:key" component={ExerciseSheetForm} />
-
+            
             {/* Wiki pages */}
             <Route path="/wiki-page" exact component={WikiPageGrid} />
             <Route path="/wiki-page/add" exact component={WikiPageForm} />
             <Route path="/wiki-page/edit/:key" exact component={WikiPageForm} />
 
+            <Route path="/edit-rewards" exact component={EditRewards} />
             <Route path="/feedback" component={FeedbackList} />
             <Route path="/utilities" component={AdminUtils} />
             <Route path="/about" component={About} />
