@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useMemo, useCallback } from 'react'
 import { Interpreter, Parser, Scanner } from 'pocket-lisp'
-import { toJS, runtime, utils, literals } from 'pocket-lisp-stdlib'
+import { runtime, utils, literals } from 'pocket-lisp-stdlib'
 import { valueSet } from 'shared/script/shared-code'
 import { PseudoRandomNumberGenerator } from 'shared/math/random'
 
@@ -35,7 +35,7 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props): J
 
   const setOutput = useCallback((msg, type: InterpreterOutput['type'] = 'normal') => {
     if (msg) {
-      output = output.concat({ type, msg: msg[toJS] ? msg[toJS]() : msg.toString() })
+      output = output.concat({ type, msg: JSON.stringify(msg.toJS ? msg.toJS() : msg.toString()) })
     }
   }, [])
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSadTear, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
-import history from 'client/generic/utils/history'
 import { CustomError, NotFoundError } from '../utils/error'
+import { useHistory } from 'react-router-dom'
 
 interface ShowErrorProps {
   showMenu?: boolean
@@ -45,6 +45,7 @@ function ErrorMessage({ error }) {
 }
 
 function ErrorMenu() {
+  const history = useHistory()
   return (
     <nav className="mt-5">
       <ul className="nav flex-column">

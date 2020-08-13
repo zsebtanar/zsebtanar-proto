@@ -38,6 +38,7 @@ export function About(): JSX.Element {
               <img
                 className="about-pic"
                 width="90%"
+                loading="lazy"
                 src="/assets/images/zst_gergo.jpg"
                 alt="Gergő"
               />
@@ -48,7 +49,13 @@ export function About(): JSX.Element {
               </p>
             </div>
             <div className="col-md">
-              <img className="about-pic" width="90%" src="/assets/images/zst_laci.jpg" alt="Laci" />
+              <img
+                className="about-pic"
+                width="90%"
+                loading="lazy"
+                src="/assets/images/zst_laci.jpg"
+                alt="Laci"
+              />
               <h4 className="mt-4">A Kódmester</h4>
               <p>
                 Laci vagyok, webfejlesztőként dolgozom. Én ezzel az alkalmazással szeretnék
@@ -60,6 +67,7 @@ export function About(): JSX.Element {
               <img
                 className="about-pic"
                 width="90%"
+                loading="lazy"
                 src="/assets/images/zst_viktor.jpg"
                 alt="Viktor"
               />

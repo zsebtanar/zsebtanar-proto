@@ -12,9 +12,9 @@ import { mainErrorHandler } from './middlewares/error'
 
 const app = express()
 
+app.use(cors({ origin: '*' }))
 app.use(cookieParser())
 app.use(bodyParser.json())
-app.use(cors({ origin: true }))
 
 app.use('/api/user/', user)
 app.use('/api/exercise/', exercise)

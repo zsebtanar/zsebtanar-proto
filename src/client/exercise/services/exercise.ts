@@ -4,6 +4,11 @@ import { useLoadAndStoreModel, LoadAndStoreModelAPI } from '../../generic/hooks/
 import { Service } from 'client/generic/services/fireStoreBase'
 import { useFetchData, FetchDataAPI } from 'client/generic/hooks/fetchData'
 import { cloudFnPost } from 'client/generic/services/firebase'
+import {
+  useFetchFirestoreList,
+  FetchFirestoreListOptions,
+  FetchFirestoreListAPI,
+} from '../../generic/hooks/fetchFirestoreList'
 
 export const exerciseDataService = new Service<ExerciseModel>('exercise')
 
@@ -21,15 +26,19 @@ interface ListQueryParams {
   classifications: ExerciseModel['classifications']
 }
 
-export function useLoadExercises(params: ListQueryParams): FetchDataAPI<ExerciseModel[]> {
-  const callback = useCallback(() => {
-    const options: GridFilterOptions = { where: [] }
+export function useLoadExercises(params: ListQueryParams): FetchFirestoreListAPI<ExerciseModel> {
+  const options: FetchFirestoreListOptions = useMemo(() => {
+    const filter: GridFilterOptions = { where: [] }
     if (params.classifications) {
-      options?.where?.push(['classifications', 'array-contains-any', params.classifications])
+      filter.where?.push(['classifications', 'array-contains-any', params.classifications])
     }
-    return exerciseDataService.getList(options)
+    return {
+      accumulate: true,
+      pageSize: 25,
+      filter,
+    }
   }, [JSON.stringify(params)])
-  return useFetchData<ExerciseModel[]>(callback, [callback])
+  return useFetchFirestoreList<ExerciseModel>('exercise', options)
 }
 
 export async function storeExercise({ id, ...data }: ExerciseModel): Promise<ExerciseModel> {

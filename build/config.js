@@ -69,7 +69,7 @@ const envConfig = {
   emulator: {
     ...baseTestConfig,
     siteUrl: 'http://localhost:3000/',
-    api: 'http://localhost:5001/zsebtanar-test/europe-west1/api/api',
+    api: 'http://localhost:5001/us-central1/europe-west1/api/api',
     sentry: {},
   },
   development: {

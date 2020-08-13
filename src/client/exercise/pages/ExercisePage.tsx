@@ -16,8 +16,8 @@ export function ExercisePage(): JSX.Element {
   const seed = parseInt(query.get('s') ?? '', 10) || randomInt()
 
   const onClose = () => {
-    if (history.length > 1) {
-      history.goBack()
+    if (window.history.length > 1) {
+      history.back()
     } else {
       history.push('/')
     }

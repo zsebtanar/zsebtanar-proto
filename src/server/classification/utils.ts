@@ -1,5 +1,5 @@
-import firebase from 'firebase'
 import { fireStore } from '../utils/firebase'
+import { firestore } from 'firebase-admin'
 
 export async function addExerciseToClassifications(
   batch: FirebaseFirestore.WriteBatch,
@@ -9,7 +9,7 @@ export async function addExerciseToClassifications(
   classificationIds.map(async (classificationId) => {
     const classificationRef = fireStore.collection('classification').doc(classificationId)
     batch.update(classificationRef, {
-      exercises: firebase.firestore.FieldValue.arrayUnion(exerciseId),
+      exercises: firestore.FieldValue.arrayUnion(exerciseId),
     })
   })
 }
@@ -22,7 +22,7 @@ export async function removeExerciseFromClassifications(
   classificationIds.map(async (classificationId) => {
     const classificationRef = fireStore.collection('classification').doc(classificationId)
     batch.update(classificationRef, {
-      exercises: firebase.firestore.FieldValue.arrayRemove(exerciseId),
+      exercises: firestore.FieldValue.arrayRemove(exerciseId),
     })
   })
 }

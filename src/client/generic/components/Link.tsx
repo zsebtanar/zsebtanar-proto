@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react'
 import cx from 'classnames'
 import { Link as RRLink } from 'react-router-dom'
-import { LocationDescriptorObject } from 'history'
+import * as H from 'history'
 
 interface LinkProps {
-  to: string | LocationDescriptorObject
+  to: string | H.Path | ((location: H.Location) => H.Path)
   className?: string
   children: ReactNode
   badge?: BadgeType

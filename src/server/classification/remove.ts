@@ -6,7 +6,7 @@ import { ErrorHandler } from '../middlewares/error'
 import { getToken } from '../middlewares/firebaseToken'
 import { indexExercise } from '../exercise/utils/search-indexing'
 import { ExerciseSchemaType } from '../exercise/model'
-import { ClassificationModel } from '../../shared/categories/type'
+import { ClassificationModel } from '../../shared/classification/type'
 import { ExerciseModel } from '../../shared/exercise/types'
 
 export const route = express.Router()

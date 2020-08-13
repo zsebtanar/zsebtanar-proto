@@ -1,8 +1,8 @@
 import React from 'react'
 import { useLoadClassifications } from '../services/classificationService'
 import { FetchDataAPI } from '../../generic/hooks/fetchData'
-import { ClassificationModel } from 'shared/categories/type'
-import { list2map } from 'shared/utils/fn'
+import { ClassificationModel } from 'shared/classification/type'
+import { list2map, sortByProp } from 'shared/utils/fn'
 
 interface Props {
   children: React.ReactNode
@@ -20,7 +20,7 @@ export const ClassificationContext = React.createContext<CtxType>({} as any)
 export function ClassificationProvider({ children }: Props): JSX.Element {
   const state = useLoadClassifications()
 
-  const list = state.result ?? []
+  const list = state.result ?? [].sort(sortByProp('id'))
   const map = list2map('id', list)
   const value = { ...state, result: { list, map } }
 

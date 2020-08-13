@@ -34,6 +34,7 @@ export function JoinUs(): JSX.Element {
             style={{ width: 350 }}
             src="/assets/images/Zsebtanar_plakat_mozgas.gif"
             alt="Konvergenst keresünk - fejlessz velünk a játékos matektanulásért"
+            loading="lazy"
           />
         </div>
       </div>

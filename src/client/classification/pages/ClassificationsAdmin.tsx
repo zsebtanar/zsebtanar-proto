@@ -13,7 +13,7 @@ import { Button } from 'client/generic/components/Button'
 import { Loading } from 'client/generic/components/Loading'
 import { Alert } from 'client/generic/components/Alert'
 import { Badge } from '../../generic/components/Badge'
-import { ClassificationModel } from 'shared/categories/type'
+import { ClassificationModel } from 'shared/classification/type'
 import { ConfirmModal } from '../../overlay/components/ConfirmModal'
 
 import './ClassificationsAdmin.scss'

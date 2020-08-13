@@ -6,6 +6,8 @@ import { BaseModel } from 'shared/generic/types'
 
 export type DocRef = firebase.firestore.DocumentReference
 export type Query = firebase.firestore.Query
+export type QuerySnapshot = firebase.firestore.QuerySnapshot
+export type CollectionReference = firebase.firestore.CollectionReference
 
 interface ServiceOptions {
   excludeId: boolean
@@ -74,19 +76,30 @@ export class Service<T extends BaseModel> {
     return data
   }
 
-  public async getRawList(options?: GridFilterOptions): Promise<firebase.firestore.QuerySnapshot> {
-    const collection = db.collection(this.collectionName)
-    let res: firebase.firestore.QuerySnapshot
-
+  public async getRawList(options?: GridFilterOptions): Promise<QuerySnapshot> {
+    let query: CollectionReference | Query = db.collection(this.collectionName)
     if (options) {
-      const query = (options.where ?? []).reduce(
-        (q, [prop, op, val]) => q.where(prop, op, val),
-        collection as Query,
-      )
-      res = await query.get()
-    } else {
-      res = await collection.get()
+      if (options.where) {
+        query = options.where.reduce((q, [prop, op, val]) => q.where(prop, op, val), query)
+      }
+
+      if (options.orderBy) {
+        query = options.orderBy.reduce((q, [prop, op, val]) => q.orderBy(prop, op, val), query)
+      }
+
+      if (options.startAfter) {
+        query = query.startAfter(options.startAfter)
+      }
+
+      if (options.endBefore) {
+        query = query.endBefore(options.endBefore)
+      }
+
+      if (options.limit) {
+        query = query.limit(options.limit)
+      }
     }
+    const res = await query.get()
 
     this.log('GET list with filter', options, res)
 

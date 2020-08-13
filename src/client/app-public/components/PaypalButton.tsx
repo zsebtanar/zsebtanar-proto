@@ -14,6 +14,7 @@ export function PaypalButton(): JSX.Element {
         />
         <img
           alt=""
+          loading="lazy"
           src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
           width="1"
           height="1"

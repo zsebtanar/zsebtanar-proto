@@ -131,7 +131,7 @@ function assetImageMD(state, silent) {
     content = state.src.slice(labelStart, labelEnd)
 
     token = state.push('resImage', 'img', 0)
-    token.attrs = attrs = []
+    token.attrs = attrs = [['loading', 'lazy']]
     token.content = content
 
     if (resRef) {

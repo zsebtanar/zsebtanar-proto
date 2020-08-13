@@ -30,18 +30,25 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
   },
 
   /**
-   * Returns an integer, pseudo-random number in the range 0 to less then the given number
-   * (inclusive of 0, but not the given number)
+   * Returns an integer, pseudo-random number in the range 1 to the given number
    *
    * @param num upper bound
    */
   ['random-int']: (num: PLNumber) => {
+    return literals.int.factory(prng.randomInt(num.value) + 1)
+  },
+
+  /**
+   * Returns an integer, pseudo-random number in the range 0 to the given number
+   *
+   * @param num upper bound
+   */
+  ['random-int-0']: (num: PLNumber) => {
     return literals.int.factory(prng.randomInt(num.value))
   },
 
   /**
-   * Returns an integer, pseudo-random number in the range min to less then max
-   * (inclusive of min, but not max)
+   * Returns an integer, pseudo-random number in the range min to max
    *
    * @param min   minimum random number
    * @param max   upper bound
@@ -49,7 +56,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
    */
   ['random-int-range']: (min: PLNumber, max: PLNumber, step: PLNumber) => {
     const range = max.value - min.value
-    let randInt = prng.randomInt(range)
+    let randInt = prng.randomInt(range + 1)
     if (step.value > 1 && randInt % step.value > 0) {
       randInt += randInt % step.value
     }

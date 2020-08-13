@@ -7,11 +7,12 @@ import { Loading } from '../../generic/components/Loading'
 import { ExerciseListItem } from 'client/exercise/components/ExerciseListItem'
 import { Alert } from '../../generic/components/Alert'
 import { ClassificationLink } from '../../classification/components/ClassificationLink'
+import { Button } from '../../generic/components/Button'
 
 export function ListPage(): JSX.Element {
   const query = useQuery()
   const classifications = (query.get(CLASSIFICATION_PARAM) ?? '').split(',')
-  const { isLoading, isSuccess, hasNoResult, result } = useLoadExercises({
+  const { isLoading, isSuccess, hasNoResult, list, hasMore, next } = useLoadExercises({
     classifications,
   })
 
@@ -30,7 +31,7 @@ export function ListPage(): JSX.Element {
       {isLoading && <Loading />}
       {hasNoResult && <Alert type="info">Nincs elem a listában.</Alert>}
       {isSuccess &&
-        result?.map(({ id, classifications, description }) => (
+        list?.map(({ id, classifications, description }) => (
           <ExerciseListItem
             key={id}
             id={id ?? ''}
@@ -38,6 +39,11 @@ export function ListPage(): JSX.Element {
             description={description}
           />
         ))}
+      {hasMore && (
+        <div className="text-center">
+          <Button onAction={next}>Még</Button>
+        </div>
+      )}
     </PublicPage>
   )
 }
