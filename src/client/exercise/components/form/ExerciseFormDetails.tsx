@@ -1,5 +1,4 @@
 import React from 'react'
-import { sortByProp } from 'shared/utils/fn'
 import { ExerciseModel } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { FormCard } from 'client/generic/components/form/FormCard'

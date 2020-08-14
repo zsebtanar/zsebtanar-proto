@@ -8,7 +8,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
    * @param x
    */
   ['range']: (x: PLNumber) =>
-    literals.vector.factory(...range(0, x.value, 1).map((v, k) => literals.int.factory(k + 1))),
+    literals.vector.factory(...range(-1, x.value - 1, 1).map((v, k) => literals.int.factory(k))),
 
   /**
    * Constant function

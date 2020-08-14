@@ -1,12 +1,12 @@
 const SCROLL_POSITION_KEY = 'scrollPos'
 
-function getItem<T = unknown>(key: string, fallback?: T, store = window.sessionStorage): T {
+export function getItem<T = unknown>(key: string, fallback?: T, store = window.sessionStorage): T {
   const item = store.getItem(key)
   return item ? JSON.parse(item) : (fallback as T)
 }
 
-function setItem(key: string, fallback: unknown, store = window.sessionStorage) {
-  store.setItem(key, JSON.stringify(fallback))
+export function setItem(key: string, data: unknown, store = window.sessionStorage) {
+  store.setItem(key, JSON.stringify(data))
 }
 
 export function storeScrollPos(pageId: string, position: number): void {

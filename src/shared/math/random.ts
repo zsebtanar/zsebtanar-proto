@@ -29,7 +29,9 @@ export class PseudoRandomNumberGenerator {
   }
 
   public randomInt(num = 10): number {
-    return (this.next() - 1) % num
+    const next = this.next()
+    console.log('rand', num, next, (next - 1) % num)
+    return (next - 1) % num
   }
 
   public randomFloat(): number {

@@ -13,6 +13,7 @@ import { WikiPageForm } from 'client/wiki/page/WikiPageForm'
 import { Navigation } from './nav/Navigation'
 import { Page404 } from './pages/Page404'
 import { Home } from './pages/Home'
+import { PocketLispRepl } from './pages/PocketLispRepl'
 
 export const AdminApp = React.memo(function AdminAppBase() {
   const { isLoading } = useUser()
@@ -48,6 +49,7 @@ export const AdminApp = React.memo(function AdminAppBase() {
 
           <Route path="/feedback" component={FeedbackGrid} />
           <Route path="/utilities" component={AdminUtils} />
+          <Route path="/pocket-lisp-sandbox" component={PocketLispRepl} />
           <Route component={Page404} />
         </Switch>
       </main>

@@ -15,7 +15,7 @@ export function toAbcIndex(idx: number): string {
 }
 
 export const range = (from: number, to: number, step = 1): number[] => {
-  if (from > to) return []
+  if (from >= to) return []
 
   const res = [from]
   for (let i = from + step; i < to; i += step) {

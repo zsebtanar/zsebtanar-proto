@@ -14,6 +14,7 @@ import {
   faFolder,
   faPowerOff,
   faBars,
+  faTerminal,
 } from '@fortawesome/free-solid-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import { Dropdown } from 'client/generic/components/dropdown/Dropdown'
@@ -61,6 +62,13 @@ export function Header({ onOpenSideNav }: Props): JSX.Element | null {
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/utilities">
                     <FontAwesomeIcon icon={faExclamationTriangle} /> Gépház
+                  </NavLink>
+                  <NavLink
+                    activeClassName="active"
+                    className="dropdown-item"
+                    to="/pocket-lisp-sandbox"
+                  >
+                    <FontAwesomeIcon icon={faTerminal} /> Pocket Lisp sandbox
                   </NavLink>
                 </DropdownMenu>
               </Dropdown>
