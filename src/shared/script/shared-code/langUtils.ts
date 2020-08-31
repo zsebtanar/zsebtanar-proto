@@ -1,7 +1,7 @@
-import { PLNumber, PLFractionNumber } from 'pocket-lisp-stdlib'
-import { assertInteger, typeCheck } from './utils'
+import { PLNumber, PLFractionNumber, plString, PLString } from 'pocket-lisp-stdlib'
+import { assertInteger } from './utils'
 
-export const suffixTimes = (num: number): string => {
+const suffixTimes = (num: number): string => {
   assertInteger(num)
 
   const absNum = Math.abs(num)
@@ -53,7 +53,7 @@ export const suffixTimes = (num: number): string => {
  *
  * @return string $suffix Suffix
  */
-export const suffixTimes2 = (num: number): string => {
+const suffixTimes2 = (num: number): string => {
   assertInteger(num)
 
   const absNum = Math.abs(num)
@@ -148,23 +148,24 @@ const baseSuffixFraction = (num: number): string => {
   }
 }
 
-function suffixFloat(num: PLNumber): string {
-  typeCheck(PLNumber, num)
+const format = (fn: (number) => string) => (num: PLNumber | PLFractionNumber): PLString => {
+  let result = ''
+  if (num instanceof PLNumber) {
+    if (Number.isInteger(num.value)) {
+      result = fn(num.value)
+    } else {
+      const floatPart = parseInt(num.value.toString().split('.')[1] || '0')
 
-  const floatPart = parseInt(num.value.toString().split('.')[1] || '0')
-
-  if (floatPart > 0) {
-    return baseSuffixFraction(floatPart)
-  } else {
-    return ''
+      if (floatPart > 0) {
+        result = fn(floatPart)
+      } else {
+        result = ''
+      }
+    }
+  } else if (num instanceof PLFractionNumber) {
+    result = fn(num.denominator)
   }
-}
-
-function suffixFraction(num: PLFractionNumber): string {
-  typeCheck(PLFractionNumber, num)
-  assertInteger(num.denominator)
-
-  return baseSuffixFraction(num.denominator)
+  return plString(result)
 }
 
 /**
@@ -173,9 +174,9 @@ function suffixFraction(num: PLFractionNumber): string {
  *
  * @param value
  */
-export function article(value: number): string {
-  const text = num2text(value)
-  return /^[aáeéiíoóöőuúüű]/.test(text) ? 'az' : 'a'
+function article(value: number): string {
+  const text = baseNum2text(value)
+  return !text ? '' : /^[aáeéiíoóöőuúüű]/.test(text) ? 'az' : 'a'
 }
 
 /**
@@ -185,7 +186,7 @@ export function article(value: number): string {
  * @return string $num_text Number with text
  * @param value
  */
-function num2text(value: number) {
+function baseNum2text(value: number) {
   assertInteger(value)
   const absNum = Math.abs(value)
   const digits = absNum.toString().split('').reverse()
@@ -241,6 +242,22 @@ function num2text(value: number) {
     .replace('kettőezer', 'kétezer')
     .replace('kettőmillió', 'kétmillió')
     .replace('kettőmilliárd', 'kétmilliárd')
+}
+
+function num2text(num: PLNumber | PLFractionNumber): PLString {
+  let result = ''
+  if (num instanceof PLNumber) {
+    if (Number.isInteger(num.value)) {
+      result = baseNum2text(num.value)
+    }
+  } else if (num instanceof PLFractionNumber) {
+    assertInteger(num.denominator)
+
+    result = `${baseNum2text(num.numerator)} ${baseNum2text(num.denominator)}${baseSuffixFraction(
+      num.denominator,
+    )}`
+  }
+  return plString(result)
 }
 
 /**
@@ -304,10 +321,12 @@ export const listJoinLocal = (list, lastSrt = 'vagy') => {
 }
 
 export const langUtils = {
-  ['suffix-times']: suffixTimes,
-  ['suffix-times2']: suffixTimes2,
-  ['suffix-float']: suffixFloat,
-  ['suffix-fraction']: suffixFraction,
+  ['suffix']: format(baseSuffixFraction),
+  ['suffix-times']: format(suffixTimes),
+  ['suffix-times2']: format(suffixTimes2),
+  ['article']: format(article),
+  ['dativus']: format(dativus),
+  ['num-to-text']: num2text,
 }
 ;`
 

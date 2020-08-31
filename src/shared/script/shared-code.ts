@@ -1,6 +1,8 @@
 import { literals, PLNumber } from 'pocket-lisp-stdlib'
 import { PseudoRandomNumberGenerator } from '../math/random'
 import { range } from '../utils/fn'
+import { langUtils } from './shared-code/langUtils'
+import { stringUtils } from './shared-code/stringUtils'
 
 export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
   /**
@@ -35,7 +37,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
    * @param num upper bound
    */
   ['random-int']: (num: PLNumber) => {
-    return literals.int.factory(prng.randomInt(num.value) + 1)
+    return literals.int.factory(prng.randomInt(num.value + 1))
   },
 
   /**
@@ -62,4 +64,6 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
     }
     return literals.int.factory(min.value + randInt)
   },
+  ...langUtils,
+  ...stringUtils,
 })

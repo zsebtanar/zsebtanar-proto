@@ -29,12 +29,10 @@ export class PseudoRandomNumberGenerator {
   }
 
   public randomInt(num = 10): number {
-    const next = this.next()
-    console.log('rand', num, next, (next - 1) % num)
-    return (next - 1) % num
+    return Math.floor(this.randomFloat() * num)
   }
 
   public randomFloat(): number {
-    return this.randomInt(m) / m
+    return this.next() / m
   }
 }

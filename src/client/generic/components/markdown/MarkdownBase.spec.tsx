@@ -75,6 +75,7 @@ test('Markdown should render', async () => {
           <img
             alt="image alt"
             height="undefined"
+            loading="lazy"
             src="https://example.com"
             title="image alt"
             width="undefined"

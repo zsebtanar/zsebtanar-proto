@@ -3,11 +3,11 @@ module.exports = {
   collectCoverageFrom: ['**/src/**/*.+(ts|tsx|js)'],
   coverageThreshold: {
     global: {
-      statements: 100,
-      branches: 100,
-      functions: 100,
-      lines: 100
-    }
+      statements: 0,
+      branches: 0,
+      functions: 0,
+      lines: 0,
+    },
   },
-  projects: ['./test/jest.client.js', './test/jest.server.js', './test/jest.shared.js']
+  projects: ['./test/jest.client.js', './test/jest.server.js', './test/jest.shared.js'],
 }
