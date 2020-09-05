@@ -31,7 +31,15 @@ export function PocketLispRepl(): JSX.Element {
       <h1>Pocket lisp sandbox</h1>
       <FormGroup label="Seed">
         {(id) => (
-          <NumberInput id={id} onChange={({ value }) => setSeed(value)} name="seed" value={seed} />
+          <NumberInput
+            id={id}
+            onChange={({ value }) => setSeed(value)}
+            name="seed"
+            value={seed}
+            min={1}
+            step={1}
+            max={Number.MAX_SAFE_INTEGER}
+          />
         )}
       </FormGroup>
       <PocketLispProvider isEdit={true} seed={seed} script={script}>

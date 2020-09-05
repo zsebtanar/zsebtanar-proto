@@ -175,8 +175,12 @@ const format = (fn: (number) => string) => (num: PLNumber | PLFractionNumber): P
  * @param value
  */
 function article(value: number): string {
-  const text = baseNum2text(value)
-  return !text ? '' : /^[aáeéiíoóöőuúüű]/.test(text) ? 'az' : 'a'
+  if (value < 0) {
+    return 'a'
+  } else {
+    const text = baseNum2text(value)
+    return !text ? '' : /^[aáeéiíoóöőuúüű]/.test(text) ? 'az' : 'a'
+  }
 }
 
 /**
@@ -189,6 +193,10 @@ function article(value: number): string {
 function baseNum2text(value: number) {
   assertInteger(value)
   const absNum = Math.abs(value)
+  if (absNum === 0) {
+    return 'nulla'
+  }
+
   const digits = absNum.toString().split('').reverse()
 
   const numGroups = ['', 'ezer', 'millió', 'milliárd']
@@ -301,11 +309,13 @@ export const dativus = (value: number) => {
       return 'at'
   }
 
-  if (absNum == 0) {
+  if (absNum === 0) {
     return 't'
+  } else if (absNum === 1_000_000_000) {
+    return 'ot'
   } else if (100 <= absNum && absNum < 1000) {
     return 'at'
-  } else if (1000 <= absNum && absNum < 1000000) {
+  } else if (1000 <= absNum && absNum < 1_000_000) {
     return 'et'
   } else {
     return 't'

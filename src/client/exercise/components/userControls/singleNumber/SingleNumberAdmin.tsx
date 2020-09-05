@@ -6,7 +6,6 @@ import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { Checkbox } from 'client/generic/components/form/input/Checkbox'
 import { FormGroup } from 'client/generic/components/form/FormGroup'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
-import { Input } from 'client/generic/components/form/input/Input'
 import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 
 export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX.Element {
@@ -33,14 +32,14 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
       <FormGroup label="Pontosság">
         {(id) => (
           <>
-            <Input
-              type="number"
+            <NumberInput
               {...bind('props.fractionDigits')}
               id={id}
               step={1}
               min={0}
               max={10}
               required
+              defaultValue={0}
               aria-describedby="max-fraction-digits-desc"
               className="form-control form-control-sm"
             />
