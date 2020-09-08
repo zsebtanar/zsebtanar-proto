@@ -7,7 +7,7 @@ interface Props
       React.HTMLProps<HTMLInputElement>,
       'value' | 'onChange' | 'name' | 'type' | 'defaultValue'
     > {
-  defaultValue: number
+  defaultValue?: number
 }
 
 export function NumberInput({ name, value, onChange, defaultValue, ...props }: Props): JSX.Element {
