@@ -58,7 +58,9 @@ export function Search(): JSX.Element {
       )}
       {isLoading && <Loading />}
       {error && <ErrorMsg error={error} />}
-      {hasNoResult && <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>}
+      {searchTerm.length > MIN_TERM_LENGTH && hasNoResult && (
+        <div className="alert alert-warning col-md-8 mx-auto">Nincs találat</div>
+      )}
       {isSuccess && result && <SearchResult term={searchTerm} data={result} />}
     </PublicPage>
   )

@@ -12,7 +12,7 @@
   transition-duration: 0.2s;
   transition-delay: 0.05s;
 
-  .sidebar-content{
+  .sidebar-content {
     position: absolute;
     right: 0;
     width: 90%;
@@ -44,6 +44,12 @@
       transition-duration: 0.3s;
       transition-delay: 0.1s;
     }
+  }
+  .mobile-nav {
+    height: 100%;
+  }
+  .vertical-spacer {
+    flex-grow: 1;
   }
 }
 

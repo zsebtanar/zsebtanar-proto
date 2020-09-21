@@ -2,7 +2,7 @@ import React from 'react'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'
 import { isAdmin } from 'client/user/services/user'
-import { faPlus, faBars, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faBars, faUser, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'client/generic/components/Link'
 import { Button } from 'client/generic/components/Button'
@@ -30,6 +30,16 @@ export function Header({ onOpenSideNav }: Props): JSX.Element {
           </NavLink>
           <nav>
             <ul className="nav nav-pills">
+              <li className="nav-item" key="search">
+                <NavLink
+                  className="btn btn-outline-primary mx-2"
+                  to="/search"
+                  data-testid="header-reg-btn"
+                  activeClassName="d-none"
+                >
+                  <FontAwesomeIcon icon={faSearch} /> Feladat kereső
+                </NavLink>
+              </li>
               {loggedIn && isAdmin(userToken) && <AdminMenu />}
               {loggedIn ? <SignedInMenu /> : <AnonymousUserMenu />}
             </ul>

@@ -25,19 +25,20 @@ export function SideNav({ isOpen, onCloseSideNav }: Props): JSX.Element {
       onClick={onCloseSideNav}
     >
       <div className="sidebar-content clearfix flex-column d-flex">
-        <div className="m-2 d-flex justify-content-between align-items-center">
-          <h4 className="my-0">
-            <NavLink exact to="/">
-              <span className="text-muted">Zsebtanár</span>
-            </NavLink>
-          </h4>
+        <div className="m-2 text-right">
           <CloseButton onClick={onCloseSideNav} aria-label="Menü bezárása" />
         </div>
-        <nav className="mobile-nav">
-          <ul className="nav nav-pills flex-column">
-            {loggedIn && isAdmin(userToken) && <AdminMenu />}
-            {loggedIn ? <SignedInMenu /> : <AnonymousUserMenu />}
-          </ul>
+        <nav className="mobile-nav list-group list-group-flush flex-column text-center">
+          <NavLink exact to="/" className="list-group-item">
+            Főoldal
+          </NavLink>
+          <NavLink className="list-group-item" to="/search" data-testid="header-reg-btn">
+            Feladat kereső
+          </NavLink>
+
+          {loggedIn && isAdmin(userToken) && <AdminMenu />}
+          <div className="vertical-spacer list-group-item" />
+          {loggedIn ? <SignedInMenu /> : <AnonymousUserMenu />}
         </nav>
       </div>
     </nav>
@@ -47,47 +48,42 @@ export function SideNav({ isOpen, onCloseSideNav }: Props): JSX.Element {
 function SignedInMenu() {
   const { signOut } = useUserDispatch()
   return (
-    <li className="nav-item" key="sing-out">
-      <button className="nav-link" onClick={signOut}>
-        Kijelentkezés
-      </button>
-    </li>
+    <button className="list-group-item" onClick={signOut} key="sing-out">
+      Kijelentkezés
+    </button>
   )
 }
 
 function AnonymousUserMenu() {
   return (
     <>
-      <li className="nav-item" key="sign-up">
-        <NavLink
-          activeClassName="active"
-          className="nav-link"
-          to="/register"
-          data-testid="sidenav-reg-btn"
-        >
-          <FontAwesomeIcon icon={faPlus} /> Regisztráció
-        </NavLink>
-      </li>
-      <li className="nav-item" key="sign-in">
-        <NavLink
-          activeClassName="active"
-          className="nav-link"
-          to="/login"
-          data-testid="sidenav-reg-btn"
-        >
-          <FontAwesomeIcon icon={faSignInAlt} /> Belépés
-        </NavLink>
-      </li>
+      <NavLink
+        key="sign-up"
+        activeClassName="active"
+        className="list-group-item"
+        to="/register"
+        data-testid="sidenav-reg-btn"
+      >
+        <FontAwesomeIcon icon={faPlus} /> Regisztráció
+      </NavLink>
+
+      <NavLink
+        key="sign-in"
+        activeClassName="active"
+        className="list-group-item"
+        to="/login"
+        data-testid="sidenav-reg-btn"
+      >
+        <FontAwesomeIcon icon={faSignInAlt} /> Belépés
+      </NavLink>
     </>
   )
 }
 
 function AdminMenu() {
   return (
-    <li className="nav-item" key="admin">
-      <a href={'/admin/exercise'} className="nav-link">
-        Admin
-      </a>
-    </li>
+    <a href={'/admin/exercise'} className="list-group-item" key="admin">
+      Admin
+    </a>
   )
 }

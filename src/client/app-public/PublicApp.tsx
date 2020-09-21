@@ -2,7 +2,6 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 import { ExercisePage } from '../exercise/pages/ExercisePage'
-import { useUser } from '../user/providers/UserProvider'
 import { LoginPage } from './pages/auth/LoginPage'
 import { RegisterPage } from './pages/auth/RegisterPage'
 import { ForgottenPasswordPage } from './pages/auth/ForgottenPasswordPage'

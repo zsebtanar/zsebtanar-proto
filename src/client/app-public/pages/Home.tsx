@@ -1,42 +1,21 @@
 import React from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
-import debounce from 'client/generic/utils/debounce'
 import { useUser } from '../../user/providers/UserProvider'
 import { ClassificationSelector } from '../../classification/components/ClassificationSelector'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { PatreonButton } from '../components/PatreonButton'
 import { PaypalButton } from '../components/PaypalButton'
+import { YouTubeEmbed } from '../components/YoutubeEmbed'
+
+import './Home.scss'
 
 export function Home(): JSX.Element {
-  const history = useHistory()
-
-  const searchInputChange = debounce((e) => {
-    history.push({ pathname: '/search', search: `?q=${e.currentTarget.value}` })
-  }, 800)
-
   return (
     <div>
       <div className="jumbotron">
         <HomeWelcome />
-        <div className="my-5 col-11 mx-auto">
-          <NavLink to="/search">
-            <div className="search-input-group ">
-              <label className="search-label" htmlFor="search-input">
-                <FontAwesomeIcon icon={faSearch} size="lg" />
-                <span className="sr-only">Feladat keresés</span>
-              </label>
-              <input
-                id="search-input"
-                type="text"
-                className="form-control"
-                placeholder="Feladat keresés ..."
-                autoFocus
-                onChange={searchInputChange}
-              />
-            </div>
-          </NavLink>
-        </div>
+      </div>
+
+      <div className="home-youtube d-flex justify-content-center">
+        <YouTubeEmbed />
       </div>
 
       <ClassificationSelector title="Osztály" rootCategory="hu|grade|" />
