@@ -84,7 +84,7 @@ export class Service<T extends BaseModel> {
       }
 
       if (options.orderBy) {
-        query = options.orderBy.reduce((q, [prop, op, val]) => q.orderBy(prop, op, val), query)
+        query = options.orderBy.reduce((q, [prop, dir]) => q.orderBy(prop, dir), query)
       }
 
       if (options.startAfter) {
@@ -101,7 +101,7 @@ export class Service<T extends BaseModel> {
     }
     const res = await query.get()
 
-    this.log('GET list with filter', options, res)
+    this.logQueryOptions(options, res)
 
     return res
   }
@@ -138,6 +138,16 @@ export class Service<T extends BaseModel> {
         new Service(`${this.collectionName}/${doc.id}/${collection}`).storeAll(data[collection]),
       ),
     )
+  }
+
+  private logQueryOptions(options?: GridFilterOptions, data?: unknown) {
+    const opt = {
+      ...options,
+      startAfter: options?.startAfter?.id ?? undefined,
+      endBefore: options?.endBefore?.id ?? undefined,
+    }
+
+    this.log('GET list with filter', opt, data)
   }
 
   private log(op: string, id: unknown, data: unknown) {

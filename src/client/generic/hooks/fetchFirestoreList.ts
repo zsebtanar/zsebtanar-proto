@@ -1,6 +1,7 @@
 import { useReducer, Reducer, useEffect, useMemo } from 'react'
 import { BaseModel } from 'shared/generic/types'
 import { Service } from '../services/fireStoreBase'
+import { log } from '../../../shared/utils/fn'
 
 type States = 'pending' | 'loading' | 'success' | 'noResult' | 'error'
 
@@ -10,7 +11,7 @@ interface State<T> {
   state: States
   error?: Error
   list?: T[]
-  lastQuerySnapshot?: firebase.firestore.QuerySnapshot
+  lastQuerySnapshot?: firebase.firestore.QueryDocumentSnapshot
   lastResultLength: number
   page: number
 }
@@ -73,7 +74,10 @@ export function useFetchFirestoreList<T extends BaseModel>(
           payload: { result, accumulate: options?.accumulate ?? false },
         }),
       )
-      .catch((error) => dispatch({ type: 'error', payload: error }))
+      .catch((error) => {
+        log(error)
+        dispatch({ type: 'error', payload: error })
+      })
   }, [JSON.stringify(options), state.page])
 
   return {
@@ -115,7 +119,6 @@ function userReducer<T>(state: State<T>, action: Action<T>): State<T> {
       return {
         ...state,
         state: 'loading',
-        list: undefined,
         error: undefined,
       }
     case 'error':
@@ -129,7 +132,7 @@ function userReducer<T>(state: State<T>, action: Action<T>): State<T> {
         state: result.empty ? 'noResult' : 'success',
         error: undefined,
         list: newList,
-        lastQuerySnapshot: result,
+        lastQuerySnapshot: result.docs[result.docs.length - 1],
         lastResultLength: result.size,
       }
     }

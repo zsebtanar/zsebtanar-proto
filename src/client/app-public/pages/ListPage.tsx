@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { PublicPage } from 'client/generic/components/PublicPage'
 import { useQuery } from '../../generic/hooks/navigation'
 import { CLASSIFICATION_PARAM } from '../../classification/values'
@@ -12,9 +12,15 @@ import { Button } from '../../generic/components/Button'
 export function ListPage(): JSX.Element {
   const query = useQuery()
   const classifications = (query.get(CLASSIFICATION_PARAM) ?? '').split(',')
-  const { isLoading, isSuccess, hasNoResult, list, hasMore, next } = useLoadExercises({
+  const { isLoading, hasNoResult, list, hasMore, next } = useLoadExercises({
     classifications,
   })
+
+  useLayoutEffect(() => {
+    if (!isLoading) return
+    const currentTop = document.documentElement.scrollTop
+    document.documentElement.scrollTo({ top: currentTop })
+  }, [isLoading])
 
   return (
     <PublicPage className="list-page">
@@ -28,9 +34,8 @@ export function ListPage(): JSX.Element {
         </small>
       </h2>
 
-      {isLoading && <Loading />}
       {hasNoResult && <Alert type="info">Nincs elem a listában.</Alert>}
-      {isSuccess &&
+      {list?.length &&
         list?.map(({ id, classifications, description }) => (
           <ExerciseListItem
             key={id}
@@ -39,7 +44,8 @@ export function ListPage(): JSX.Element {
             description={description}
           />
         ))}
-      {hasMore && (
+      {isLoading && <Loading />}
+      {!isLoading && hasMore && (
         <div className="text-center">
           <Button onAction={next}>Még</Button>
         </div>

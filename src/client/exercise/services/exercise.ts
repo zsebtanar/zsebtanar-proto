@@ -28,13 +28,16 @@ interface ListQueryParams {
 
 export function useLoadExercises(params: ListQueryParams): FetchFirestoreListAPI<ExerciseModel> {
   const options: FetchFirestoreListOptions = useMemo(() => {
-    const filter: GridFilterOptions = { where: [] }
+    const filter: GridFilterOptions = {
+      where: [['state', '==', 'public']],
+      orderBy: [['classifications', 'asc']],
+    }
     if (params.classifications) {
       filter.where?.push(['classifications', 'array-contains-any', params.classifications])
     }
     return {
       accumulate: true,
-      pageSize: 25,
+      pageSize: 10,
       filter,
     }
   }, [JSON.stringify(params)])

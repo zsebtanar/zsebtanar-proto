@@ -244,10 +244,10 @@ declare interface NotificationOptions {
 
 declare interface GridFilterOptions {
   where?: [string | FieldPath, firebase.firestore.WhereFilterOp, any][]
-  orderBy?: [string | FieldPath, firebase.firestore.OrderByDirection]
+  orderBy?: [string | FieldPath, firebase.firestore.OrderByDirection][]
   limit?: number
-  startAfter?: firebase.firestore.QuerySnapshot
-  endBefore?: firebase.firestore.QuerySnapshot
+  startAfter?: firebase.firestore.QueryDocumentSnapshot
+  endBefore?: firebase.firestore.QueryDocumentSnapshot
 }
 
 declare type DataSourceEvents = 'loadStart' | 'loadEnd'

@@ -1,8 +1,13 @@
 export const noop = (): void => undefined
 
-export const log = (...args: unknown[]): unknown => {
-  console.log(...args)
-  return args[0]
+export const log = (...args: unknown[]): void => {
+  if (__DEV__) {
+    if (args[0] instanceof Error) {
+      console.error(...args)
+    } else {
+      console.log(...args)
+    }
+  }
 }
 
 export const clamp = (min: number, max: number, value: number): number => {
