@@ -13,6 +13,7 @@ export interface ExerciseModel extends BaseModel {
 }
 
 export enum ExerciseState {
+  New = 'new',
   Draft = 'draft',
   Public = 'public',
   Archived = 'archived',

@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import { ExerciseSubTaskControlsType } from 'shared/exercise/types'
 
-const ExerciseStateEnum = z.enum(['draft', 'public', 'archived'])
+const ExerciseStateEnum = z.enum(['draft', 'public', 'archived', 'remove'])
 
 const binaryChoiceSchema = z.object({
   type: z.literal(ExerciseSubTaskControlsType.BinaryChoice),

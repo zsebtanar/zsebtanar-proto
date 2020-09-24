@@ -15,6 +15,7 @@ export interface LoadAndStoreModelAPI<TModel> extends ModelAPI<TModel>, Getters 
   state: States
   error?: Error
   save(clone?: boolean): Promise<TModel>
+  reload(): void
 }
 
 ///
@@ -28,15 +29,15 @@ export function useLoadAndStoreModel<TModel>(
   const model = useModel<TModel>()
   const [state, setState] = useState<States>('pending')
   const [error, setError] = useState<Error | undefined>(undefined)
+  const [reload, setReload] = useState<number>(0)
 
-  useEffect(() => {
+  const fetch = async () => {
     if (id) {
       setState('fetching')
       try {
-        loadFn(id).then((data) => {
-          model.set(data)
-          setState('idle')
-        })
+        const data = await loadFn(id)
+        model.set(data)
+        setState('idle')
       } catch (err) {
         setError(err)
         setState('idle')
@@ -45,7 +46,11 @@ export function useLoadAndStoreModel<TModel>(
       model.set(({ ...initialValue } ?? {}) as TModel)
       setState('idle')
     }
-  }, [loadFn, id])
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [loadFn, id, reload])
 
   return {
     ...model,
@@ -70,6 +75,9 @@ export function useLoadAndStoreModel<TModel>(
         }
       }
       return res
+    },
+    reload() {
+      setReload((curr) => ++curr)
     },
     get isPending() {
       return state === 'pending'

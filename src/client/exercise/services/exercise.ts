@@ -56,8 +56,11 @@ export function useExerciseModel(id?: string): LoadAndStoreModelAPI<ExerciseMode
     description: '',
     classifications: [],
     difficulty: 0,
-    state: ExerciseState.Draft,
+    state: ExerciseState.New,
     script: '',
     subTasks: [],
   })
 }
+
+export const changeState = (exerciseId: string, state: ExerciseState): Promise<void> =>
+  cloudFnPost(`/exercise/${exerciseId}/state`, { state }, { withToken: true })

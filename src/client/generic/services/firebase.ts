@@ -43,7 +43,7 @@ export const cloudFnDelete = (path: string, params: Params, options?: Options): 
 
 async function processResponse(res: Response) {
   if (res.status >= 200 && res.status < 300) {
-    return (await res.json()) ?? true
+    return (res.status === 204 || (await res.json())) ?? true
   } else {
     throw await res.json()
   }

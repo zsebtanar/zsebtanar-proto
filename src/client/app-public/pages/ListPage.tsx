@@ -9,29 +9,40 @@ import { Alert } from '../../generic/components/Alert'
 import { ClassificationLink } from '../../classification/components/ClassificationLink'
 import { Button } from '../../generic/components/Button'
 
+import './ListPage.scss'
+
 export function ListPage(): JSX.Element {
   const query = useQuery()
   const classifications = (query.get(CLASSIFICATION_PARAM) ?? '').split(',')
+
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo({ top: 0 })
+  }, [classifications])
+
+  return <ListPageContent key={classifications.join()} classifications={classifications} />
+}
+
+function ListPageContent({ classifications }) {
   const { isLoading, hasNoResult, list, hasMore, next } = useLoadExercises({
     classifications,
   })
 
   useLayoutEffect(() => {
     if (!isLoading) return
-    const currentTop = document.documentElement.scrollTop
-    document.documentElement.scrollTo({ top: currentTop })
+    document.documentElement.scrollTo({ top: document.documentElement.scrollTop })
   }, [isLoading])
 
   return (
     <PublicPage className="list-page">
-      <h2 className="mb-4">
+      <h2 className="mb-5">
         <small>
-          Összes{' '}
+          Az összes{' '}
           {classifications.map((cls) => (
             <ClassificationLink key={cls} classificationKey={cls} />
           ))}{' '}
           címkével megjelölt feladat:
         </small>
+        <hr />
       </h2>
 
       {hasNoResult && <Alert type="info">Nincs elem a listában.</Alert>}
@@ -53,4 +64,4 @@ export function ListPage(): JSX.Element {
     </PublicPage>
   )
 }
-;(ListPage as any).whyDidYouRender = true
+ListPage['whyDidYouRender'] = true
