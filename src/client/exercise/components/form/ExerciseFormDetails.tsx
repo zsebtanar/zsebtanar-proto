@@ -17,7 +17,7 @@ export function ExerciseFormDetails({ name, value, onChange }: UseModelProps<Mod
   const { bind } = useModel<Model>({ value, onChange, name })
 
   return (
-    <FormCard className="card">
+    <FormCard className="card exercise-details">
       <FormGroup label="Feladat neve">
         {(id) => <Input type="text" className="form-control" id={id} {...bind('title')} />}
       </FormGroup>

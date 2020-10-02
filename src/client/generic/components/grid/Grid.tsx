@@ -15,6 +15,7 @@ interface Props<T> {
   columnDefs: GridColumnDefinition<T>[]
   defaultPageSize?: number
   rowAction?: RowActionFn<T>
+  orderBy?: string
 }
 
 export function Grid<T extends BaseModel>({

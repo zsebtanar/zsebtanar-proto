@@ -11,6 +11,7 @@ import {
   useManageAssetsDispatch,
 } from 'client/asset/providers/ManageAssetProvider'
 import { AssetGroup } from 'shared/assets/types'
+import { ExerciseState } from 'shared/exercise/types'
 import { useQuery } from 'client/generic/hooks/navigation'
 import { Loading } from 'client/generic/components/Loading'
 import { Alert } from 'client/generic/components/Alert'
@@ -20,7 +21,6 @@ import { ExerciseStateBadge } from '../components/form/ExerciseStateBadge'
 import { ExerciseOperations } from './ExerciseOperations'
 
 import './ExerciseForm.scss'
-import { ExerciseState } from '../../../shared/exercise/types'
 
 export function ExerciseForm(): JSX.Element {
   const history = useHistory()
@@ -52,8 +52,7 @@ export function ExerciseForm(): JSX.Element {
 
   const onSave = async (event) => {
     event.preventDefault()
-    const saveClone = query.get('clone') !== null
-    const res = await save(saveClone)
+    const res = await save(isClone)
     if (res.id && res.id !== id) {
       history.replace(`/exercise/edit/${res.id}`)
     }
@@ -69,6 +68,7 @@ export function ExerciseForm(): JSX.Element {
   }
 
   const isNotNew = id !== undefined
+  const isClone = query.get('clone') !== null
 
   if (error) {
     return (
@@ -93,6 +93,29 @@ export function ExerciseForm(): JSX.Element {
         <ClassificationProvider>
           <div className="exercise-form bg-light">
             <form className="container" onSubmit={onSave}>
+              <div className="container main-controls">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <div>
+                    <ExerciseStateBadge value={isClone ? ExerciseState.Clone : data.state} />
+                  </div>
+                  <div className="d-flex">
+                    {isNotNew && !isClone && (
+                      <ExerciseOperations exercise={data} onAction={handleStateChange} />
+                    )}
+
+                    <Button
+                      submit
+                      small
+                      className="ml-2"
+                      btn="primary"
+                      loading={isSaving}
+                      onAction={onSave}
+                    >
+                      Mentés
+                    </Button>
+                  </div>
+                </div>
+              </div>
               <ExerciseFormDetails {...bindPartialModel()} />
               <hr />
               <h5>
@@ -120,25 +143,6 @@ export function ExerciseForm(): JSX.Element {
                   onRemove={() => remove(`subTasks.${idx}`)}
                 />
               ))}
-
-              <div className="row my-3">
-                <div className="col-12 d-flex justify-content-end">
-                  <div>
-                    <ExerciseStateBadge value={data.state} />
-                  </div>
-                  {isNotNew && <ExerciseOperations exercise={data} onAction={handleStateChange} />}
-
-                  <Button
-                    submit
-                    className="ml-5"
-                    btn="primary"
-                    loading={isSaving}
-                    onAction={onSave}
-                  >
-                    Mentés
-                  </Button>
-                </div>
-              </div>
             </form>
           </div>
         </ClassificationProvider>

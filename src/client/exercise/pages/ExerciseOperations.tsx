@@ -4,6 +4,8 @@ import { Button } from 'client/generic/components/Button'
 import { faArchive, faCheck, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { ConfirmModal } from '../../overlay/components/ConfirmModal'
 import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
+import { Link } from '../../generic/components/Link'
+import { ExternalLink } from '../../generic/components/ExternalLink'
 
 interface Props {
   exercise: ExerciseModel
@@ -25,9 +27,13 @@ export const ExerciseOperations = ({ exercise, onAction }: Props): React.ReactEl
 
   return (
     <div>
+      <ExternalLink href={`/exercise/${exercise.id}`} className="btn btn-sm btn-link">
+        Megtekintés
+      </ExternalLink>{' '}
       {exercise.state === ExerciseState.Public && (
         <Button
-          btn={'outline-dark'}
+          btn="outline-dark"
+          small
           onAction={() => handleAction(ExerciseState.Archived)}
           icon={faArchive}
         >
@@ -36,7 +42,8 @@ export const ExerciseOperations = ({ exercise, onAction }: Props): React.ReactEl
       )}{' '}
       {(exercise.state === ExerciseState.Draft || exercise.state === ExerciseState.Archived) && (
         <Button
-          btn={'outline-success'}
+          btn="outline-success"
+          small
           onAction={() => handleAction(ExerciseState.Public)}
           icon={faCheck}
         >
@@ -45,7 +52,8 @@ export const ExerciseOperations = ({ exercise, onAction }: Props): React.ReactEl
       )}{' '}
       {
         <Button
-          btn={'outline-danger'}
+          btn="outline-danger"
+          small
           onAction={() => handleAction(ExerciseState.Remove)}
           icon={faTrashAlt}
         >

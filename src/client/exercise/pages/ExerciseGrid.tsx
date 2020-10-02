@@ -35,7 +35,7 @@ const renderListItem = (item: ExerciseModel) => {
         exact
         to={`/exercise/edit/${item.id}?clone`}
         className="btn btn-sm btn-light"
-        title="Wiki oldal másolása"
+        title="Deladat másolása"
       >
         <FontAwesomeIcon icon={faClone} />
       </NavLink>
@@ -44,7 +44,7 @@ const renderListItem = (item: ExerciseModel) => {
         exact
         to={`/exercise/edit/${item.id}`}
         className="btn btn-sm btn-light"
-        title="Wiki oldal szerkesztése"
+        title="Feladat szerkesztése"
       >
         <FontAwesomeIcon icon={faEdit} />
       </NavLink>

@@ -14,6 +14,7 @@ export interface ExerciseModel extends BaseModel {
 
 export enum ExerciseState {
   New = 'new',
+  Clone = 'clone',
   Draft = 'draft',
   Public = 'public',
   Archived = 'archived',

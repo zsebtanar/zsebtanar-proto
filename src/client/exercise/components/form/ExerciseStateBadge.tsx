@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArchive, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faArchive, faEdit, faFile, faClone } from '@fortawesome/free-solid-svg-icons'
 import { ExerciseState } from 'shared/exercise/types'
 import { Badge } from 'client/generic/components/Badge'
 
@@ -13,14 +13,20 @@ export const ExerciseStateBadge = (props: Props): React.ReactElement => {
   switch (props.value) {
     case ExerciseState.New:
       return (
-        <Badge type="primary">
-          {props.short ? <FontAwesomeIcon title="Új" icon={faCheck} /> : 'Új'}
+        <Badge type="info">
+          {props.short ? <FontAwesomeIcon title="Új feladat" icon={faFile} /> : 'Új feladat'}
+        </Badge>
+      )
+    case ExerciseState.Clone:
+      return (
+        <Badge type="danger">
+          {props.short ? <FontAwesomeIcon title="Másolat" icon={faClone} /> : 'Másolat'}
         </Badge>
       )
     case ExerciseState.Public:
       return (
         <Badge type="success">
-          {props.short ? <FontAwesomeIcon title="Aktív" icon={faCheck} /> : 'Aktív'}
+          {props.short ? <FontAwesomeIcon title="Publikus" icon={faCheck} /> : 'Publikus'}
         </Badge>
       )
     case ExerciseState.Archived:
