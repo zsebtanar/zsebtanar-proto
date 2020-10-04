@@ -18,6 +18,7 @@ import { DropdownMenu } from 'client/generic/components/dropdown/DropdownMenu'
 import { Button } from 'client/generic/components/Button'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { SortableList } from '../../../generic/components/SortableList'
 
 interface Props extends UseModelProps<ExerciseSubTask> {
   index: number
@@ -108,14 +109,18 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
         ))}
       </ul>
       {!!bindProps.value.hints.length && <hr />}
-      {bindProps.value.hints?.map((hint, hintIdx) => (
-        <ExerciseFormSubTasksHint
-          key={hintIdx}
-          index={hintIdx}
-          onRemove={() => remove(`hints.${hintIdx}`)}
-          {...bind(`hints.${hintIdx}`)}
-        />
-      ))}
+      {!!bindProps.value.hints.length && (
+        <SortableList<string> {...bind(`hints`)}>
+          {({ key, index }) => (
+            <ExerciseFormSubTasksHint
+              key={key}
+              index={index}
+              onRemove={() => remove(`hints.${index}`)}
+              {...bind(`hints.${index}`)}
+            />
+          )}
+        </SortableList>
+      )}
     </FormCard>
   )
 }

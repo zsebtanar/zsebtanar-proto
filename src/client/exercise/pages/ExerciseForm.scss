@@ -10,10 +10,14 @@
     position: sticky;
     background: white;
     box-shadow: 0 7px 7px -7px black;
-    z-index: 1;
+    z-index: 5;
 
     & > div {
       padding: 0.5rem 0;
     }
+  }
+
+  .dragging {
+    opacity: 0.5;
   }
 }

@@ -25,6 +25,7 @@ declare const __SERVER_ENV__: string
 
 declare type FormMode = 'new' | 'update' | 'clone'
 
+/** @deprecated */
 declare namespace state {
   interface Root {
     app: App
