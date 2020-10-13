@@ -17,7 +17,7 @@ export function ExerciseGrid(): JSX.Element {
         </NavLink>
       </div>
       <Grid
-        dataSource={new FireStoreGridDS(exerciseDataService)}
+        dataSource={new FireStoreGridDS(exerciseDataService, { orderBy: [['created', 'desc']] })}
         columnDefs={[
           { title: '#', width: 100, renderer: (data, row, idx) => idx + 1 },
           { key: 'title', title: 'Név' },
@@ -35,7 +35,7 @@ const renderListItem = (item: ExerciseModel) => {
         exact
         to={`/exercise/edit/${item.id}?clone`}
         className="btn btn-sm btn-light"
-        title="Deladat másolása"
+        title="Feladat másolása"
       >
         <FontAwesomeIcon icon={faClone} />
       </NavLink>

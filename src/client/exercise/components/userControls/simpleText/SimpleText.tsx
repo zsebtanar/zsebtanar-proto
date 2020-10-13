@@ -21,7 +21,7 @@ export function SimpleText({
   return (
     <div className="user-control uc-simple-text d-flex align-items-center">
       <span className="prefix">
-        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} />}
+        {ctrl?.props?.prefix && <MarkdownWithScript source={ctrl.props.prefix} />}
       </span>
       {readonly ? (
         <strong>
@@ -40,7 +40,7 @@ export function SimpleText({
         />
       )}
       <span className="postfix">
-        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
+        {ctrl?.props?.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
       </span>
     </div>
   )

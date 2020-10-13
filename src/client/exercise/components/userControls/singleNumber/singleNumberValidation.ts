@@ -2,10 +2,11 @@ import { UCSingleNumber } from 'shared/exercise/types'
 import { floatEq } from 'shared/utils/math'
 
 export function singleNumberValidation(
-  { props: { fractionDigits } }: UCSingleNumber,
+  desc: UCSingleNumber,
   solution: UCSingleNumber['solution'],
   userInput: UCSingleNumber['solution'],
 ): boolean {
+  const fractionDigits = desc?.props?.fractionDigits ?? 0
   return floatEq(toPrecision(solution, fractionDigits), toPrecision(userInput, fractionDigits))
 }
 

@@ -15,11 +15,11 @@ interface Props extends UseModelProps<string[]> {
 export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props): JSX.Element {
   const { bind } = useModel(bindProps)
   return (
-    <div className={cx('user-control', 'uc-number-list', { multiline: ctrl.props.multiLine })}>
+    <div className={cx('user-control', 'uc-number-list', { multiline: ctrl?.props?.multiLine })}>
       <span className="prefix">
-        {ctrl.props.prefix && <MarkdownWithScript source={ctrl.props.prefix} />}
+        {ctrl.props?.prefix && <MarkdownWithScript source={ctrl.props?.prefix} />}
       </span>
-      {ctrl.props.fields.map((field, idx) => (
+      {ctrl.props?.fields.map((field, idx) => (
         <div key={idx}>
           <span className="prefix">
             {field.prefix && <MarkdownWithScript source={field.prefix} />}
@@ -40,10 +40,10 @@ export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props): J
         </div>
       ))}
       <span className="postfix">
-        {ctrl.props.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
+        {ctrl.props?.postfix && <MarkdownWithScript source={ctrl.props?.postfix} />}
       </span>
-      {ctrl.props?.fractionDigits > 0 && (
-        <DecimalAccuracyWarning fractionDigits={ctrl.props.fractionDigits} />
+      {(ctrl?.props?.fractionDigits ?? 0) > 0 && (
+        <DecimalAccuracyWarning fractionDigits={ctrl?.props?.fractionDigits ?? 0} />
       )}
     </div>
   )

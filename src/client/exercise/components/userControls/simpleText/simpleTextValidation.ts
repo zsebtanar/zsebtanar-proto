@@ -6,12 +6,12 @@ export function simpleTextValidation(
   userInput,
 ): boolean {
   userInput = userInput ?? ''
-  if (!props.caseSensitive) {
+  if (!props?.caseSensitive) {
     userInput = userInput.toLowerCase()
   }
-  if (props.ignoreSpaces) {
+  if (props?.ignoreSpaces) {
     userInput = userInput.replace(/\s*/g, '')
   }
 
-  return solution.some(str => str === userInput)
+  return solution.some((str) => str === userInput)
 }

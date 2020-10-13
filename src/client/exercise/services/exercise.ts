@@ -12,6 +12,8 @@ import {
 
 export const exerciseDataService = new Service<ExerciseModel>('exercise')
 
+export const exerciseAdminDataService = new Service<ExerciseModel>('exercise')
+
 export function useStoreExercise(model: ExerciseModel): FetchDataAPI<unknown> {
   const callback = useCallback(() => exerciseDataService.store(model), [model])
   return useFetchData<unknown>(callback, [model])
@@ -30,7 +32,10 @@ export function useLoadExercises(params: ListQueryParams): FetchFirestoreListAPI
   const options: FetchFirestoreListOptions = useMemo(() => {
     const filter: GridFilterOptions = {
       where: [['state', '==', 'public']],
-      orderBy: [['classifications', 'asc']],
+      orderBy: [
+        ['classifications', 'asc'],
+        ['created', 'desc'],
+      ],
     }
     if (params.classifications) {
       filter.where?.push(['classifications', 'array-contains-any', params.classifications])

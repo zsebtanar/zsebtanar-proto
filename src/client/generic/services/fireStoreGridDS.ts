@@ -8,11 +8,12 @@ const getRecord = (d) => ({ id: d.id, ...d.data() })
 
 export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
   private readonly _service: Service<T>
+  private readonly options?: GridFilterOptions
   private list?: QuerySnapshot
-  private options?: GridFilterOptions
   private listeners = new Map<string, Set<() => void>>()
 
-  constructor(service: Service<T>) {
+  constructor(service: Service<T>, options?: GridFilterOptions) {
+    this.options = options
     this._service = service
   }
 
@@ -25,7 +26,7 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
   }
 
   public async getPage(pageNumber: number, limit: number): Promise<T[]> {
-    if (!this.list) await this.loadList(this.options)
+    if (!this.list) await this.loadList()
 
     const from = pageNumber * limit
     const to = Math.min((pageNumber + 1) * limit - 1, this.size)
@@ -40,14 +41,14 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
   }
 
   public async refresh(): Promise<QuerySnapshot> {
-    return this.loadList(this.options)
+    return this.loadList()
   }
 
-  public async loadList(options?: GridFilterOptions): Promise<QuerySnapshot> {
+  public async loadList(): Promise<QuerySnapshot> {
     this.emitEvent('loadStart')
     this.list = undefined
-    this.options = options
-    this.list = await this._service.getRawList(options)
+
+    this.list = await this._service.getRawList(this.options)
     this.emitEvent('loadEnd')
     if (this.list) {
       return this.list

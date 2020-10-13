@@ -64,7 +64,7 @@ interface BaseUserControl {
 
 export interface UCBinaryChoice extends BaseUserControl {
   type: ExerciseSubTaskControlsType.BinaryChoice
-  props: {
+  props?: {
     randomOrder: boolean
     options: UCBinaryChoiceOption[]
   }
@@ -79,7 +79,7 @@ export interface UCBinaryChoiceOption {
 
 export interface UCFractionNumber extends BaseUserControl {
   type: ExerciseSubTaskControlsType.FractionNumber
-  props: {
+  props?: {
     prefix?: string
     postfix?: string
   }
@@ -88,7 +88,7 @@ export interface UCFractionNumber extends BaseUserControl {
 
 export interface UCMultiChoice extends BaseUserControl {
   type: ExerciseSubTaskControlsType.MultiChoice
-  props: {
+  props?: {
     randomOrder: boolean
     options: UCMultiChoiceOption[]
   }
@@ -100,7 +100,7 @@ export interface UCMultiChoiceOption {
 
 export interface UCNumberList extends BaseUserControl {
   type: ExerciseSubTaskControlsType.NumberList
-  props: {
+  props?: {
     prefix?: string
     postfix?: string
     fractionDigits: number
@@ -118,7 +118,7 @@ export interface UCNumberListField {
 
 export interface UCSimpleText extends BaseUserControl {
   type: ExerciseSubTaskControlsType.SimpleText
-  props: {
+  props?: {
     prefix?: string
     postfix?: string
     ignoreSpaces: boolean
@@ -129,7 +129,7 @@ export interface UCSimpleText extends BaseUserControl {
 
 export interface UCSingleChoice extends BaseUserControl {
   type: ExerciseSubTaskControlsType.SingleChoice
-  props: {
+  props?: {
     options: UCSingleChoiceOption[]
   }
   solution: number
@@ -141,7 +141,7 @@ export interface UCSingleChoiceOption {
 
 export interface UCSingleNumber extends BaseUserControl {
   type: ExerciseSubTaskControlsType.SingleNumber
-  props: {
+  props?: {
     prefix?: string
     postfix?: string
     fractionDigits: number

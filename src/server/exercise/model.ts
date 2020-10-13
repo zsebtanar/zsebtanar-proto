@@ -106,6 +106,7 @@ const singleNumberSchema = z.object({
 
 export const ExerciseSchema = z.object({
   title: z.string(),
+  created: z.date(),
   state: ExerciseStateEnum,
   classifications: z.array(z.string()),
   difficulty: z.number(),
@@ -133,5 +134,5 @@ export const ExerciseSchema = z.object({
 
 export type ExerciseSchemaType = z.infer<typeof ExerciseSchema>
 
-export const ExerciseStateScheme = z.object({ state: ExerciseStateEnum })
+export const ExerciseStateScheme = z.object({ state: ExerciseStateEnum, created: z.date() })
 export type ExerciseStateSchemeType = z.infer<typeof ExerciseStateScheme>

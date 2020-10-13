@@ -20,6 +20,7 @@ route.post(
       const exercise: ExerciseStateSchemeType = {
         ...(req.body as ExerciseSchemaType),
         state: ExerciseState.Draft,
+        created: now,
       }
       const result = await fireStore.collection('exercise').add(exercise)
 
