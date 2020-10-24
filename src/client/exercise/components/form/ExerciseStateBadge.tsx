@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArchive, faEdit, faFile, faClone } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faArchive, faFile, faClone, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { ExerciseState } from 'shared/exercise/types'
 import { Badge } from 'client/generic/components/Badge'
 
@@ -39,7 +39,7 @@ export const ExerciseStateBadge = (props: Props): React.ReactElement => {
     default:
       return (
         <Badge type="warning">
-          {props.short ? <FontAwesomeIcon title="Vázlat" icon={faEdit} /> : 'Vázlat'}
+          {props.short ? <FontAwesomeIcon title="Vázlat" icon={faPencilAlt} /> : 'Vázlat'}
         </Badge>
       )
   }

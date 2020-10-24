@@ -106,7 +106,7 @@ const singleNumberSchema = z.object({
 
 export const ExerciseSchema = z.object({
   title: z.string(),
-  created: z.date(),
+  created: z.any(),
   state: ExerciseStateEnum,
   classifications: z.array(z.string()),
   difficulty: z.number(),

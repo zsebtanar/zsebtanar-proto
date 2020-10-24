@@ -27,7 +27,7 @@ route.post(
 
       // exercise
       const exercise = {
-        ...omit(req.body as ExerciseSchemaType, ['state']),
+        ...omit(req.body as ExerciseSchemaType, ['state', 'created']),
       }
       const exerciseRef = fireStore.collection('exercise').doc(id)
       const previousExercise = (await exerciseRef.get()).data() as ExerciseModel
