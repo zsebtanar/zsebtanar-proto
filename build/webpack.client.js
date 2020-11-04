@@ -58,7 +58,9 @@ module.exports = {
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: !isProd && 'source-map',
-  cache: !isProd,
+  cache: {
+    type: 'memory',
+  },
   bail: isProd,
   parallelism: Math.ceil(require('os').cpus().length / 2),
   target: 'web',
@@ -136,6 +138,7 @@ module.exports = {
         runtimeChunk: {
           name: 'manifest',
         },
+        moduleIds: 'named',
       }
     : undefined,
   plugins: [
@@ -165,7 +168,6 @@ module.exports = {
       __SERVER_ENV__: JSON.stringify(serverEnv),
     }),
     isDev && new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
     !isDev && new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true }),
   ].filter(Boolean),
 }
