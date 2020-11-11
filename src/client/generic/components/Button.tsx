@@ -1,14 +1,17 @@
 import React from 'react'
 import cx from 'classnames'
-import { IconDefinition } from '@fortawesome/fontawesome-common-types'
-import { faCog } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  Settings as SettingsIcon,
+  Icon as IconType,
+  AlertTriangle as AlertTriangleIcon,
+} from 'react-feather'
+import { Icon } from './icons/Icon'
 
 import './Button.scss'
 
 interface ButtonProps extends Omit<React.HTMLProps<HTMLButtonElement>, 'type' | 'onClick'> {
   btn?: ButtonType
-  icon?: IconDefinition
+  icon?: IconType
   loading?: boolean
   submit?: boolean
   inline?: boolean
@@ -50,9 +53,9 @@ export function Button({
       aria-label={title}
       disabled={disabled || loading}
     >
-      {icon && <FontAwesomeIcon icon={icon} fixedWidth className="mr-1" />}
+      {icon && <Icon icon={icon} />}
       {children}
-      {loading && <FontAwesomeIcon icon={faCog} fixedWidth spin />}
+      {loading && <Icon icon={SettingsIcon} />}
     </button>
   )
 }

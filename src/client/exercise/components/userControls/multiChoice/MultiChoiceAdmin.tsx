@@ -1,6 +1,5 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { PlusCircle as PlusCircleIcon, Trash2 as TrashIcon } from 'react-feather'
 import { UCMultiChoice } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
@@ -9,6 +8,7 @@ import { Checkbox } from 'client/generic/components/form/input/Checkbox'
 import { Button } from 'client/generic/components/Button'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { Select } from 'client/generic/components/form/input/Select'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCMultiChoice>(bindProps)
@@ -41,7 +41,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.E
             append('solution', false)
           }}
         >
-          <FontAwesomeIcon icon={faPlusCircle} /> Válasz lehetőség hozzáadása
+          <Icon icon={PlusCircleIcon} /> Válasz lehetőség hozzáadása
         </Button>
       </h6>
 
@@ -65,7 +65,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.E
                 remove(`props.options.${idx}`)
               }}
             >
-              <FontAwesomeIcon icon={faTrashAlt} />
+              <Icon icon={TrashIcon} />
             </Button>
           </li>
         ))}

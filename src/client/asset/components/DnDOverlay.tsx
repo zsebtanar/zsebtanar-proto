@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpload } from '@fortawesome/free-solid-svg-icons'
+import { Upload as UploadIcon } from 'react-feather'
 import { useDocumentEvent } from 'client/generic/hooks/events'
 
 export function DnDOverlay(): JSX.Element {
@@ -43,7 +42,7 @@ export function DnDOverlay(): JSX.Element {
     <div className="dnd-overlay">
       <div className="msg-block">
         <div className="block-item">
-          <FontAwesomeIcon icon={faUpload} size="5x" />
+          <UploadIcon size={128} />
           <br />
           <br />
           Csak dobd ide a feltöltendő fájlokat.

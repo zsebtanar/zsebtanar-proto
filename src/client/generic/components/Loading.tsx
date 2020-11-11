@@ -1,12 +1,12 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCog } from '@fortawesome/free-solid-svg-icons'
+import { Settings as SettingsIcon } from 'react-feather'
+import { Icon } from './icons/Icon'
 
 export function Loading(): JSX.Element {
   return (
     <div className="text-center my-5">
       <span>
-        <FontAwesomeIcon icon={faCog} spin size="2x" fixedWidth />
+        <Icon icon={SettingsIcon} />
         &nbsp;Kis türelmet ...
       </span>
     </div>

@@ -1,8 +1,9 @@
 import { map, pipe, slice } from 'ramda'
 import { Service } from './fireStoreBase'
 import { BaseModel } from 'shared/generic/types'
+import type firebaseType from 'firebase'
 
-export type QuerySnapshot = firebase.firestore.QuerySnapshot
+export type QuerySnapshot = firebaseType.firestore.QuerySnapshot
 
 const getRecord = (d) => ({ id: d.id, ...d.data() })
 

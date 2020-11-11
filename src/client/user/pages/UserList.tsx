@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from 'react'
-import { faCheck, faBan } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Check as CheckIcon, Slash as SlashIcon } from 'react-feather'
+
 import {
   getAllUser,
   ROLE_ADMIN,
@@ -9,6 +9,7 @@ import {
   updateUserRole,
 } from 'client/user/services/user'
 import { Loading } from 'client/generic/components/Loading'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 export function UserList(): JSX.Element {
   const [state, setState] = useReducer((state, newState) => ({ ...state, ...newState }), {
@@ -60,11 +61,11 @@ export function UserList(): JSX.Element {
               <td className="text-center">
                 {user.disabled ? (
                   <span className="text-danger" title="Inaktív">
-                    <FontAwesomeIcon icon={faBan} />
+                    <Icon icon={SlashIcon} />
                   </span>
                 ) : (
                   <span className="text-success" title="Aktív">
-                    <FontAwesomeIcon icon={faCheck} />
+                    <Icon icon={CheckIcon} />
                   </span>
                 )}
               </td>

@@ -2,6 +2,7 @@ import { useReducer, Reducer, useEffect, useMemo } from 'react'
 import { BaseModel } from 'shared/generic/types'
 import { Service } from '../services/fireStoreBase'
 import { log } from '../../../shared/utils/fn'
+import type firebaseType from 'firebase'
 
 type States = 'pending' | 'loading' | 'success' | 'noResult' | 'error'
 
@@ -11,7 +12,7 @@ interface State<T> {
   state: States
   error?: Error
   list?: T[]
-  lastQuerySnapshot?: firebase.firestore.QueryDocumentSnapshot
+  lastQuerySnapshot?: firebaseType.firestore.QueryDocumentSnapshot
   lastResultLength: number
   page: number
 }
@@ -33,7 +34,7 @@ type Action<T> =
   | { type: 'loading' }
   | {
       type: 'success'
-      payload: { result: firebase.firestore.QuerySnapshot; accumulate: boolean }
+      payload: { result: firebaseType.firestore.QuerySnapshot; accumulate: boolean }
     }
   | { type: 'error'; payload: Error }
   | { type: 'nextPage'; payload: { pageSize: number } }

@@ -1,6 +1,5 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { PlusCircle as PlusCircleIcon, Trash2 as TrashIcon } from 'react-feather'
 import { UCSimpleText } from 'shared/exercise/types'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
@@ -10,6 +9,7 @@ import { FormGroup } from 'client/generic/components/form/FormGroup'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { Button } from 'client/generic/components/Button'
 import { Input } from 'client/generic/components/form/input/Input'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCSimpleText>(bindProps)
@@ -46,7 +46,7 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
           <>
             Megoldások{' '}
             <Button btn="link" small onAction={() => append('solution', '')}>
-              <FontAwesomeIcon icon={faPlusCircle} /> Alternatív megoldás megadása
+              <Icon icon={PlusCircleIcon} /> Alternatív megoldás megadása
             </Button>
           </>
         }
@@ -68,7 +68,7 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
                     className="text-danger"
                     onAction={() => remove(`solution.${idx}`)}
                   >
-                    <FontAwesomeIcon icon={faTrashAlt} />
+                    <Icon icon={TrashIcon} />
                   </Button>
                 </div>
               </li>

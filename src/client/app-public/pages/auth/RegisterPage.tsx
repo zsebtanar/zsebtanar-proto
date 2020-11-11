@@ -5,8 +5,7 @@ import { useUser } from '../../../user/providers/UserProvider'
 import { ProviderTypes } from '../../../user/types'
 import strings from '../../../localisation/strings'
 import { AuthPageHeader } from '../../nav/AuthPageHeader'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { User as UserIcon } from 'react-feather'
 import { PublicPage } from 'client/generic/components/PublicPage'
 import { Link } from 'client/generic/components/Link'
 import { Alert } from 'client/generic/components/Alert'
@@ -16,6 +15,7 @@ import { Button } from 'client/generic/components/Button'
 import { HrWithLabel } from 'client/generic/components/HrWithLabel'
 import { FacebookIcon } from 'client/generic/components/icons/FacebookIcon'
 import { GoogleIcon } from 'client/generic/components/icons/GoogleIcon'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 interface RegistrationData {
   email: string
@@ -45,7 +45,7 @@ export function RegisterPage(): JSX.Element {
     <PublicPage className="page-register auth-page">
       <AuthPageHeader>
         <Link to="/login" className="btn btn-outline-primary">
-          <FontAwesomeIcon icon={faUser} /> Belépés
+          <Icon icon={UserIcon} /> Belépés
         </Link>
       </AuthPageHeader>
 
@@ -94,7 +94,7 @@ export function RegisterPage(): JSX.Element {
               className="w-100 text-center"
               onAction={signInWithFacebook}
             >
-              <FacebookIcon /> Facebook
+              <Icon icon={FacebookIcon} /> Facebook
             </Button>
           </div>
           <div className="col-sm-6 mb-3">
@@ -104,7 +104,7 @@ export function RegisterPage(): JSX.Element {
               className="w-100 text-center"
               onAction={signInWithGoogle}
             >
-              <GoogleIcon /> Google
+              <Icon icon={GoogleIcon} /> Google
             </Button>
           </div>
         </div>

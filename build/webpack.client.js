@@ -59,12 +59,13 @@ module.exports = {
   // Enable sourcemaps for debugging webpack's output.
   devtool: !isProd && 'source-map',
   cache: {
-    type: 'memory',
+    type: 'filesystem',
   },
   bail: isProd,
   parallelism: Math.ceil(require('os').cpus().length / 2),
   target: 'web',
   resolve: {
+    symlinks: true,
     alias: {
       shared: path.join(SRC_PATH, 'shared'),
     },
@@ -138,7 +139,7 @@ module.exports = {
         runtimeChunk: {
           name: 'manifest',
         },
-        moduleIds: 'named',
+        //       moduleIds: 'named',
       }
     : undefined,
   plugins: [

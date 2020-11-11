@@ -1,6 +1,7 @@
 import { UserModel, UserToken } from '../types'
 import { cloudFnGet, cloudFnPost } from 'client/generic/services/firebase'
 import { Service } from 'client/generic/services/fireStoreBase'
+import type firebase from 'firebase'
 
 export const ROLE_USER = 0
 export const ROLE_TEACHER = 500

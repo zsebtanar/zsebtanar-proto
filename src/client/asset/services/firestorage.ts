@@ -1,10 +1,11 @@
 import 'firebase/storage'
-import { app, firebase } from 'client/generic/services/fireApp'
+import { app, firebase as firebaseApp } from 'client/generic/services/fireApp'
 import { identity } from 'client/generic/utils/fn'
+import type firebaseType from 'firebase'
 
 ///
 
-type UTS = firebase.storage.UploadTaskSnapshot
+type UTS = firebaseType.storage.UploadTaskSnapshot
 
 interface UploadProgress {
   bytesTransferred: number
@@ -22,7 +23,7 @@ export interface UploadedFile {
 
 const storageRef = app.storage().ref()
 
-const STATE_CHANGED = firebase.storage.TaskEvent.STATE_CHANGED
+const STATE_CHANGED = firebaseApp.storage.TaskEvent.STATE_CHANGED
 
 ///
 

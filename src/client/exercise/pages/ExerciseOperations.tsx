@@ -1,10 +1,9 @@
 import React from 'react'
 import { ExerciseModel, ExerciseState } from 'shared/exercise/types'
 import { Button } from 'client/generic/components/Button'
-import { faArchive, faCheck, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { Archive as ArchiveIcon, Check as CheckIcon, Trash2 as TrashIcon } from 'react-feather'
 import { ConfirmModal } from '../../overlay/components/ConfirmModal'
 import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
-import { Link } from '../../generic/components/Link'
 import { ExternalLink } from '../../generic/components/ExternalLink'
 
 interface Props {
@@ -35,7 +34,7 @@ export const ExerciseOperations = ({ exercise, onAction }: Props): React.ReactEl
           btn="outline-dark"
           small
           onAction={() => handleAction(ExerciseState.Archived)}
-          icon={faArchive}
+          icon={ArchiveIcon}
         >
           Archiválás
         </Button>
@@ -45,7 +44,7 @@ export const ExerciseOperations = ({ exercise, onAction }: Props): React.ReactEl
           btn="outline-success"
           small
           onAction={() => handleAction(ExerciseState.Public)}
-          icon={faCheck}
+          icon={CheckIcon}
         >
           Aktiválás
         </Button>
@@ -55,7 +54,7 @@ export const ExerciseOperations = ({ exercise, onAction }: Props): React.ReactEl
           btn="outline-danger"
           small
           onAction={() => handleAction(ExerciseState.Remove)}
-          icon={faTrashAlt}
+          icon={TrashIcon}
         >
           Törlés
         </Button>

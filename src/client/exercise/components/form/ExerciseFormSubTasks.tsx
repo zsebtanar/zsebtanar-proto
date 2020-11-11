@@ -3,8 +3,7 @@ import * as dp from 'dot-prop-immutable'
 import { noop } from 'shared/utils/fn'
 import { ExerciseSubTask } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { PlusCircle as PlusCircleIcon, Edit as EditIcon, Trash2 as TrashIcon } from 'react-feather'
 import { NAMES as userControlNames } from '../userControls/controlTypes'
 import { UserControlEditModal } from '../../modals/UserControlEditModal'
 import { ExerciseFormSubTasksHint } from './ExerciseFormSubTasksHint'
@@ -19,6 +18,7 @@ import { Button } from 'client/generic/components/Button'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { SortableList } from '../../../generic/components/SortableList'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 interface Props extends UseModelProps<ExerciseSubTask> {
   index: number
@@ -48,7 +48,7 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
           {' - '}
           <Dropdown elementType="div" className="d-inline-block">
             <DropdownToggle className="btn btn-link btn-sm">
-              <FontAwesomeIcon icon={faPlusCircle} /> Mező hozzáadása
+              <Icon icon={PlusCircleIcon} /> Mező hozzáadása
             </DropdownToggle>
             <DropdownMenu>
               {Object.entries(userControlNames).map(([key, label]) => (
@@ -64,10 +64,10 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
             </DropdownMenu>
           </Dropdown>{' '}
           <Button small btn="link" onAction={() => append(`hints`, '')}>
-            <FontAwesomeIcon icon={faPlusCircle} /> Segítség hozzáadása
+            <Icon icon={PlusCircleIcon} /> Segítség hozzáadása
           </Button>{' '}
           <Button small btn="link" className="text-danger" onAction={() => onRemove(index)}>
-            <FontAwesomeIcon icon={faTrashAlt} /> Részfeladat törlése
+            <Icon icon={TrashIcon} /> Részfeladat törlése
           </Button>
         </h5>
       </div>
@@ -93,7 +93,7 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
               <div className="col-2 text-right">
                 <span className="badge badge-secondary">{userControlNames[control.type]}</span>
                 <Button small btn="link" onAction={() => editUserControl(control, idx)}>
-                  <FontAwesomeIcon icon={faEdit} />
+                  <Icon icon={EditIcon} />
                 </Button>
                 <Button
                   small
@@ -101,7 +101,7 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
                   className="text-danger"
                   onAction={() => remove(`controls.${idx}`)}
                 >
-                  <FontAwesomeIcon icon={faTrashAlt} />
+                  <Icon icon={TrashIcon} />
                 </Button>
               </div>
             </div>

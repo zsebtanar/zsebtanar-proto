@@ -7,8 +7,7 @@ import {
   UploadState,
 } from '../providers/ManageAssetProvider'
 import { formatBytes } from '../../generic/utils/file'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Trash2 as TrashIcon, AlertTriangle as AlertTriangleIcon } from 'react-feather'
 import { useDialog } from '../../overlay/providers/DialogProvider'
 import { Dialog } from 'client/overlay/components/base/Dialog'
 import { DialogHeader } from 'client/overlay/components/base/DialogHeader'
@@ -20,6 +19,7 @@ import { useFileDrop } from '../../generic/hooks/events'
 import { Alert } from 'client/generic/components/Alert'
 
 import './FileUploadModal.scss'
+import { Icon } from '../../generic/components/icons/Icon'
 
 export function FileUploadModal(): JSX.Element {
   const { pendingAssets, uploadState } = useManageAssets()
@@ -73,7 +73,7 @@ export function FileUploadModal(): JSX.Element {
                       small
                       className="text-danger"
                     >
-                      <FontAwesomeIcon icon={faTrashAlt} />
+                      <Icon icon={TrashIcon} />
                     </Button>
                   </div>
                   <div>size: {formatBytes(file.size)}</div>

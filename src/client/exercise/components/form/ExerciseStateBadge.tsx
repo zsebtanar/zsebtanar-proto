@@ -1,8 +1,14 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArchive, faFile, faClone, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
+import {
+  Check as CheckIcon,
+  Archive as ArchiveIcon,
+  File as FileIcon,
+  Copy as CopyIcon,
+  Edit3 as EditIcon,
+} from 'react-feather'
 import { ExerciseState } from 'shared/exercise/types'
 import { Badge } from 'client/generic/components/Badge'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 interface Props {
   value: ExerciseState
@@ -14,32 +20,62 @@ export const ExerciseStateBadge = (props: Props): React.ReactElement => {
     case ExerciseState.New:
       return (
         <Badge type="info">
-          {props.short ? <FontAwesomeIcon title="Új feladat" icon={faFile} /> : 'Új feladat'}
+          {props.short ? (
+            <span title="Új feladat">
+              <Icon icon={FileIcon} />
+            </span>
+          ) : (
+            'Új feladat'
+          )}
         </Badge>
       )
     case ExerciseState.Clone:
       return (
         <Badge type="danger">
-          {props.short ? <FontAwesomeIcon title="Másolat" icon={faClone} /> : 'Másolat'}
+          {props.short ? (
+            <span title="Másolat">
+              <Icon icon={CopyIcon} />
+            </span>
+          ) : (
+            'Másolat'
+          )}
         </Badge>
       )
     case ExerciseState.Public:
       return (
         <Badge type="success">
-          {props.short ? <FontAwesomeIcon title="Publikus" icon={faCheck} /> : 'Publikus'}
+          {props.short ? (
+            <span title="Publikus">
+              <Icon icon={CheckIcon} />
+            </span>
+          ) : (
+            'Publikus'
+          )}
         </Badge>
       )
     case ExerciseState.Archived:
       return (
         <Badge type="dark">
-          {props.short ? <FontAwesomeIcon title="Arhivált" icon={faArchive} /> : 'Archivált'}
+          {props.short ? (
+            <span title="Arhivált">
+              <Icon icon={ArchiveIcon} />
+            </span>
+          ) : (
+            'Archivált'
+          )}
         </Badge>
       )
     case ExerciseState.Draft:
     default:
       return (
         <Badge type="warning">
-          {props.short ? <FontAwesomeIcon title="Vázlat" icon={faPencilAlt} /> : 'Vázlat'}
+          {props.short ? (
+            <span title="Vázlat">
+              <Icon icon={EditIcon} />
+            </span>
+          ) : (
+            'Vázlat'
+          )}
         </Badge>
       )
   }

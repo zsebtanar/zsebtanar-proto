@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLoadWikiPage } from '../services/wikiPageService'
 import { WikiPageModel } from 'client/wiki/types'
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { ArrowLeft as ArrowLeftIcon } from 'react-feather'
 import { useDialog } from '../../overlay/providers/DialogProvider'
 import { Dialog } from 'client/overlay/components/base/Dialog'
 import { Button } from 'client/generic/components/Button'
@@ -45,7 +45,7 @@ export function WikiModal({ pageId }: Props): JSX.Element {
       <DialogHeader onClose={closeModal}>
         <Button
           className="btn-sm btn-light nav-back"
-          icon={faArrowLeft}
+          icon={ArrowLeftIcon}
           onAction={navBackward}
           disabled={activePage === 0}
         />

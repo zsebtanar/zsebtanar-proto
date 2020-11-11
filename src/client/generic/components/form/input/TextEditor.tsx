@@ -1,19 +1,15 @@
 import React, { useState, useRef, useCallback } from 'react'
 import cx from 'classnames'
 import {
-  faBold,
-  faItalic,
-  faListUl,
-  faListOl,
-  faIndent,
-  faLink,
-  faImage,
-  faCalculator,
-  faEdit,
-  faQuestionCircle,
-} from '@fortawesome/free-solid-svg-icons'
-import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+  Bold as BoldIcon,
+  Italic as ItalicIcon,
+  List as ListIcon,
+  Link as LinkIcon,
+  Image as ImageIcon,
+  HelpCircle as HelpCircleIcon,
+  Edit as EditIcon,
+  DollarSign as DollarSignIcon,
+} from 'react-feather'
 import { AssetModel } from 'shared/assets/types'
 import { Markdown } from 'client/generic/components/markdown/Markdown'
 import { WikiPageSelectorModal } from 'client/wiki/modals/WikiPageSelectorModal'
@@ -29,6 +25,7 @@ import { MarkdownHelpModal } from 'client/generic/modals/MarkdownHelpModal'
 import { Dropdown } from '../../dropdown/Dropdown'
 import { DropdownToggle } from '../../dropdown/DropdownToggle'
 import { DropdownMenu } from '../../dropdown/DropdownMenu'
+import { Icon } from '../../icons/Icon'
 
 import 'client/generic/components/form/input/TextEditor.scss'
 
@@ -208,9 +205,9 @@ function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: 
           btn="light"
           onAction={() => wrapText('**', 'félkövér')}
           title="Félkövér"
-          icon={faBold}
+          icon={BoldIcon}
         />
-        <Button btn="light" onAction={() => wrapText('*', 'dőlt')} title="Dőlt" icon={faItalic} />
+        <Button btn="light" onAction={() => wrapText('*', 'dőlt')} title="Dőlt" icon={ItalicIcon} />
         <Button btn="light" onAction={() => wrapText('$', 'x_1=2')} title="Matematika jelölés">
           $
         </Button>
@@ -227,19 +224,13 @@ function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: 
           btn="light"
           onAction={() => multiLine('* ', 'lista\n')}
           title="Normál lista"
-          icon={faListUl}
+          icon={ListIcon}
         />
         <Button
           btn="light"
           onAction={() => multiLine('1. ', 'számozott lista\n')}
           title="Számozott lista"
-          icon={faListOl}
-        />
-        <Button
-          btn="light"
-          onAction={() => multiLine('    ', 'szöveg')}
-          title="Behúzás"
-          icon={faIndent}
+          icon={ListIcon}
         />
       </div>
       <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Link">
@@ -247,29 +238,35 @@ function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: 
           btn="light"
           onAction={() => insertLink('szöveg')}
           title="Hivatkozás"
-          icon={faLink}
+          icon={LinkIcon}
         />
-        <Button btn="light" onAction={() => insertWikiLink} title="Wiki" icon={faWikipediaW} />
+        <Button btn="light" onAction={() => insertWikiLink} title="Wiki">
+          Wiki
+        </Button>
       </div>
       <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Kép">
-        <Button btn="light" onAction={() => insertFile()} icon={faImage}>
+        <Button btn="light" onAction={() => insertFile()} icon={ImageIcon}>
           Kép beszűrás
         </Button>
       </div>
 
       <Dropdown className="btn-group btn-group-sm mr-2" aria-label="Link">
         <DropdownToggle className="btn btn-light text-light">
-          <FontAwesomeIcon icon={faQuestionCircle} /> Súgó
+          <Icon icon={HelpCircleIcon} /> Súgó
         </DropdownToggle>
         <DropdownMenu>
           <Button
             className="btn btn-link text-dark"
             onAction={openEquationHelpModal}
-            icon={faCalculator}
+            icon={DollarSignIcon}
           >
             Képletszerkesztő
           </Button>
-          <Button className="btn btn-link text-dark" onAction={openMarkdownHelpModal} icon={faEdit}>
+          <Button
+            className="btn btn-link text-dark"
+            onAction={openMarkdownHelpModal}
+            icon={EditIcon}
+          >
             Szövegszerkesztő
           </Button>
         </DropdownMenu>

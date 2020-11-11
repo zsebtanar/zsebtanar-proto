@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useParams, useHistory } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
+import { Save as SaveIcon, Trash2 as TrashIcon } from 'react-feather'
 import { AssetGroup } from 'shared/assets/types'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { useWikiPageModel, wikiPageService } from '../services/wikiPageService'
@@ -16,7 +16,7 @@ import { Input } from 'client/generic/components/form/input/Input'
 import './WikiPageForm.scss'
 
 export function WikiPageForm(): JSX.Element {
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const history = useHistory()
   const { save, hasError, isPending, isFetching, isSaving, bind, error } = useWikiPageModel(id)
 
@@ -72,14 +72,14 @@ export function WikiPageForm(): JSX.Element {
           <div className="d-flex justify-content-end my-3">
             <div>
               {id && (
-                <Button btn="link" className="text-danger" onAction={onDelete} icon={faTrash}>
+                <Button btn="link" className="text-danger" onAction={onDelete} icon={TrashIcon}>
                   Törlés
                 </Button>
               )}
               <NavLink exact to="/wiki-page" className="btn btn-link">
                 Mégsem
               </NavLink>
-              <Button btn="primary" className="ml-1" loading={isSaving} submit icon={faSave}>
+              <Button btn="primary" className="ml-1" loading={isSaving} submit icon={SaveIcon}>
                 Mentés
               </Button>
             </div>

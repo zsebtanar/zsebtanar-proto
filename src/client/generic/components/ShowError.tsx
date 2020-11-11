@@ -1,6 +1,6 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSadTear, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { Frown as FrownIcon } from 'react-feather'
+
 import { CustomError, NotFoundError } from '../utils/error'
 import { useHistory } from 'react-router-dom'
 
@@ -24,14 +24,13 @@ function ErrorMessage({ error }) {
   if (!error || error instanceof NotFoundError) {
     return (
       <>
-        <FontAwesomeIcon icon={faSadTear} size="4x" />
+        <FrownIcon size={96} />
         <h1 className="my-5 text-center">A keresett oldal nem található.</h1>
       </>
     )
   } else {
     return (
       <>
-        <FontAwesomeIcon icon={faExclamationTriangle} size="4x" className="text-danger" />
         <h1 className="text-center">
           Ooopsz... <br /> Nem várt hiba történt :(
         </h1>

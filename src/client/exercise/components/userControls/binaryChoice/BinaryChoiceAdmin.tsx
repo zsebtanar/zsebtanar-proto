@@ -2,13 +2,18 @@ import React from 'react'
 import { UCBinaryChoice } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import {
+  Trash2 as TrashIcon,
+  PlayCircle as PlayCircleIcon,
+  PlusCircle,
+  AlertTriangle as AlertTriangleIcon,
+} from 'react-feather'
 import { Checkbox } from 'client/generic/components/form/input/Checkbox'
 import { Button } from 'client/generic/components/Button'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { Select } from 'client/generic/components/form/input/Select'
+import { Icon } from '../../../../generic/components/icons/Icon'
 
 export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCBinaryChoice>(bindProps)
@@ -43,7 +48,7 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
             append('solution', '')
           }}
         >
-          <FontAwesomeIcon icon={faPlusCircle} /> Alternatív megoldás megadása
+          <PlusCircle /> Alternatív megoldás megadása
         </Button>
       </h6>
       <ol>
@@ -78,7 +83,7 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
                   remove(`solution.${idx}`)
                 }}
               >
-                <FontAwesomeIcon icon={faTrashAlt} />
+                <Icon icon={TrashIcon} />
               </Button>
             </div>
           </li>

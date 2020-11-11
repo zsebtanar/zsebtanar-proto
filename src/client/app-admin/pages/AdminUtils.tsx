@@ -1,10 +1,10 @@
 import React from 'react'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { AlertTriangle as AlertTriangleIcon } from 'react-feather'
 import { Button } from '../../generic/components/Button'
 import { cloudFnGet } from '../../generic/services/firebase'
 import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
 import { ConfirmModal } from '../../overlay/components/ConfirmModal'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 export function AdminUtils(): JSX.Element {
   const { openModal } = useOverlayDispatch()
@@ -19,7 +19,7 @@ export function AdminUtils(): JSX.Element {
     <div className="container">
       <div className="alert alert-warning col-8 mx-auto">
         <h4>
-          <FontAwesomeIcon icon={faExclamationTriangle} size="2x" /> Vigyázz, veszélyes terület
+          <Icon icon={AlertTriangleIcon} /> Vigyázz, veszélyes terület
         </h4>
         <div className="mx-5">
           Jól gondold át mielőtt használod ezeket a funkciókat.

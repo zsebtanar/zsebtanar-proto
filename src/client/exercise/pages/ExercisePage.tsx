@@ -10,7 +10,7 @@ import { Alert } from 'client/generic/components/Alert'
 
 export function ExercisePage(): JSX.Element {
   const history = useHistory()
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const query = useQuery()
   const { isLoading, isSuccess, result, error } = useLoadExercise(id)
   const seed = parseInt(query.get('s') ?? '', 10) || randomInt()

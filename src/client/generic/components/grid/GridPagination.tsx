@@ -1,8 +1,13 @@
 import React from 'react'
 import { range } from 'shared/utils/fn'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import {
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  AlertTriangle as AlertTriangleIcon,
+} from 'react-feather'
+
 import { Button } from '../Button'
+import { Icon } from '../icons/Icon'
 
 interface Props {
   next: () => void
@@ -19,9 +24,9 @@ export function GridPagination({ prev, next, jump, current, length }: Props): JS
   return (
     <nav aria-label="Lapozás" className="d-flex justify-content-center">
       <div className="btn-group">
-        {StepBtn('Előző', faChevronLeft, prev, current === 0)}
+        {StepBtn('Előző', ChevronLeftIcon, prev, current === 0)}
         {pages.map((page) => jumpBtn(page, jump, current === page))}
-        {StepBtn('Következő', faChevronRight, next, current === length - 1)}
+        {StepBtn('Következő', ChevronRightIcon, next, current === length - 1)}
       </div>
     </nav>
   )
@@ -41,7 +46,7 @@ function jumpBtn(page, onClick, active) {
   )
 }
 
-function StepBtn(text, icon, onClick, disabled) {
+function StepBtn(text, Icon, onClick, disabled) {
   return (
     <Button
       btn="light"
@@ -52,7 +57,7 @@ function StepBtn(text, icon, onClick, disabled) {
       disabled={disabled}
     >
       <span aria-hidden="true">
-        <FontAwesomeIcon icon={icon} />
+        <Icon icon={Icon} />
       </span>
       <span className="sr-only">{text}</span>
     </Button>

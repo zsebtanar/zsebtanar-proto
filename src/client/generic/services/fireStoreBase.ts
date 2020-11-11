@@ -1,13 +1,14 @@
 import { app } from './fireApp'
 import { pickBy } from '../utils/fn'
 import { BaseModel } from 'shared/generic/types'
+import type firebaseType from 'firebase'
 
 ///
 
-export type DocRef = firebase.firestore.DocumentReference
-export type Query = firebase.firestore.Query
-export type QuerySnapshot = firebase.firestore.QuerySnapshot
-export type CollectionReference = firebase.firestore.CollectionReference
+export type DocRef = firebaseType.firestore.DocumentReference
+export type Query = firebaseType.firestore.Query
+export type QuerySnapshot = firebaseType.firestore.QuerySnapshot
+export type CollectionReference = firebaseType.firestore.CollectionReference
 
 interface ServiceOptions {
   excludeId: boolean

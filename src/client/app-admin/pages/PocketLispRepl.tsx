@@ -6,6 +6,7 @@ import { MarkdownWithScript } from '../../script/components/MarkdownWithCode'
 import { NumberInput } from '../../generic/components/form/input/NumberInput'
 import { FormGroup } from '../../generic/components/form/FormGroup'
 import { getItem, setItem } from '../../generic/utils/localStore'
+import { ExternalLink } from '../../generic/components/ExternalLink'
 
 export function PocketLispRepl(): JSX.Element {
   const [seed, setSeed] = useState(1)
@@ -29,6 +30,11 @@ export function PocketLispRepl(): JSX.Element {
   return (
     <div className="container">
       <h1>Pocket lisp sandbox</h1>
+      <div>
+        <ExternalLink href="https://maxinteger.github.io/pocket-lisp-page/">
+          Pocket lisp dokumentáció
+        </ExternalLink>
+      </div>
       <FormGroup label="Seed">
         {(id) => (
           <NumberInput

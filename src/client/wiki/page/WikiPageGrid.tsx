@@ -2,10 +2,10 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { WikiPageModel } from 'client/wiki/types'
 import { wikiPageService } from 'client/wiki/services/wikiPageService'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faClone, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { Plus as PlusIcon, Edit as EditIcon, Copy as CopyIcon } from 'react-feather'
 import { Grid } from 'client/generic/components/grid/Grid'
 import { FireStoreGridDS } from '../../generic/services/fireStoreGridDS'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 export function WikiPageGrid(): JSX.Element {
   return (
@@ -13,7 +13,7 @@ export function WikiPageGrid(): JSX.Element {
       <div className="btn-toolbar justify-content-between align-items-center">
         <h3>Wiki oldalak</h3>
         <NavLink exact to="/wiki-page/add" className="btn btn-outline-secondary">
-          <FontAwesomeIcon icon={faPlus} /> Új Wiki oldal
+          <Icon icon={PlusIcon} /> Új Wiki oldal
         </NavLink>
       </div>
       <Grid
@@ -41,7 +41,7 @@ const renderListItem = (item: WikiPageModel) => {
         className="btn btn-sm btn-light"
         title="Wiki oldal másolása"
       >
-        <FontAwesomeIcon icon={faClone} />
+        <Icon icon={CopyIcon} />
       </NavLink>
       &nbsp;
       <NavLink
@@ -50,7 +50,7 @@ const renderListItem = (item: WikiPageModel) => {
         className="btn btn-sm btn-light"
         title="Wiki oldal szerkesztése"
       >
-        <FontAwesomeIcon icon={faEdit} />
+        <Icon icon={EditIcon} />
       </NavLink>
     </div>
   )

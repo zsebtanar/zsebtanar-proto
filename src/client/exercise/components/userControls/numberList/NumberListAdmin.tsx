@@ -1,6 +1,5 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { PlusCircle as PlusCircleIcon, Trash2 as TrashIcon } from 'react-feather'
 import { UCNumberList } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
@@ -11,6 +10,7 @@ import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { Button } from 'client/generic/components/Button'
 import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 import { Input } from 'client/generic/components/form/input/Input'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCNumberList>(bindProps)
@@ -76,7 +76,7 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
             append('solution', '')
           }}
         >
-          <FontAwesomeIcon icon={faPlusCircle} /> Alternatív megoldás megadása
+          <Icon icon={PlusCircleIcon} /> Alternatív megoldás megadása
         </Button>
       </h6>
 
@@ -101,7 +101,7 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
                   remove(`solution.${idx}`)
                 }}
               >
-                <FontAwesomeIcon icon={faTrashAlt} />
+                <Icon icon={TrashIcon} />
               </Button>
             </div>
           </li>

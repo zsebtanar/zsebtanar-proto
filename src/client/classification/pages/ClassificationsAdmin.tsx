@@ -4,8 +4,8 @@ import {
   remove as removeClassification,
 } from '../services/classificationService'
 import { sortByProp } from 'shared/utils/fn'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { Plus as PlusIcon, Edit as EditIcon, Trash2 as TrashIcon } from 'react-feather'
+import { Icon } from 'client/generic/components/icons/Icon'
 import { UpdateClassificationModal } from '../modals/UpdateClassificationModal'
 import { useOverlayDispatch } from '../../overlay/providers/OverlayProvider'
 import { FormCard } from 'client/generic/components/form/FormCard'
@@ -45,7 +45,7 @@ export function ClassificationsAdminPage(): JSX.Element {
           <div className="btn-toolbar justify-content-between align-items-center mb-5">
             <h3>Feladat címkék</h3>
             <Button btn="primary" onAction={create}>
-              <FontAwesomeIcon icon={faPlus} /> Új címke felvétel
+              <Icon icon={PlusIcon} /> Új címke felvétel
             </Button>
           </div>
 
@@ -73,10 +73,10 @@ export function ClassificationsAdminPage(): JSX.Element {
                     </td>
                     <td>
                       <Button small btn="link" onAction={() => update(cls)}>
-                        <FontAwesomeIcon icon={faEdit} />
+                        <Icon icon={EditIcon} />
                       </Button>
                       <Button small btn="link" onAction={() => remove(cls)}>
-                        <FontAwesomeIcon icon={faTrashAlt} />
+                        <Icon icon={TrashIcon} />
                       </Button>
                     </td>
                   </tr>

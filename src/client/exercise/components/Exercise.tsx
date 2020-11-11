@@ -1,6 +1,4 @@
 import React, { ReactNode } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { ExerciseModel } from 'shared/exercise/types'
 import { ExerciseProvider, useExercise, useExerciseDispatch } from '../services/exerciseContext'
 import { ExerciseBody, ExerciseSolution } from './ExerciseBody'
@@ -55,7 +53,7 @@ function ExerciseComponent({ onClose }: ExerciseComponentProps) {
       >
         <ExerciseBody {...bindPartialModel()} />
         <Button submit className="btn btn-secondary btn-lg">
-          <FontAwesomeIcon icon={faCheck} /> Ellenőrzés
+          Ellenőrzés
         </Button>
       </form>
     </div>

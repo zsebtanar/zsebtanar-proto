@@ -2,26 +2,25 @@ import React from 'react'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'
 import { isAdmin } from 'client/user/services/user'
-
-import 'client/app-admin/nav/Header.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faUsers,
-  faComment,
-  faExclamationTriangle,
-  faTasks,
-  faListAlt,
-  faFolder,
-  faPowerOff,
-  faBars,
-  faTerminal,
-} from '@fortawesome/free-solid-svg-icons'
-import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
+  Users as UsersIcon,
+  MessageSquare as MessageSquareIcon,
+  AlertTriangle as AlertTriangleIcon,
+  FileText as FileTextIcon,
+  List as ListIcon,
+  Folder as FolderIcon,
+  Power as PowerIcon,
+  Menu as MenuIcon,
+  Terminal as TerminalIcon,
+} from 'react-feather'
+import { Icon } from 'client/generic/components/icons/Icon'
 import { Dropdown } from 'client/generic/components/dropdown/Dropdown'
 import { DropdownToggle } from 'client/generic/components/dropdown/DropdownToggle'
 import { DropdownMenu } from 'client/generic/components/dropdown/DropdownMenu'
 import { DropdownDivider } from 'client/generic/components/dropdown/DropdownDivider'
 import { Button } from 'client/generic/components/Button'
+
+import 'client/app-admin/nav/Header.scss'
 
 ///
 
@@ -55,20 +54,20 @@ export function Header({ onOpenSideNav }: Props): JSX.Element | null {
                 <DropdownToggle className="btn btn-link nav-link">Rendszer</DropdownToggle>
                 <DropdownMenu>
                   <NavLink activeClassName="active" className="dropdown-item" to="/user">
-                    <FontAwesomeIcon icon={faUsers} /> Felhasználók
+                    <Icon icon={UsersIcon} /> Felhasználók
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/feedback">
-                    <FontAwesomeIcon icon={faComment} /> Visszajelzések
+                    <Icon icon={MessageSquareIcon} /> Visszajelzések
                   </NavLink>
                   <NavLink activeClassName="active" className="dropdown-item" to="/utilities">
-                    <FontAwesomeIcon icon={faExclamationTriangle} /> Gépház
+                    <Icon icon={AlertTriangleIcon} /> Gépház
                   </NavLink>
                   <NavLink
                     activeClassName="active"
                     className="dropdown-item"
                     to="/pocket-lisp-sandbox"
                   >
-                    <FontAwesomeIcon icon={faTerminal} /> Pocket Lisp sandbox
+                    <Icon icon={TerminalIcon} /> Pocket Lisp sandbox
                   </NavLink>
                 </DropdownMenu>
               </Dropdown>
@@ -78,17 +77,17 @@ export function Header({ onOpenSideNav }: Props): JSX.Element | null {
               <DropdownToggle className="btn btn-link nav-link">Tartalom</DropdownToggle>
               <DropdownMenu>
                 <NavLink activeClassName="active" className="dropdown-item" to="/exercise">
-                  <FontAwesomeIcon icon={faTasks} /> Feladatok
+                  <Icon icon={FileTextIcon} /> Feladatok
                 </NavLink>
                 <NavLink activeClassName="active" className="dropdown-item" to="/exercise-sheet">
-                  <FontAwesomeIcon icon={faListAlt} /> Feladatsorok
+                  <Icon icon={ListIcon} /> Feladatsorok
                 </NavLink>
                 <NavLink activeClassName="active" className="dropdown-item" to="/classifications">
-                  <FontAwesomeIcon icon={faFolder} /> Kategóriák
+                  <Icon icon={FolderIcon} /> Kategóriák
                 </NavLink>
                 <DropdownDivider />
                 <NavLink activeClassName="active" className="dropdown-item" to="/wiki-page">
-                  <FontAwesomeIcon icon={faWikipediaW} /> Wiki oldalak
+                  Wiki oldalak
                 </NavLink>
               </DropdownMenu>
             </Dropdown>
@@ -97,7 +96,7 @@ export function Header({ onOpenSideNav }: Props): JSX.Element | null {
               <DropdownToggle className="btn btn-link nav-link">Profil</DropdownToggle>
               <DropdownMenu>
                 <button className="dropdown-item btn btn-link " onClick={signOut}>
-                  <FontAwesomeIcon icon={faPowerOff} /> Kijelentkezés
+                  <Icon icon={PowerIcon} /> Kijelentkezés
                 </button>
               </DropdownMenu>
             </Dropdown>
@@ -111,7 +110,7 @@ export function Header({ onOpenSideNav }: Props): JSX.Element | null {
           onAction={onOpenSideNav}
           title="Menü megnyitása"
         >
-          <FontAwesomeIcon icon={faBars} size="lg" />
+          <MenuIcon size={48} />
         </Button>
 
         <NavLink exact to="/" className="logo-link float-right" aria-label="Főoldal">

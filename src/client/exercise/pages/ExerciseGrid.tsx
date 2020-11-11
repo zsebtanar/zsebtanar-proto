@@ -2,12 +2,12 @@ import React, { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ExerciseModel } from 'shared/exercise/types'
 import { exerciseDataService } from '../services/exercise'
-import { faEdit, faClone, faPlus, faEye } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Plus as PlusIcon, Edit as EditIcon, Copy as CopyIcon, Eye as EyeIcon } from 'react-feather'
 import { Grid } from 'client/generic/components/grid/Grid'
 import { FireStoreGridDS } from 'client/generic/services/fireStoreGridDS'
 import { ExerciseStateBadge } from '../components/form/ExerciseStateBadge'
 import { ExternalLink } from '../../generic/components/ExternalLink'
+import { Icon } from 'client/generic/components/icons/Icon'
 
 export function ExerciseGrid(): JSX.Element {
   const dataSource = useMemo(
@@ -20,7 +20,7 @@ export function ExerciseGrid(): JSX.Element {
       <div className="btn-toolbar justify-content-between align-items-center">
         <h3>Feladatok</h3>
         <NavLink exact to="/exercise/add" className="btn btn-outline-secondary">
-          <FontAwesomeIcon icon={faPlus} /> Új Feladat
+          <Icon icon={PlusIcon} /> Új Feladat
         </NavLink>
       </div>
       <Grid
@@ -49,7 +49,7 @@ const renderListItem = (item: ExerciseModel) => {
         className="btn btn-sm btn-light"
         title="Megtekintés"
       >
-        <FontAwesomeIcon icon={faEye} />
+        <Icon icon={EyeIcon} />
       </ExternalLink>
       &nbsp;
       <NavLink
@@ -58,7 +58,7 @@ const renderListItem = (item: ExerciseModel) => {
         className="btn btn-sm btn-light"
         title="Másolás"
       >
-        <FontAwesomeIcon icon={faClone} />
+        <Icon icon={CopyIcon} />
       </NavLink>
       &nbsp;
       <NavLink
@@ -67,7 +67,7 @@ const renderListItem = (item: ExerciseModel) => {
         className="btn btn-sm btn-light"
         title="Szerkesztés"
       >
-        <FontAwesomeIcon icon={faEdit} />
+        <Icon icon={EditIcon} />
       </NavLink>
     </div>
   )

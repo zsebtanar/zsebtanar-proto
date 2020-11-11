@@ -3,8 +3,8 @@ import cx from 'classnames'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { isAdmin } from 'client/user/services/user'
 import { NavLink } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import { Icon } from 'client/generic/components/icons/Icon'
+import { Plus as PlusIcon, LogIn as LogInIcon } from 'react-feather'
 import { CloseButton } from 'client/generic/components/CloseButton'
 
 import './SideNav.scss'
@@ -64,7 +64,7 @@ function AnonymousUserMenu() {
         to="/register"
         data-testid="sidenav-reg-btn"
       >
-        <FontAwesomeIcon icon={faPlus} /> Regisztráció
+        <Icon icon={PlusIcon} /> Regisztráció
       </NavLink>
 
       <NavLink
@@ -74,7 +74,7 @@ function AnonymousUserMenu() {
         to="/login"
         data-testid="sidenav-reg-btn"
       >
-        <FontAwesomeIcon icon={faSignInAlt} /> Belépés
+        <Icon icon={LogInIcon} /> Belépés
       </NavLink>
     </>
   )

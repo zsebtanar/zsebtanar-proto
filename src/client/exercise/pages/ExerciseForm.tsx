@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { PlayCircle as PlayCircleIcon, AlertTriangle as AlertTriangleIcon } from 'react-feather'
 import { useParams, useHistory } from 'react-router'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
 import { useExerciseModel, changeState } from '../services/exercise'
@@ -21,10 +20,11 @@ import { ExerciseStateBadge } from '../components/form/ExerciseStateBadge'
 import { ExerciseOperations } from './ExerciseOperations'
 
 import './ExerciseForm.scss'
+import { Icon } from '../../generic/components/icons/Icon'
 
 export function ExerciseForm(): JSX.Element {
   const history = useHistory()
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const query = useQuery()
   const {
     data,
@@ -132,7 +132,7 @@ export function ExerciseForm(): JSX.Element {
                     })
                   }
                 >
-                  <FontAwesomeIcon icon={faPlusCircle} /> Rész feladat
+                  <Icon icon={PlayCircleIcon} /> Rész feladat
                 </Button>
               </h5>
               {data.subTasks?.map((subTask, idx) => (

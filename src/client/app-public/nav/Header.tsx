@@ -2,8 +2,13 @@ import React from 'react'
 import { useUser, useUserDispatch } from 'client/user/providers/UserProvider'
 import { NavLink } from 'react-router-dom'
 import { isAdmin } from 'client/user/services/user'
-import { faPlus, faBars, faUser, faSearch } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  User as UserIcon,
+  Search as SearchIcon,
+  Menu as MenuIcon,
+  Plus as PlusIcon,
+} from 'react-feather'
+import { Icon } from 'client/generic/components/icons/Icon'
 import { Link } from 'client/generic/components/Link'
 import { Button } from 'client/generic/components/Button'
 import { Dropdown } from 'client/generic/components/dropdown/Dropdown'
@@ -37,7 +42,7 @@ export function Header({ onOpenSideNav }: Props): JSX.Element {
                   data-testid="header-reg-btn"
                   activeClassName="d-none"
                 >
-                  <FontAwesomeIcon icon={faSearch} /> Feladat kereső
+                  <Icon icon={SearchIcon} /> Feladat kereső
                 </NavLink>
               </li>
               {loggedIn && isAdmin(userToken) && <AdminMenu />}
@@ -52,7 +57,7 @@ export function Header({ onOpenSideNav }: Props): JSX.Element {
           </NavLink>
 
           <Button className="navbar-toggle" onAction={onOpenSideNav} title="Menü megnyitása">
-            <FontAwesomeIcon icon={faBars} size="lg" />
+            <Icon icon={MenuIcon} />
           </Button>
         </div>
       </div>
@@ -66,7 +71,7 @@ function SignedInMenu() {
   return (
     <Dropdown elementType="li" className="user-menu" right key="user-menu">
       <DropdownToggle aria-label="Felhasználói menü" className="nav-link btn btn-link">
-        <FontAwesomeIcon icon={faUser} />
+        <Icon icon={UserIcon} />
       </DropdownToggle>
       <DropdownMenu>
         <NavLink exact to="/profile" className="dropdown-item">
@@ -85,12 +90,12 @@ function AnonymousUserMenu() {
     <>
       <li className="nav-item" key="sign-up">
         <Link className="btn btn-outline-primary mx-2" to="/register" data-testid="header-reg-btn">
-          <FontAwesomeIcon icon={faPlus} /> Regisztráció
+          <Icon icon={PlusIcon} /> Regisztráció
         </Link>
       </li>
       <li className="nav-item" key="sign-in">
         <Link className="btn btn-primary" to="/login" data-testid="header-login-btn">
-          <FontAwesomeIcon icon={faUser} /> Belépés
+          <Icon icon={UserIcon} /> Belépés
         </Link>
       </li>
     </>

@@ -1,9 +1,9 @@
 import React from 'react'
 import cx from 'classnames'
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ExternalLink as ExternalLinkIcon } from 'react-feather'
 
 import './ExternalLink.scss'
+import { Icon } from './icons/Icon'
 
 interface Props extends Omit<React.HTMLProps<HTMLAnchorElement>, 'target' | 'rel'> {
   hideIcon?: boolean
@@ -17,7 +17,7 @@ export function ExternalLink({ className, hideIcon, ...props }: Props): JSX.Elem
       target="_blank"
       rel="noopener noreferrer"
     >
-      {props.children} {!hideIcon && <FontAwesomeIcon icon={faExternalLinkAlt} />}
+      {props.children} {!hideIcon && <Icon icon={ExternalLinkIcon} />}
     </a>
   )
 }

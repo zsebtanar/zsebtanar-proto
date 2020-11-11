@@ -1,6 +1,4 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons/faPlay'
 import { Markdown } from '../../generic/components/markdown/Markdown'
 import { ClassificationLinkList } from '../../classification/components/ClassificationLinkList'
 import { Link } from '../../generic/components/Link'
@@ -21,7 +19,7 @@ export function ExerciseListItem({ id, description, mark, classifications }: Pro
         <Markdown source={description} mark={mark} />
         <div className="start-link text-right">
           <Link to={`/exercise/${id}`} className="stretched-link btn btn-link btn-sm">
-            Feladat megoldás <FontAwesomeIcon icon={faPlay} />
+            Feladat megoldás
           </Link>
         </div>
       </div>

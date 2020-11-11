@@ -3,6 +3,7 @@ import { logException } from 'client/generic/utils/logger'
 import { parseToken, getUserDetails, updateUserProfile } from 'client/user/services/user'
 import { UserModel, ProviderTypes, UserToken } from '../types'
 import { firebase, auth } from '../../generic/services/fireApp'
+import type firebaseType from 'firebase'
 
 interface Props {
   children: ReactNode
@@ -19,7 +20,7 @@ interface Store {
   state: UserStates
   loggedIn: boolean
   error?: Error
-  user?: firebase.User
+  user?: firebaseType.User
   userToken?: UserToken
   userDetails?: UserModel
   isLoading: boolean
@@ -36,7 +37,7 @@ interface UserContextAPI {
 }
 
 type Action =
-  | { type: 'SetUser'; payload: { user?: firebase.User } }
+  | { type: 'SetUser'; payload: { user?: firebaseType.User } }
   | { type: 'SetDetails'; payload: { details: UserModel; token: UserToken } }
   | { type: 'LoadUser' }
   | { type: 'SingInStart' }

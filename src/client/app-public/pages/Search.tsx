@@ -4,18 +4,18 @@ import { useParams } from 'react-router'
 import { useAlgoliaSearch } from 'client/search/services/AlgoliaSearchService'
 import { AlgoliaLogo } from 'client/search/components/AlgoliaLogo'
 import { ExerciseSearchResult } from 'client/search/types'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Search as SearchIcon } from 'react-feather'
 import { useInput } from '../../generic/hooks/input'
 import { Loading } from 'client/generic/components/Loading'
 import { ErrorMsg } from 'client/generic/components/ErrorMsg'
 import { PublicPage } from 'client/generic/components/PublicPage'
 import { ExerciseListItem } from 'client/exercise/components/ExerciseListItem'
+import { Icon } from '../../generic/components/icons/Icon'
 
 const MIN_TERM_LENGTH = 2
 
 export function Search(): JSX.Element {
-  const { q } = useParams()
+  const { q } = useParams<{ q: string }>()
   const { value: searchTerm, bind: bindSearch } = useInput(q ?? '')
   const { result, hasNoResult, isLoading, isSuccess, error } = useAlgoliaSearch(
     searchTerm,
@@ -38,7 +38,7 @@ export function Search(): JSX.Element {
       <div className="mb-4 mx-auto col-md-8">
         <div className="search-input-group ">
           <label className="search-label" htmlFor="search-input">
-            <FontAwesomeIcon icon={faSearch} size="lg" />
+            <Icon icon={SearchIcon} />
             <span className="sr-only">Feladat keresés</span>
           </label>
           <input
