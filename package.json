@@ -22,7 +22,7 @@
     "dev": "concurrently --kill-others --names \"server,firebase,client\" \"SERVER_ENV=emulator npm run dev:server -- --watch\" \"npm run emulate:server\" \"SERVER_ENV=emulator npm run dev:client\"",
     "dev:client": "webpack serve --config ./build/webpack.client.js",
     "dev:server": "cross-env NODE_ENV=development webpack --config ./build/webpack.server.js",
-    "emulate:server": "firebase use test && firebase functions:config:get > bin/functions/.runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"$(pwd)/src/tools/key.json\" firebase emulators:start --only functions",
+    "emulate:server": "firebase use test && firebase functions:config:get > bin/functions/.runtimeconfig.json && firebase emulators:start --only functions",
     "build": "cross-env NODE_ENV=production npm run build:server && npm run build:client",
     "postbuild": "node build/post-build",
     "build:client": "cross-env NODE_ENV=production webpack --config ./build/webpack.client.js",
