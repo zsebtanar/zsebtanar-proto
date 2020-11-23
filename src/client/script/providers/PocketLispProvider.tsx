@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo, useCallback } from 'react'
-import { Interpreter, Parser, Scanner } from 'pocket-lisp'
+import { Interpreter, Parser, Scanner, SnippetPosition } from 'pocket-lisp'
 import { runtime, utils, literals } from 'pocket-lisp-stdlib'
 import { valueSet } from 'shared/script/shared-code'
 import { PseudoRandomNumberGenerator } from 'shared/math/random'
@@ -14,6 +14,7 @@ interface Props {
 export type InterpreterOutput = {
   type: 'normal' | 'error'
   msg: string
+  position?: SnippetPosition
 }
 
 interface InterpreterContextAPI {
@@ -33,11 +34,18 @@ let output: InterpreterOutput[] = []
 export function PocketLispProvider({ children, seed, isEdit, script }: Props): JSX.Element {
   const [interpreter, setInterpreter] = useState<Interpreter>()
 
-  const setOutput = useCallback((msg, type: InterpreterOutput['type'] = 'normal') => {
-    if (msg) {
-      output = output.concat({ type, msg: JSON.stringify(msg.toJS ? msg.toJS() : msg.toString()) })
-    }
-  }, [])
+  const setOutput = useCallback(
+    (msg, position?: SnippetPosition, type: InterpreterOutput['type'] = 'normal') => {
+      if (msg) {
+        output = output.concat({
+          type,
+          position,
+          msg: JSON.stringify(msg.toJS ? msg.toJS() : msg.toString()),
+        })
+      }
+    },
+    [],
+  )
 
   React.useEffect(() => {
     const prng = new PseudoRandomNumberGenerator(seed)
@@ -50,16 +58,16 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props): J
   const interpret = useCallback(
     (source: string) => {
       if (!interpreter) {
-        return setOutput('Interpreter not initialized', 'error')
+        return setOutput('Interpreter not initialized', new SnippetPosition('', 0, 0, 1), 'error')
       }
       const parserResult = new Parser(new Scanner(source), literals).parse()
       if (parserResult.hasError) {
-        return parserResult.errors.map((err) => setOutput(err.message, 'error'))
+        return parserResult.errors.map((err) => setOutput(err.message, err.position, 'error'))
       }
       try {
         return interpreter.interpret(parserResult.program)
       } catch (e) {
-        setOutput(e, 'error')
+        setOutput(e, e.position, 'error')
       }
       return undefined
     },
@@ -71,10 +79,7 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props): J
       current: interpreter,
       run(source: string) {
         output = []
-        const result = interpret(source)
-        if (result) {
-          setOutput(result)
-        }
+        interpret(source)
       },
       evalPL(source: string) {
         return interpret(source)

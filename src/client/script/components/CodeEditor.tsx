@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
 import * as CodeMirror from 'codemirror'
-import { usePocketLisp, InterpreterOutput } from '../providers/PocketLispProvider'
+import { usePocketLisp } from '../providers/PocketLispProvider'
 import debounce from '../../generic/utils/debounce'
 import { UseModelProps } from '../../generic/hooks/model'
 
@@ -27,7 +27,6 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
   const interpreter = usePocketLisp()
   const textAreaEl = useRef<HTMLTextAreaElement>(null)
   const [cm, setCodeMirror] = useState<CodeMirror.EditorFromTextArea>()
-  const [output, setOutput] = useState<InterpreterOutput[]>([])
 
   // Init CodeMirror
   useEffect(() => {
@@ -42,6 +41,7 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
       matchBrackets: true,
       viewportMargin: Infinity,
     })
+    codeMirror['__interpreterWidgets'] = []
 
     setCodeMirror(codeMirror)
     return () => codeMirror.toTextArea()
@@ -59,7 +59,32 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
     const onChangeHandler = debounce((cm) => {
       const value = cm.getValue()
       onChange({ name, value })
-      setOutput(interpreter.getOutput())
+      console.log(interpreter.getOutput())
+      const widgets = cm['__interpreterWidgets']
+      cm.doc.getAllMarks().forEach((m) => m.clear())
+      widgets.forEach((w) => w.clear())
+      widgets.length = 0
+      interpreter.getOutput().forEach(({ msg, position, type }) => {
+        if (position) {
+          if (type === 'error') {
+            const mFrom = cm.doc.posFromIndex(position.startIndex)
+            const mTo = cm.doc.posFromIndex(position.endIndex)
+            cm.doc.markText(mFrom, mTo, { className: 'syntax-error', title: msg })
+
+            widgets.push(
+              cm.doc.addLineWidget(position.line - 1, createErrorWidget('error', msg), {
+                coverGutter: false,
+              }),
+            )
+          } else if (type === 'normal') {
+            widgets.push(
+              cm.doc.addLineWidget((position?.line ?? 1) - 1, createErrorWidget('log', msg), {
+                coverGutter: false,
+              }),
+            )
+          }
+        }
+      })
     }, 150)
 
     cm.on('change', onChangeHandler)
@@ -70,26 +95,7 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
 
   return (
     <div className={cx('code-editor', className)}>
-      <div className="row">
-        <div className="col-md-6">
-          <textarea
-            ref={textAreaEl}
-            name={name}
-            className="border"
-            defaultValue={value}
-            {...props}
-          />
-        </div>
-        <div className="col-md-6">
-          <pre className="output border rounded-sm">
-            {output.map(({ type, msg }, idx) => (
-              <div key={idx} className={type}>
-                {msg}
-              </div>
-            ))}
-          </pre>
-        </div>
-      </div>
+      <textarea ref={textAreaEl} name={name} className="border" defaultValue={value} {...props} />
     </div>
   )
 }
@@ -110,4 +116,21 @@ const codeCompletion = (interpreter) => {
       to: CodeMirror.Pos(cursor.line, end),
     }
   }
+}
+
+const createErrorWidget = (type: 'error' | 'log', message: string) => {
+  const node = document.createElement('div')
+  const icon = node.appendChild(document.createElement('span'))
+  node.appendChild(document.createTextNode(message))
+
+  if (type === 'error') {
+    icon.innerHTML = '!'
+    icon.className = 'code-icon code-error-icon'
+    node.className = 'code-error'
+  } else if (type === 'log') {
+    icon.innerHTML = '▸'
+    icon.className = 'code-icon code-log-icon'
+    node.className = 'code-log'
+  }
+  return node
 }

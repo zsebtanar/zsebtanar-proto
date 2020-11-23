@@ -3,41 +3,39 @@
     border: 1px solid #dee2e6;
     border-left: none;
     border-radius: 0.2rem;
-    height: 200px;
+    height: 400px;
   }
-  .output {
-    min-height: 200px;
-    font-family: monospace;
-    line-height: 1.2;
-    position: relative;
-    margin: 0;
-    &> div {
-      border-bottom: 1px solid #eee;
-      padding: 0.2em 0.5em 0.2rem 2rem;
-      &:before {
-        position: absolute;
-        left: 0.5rem;
-      }
-    }
 
-    .normal:before {
-      content: '>';
-      color: #aaa;
-    }
-    .error {
-      color: darkred;
-      background: rgba(255, 0, 0, 0.1);
-      &:before {
-        display: block;
-        content: '!';
-        color: white;
-        background: red;
-        border-radius: 50%;
-        width: 0.7rem;
-        height: 0.7rem;
-        font-weight: bold;
-        text-align: center;
-      }
-    }
+  .code-error {
+    color: darkred;
+    background: rgba(255, 0, 0, 0.1);
+  }
+
+  .code-log {
+    color: #222;
+    background: #f7f7f7;
+  }
+
+  .code-icon {
+    display: inline-block;
+    margin: 0 5px;
+    border-radius: 50%;
+    width: 0.8rem;
+    height: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 0.9rem;
+    color: white;
+  }
+  .code-error-icon {
+    background: red;
+  }
+  .code-log-icon {
+    background: transparent;
+    color: blue;
+  }
+
+  .syntax-error {
+    border-bottom: 3px solid red;
   }
 }
