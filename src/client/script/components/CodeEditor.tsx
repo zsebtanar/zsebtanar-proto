@@ -59,7 +59,6 @@ export function CodeEditor({ className, onChange, name, value, ...props }: Props
     const onChangeHandler = debounce((cm) => {
       const value = cm.getValue()
       onChange({ name, value })
-      console.log(interpreter.getOutput())
       const widgets = cm['__interpreterWidgets']
       cm.doc.getAllMarks().forEach((m) => m.clear())
       widgets.forEach((w) => w.clear())

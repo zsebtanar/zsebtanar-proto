@@ -10,7 +10,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
    * @param x
    */
   ['range']: (x: PLNumber) =>
-    literals.vector.factory(...range(-1, x.value - 1, 1).map((v, k) => literals.int.factory(k))),
+    literals.Vector.factory(...range(-1, x.value - 1, 1).map((v, k) => literals.Int.factory(k))),
 
   /**
    * Constant function
@@ -28,7 +28,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
    * (inclusive of 0, but not 1)
    */
   ['random']: () => {
-    return literals.int.factory(prng.randomFloat())
+    return literals.Int.factory(prng.randomFloat())
   },
 
   /**
@@ -37,7 +37,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
    * @param num upper bound
    */
   ['random-int']: (num: PLNumber) => {
-    return literals.int.factory(prng.randomInt(num.value + 1))
+    return literals.Int.factory(prng.randomInt(num.value + 1))
   },
 
   /**
@@ -46,7 +46,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
    * @param num upper bound
    */
   ['random-int-0']: (num: PLNumber) => {
-    return literals.int.factory(prng.randomInt(num.value))
+    return literals.Int.factory(prng.randomInt(num.value))
   },
 
   /**
@@ -62,7 +62,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
     if (step.value > 1 && randInt % step.value > 0) {
       randInt += randInt % step.value
     }
-    return literals.int.factory(min.value + randInt)
+    return literals.Int.factory(min.value + randInt)
   },
   ...langUtils,
   ...stringUtils,
