@@ -24,7 +24,7 @@ További információ a [wiki oldalon][wiki]
 
 ## Közreműködés
 
-A Zsebtanár egy ingyenes és nyíltforráskódú projet. Hálásak vagyunk minden hozzájárulásért - legyen az hibajavítás, dokumentáció frissítése vagy új funkció javaslata. További részletekért olvased el a [közreműködési][contributing] doksit.
+A Zsebtanár egy igyenes és nyíltforráskódú projet. Hálásak vagyunk minden hozzájárulásért - legyen az hibajavítás, dokumentáció frissítése vagy új funkció javaslata. További részletekért olvased el a [közreműködési][contributing] doksit.
 
 
 ## [Közreműködők Magatartási Kódexe][coc]
