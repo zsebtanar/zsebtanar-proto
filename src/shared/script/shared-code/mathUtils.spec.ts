@@ -20,6 +20,11 @@ describe('math utils', () => {
     expect(fn(pln(6))).toStrictEqual(plv(pln(1), pln(2), pln(3), pln(6)))
     expect(fn(pln(12))).toStrictEqual(plv(pln(1), pln(2), pln(3), pln(4), pln(6), pln(12)))
   }),
+  test('in', () => {
+    const fn = mathUtils['in']
+    expect(fn(plv(pln(1), pln(2)), pln(1))).toBe(plb(true))
+    expect(fn(plv(pln(1), pln(2)), pln(3))).toBe(plb(false))
+  }),
   test('is-prime', () => {
     const fn = mathUtils['is-prime']
     expect(() => {

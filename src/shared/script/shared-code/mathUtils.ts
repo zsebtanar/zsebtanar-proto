@@ -1,5 +1,9 @@
-import { PLNumber, plBool, PLBool } from 'pocket-lisp-stdlib'
+import { PLNumber, plBool, PLBool, PLVector } from 'pocket-lisp-stdlib'
 import { assertInteger, assertIntegerRange, plNumFn2Vec, plNumFn1Vec } from './utils'
+
+export function inArray(list: PLVector<PLNumber>, n: PLNumber): PLBool {
+  return list.contains(n)
+}
 
 export function isPrime(n: PLNumber): PLBool {
   assertInteger(n.value)
@@ -46,4 +50,5 @@ export const mathUtils = {
   ['range']: plNumFn2Vec(range),
   ['divisors']: plNumFn1Vec(divisors),
   ['is-prime']: isPrime,
+  ['in']: inArray,
 }
