@@ -1,7 +1,20 @@
+import { PLNumber, plBool, PLBool } from 'pocket-lisp-stdlib'
 import { assertInteger, assertIntegerRange, plNumFn2Vec, plNumFn1Vec } from './utils'
 
+export function isPrime(n: PLNumber): PLBool {
+  assertInteger(n.value)
+  if (n.value < 1) {
+    throw new Error('Number out of range (< 1)')
+  }
+  for (let i = 2; i < n.value; i++) {
+    if (n.value % i === 0) {
+      return plBool(false)
+    }
+  }
+  return plBool(n.value > 1)
+}
+
 export function divisors(num: number): Array<number> {
-  //  Source: https://www.nayuki.io/page/calculate-divisors-javascript
   assertInteger(num)
   if (num < 1) {
     throw new Error('Number out of range (< 1)')
@@ -32,4 +45,5 @@ export function range(start: number, end: number): Array<number> {
 export const mathUtils = {
   ['range']: plNumFn2Vec(range),
   ['divisors']: plNumFn1Vec(divisors),
+  ['is-prime']: isPrime,
 }
