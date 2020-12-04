@@ -5,6 +5,7 @@ export function inArray(list: PLVector<PLNumber>, n: PLNumber): PLBool {
   return list.contains(n)
 }
 
+// https://www.thepolyglotdeveloper.com/2015/04/determine-if-a-number-is-prime-using-javascript/
 export function isPrime(n: PLNumber): PLBool {
   assertInteger(n.value)
   if (n.value < 1) {
@@ -18,6 +19,7 @@ export function isPrime(n: PLNumber): PLBool {
   return plBool(n.value > 1)
 }
 
+// https://www.nayuki.io/page/calculate-divisors-javascript
 export function divisors(num: number): Array<number> {
   assertInteger(num)
   if (num < 1) {
@@ -40,6 +42,7 @@ export function divisors(num: number): Array<number> {
   return small.concat(large)
 }
 
+// https://dev.to/ycmjason/how-to-create-range-in-javascript-539i
 export function range(start: number, end: number): Array<number> {
   assertIntegerRange(start, end)
   const length = end - start + 1 // include upper bound
