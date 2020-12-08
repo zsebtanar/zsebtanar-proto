@@ -1,5 +1,13 @@
-import { PLNumber, plBool, PLBool } from 'pocket-lisp-stdlib'
-import { assertInteger, assertIntegerRange, plNumFn2Vec, plNumFn1Vec } from './utils'
+import {
+  PLNumber,
+  plBool,
+  PLBool,
+  PLString,
+  plNumber,
+  PLVector,
+  plVector,
+} from 'pocket-lisp-stdlib'
+import { assertInteger, assertIntegerRange, typeCheck } from './utils'
 
 // https://www.thepolyglotdeveloper.com/2015/04/determine-if-a-number-is-prime-using-javascript/
 export function isPrime(n: PLNumber): PLBool {
@@ -16,37 +24,40 @@ export function isPrime(n: PLNumber): PLBool {
 }
 
 // https://www.nayuki.io/page/calculate-divisors-javascript
-export function divisors(num: number): Array<number> {
-  assertInteger(num)
-  if (num < 1) {
+export function divisors(num: PLNumber): PLVector<PLNumber> {
+  const n = num.value
+  assertInteger(n)
+  if (n < 1) {
     throw new Error('Number out of range (< 1)')
-  } else if (num > 1000000) {
+  } else if (n > 1000000) {
     throw new Error('Number too large')
   }
   const small: number[] = []
   const large: number[] = []
-  const end = Math.floor(Math.sqrt(num))
+  const end = Math.floor(Math.sqrt(n))
   for (let i = 1; i <= end; i++) {
-    if (num % i === 0) {
+    if (n % i === 0) {
       small.push(i)
-      if (i * i !== num)
+      if (i * i !== n)
         // Don't include a square root twice
-        large.push(num / i)
+        large.push(n / i)
     }
   }
   large.reverse()
-  return small.concat(large)
+  const divisors = small.concat(large)
+  return plVector(...divisors.map(plNumber))
 }
 
 // https://dev.to/ycmjason/how-to-create-range-in-javascript-539i
-export function range(start: number, end: number): Array<number> {
-  assertIntegerRange(start, end)
-  const length = end - start + 1 // include upper bound
-  return Array.from({ length }, (_, i) => start + i)
+export function range(start: PLNumber, end: PLNumber): PLVector<PLNumber> {
+  assertIntegerRange(start.value, end.value)
+  const length = end.value - start.value + 1 // include upper bound
+  const rng = Array.from({ length }, (_, i) => start.value + i)
+  return plVector(...rng.map(plNumber))
 }
 
 export const mathUtils = {
-  ['range']: plNumFn2Vec(range),
-  ['divisors']: plNumFn1Vec(divisors),
+  range,
+  divisors,
   ['is-prime']: isPrime,
 }
