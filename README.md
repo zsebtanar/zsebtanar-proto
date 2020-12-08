@@ -24,12 +24,12 @@ További információ a [wiki oldalon][wiki]
 
 ## Közreműködés
 
-A Zsebtanár egy igyenes és nyíltforráskódú projet. Hálásak vagyunk minden nemá hozzájárulásért - legyen az hibajavítás, dokumentáció frissítése vagy új funkció javaslata. További részletekért olvased el a [közreműködési][contributing] doksit.
+A Zsebtanár egy igyenes és nyíltforráskódú projet. Hálásak vagyunk minden hozzájárulásért - legyen az hibajavítás, dokumentáció frissítése vagy új funkció javaslata. További részletekért olvased el a [közreműködési][contributing] doksit.
 
 
 ## [Közreműködők Magatartási Kódexe][coc]
 
-Kérünk vedd figyelembe, hogy a projekt a [Közreműködők Magatartási Kódexet][coc] követi. Amennyiben résztveszel a projektben neked is be kell tartanod a bennfoglaltakat.
+Kérünk vedd figyelembe, hogy a projekt a [Közreműködők Magatartási Kódexet][coc] követi. Amennyiben részt veszel a projektben, neked is be kell tartanod az ebben foglaltakat.
 
 ## [License][license]
 
