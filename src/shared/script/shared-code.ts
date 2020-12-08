@@ -3,6 +3,7 @@ import { PseudoRandomNumberGenerator } from '../math/random'
 import { assertIntegerRange } from './shared-code/utils'
 import { mathUtils } from './shared-code/mathUtils'
 import { langUtils } from './shared-code/langUtils'
+import { convertUtils } from './shared-code/convertUtils'
 import { stringUtils } from './shared-code/stringUtils'
 
 export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
@@ -36,6 +37,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
     const rnd = Math.floor(prng.randomFloat() * (max.value - min.value + 1) + min.value)
     return plNumber(rnd)
   },
+  ...convertUtils,
   ...mathUtils,
   ...langUtils,
   ...stringUtils,
