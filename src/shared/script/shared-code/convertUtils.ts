@@ -67,7 +67,7 @@ const conversionTable = {
 }
 
 export function convert(num: PLNumber, from: PLString, to: PLString): PLNumber {
-  typeCheck(num, PLNumber)
+  typeCheck(PLNumber, num)
   for (const unitType in conversionTable) {
     const units = conversionTable[unitType]
     if (from.value in units) {
