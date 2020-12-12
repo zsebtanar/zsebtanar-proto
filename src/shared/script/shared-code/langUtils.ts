@@ -192,17 +192,17 @@ function article(value: number): string {
  */
 function baseNum2text(value: number) {
   assertInteger(value)
-  const absNum = Math.abs(value)
-  if (absNum === 0) {
+  if (value < 0) {
+    return 'mínusz ' + baseNum2text(-value)
+  }
+  if (value === 0) {
     return 'nulla'
   }
 
-  const digits = absNum.toString().split('').reverse()
-
-  const numGroups = ['', 'ezer', 'millió', 'milliárd']
-  const num1a = ['', 'egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc']
-  const num1b = ['', '', 'két', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc']
-  const num2a = [
+  const groupSuffix = ['', 'ezer', 'millió', 'milliárd']
+  const ones = ['', 'egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc']
+  const onesB = { '1': '', '2': 'két' }
+  const tens = [
     '',
     'tizen',
     'huszon',
@@ -214,42 +214,47 @@ function baseNum2text(value: number) {
     'nyolcvan',
     'kilencven',
   ]
-  const num2b = [
-    '',
-    'tíz',
-    'húsz',
-    'harminc',
-    'negyven',
-    'ötven',
-    'hatvan',
-    'hetven',
-    'nyolcvan',
-    'kilencven',
-  ]
+  const tensB = { '1': 'tíz', '2': 'húsz' }
 
+  // loop through the digits in reverse order
+  const digits: Array<string> = value.toString().split('').reverse()
   const text = digits.reduce(
-    ({ group, text }, digit, idx, digits) => {
-      if (idx % 3 == 0) {
-        text = numGroups[group] + text
-        if (absNum > 2000 && group > 0) text = `${text}-`
-        text = num1a[digit] + text
-        group++
-      } else if (idx % 3 === 1) {
-        const isWhole = digits[idx - 1] === '0'
-        text = (isWhole ? num2b : num2a)[digit] + text
-      } else if (idx % 3 === 2) {
-        text = `${num1b[digit]}száz${text}`
+    // groupId: 0 - ones | 1 - thousands | 2 - millions
+    // numText: string value of digits
+    // digit: iterable = digits[digitId]
+    ({ group: groupId, text: numText }, digit, digitId, digits) => {
+      if (digitId % 3 == 0) {
+        const upcomingDigits = digits.slice(digitId, Math.min(digits.length, digitId + 3))
+        if (upcomingDigits.join() !== '0,0,0') {
+          // only add hyphen for >2000 numbers
+          if (value > 2000 && groupId > 0) numText = `-${numText}`
+          // only add group suffix if upcoming digits are not empty
+          numText = groupSuffix[groupId] + numText
+        }
+        // remove "egy" from "egyezer"
+        // replace "kettő" with "két" for thousands onwards
+        const firstDigit = digitId === digits.length - 1
+        const thousandsText =
+          (digit in onesB && groupId === 1 && firstDigit) || (groupId > 0 && digit === '2')
+            ? onesB[digit]
+            : ones[digit]
+        numText = thousandsText + numText
+        groupId++
+      } else if (digitId % 3 === 1) {
+        const tensText = digits[digitId - 1] === '0' && digit in tensB ? tensB[digit] : tens[digit]
+        numText = tensText + numText
+      } else if (digitId % 3 === 2) {
+        if (digit !== '0') {
+          const hundredsText = digit in onesB ? onesB[digit] : ones[digit]
+          numText = `${hundredsText}száz${numText}`
+        }
       }
-      return { group, text }
+      return { group: groupId, text: numText }
     },
     { group: 0, text: '' },
   ).text
 
   return text
-    .replace('egyezer', 'ezer')
-    .replace('kettőezer', 'kétezer')
-    .replace('kettőmillió', 'kétmillió')
-    .replace('kettőmilliárd', 'kétmilliárd')
 }
 
 function num2text(num: PLNumber | PLFractionNumber): PLString {
@@ -275,7 +280,7 @@ function num2text(num: PLNumber | PLFractionNumber): PLString {
  * @return string $suffix Suffix
  * @param value
  */
-export const dativus = (value: number) => {
+export const dativus = (value: number): string => {
   const absNum = Math.abs(value)
 
   switch (absNum % 10) {
@@ -320,14 +325,6 @@ export const dativus = (value: number) => {
   } else {
     return 't'
   }
-}
-
-export const listJoinLocal = (list, lastSrt = 'vagy') => {
-  if (list.length < 2) {
-    return list.toString()
-  }
-  const last = list.pop()
-  return `${list.join(', ')} ${lastSrt} ${last}`
 }
 
 export const langUtils = {
