@@ -331,12 +331,12 @@ export const listJoinLocal = (list, lastSrt = 'vagy') => {
 }
 
 export const langUtils = {
-  ['suffix']: format(baseSuffixFraction),
-  ['suffix-times']: format(suffixTimes),
-  ['suffix-times2']: format(suffixTimes2),
   ['article']: format(article),
   ['dativus']: format(dativus),
   ['num-to-text']: num2text,
+  ['suffix']: format(baseSuffixFraction),
+  ['suffix-times']: format(suffixTimes),
+  ['suffix-times2']: format(suffixTimes2),
 }
 ;`
 
