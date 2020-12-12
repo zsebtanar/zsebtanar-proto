@@ -1,27 +1,5 @@
-import {
-  PLNumber,
-  plBool,
-  PLBool,
-  PLString,
-  plNumber,
-  PLVector,
-  plVector,
-} from 'pocket-lisp-stdlib'
-import { assertInteger, assertIntegerRange, typeCheck } from './utils'
-
-// https://www.thepolyglotdeveloper.com/2015/04/determine-if-a-number-is-prime-using-javascript/
-export function isPrime(n: PLNumber): PLBool {
-  assertInteger(n.value)
-  if (n.value < 1) {
-    throw new Error('Number out of range (< 1)')
-  }
-  for (let i = 2; i < n.value; i++) {
-    if (n.value % i === 0) {
-      return plBool(false)
-    }
-  }
-  return plBool(n.value > 1)
-}
+import { PLNumber, plBool, PLBool, plNumber, PLVector, plVector } from 'pocket-lisp-stdlib'
+import { assertInteger, assertIntegerRange, plFnNum2Str } from './utils'
 
 // https://www.nayuki.io/page/calculate-divisors-javascript
 export function divisors(num: PLNumber): PLVector<PLNumber> {
@@ -48,6 +26,52 @@ export function divisors(num: PLNumber): PLVector<PLNumber> {
   return plVector(...divisors.map(plNumber))
 }
 
+// https://www.thepolyglotdeveloper.com/2015/04/determine-if-a-number-is-prime-using-javascript/
+export function isPrime(n: PLNumber): PLBool {
+  assertInteger(n.value)
+  if (n.value < 1) {
+    throw new Error('Number out of range (< 1)')
+  }
+  for (let i = 2; i < n.value; i++) {
+    if (n.value % i === 0) {
+      return plBool(false)
+    }
+  }
+  return plBool(n.value > 1)
+}
+
+// https://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript#32851198
+const numToRoman = (num: number, result = ''): string => {
+  if (num < 1 && result === '') {
+    throw new Error('Invalid range (< 1)')
+  } else if (num > 3999 && result === '') {
+    throw new Error('Invalid range (> 3999)')
+  }
+  const map = {
+    M: 1000,
+    CM: 900,
+    D: 500,
+    CD: 400,
+    C: 100,
+    XC: 90,
+    L: 50,
+    XL: 40,
+    X: 10,
+    IX: 9,
+    V: 5,
+    IV: 4,
+    I: 1,
+  }
+  for (const key in map) {
+    if (num >= map[key]) {
+      if (num !== 0) {
+        return numToRoman(num - map[key], result + key)
+      }
+    }
+  }
+  return result
+}
+
 // https://dev.to/ycmjason/how-to-create-range-in-javascript-539i
 export function range(start: PLNumber, end: PLNumber): PLVector<PLNumber> {
   assertIntegerRange(start.value, end.value)
@@ -57,7 +81,8 @@ export function range(start: PLNumber, end: PLNumber): PLVector<PLNumber> {
 }
 
 export const mathUtils = {
-  range,
   divisors,
   ['is-prime']: isPrime,
+  ['num-to-roman']: plFnNum2Str(numToRoman),
+  range,
 }
