@@ -3,6 +3,7 @@ import { PseudoRandomNumberGenerator } from '../math/random'
 import { range } from '../utils/fn'
 import { langUtils } from './shared-code/langUtils'
 import { stringUtils } from './shared-code/stringUtils'
+import { suffixUtils } from './shared-code/suffixUtils'
 
 export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
   /**
@@ -65,5 +66,6 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
     return literals.Int.factory(min.value + randInt)
   },
   ...langUtils,
+  ...suffixUtils,
   ...stringUtils,
 })
