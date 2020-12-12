@@ -331,7 +331,7 @@ export const listJoinLocal = (list, lastSrt = 'vagy') => {
 }
 
 export const langUtils = {
-  ['suffix']: format(baseSuffixFraction),
+  ['suffix-fraction']: format(baseSuffixFraction),
   ['suffix-times']: format(suffixTimes),
   ['suffix-times2']: format(suffixTimes2),
   ['article']: format(article),

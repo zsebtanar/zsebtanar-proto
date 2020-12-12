@@ -63,7 +63,7 @@ describe('lang utils', () => {
   })
 
   test('suffix-fraction', () => {
-    const fn = langUtils['suffix']
+    const fn = langUtils['suffix-fraction']
     expect(fn(plFractionNumber(1, -5))).toEqual(plString('öd'))
     expect(fn(plFractionNumber(1, -1))).toEqual(plString('ed'))
 
