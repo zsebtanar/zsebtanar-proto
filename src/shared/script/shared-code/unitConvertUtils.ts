@@ -21,7 +21,6 @@ const unitConversionTable = {
     mm: 0.001,
     cm: 0.01,
     in: 0.0254,
-    hüvelyk: 0.0254,
     '"': 0.0254,
     dm: 0.1,
     ft: 0.3048,
@@ -38,19 +37,13 @@ const unitConversionTable = {
     lb: 453.59237,
     kg: 1000,
     t: 1000000,
-    tonna: 1000000,
   },
   time: {
     s: 1,
-    mp: 1,
     sec: 1,
     min: 60,
-    p: 60,
     h: 3600,
-    ó: 3600,
-    óra: 3600,
     wk: 604800,
-    hét: 604800,
   },
   volume: {
     'mm^3': 0.000001,
@@ -66,13 +59,26 @@ const unitConversionTable = {
   },
 }
 
+const translations = {
+  hét: 'wk',
+  ó: 'h',
+  óra: 'h',
+  p: 'min',
+  perc: 'min',
+  mp: 's',
+  tonna: 't',
+  hüvelyk: 'in',
+}
+
 export function unitConverter(num: PLNumber, from: PLString, to: PLString): PLNumber {
   typeCheck(PLNumber, num)
+  const unitFrom = from.value in translations ? translations[from.value] : from.value
+  const unitTo = to.value in translations ? translations[to.value] : to.value
   for (const unitType in unitConversionTable) {
     const units = unitConversionTable[unitType]
-    if (from.value in units) {
-      if (to.value in units) {
-        const numConverted = (num.value * units[from.value]) / units[to.value]
+    if (unitFrom in units) {
+      if (unitTo in units) {
+        const numConverted = (num.value * units[unitFrom]) / units[unitTo]
         return plNumber(numConverted)
       } else {
         throw new Error(`Units "${from.value}" and "${to.value}" don\\'t match`)
