@@ -41,10 +41,10 @@ export function isPrime(n: PLNumber): PLBool {
 }
 
 // https://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript#32851198
-const numToRoman = (num: number, result = ''): string => {
-  if (num < 1 && result === '') {
+const numToRoman = (num: number): string => {
+  if (num < 1) {
     throw new Error('Invalid range (< 1)')
-  } else if (num > 3999 && result === '') {
+  } else if (num > 3999) {
     throw new Error('Invalid range (> 3999)')
   }
   const map = {
@@ -64,12 +64,10 @@ const numToRoman = (num: number, result = ''): string => {
   }
   for (const key in map) {
     if (num >= map[key]) {
-      if (num !== 0) {
-        return numToRoman(num - map[key], result + key)
-      }
+      return key + (num === map[key] ? '' : numToRoman(num - map[key]))
     }
   }
-  return result
+  return ''
 }
 
 // https://dev.to/ycmjason/how-to-create-range-in-javascript-539i
