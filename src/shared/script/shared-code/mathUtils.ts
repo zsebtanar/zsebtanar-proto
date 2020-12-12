@@ -1,13 +1,5 @@
-import {
-  PLNumber,
-  plBool,
-  PLBool,
-  PLString,
-  plNumber,
-  PLVector,
-  plVector,
-} from 'pocket-lisp-stdlib'
-import { assertInteger, assertIntegerRange, typeCheck } from './utils'
+import { PLNumber, plBool, PLBool, plNumber, PLVector, plVector } from 'pocket-lisp-stdlib'
+import { assertInteger, assertIntegerRange } from './utils'
 
 // https://www.thepolyglotdeveloper.com/2015/04/determine-if-a-number-is-prime-using-javascript/
 export function isPrime(n: PLNumber): PLBool {
