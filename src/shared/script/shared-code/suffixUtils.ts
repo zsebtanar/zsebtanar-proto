@@ -268,20 +268,30 @@ function num2text(num: PLNumber | PLFractionNumber): PLString {
   return plString(result)
 }
 
+export function convertSuffix(value: number, sample: string): string {
+  if (/^[aáeoöő]?t$/g.test(sample)) {
+    return dativus(value)
+  } else if (/^[aáe]?s/g.test(sample)) {
+    return placeValue(value, sample)
+  }
+  throw new Error(`Invalid suffix: "${sample}"`)
+}
+
 export function dativus(value: number): string {
   // suffix: at/et/öt/t
   const n = Math.abs(value)
   const nZeros = trailingZeros(n)
   if (nZeros < 6) {
     const lastDigit = n % 10
-    const suffixes = {
+    const exceptions = {
       0: 't',
       2: 't',
       5: 'öt',
       6: 'ot',
     }
-    if (nZeros === 0 && lastDigit in suffixes) {
-      return suffixes[lastDigit]
+    // handle single digit exceptions
+    if (nZeros === 0 && lastDigit in exceptions) {
+      return exceptions[lastDigit]
     } else {
       return pitch(n) === 'high' ? 'et' : 'at'
     }
@@ -290,6 +300,28 @@ export function dativus(value: number): string {
   } else {
     return 't'
   }
+}
+
+export function placeValue(value: number, sfx: string): string {
+  // suffix: as/es/asoknak/eseket etc.
+  const n = Math.abs(value)
+  const lowPitch = pitch(n) === 'low'
+  const exceptions = {
+    0: '',
+    5: 'ö',
+    6: 'o',
+  }
+  const replacement = lowPitch ? 'a' : 'e'
+  const replacementES = n % 10 in exceptions ? exceptions[n % 10] : replacement
+  const replacementEK = n % 10 === 5 ? 'ö' : lowPitch ? 'o' : 'e'
+  const replacementBOL = lowPitch ? 'ó' : 'ő'
+  sfx = sfx.replace(/^[aáeö]?(?=s)/g, replacementES) // -as/es/ös
+  sfx = sfx.replace(/(?<=s)[eoö](?=k)/g, replacementEK) // -sok/sek/sök
+  sfx = sfx.replace(/(?<=k)[ae](?=t)/g, replacement) // -kat/ket
+  sfx = sfx.replace(/(?<=n)[ae](?=k)/g, replacement) // -nak/nek
+  sfx = sfx.replace(/(?<=b)[óő](?=l)/g, replacementBOL) // -ból/ből
+  sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, replacementEK) // -hoz/hez/höz
+  return sfx
 }
 
 export function trailingZeros(num: number): number {
@@ -307,6 +339,7 @@ export function trailingZeros(num: number): number {
 }
 
 export function pitch(num: number): string {
+  // check if number is high pitch (e/i) or low pitch (a/o/u)
   assertInteger(num)
   const nZeros = trailingZeros(num)
   if (nZeros <= 1) {
@@ -319,16 +352,10 @@ export function pitch(num: number): string {
   return 'low'
 }
 
-export const suffix = (num: PLNumber, numSuffix: PLString): PLString => {
+export const suffix = (num: PLNumber, sfx: PLString): PLString => {
   typeCheck(PLNumber, num)
-  typeCheck(PLString, numSuffix)
-  const sfxSample = numSuffix.value
-  let sfxCorrect = ''
-  if (/^[aáeoöő]?t$/g.test(sfxSample)) {
-    sfxCorrect = dativus(num.value)
-  } else {
-    throw new Error(`Invalid suffix: "${sfxSample}"`)
-  }
+  typeCheck(PLString, sfx)
+  const sfxCorrect = convertSuffix(num.value, sfx.value)
   return plString(sfxCorrect)
 }
 

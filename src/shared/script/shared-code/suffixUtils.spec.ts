@@ -1,4 +1,11 @@
-import { suffixUtils, pitch, trailingZeros, dativus } from './suffixUtils'
+import {
+  suffixUtils,
+  pitch,
+  trailingZeros,
+  dativus,
+  convertSuffix,
+  placeValue,
+} from './suffixUtils'
 import { pls, pln } from './utils'
 
 describe('suffix utils', () => {
@@ -64,6 +71,34 @@ describe('suffix utils', () => {
     expect(dativus(1234)).toEqual('et')
     expect(dativus(1_000_000_000)).toEqual('ot')
   })
+
+  test('placeValue', () => {
+    expect(placeValue(-5, 's')).toEqual('ös')
+    expect(placeValue(0, 's')).toEqual('s')
+    expect(placeValue(6, 's')).toEqual('os')
+    expect(placeValue(7, 'ös')).toEqual('es')
+    expect(placeValue(10, 'hoz')).toEqual('hez')
+    expect(placeValue(78, 'esekhez')).toEqual('asokhoz')
+    expect(placeValue(1000, 'asokat')).toEqual('eseket')
+    expect(placeValue(2005, 'osnak')).toEqual('ösnek')
+    expect(placeValue(2005, 'osnak')).toEqual('ösnek')
+  })
+
+  // test('convertSuffix', () => {
+  //   const fn = convertSuffix
+  //   expect(() => fn(0, 'ért')).toThrow('Invalid suffix: "ért"')
+  //   expect(fn(0, 'as')).toEqual('s')
+  //   expect(fn(1, 'as')).toEqual('es')
+  //   expect(fn(2, 's')).toEqual('es')
+  //   expect(fn(3, 'es')).toEqual('as')
+  //   expect(fn(4, 's')).toEqual('es')
+  //   expect(fn(5, 'as')).toEqual('ös')
+  //   expect(fn(6, 'ös')).toEqual('os')
+  //   expect(fn(7, 'ös')).toEqual('es')
+  //   expect(fn(8, 'ös')).toEqual('as')
+  //   expect(fn(9, 'as')).toEqual('es')
+  //   expect(fn(10, 'os')).toEqual('es')
+  // })
 
   test('suffix', () => {
     const fn = suffixUtils['suffix']
