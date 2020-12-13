@@ -1,5 +1,5 @@
 import { PLNumber, PLFractionNumber, plString, PLString } from 'pocket-lisp-stdlib'
-import { assertInteger } from './utils'
+import { assertInteger, typeCheck } from './utils'
 
 const suffixTimes = (num: number): string => {
   assertInteger(num)
@@ -268,129 +268,70 @@ function num2text(num: PLNumber | PLFractionNumber): PLString {
   return plString(result)
 }
 
-/**
- * Add suffix dativus to number (at/et/öt/t)
- *
- *
- * @return string $suffix Suffix
- * @param value
- */
-export const dativus = (value: number) => {
-  const absNum = Math.abs(value)
-
-  switch (absNum % 10) {
-    case 1:
-    case 4:
-    case 7:
-    case 9:
-      return 'et'
-    case 2:
-      return 't'
-    case 3:
-    case 8:
-      return 'at'
-    case 5:
-      return 'öt'
-    case 6:
-      return 'ot'
-  }
-
-  switch ((absNum / 10) % 10) {
-    case 1:
-    case 4:
-    case 5:
-    case 7:
-    case 9:
-      return 'et'
-    case 2:
-    case 3:
-    case 6:
-    case 8:
-      return 'at'
-  }
-
-  if (absNum === 0) {
-    return 't'
-  } else if (absNum === 1_000_000_000) {
-    return 'ot'
-  } else if (100 <= absNum && absNum < 1000) {
-    return 'at'
-  } else if (1000 <= absNum && absNum < 1_000_000) {
-    return 'et'
-  } else {
-    return 't'
-  }
-}
-
-export const listJoinLocal = (list, lastSrt = 'vagy') => {
-  if (list.length < 2) {
-    return list.toString()
-  }
-  const last = list.pop()
-  return `${list.join(', ')} ${lastSrt} ${last}`
-}
-
-export const langUtils = {
-  ['suffix']: format(baseSuffixFraction),
-  ['suffix-times']: format(suffixTimes),
-  ['suffix-times2']: format(suffixTimes2),
-  ['article']: format(article),
-  ['dativus']: format(dativus),
-  ['num-to-text']: num2text,
-}
-;`
-
-
-
-
-/**
- * Write order of number
- *
- * @param int $num Number (<=10!)
- *
- * @return string $text Order (text)
- */
-function OrderText($num) { 
-  $text_array = array(
-    0 => 'nulladik',
-    1 => 'első',
-    2 => 'második',
-    3 => 'harmadik',
-    4 => 'negyedik',
-    5 => 'ötödik',
-    6 => 'hatodik',
-    7 => 'hetedik',
-    8 => 'nyolcadik',
-    9 => 'kilencedik',
-    10 => 'tizedik'
-  );
-
-  $text = $text_array[$num];
-
-  return $text;
-}
-
-/**
- * Format big numbers
- *
- * @param int $num Number
- *
- * @return string $num2 Number (formatted)
- */
-function BigNum($num) { 
-  if ($num < 10000) {
-    $num2 = $num;
-  } else {
-    if (is_integer($num)) {
-      $num2 = number_format($num, 0, ',', '\\,');
-    } else {
-      $digits = strlen(substr(strrchr($num, "."), 1));
-      $num2 = number_format($num, $digits, ',', '\\,');
+export function dativus(value: number): string {
+  // suffix: at/et/öt/t
+  const n = Math.abs(value)
+  const nZeros = trailingZeros(n)
+  if (nZeros < 6) {
+    const lastDigit = n % 10
+    const suffixes = {
+      0: 't',
+      2: 't',
+      5: 'öt',
+      6: 'ot',
     }
+    if (nZeros === 0 && lastDigit in suffixes) {
+      return suffixes[lastDigit]
+    } else {
+      return pitch(n) === 'high' ? 'et' : 'at'
+    }
+  } else if (nZeros === 9) {
+    return 'ot'
+  } else {
+    return 't'
   }
-
-  return $num2;
 }
 
+export function trailingZeros(num: number): number {
+  // number of trailing zeros after first digit
+  assertInteger(num)
+  if (Math.abs(num) < 10) {
+    return 0
+  }
+  let nZeros = 0
+  while (num % 10 === 0) {
+    num /= 10
+    nZeros++
+  }
+  return nZeros
+}
 
-`
+export function pitch(num: number): string {
+  assertInteger(num)
+  const nZeros = trailingZeros(num)
+  if (nZeros <= 1) {
+    const highPitch = nZeros === 0 ? [1, 2, 4, 5, 7, 9] : [1, 4, 5, 7, 9]
+    const lastDigit = nZeros === 0 ? Math.abs(num % 10) : Math.abs((num / 10) % 10)
+    return highPitch.indexOf(lastDigit) >= 0 ? 'high' : 'low'
+  } else if (nZeros >= 3 && nZeros <= 5) {
+    return 'high'
+  }
+  return 'low'
+}
+
+export const suffix = (num: PLNumber, numSuffix: PLString): PLString => {
+  typeCheck(PLNumber, num)
+  typeCheck(PLString, numSuffix)
+  const sfxSample = numSuffix.value
+  let sfxCorrect = ''
+  if (/^[aáeoöő]?t$/g.test(sfxSample)) {
+    sfxCorrect = dativus(num.value)
+  } else {
+    throw new Error(`Invalid suffix: "${sfxSample}"`)
+  }
+  return plString(sfxCorrect)
+}
+
+export const suffixUtils = {
+  suffix,
+}
