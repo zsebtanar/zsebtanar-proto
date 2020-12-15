@@ -1,4 +1,5 @@
 import { RuntimeError } from 'pocket-lisp'
+import { PLNumber, plString, PLString } from 'pocket-lisp-stdlib'
 
 export const assert = (val: boolean, msg: string): boolean => {
   // TODO remove lang dependency
@@ -29,4 +30,9 @@ export const assertIntegerRange = (min: number, max: number): void => {
   assertInteger(min)
   assertInteger(max)
   assert(max < min, `Invalid range (start > end)`)
+}
+
+export const plFnNum2Str = (fn: (x: number) => string) => (x: PLNumber): PLString => {
+  typeCheck(PLNumber, x)
+  return plString(fn(x.value))
 }
