@@ -1,6 +1,21 @@
 import { PLNumber, PLFractionNumber, plString, PLString } from 'pocket-lisp-stdlib'
 import { assertInteger } from './utils'
 
+const translations = {
+  hét: 'wk',
+  ó: 'h',
+  óra: 'h',
+  p: 'min',
+  perc: 'min',
+  mp: 's',
+  tonna: 't',
+  hüvelyk: 'in',
+}
+
+export function translate(str: string): string {
+  return str in translations ? translations[str] : str
+}
+
 const suffixTimes = (num: number): string => {
   assertInteger(num)
 
