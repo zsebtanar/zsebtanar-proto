@@ -5,6 +5,7 @@ import { mathUtils } from './shared-code/mathUtils'
 import { langUtils } from './shared-code/langUtils'
 import { stringUtils } from './shared-code/stringUtils'
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
   /**
    * Constant function

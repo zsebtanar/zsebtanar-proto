@@ -1,14 +1,13 @@
 import { RuntimeError } from 'pocket-lisp'
 import { PLNumber, plString, PLString } from 'pocket-lisp-stdlib'
 
-///
-
 export const assert = (val: boolean, msg: string): boolean => {
   // TODO remove lang dependency
   if (val) throw new RuntimeError(msg)
   return true
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export const assertType = (a: any, b: any): boolean =>
   assert(
     a.constructor !== b.constructor,
@@ -17,6 +16,7 @@ export const assertType = (a: any, b: any): boolean =>
     }'`,
   )
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export const typeCheck = (type: any, value: any): boolean =>
   assert(
     type !== value.constructor,
