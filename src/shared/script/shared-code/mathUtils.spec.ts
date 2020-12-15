@@ -1,9 +1,10 @@
 import { mathUtils } from './mathUtils'
-import { plBool, plNumber, plVector } from 'pocket-lisp-stdlib'
+import { plBool, plNumber, plString, plVector } from 'pocket-lisp-stdlib'
 
 const pln = plNumber
 const plv = plVector
 const plb = plBool
+const pls = plString
 
 describe('math utils', () => {
   test('divisors', () => {
@@ -40,5 +41,19 @@ describe('math utils', () => {
     expect(() => {
       fn(pln(0), pln(-2))
     }).toThrow('Invalid range (start > end)')
+  })
+
+  test('num-to-roman', () => {
+    const fn = mathUtils['num-to-roman']
+    expect(() => {
+      fn(pln(0))
+    }).toThrow('Invalid range (< 1)')
+    expect(() => {
+      fn(pln(4000))
+    }).toThrow('Invalid range (> 3999)')
+    expect(fn(pln(1))).toStrictEqual(pls('I'))
+    expect(fn(pln(199))).toStrictEqual(pls('CXCIX'))
+    expect(fn(pln(2020))).toStrictEqual(pls('MMXX'))
+    expect(fn(pln(3999))).toStrictEqual(pls('MMMCMXCIX'))
   })
 })

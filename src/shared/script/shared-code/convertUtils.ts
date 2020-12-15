@@ -4,7 +4,6 @@ import { typeCheck } from './utils'
 const conversionTable = {
   angle: {
     deg: 1,
-    '°': 1,
     rad: 180 / Math.PI,
   },
   area: {
