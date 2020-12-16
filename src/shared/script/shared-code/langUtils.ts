@@ -13,7 +13,7 @@ const translations = {
 }
 
 export function translate(str: string): string {
-  return str in translations ? translations[str] : str
+  return translations[str] || str
 }
 
 const suffixTimes = (num: number): string => {
