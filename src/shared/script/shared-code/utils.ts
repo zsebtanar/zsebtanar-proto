@@ -1,6 +1,8 @@
 import { RuntimeError } from 'pocket-lisp'
 import { PLNumber, plString, PLString } from 'pocket-lisp-stdlib'
 
+export const pls = plString
+
 ///
 
 export const assert = (val: boolean, msg: string): boolean => {

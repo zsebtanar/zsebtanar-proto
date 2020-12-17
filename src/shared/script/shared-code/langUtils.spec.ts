@@ -1,7 +1,27 @@
 import { langUtils } from './langUtils'
 import { plFractionNumber, plNumber, plString } from 'pocket-lisp-stdlib'
+import { pls } from './utils'
 
 describe('lang utils', () => {
+  test('abbreviate', () => {
+    const fn = langUtils['abbreviate']
+    expect(fn(pls('NONE'), pls('valami'))).toEqual(pls('valami'))
+    expect(fn(pls('HU'), pls('missing'))).toEqual(pls('missing'))
+    expect(fn(pls('HU'), pls('centiliter'))).toEqual(pls('cl'))
+    expect(fn(pls('HU'), pls('kilogram'))).toEqual(pls('kg'))
+    expect(fn(pls('HU'), pls('másodperc'))).toEqual(pls('mp'))
+    expect(fn(pls('HU'), pls('óra'))).toEqual(pls('ó'))
+  })
+
+  test('translate', () => {
+    const fn = langUtils['translate']
+    expect(fn(pls('NONE'), pls('valami'))).toEqual(pls('valami'))
+    expect(fn(pls('HU'), pls('missing'))).toEqual(pls('missing'))
+    expect(fn(pls('HU'), pls('óra'))).toEqual(pls('h'))
+    expect(fn(pls('HU'), pls('másodperc'))).toEqual(pls('s'))
+    expect(fn(pls('HU'), pls('hüvelyk'))).toEqual(pls('in'))
+  })
+
   test('suffix-times', () => {
     const fn = langUtils['suffix-times']
     expect(fn(plNumber(-5))).toEqual(plString('ször'))

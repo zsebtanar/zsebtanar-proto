@@ -43,7 +43,7 @@ const unitConversionTable = {
     sec: 1,
     min: 60,
     h: 3600,
-    wk: 604800,
+    week: 604800,
   },
   volume: {
     'mm^3': 0.000001,
