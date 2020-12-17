@@ -3,8 +3,10 @@ import { PseudoRandomNumberGenerator } from '../math/random'
 import { assertIntegerRange } from './shared-code/utils'
 import { mathUtils } from './shared-code/mathUtils'
 import { langUtils } from './shared-code/langUtils'
+import { unitConvertUtils } from './shared-code/unitConvertUtils'
 import { stringUtils } from './shared-code/stringUtils'
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
   /**
    * Constant function
@@ -36,6 +38,7 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
     const rnd = Math.floor(prng.randomFloat() * (max.value - min.value + 1) + min.value)
     return plNumber(rnd)
   },
+  ...unitConvertUtils,
   ...mathUtils,
   ...langUtils,
   ...stringUtils,
