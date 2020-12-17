@@ -1,6 +1,5 @@
 import { PLNumber, PLString, plNumber } from 'pocket-lisp-stdlib'
 import { typeCheck } from './utils'
-import { translate } from './langUtils'
 
 const unitConversionTable = {
   angle: {
@@ -61,13 +60,11 @@ const unitConversionTable = {
 
 export function unitConverter(num: PLNumber, from: PLString, to: PLString): PLNumber {
   typeCheck(PLNumber, num)
-  const unitFrom = translate(from.value)
-  const unitTo = translate(to.value)
   for (const unitType in unitConversionTable) {
     const units = unitConversionTable[unitType]
-    if (unitFrom in units) {
-      if (unitTo in units) {
-        const numConverted = (num.value * units[unitFrom]) / units[unitTo]
+    if (from.value in units) {
+      if (to.value in units) {
+        const numConverted = (num.value * units[from.value]) / units[to.value]
         return plNumber(numConverted)
       } else {
         throw new Error(`Units "${from.value}" and "${to.value}" don\\'t match`)
