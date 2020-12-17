@@ -1,6 +1,56 @@
 import { PLNumber, PLFractionNumber, plString, PLString } from 'pocket-lisp-stdlib'
 import { assertInteger } from './utils'
 
+const abbreviations = {
+  HU: {
+    centiliter: 'cl',
+    centiméter: 'cm',
+    deciliter: 'dl',
+    deciméter: 'dm',
+    dekagram: 'dkg',
+    gram: 'g',
+    hektoliter: 'hl',
+    kilogram: 'kg',
+    kilométer: 'km',
+    liter: 'l',
+    másodperc: 'mp',
+    méter: 'm',
+    milligram: 'mg',
+    milliliter: 'ml',
+    milliméter: 'mm',
+    óra: 'ó',
+    perc: 'p',
+    tonna: 't',
+  },
+}
+
+export function abbreviate(lan: PLString, str: PLString): PLString {
+  const abbrDict = abbreviations[lan.value] || {}
+  const abbr = abbrDict[str.value] || str.value
+  return plString(abbr)
+}
+
+const translations = {
+  HU: {
+    ó: 'h',
+    óra: 'h',
+    hüvelyk: 'in',
+    láb: 'ft',
+    p: 'min',
+    mérföld: 'mi',
+    mp: 's',
+    tonna: 'ton',
+    hét: 'week',
+  },
+}
+
+export function translate(lan: PLString, str: PLString): PLString {
+  const abbr = abbreviate(lan, str)
+  const transDict = translations[lan.value] || {}
+  const trans = transDict[abbr.value] || abbr.value
+  return plString(trans)
+}
+
 const suffixTimes = (num: number): string => {
   assertInteger(num)
 
@@ -328,12 +378,14 @@ export const dativus = (value: number): string => {
 }
 
 export const langUtils = {
+  abbreviate,
   ['article']: format(article),
   ['dativus']: format(dativus),
   ['num-to-text']: num2text,
   ['suffix']: format(baseSuffixFraction),
   ['suffix-times']: format(suffixTimes),
   ['suffix-times2']: format(suffixTimes2),
+  translate,
 }
 ;`
 
