@@ -1,5 +1,12 @@
 import { RuntimeError } from 'pocket-lisp'
-import { plFractionNumber, plNumber, plString, plVector } from 'pocket-lisp-stdlib'
+import {
+  PLNumber,
+  plString,
+  PLString,
+  plNumber,
+  plFractionNumber,
+  plVector,
+} from 'pocket-lisp-stdlib'
 
 export const pls = plString
 export const pln = plNumber
@@ -12,6 +19,7 @@ export const assert = (val: boolean, msg: string): boolean => {
   return true
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export const assertType = (a: any, b: any): boolean =>
   assert(
     a.constructor !== b.constructor,
@@ -20,11 +28,23 @@ export const assertType = (a: any, b: any): boolean =>
     }'`,
   )
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export const typeCheck = (type: any, value: any): boolean =>
   assert(
     type !== value.constructor,
     `Expected '${type.name}', but got '${value.constructor.name}'.`,
   )
 
-export const assertInteger = (val: number) =>
+export const assertInteger = (val: number): boolean =>
   assert(!Number.isInteger(val), `Expected integer number', but got '${val}'.`)
+
+export const assertIntegerRange = (min: number, max: number): void => {
+  assertInteger(min)
+  assertInteger(max)
+  assert(max < min, `Invalid range (start > end)`)
+}
+
+export const plFnNum2Str = (fn: (x: number) => string) => (x: PLNumber): PLString => {
+  typeCheck(PLNumber, x)
+  return plString(fn(x.value))
+}

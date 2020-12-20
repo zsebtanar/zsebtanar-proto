@@ -1,11 +1,55 @@
 import { langUtils } from './langUtils'
-import { plFractionNumber, plNumber, plString } from 'pocket-lisp-stdlib'
-
-const pln = plNumber
-const pls = plString
-const plf = plFractionNumber
+import { plNumber, plString } from 'pocket-lisp-stdlib'
+import { pls, pln, plf } from './utils'
 
 describe('lang utils', () => {
+  test('abbreviate', () => {
+    const fn = langUtils['abbreviate']
+    expect(fn(pls('NONE'), pls('valami'))).toEqual(pls('valami'))
+    expect(fn(pls('HU'), pls('missing'))).toEqual(pls('missing'))
+    expect(fn(pls('HU'), pls('centiliter'))).toEqual(pls('cl'))
+    expect(fn(pls('HU'), pls('kilogram'))).toEqual(pls('kg'))
+    expect(fn(pls('HU'), pls('másodperc'))).toEqual(pls('mp'))
+    expect(fn(pls('HU'), pls('óra'))).toEqual(pls('ó'))
+  })
+
+  test('translate', () => {
+    const fn = langUtils['translate']
+    expect(fn(pls('NONE'), pls('valami'))).toEqual(pls('valami'))
+    expect(fn(pls('HU'), pls('missing'))).toEqual(pls('missing'))
+    expect(fn(pls('HU'), pls('óra'))).toEqual(pls('h'))
+    expect(fn(pls('HU'), pls('másodperc'))).toEqual(pls('s'))
+    expect(fn(pls('HU'), pls('hüvelyk'))).toEqual(pls('in'))
+  })
+
+  test('suffix-times', () => {
+    const fn = langUtils['suffix-times']
+    expect(fn(plNumber(-5))).toEqual(plString('ször'))
+    expect(fn(plNumber(-1))).toEqual(plString('szer'))
+    expect(fn(plNumber(0))).toEqual(plString('szor'))
+    expect(fn(plNumber(1))).toEqual(plString('szer'))
+    expect(fn(plNumber(2))).toEqual(plString('szer'))
+    expect(fn(plNumber(3))).toEqual(plString('szor'))
+    expect(fn(plNumber(4))).toEqual(plString('szer'))
+    expect(fn(plNumber(5))).toEqual(plString('ször'))
+    expect(fn(plNumber(6))).toEqual(plString('szor'))
+    expect(fn(plNumber(7))).toEqual(plString('szer'))
+    expect(fn(plNumber(8))).toEqual(plString('szor'))
+    expect(fn(plNumber(9))).toEqual(plString('szer'))
+    expect(fn(plNumber(10))).toEqual(plString('szer'))
+    expect(fn(plNumber(15))).toEqual(plString('ször'))
+    expect(fn(plNumber(20))).toEqual(plString('szor'))
+    expect(fn(plNumber(30))).toEqual(plString('szor'))
+    expect(fn(plNumber(40))).toEqual(plString('szer'))
+    expect(fn(plNumber(50))).toEqual(plString('szer'))
+    expect(fn(plNumber(60))).toEqual(plString('szor'))
+    expect(fn(plNumber(70))).toEqual(plString('szer'))
+    expect(fn(plNumber(80))).toEqual(plString('szor'))
+    expect(fn(plNumber(90))).toEqual(plString('szer'))
+    expect(fn(plNumber(100))).toEqual(plString('szor'))
+    expect(fn(plNumber(1000))).toEqual(plString('szer'))
+  })
+
   test('article', () => {
     const fn = langUtils['article']
     expect(fn(pln(-5))).toEqual(pls('a'))
