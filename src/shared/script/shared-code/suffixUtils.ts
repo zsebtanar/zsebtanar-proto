@@ -29,6 +29,23 @@ export function pitch(num: number): string {
   return 'low'
 }
 
+export function suffixVowel(num: number, vowelType: string): string {
+  const n = Math.abs(num)
+  const lowPitch = pitch(n) === 'low'
+  let vowel = ''
+  const type = vowelType.split('').sort().join('')
+  if (type === 'ae') {
+    vowel = lowPitch ? 'a' : 'e'
+  } else if (type === 'eoö') {
+    vowel = n % 10 === 5 ? 'ö' : lowPitch ? 'o' : 'e'
+  } else if (type === 'óő') {
+    vowel = lowPitch ? 'ó' : 'ő'
+  } else {
+    throw new Error(`Invalid vowel type: "${vowelType}"`)
+  }
+  return vowel
+}
+
 export function dativusSuffix(value: number): string {
   // suffix: at/et/öt/t
   const n = Math.abs(value)
