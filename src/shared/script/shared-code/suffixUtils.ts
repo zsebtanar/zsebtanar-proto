@@ -1,5 +1,4 @@
 import { PLNumber, plString, PLString } from 'pocket-lisp-stdlib'
-import { none } from 'ramda'
 import { assertInteger, typeCheck } from './utils'
 
 export function trailingZeros(num: number): number {
@@ -57,40 +56,38 @@ export function dativusSuffix(value: number): string {
 
 export function placeValueSuffix(value: number, sfx: string): string {
   // suffix: as/es/asoknak/eseket etc.
+  if (!/^[aáeoö]?s/g.test(sfx)) {
+    throw new Error(`Invalid suffix: "${sfx}"`)
+  }
   const n = Math.abs(value)
   const lowPitch = pitch(n) === 'low'
   const nZeros = trailingZeros(n)
-  const exceptions = {
-    0: '',
-    5: 'ö',
-    6: 'o',
-  }
-  const replacement = lowPitch ? 'a' : 'e'
+  const replacement2 = lowPitch ? 'a' : 'e'
+  const replacement3 = n % 10 === 5 ? 'ö' : lowPitch ? 'o' : 'e'
+  const replacement2low = lowPitch ? 'ó' : 'ő'
   // special cases
-  let replacementES = ''
+  let replacement5 = ''
   if (nZeros < 6) {
     if (n === 0) {
-      replacementES = ''
+      replacement5 = ''
     } else if (n % 10 === 5) {
-      replacementES = 'ö'
+      replacement5 = 'ö'
     } else if (n % 10 === 6) {
-      replacementES = 'o'
+      replacement5 = 'o'
     } else {
-      replacementES = replacement
+      replacement5 = replacement2
     }
   } else {
     // big numbers (see: https://hu.wikipedia.org/wiki/T%C3%ADz_hatv%C3%A1nyai)
     const nGroups = Math.floor(nZeros / 3)
-    replacementES = nGroups % 2 === 0 ? '' : 'o'
+    replacement5 = nGroups % 2 === 0 ? '' : 'o'
   }
-  const replacementEK = n % 10 === 5 ? 'ö' : lowPitch ? 'o' : 'e'
-  const replacementBOL = lowPitch ? 'ó' : 'ő'
-  sfx = sfx.replace(/^[aáeoö]?(?=s)/g, replacementES) // -as/es/os/ös
-  sfx = sfx.replace(/(?<=s)[eoö](?=k)/g, replacementEK) // -sok/sek/sök
-  sfx = sfx.replace(/(?<=k)[ae](?=t)/g, replacement) // -kat/ket
-  sfx = sfx.replace(/(?<=n)[ae](?=k)/g, replacement) // -nak/nek
-  sfx = sfx.replace(/(?<=b)[óő](?=l)/g, replacementBOL) // -ból/ből
-  sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, replacementEK) // -hoz/hez/höz
+  sfx = sfx.replace(/^[aáeoö]?(?=s)/g, replacement5) // -s/as/es/os/ös
+  sfx = sfx.replace(/(?<=s)[eoö](?=k)/g, replacement3) // -sok/sek/sök
+  sfx = sfx.replace(/(?<=k)[ae](?=t)/g, replacement2) // -kat/ket
+  sfx = sfx.replace(/(?<=n)[ae](?=k)/g, replacement2) // -nak/nek
+  sfx = sfx.replace(/(?<=b)[óő](?=l)/g, replacement2low) // -ból/ből
+  sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, replacement3) // -hoz/hez/höz
   return sfx
 }
 
