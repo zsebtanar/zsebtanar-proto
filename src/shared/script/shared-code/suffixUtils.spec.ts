@@ -5,6 +5,7 @@ import {
   dativusSuffix,
   placeValueSuffix,
   convertSuffix,
+  generalSuffix,
   suffixVowel,
 } from './suffixUtils'
 import { pls, pln } from './utils'
@@ -134,6 +135,18 @@ describe('suffix utils', () => {
     expect(fn(1, 'shoz')).toEqual('eshez')
     expect(fn(3, 'eshez')).toEqual('ashoz')
     expect(fn(5, 'ashoz')).toEqual('öshöz')
+  })
+
+  test('generalSuffix', () => {
+    const fn = generalSuffix
+    expect(() => fn(0, 'ért')).toThrow('Invalid suffix: "ért"')
+    expect(fn(0, 'ből')).toEqual('ból')
+    expect(fn(1, 'ból')).toEqual('ből')
+    expect(fn(0, 'nek')).toEqual('nak')
+    expect(fn(1, 'nak')).toEqual('nek')
+    expect(fn(0, 'höz')).toEqual('hoz')
+    expect(fn(1, 'hoz')).toEqual('hez')
+    expect(fn(5, 'hez')).toEqual('höz')
   })
 
   test('convertSuffix', () => {

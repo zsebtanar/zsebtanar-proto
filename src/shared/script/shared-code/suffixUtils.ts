@@ -79,32 +79,45 @@ export function placeValueSuffix(value: number, sfx: string): string {
   const n = Math.abs(value)
   const lowPitch = pitch(n) === 'low'
   const nZeros = trailingZeros(n)
-  const replacement2 = lowPitch ? 'a' : 'e'
-  const replacement3 = n % 10 === 5 ? 'ö' : lowPitch ? 'o' : 'e'
-  const replacement2low = lowPitch ? 'ó' : 'ő'
+
   // special cases
-  let replacement5 = ''
+  let replacement = ''
   if (nZeros < 6) {
     if (n === 0) {
-      replacement5 = ''
+      replacement = ''
     } else if (n % 10 === 5) {
-      replacement5 = 'ö'
+      replacement = 'ö'
     } else if (n % 10 === 6) {
-      replacement5 = 'o'
+      replacement = 'o'
     } else {
-      replacement5 = replacement2
+      replacement = lowPitch ? 'a' : 'e'
     }
   } else {
     // big numbers (see: https://hu.wikipedia.org/wiki/T%C3%ADz_hatv%C3%A1nyai)
     const nGroups = Math.floor(nZeros / 3)
-    replacement5 = nGroups % 2 === 0 ? '' : 'o'
+    replacement = nGroups % 2 === 0 ? '' : 'o'
   }
-  sfx = sfx.replace(/^[aáeoö]?(?=s)/g, replacement5) // -s/as/es/os/ös
-  sfx = sfx.replace(/(?<=s)[eoö](?=k)/g, replacement3) // -sok/sek/sök
-  sfx = sfx.replace(/(?<=k)[ae](?=t)/g, replacement2) // -kat/ket
-  sfx = sfx.replace(/(?<=n)[ae](?=k)/g, replacement2) // -nak/nek
-  sfx = sfx.replace(/(?<=b)[óő](?=l)/g, replacement2low) // -ból/ből
-  sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, replacement3) // -hoz/hez/höz
+  sfx = sfx.replace(/^[aáeoö]?(?=s)/g, replacement) // -s/as/es/os/ös
+  sfx = sfx.replace(/(?<=s)[eoö](?=k)/g, suffixVowel(n, 'oeö')) // -sok/sek/sök
+  sfx = sfx.replace(/(?<=k)[ae](?=t)/g, suffixVowel(n, 'ae')) // -kat/ket
+  sfx = sfx.replace(/(?<=n)[ae](?=k)/g, suffixVowel(n, 'ae')) // -nak/nek
+  sfx = sfx.replace(/(?<=b)[óő](?=l)/g, suffixVowel(n, 'óő')) // -ból/ből
+  sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, suffixVowel(n, 'oeö')) // -hoz/hez/höz
+  return sfx
+}
+
+export function generalSuffix(value: number, sfx: string): string {
+  // suffix: nak/nek, ból/ből, hoz/hez/höz
+  const n = Math.abs(value)
+  if (/^b[óő]l$/g.test(sfx)) {
+    sfx = sfx.replace(/(?<=b)[óő](?=l)/g, suffixVowel(n, 'óő')) // -ból/ből
+  } else if (/^n[ae]k$/g.test(sfx)) {
+    sfx = sfx.replace(/(?<=n)[ae](?=k)/g, suffixVowel(n, 'ae')) // -nak/nek
+  } else if (/^h[oeö]z$/g.test(sfx)) {
+    sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, suffixVowel(n, 'oeö')) // -hoz/hez/höz
+  } else {
+    throw new Error(`Invalid suffix: "${sfx}"`)
+  }
   return sfx
 }
 
@@ -113,8 +126,12 @@ export function convertSuffix(value: number, sample: string): string {
     return dativusSuffix(value)
   } else if (/^[aáeoö]?s/g.test(sample)) {
     return placeValueSuffix(value, sample)
+  } else {
+    // TODO: withSuffix (mal/gyel)
+    // TODO: fractionSuffix (ad/ed)
+    // TODO: multiplySuffix (szorosára)
+    return generalSuffix(value, sample)
   }
-  throw new Error(`Invalid suffix: "${sample}"`)
 }
 
 export const suffix = (num: PLNumber, sfx: PLString): PLString => {
