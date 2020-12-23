@@ -1,6 +1,24 @@
 import { PLNumber, plString, PLString } from 'pocket-lisp-stdlib'
 import { assertInteger, typeCheck } from './utils'
 
+export function getLastDigit(num: number): number {
+  const n = Math.abs(num)
+  return n % 10
+}
+
+export function getLastNonZeroDigit(num: number): number {
+  if (num === 0) {
+    return 0
+  } else {
+    let lastDigit = getLastDigit(num)
+    while (lastDigit === 0) {
+      num = num / 10
+      lastDigit = getLastDigit(num)
+    }
+    return lastDigit
+  }
+}
+
 export function trailingZeros(num: number): number {
   // number of trailing zeros after first digit
   assertInteger(num)
@@ -15,13 +33,20 @@ export function trailingZeros(num: number): number {
   return nZeros
 }
 
-export function pitch(num: number): string {
+export function isNumberGroupEven(n: number): boolean {
+  // big numbers (see: https://hu.wikipedia.org/wiki/T%C3%ADz_hatv%C3%A1nyai)
+  const nZeros = trailingZeros(n)
+  const nGroups = Math.floor(nZeros / 3)
+  return nGroups % 2 === 0
+}
+
+export function pitch(n: number): string {
   // check if number is high pitch (e/i) or low pitch (a/o/u)
-  assertInteger(num)
-  const nZeros = trailingZeros(num)
+  assertInteger(n)
+  const nZeros = trailingZeros(n)
   if (nZeros <= 1) {
     const highPitch = nZeros === 0 ? [1, 2, 4, 5, 7, 9] : [1, 4, 5, 7, 9]
-    const lastDigit = nZeros === 0 ? Math.abs(num % 10) : Math.abs((num / 10) % 10)
+    const lastDigit = getLastNonZeroDigit(n)
     return highPitch.indexOf(lastDigit) >= 0 ? 'high' : 'low'
   } else if (nZeros >= 3 && nZeros <= 5) {
     return 'high'
@@ -29,15 +54,15 @@ export function pitch(num: number): string {
   return 'low'
 }
 
-export function suffixVowel(num: number, vowelType: string): string {
-  const n = Math.abs(num)
+export function suffixVowel(n: number, vowelType: string): string {
   const lowPitch = pitch(n) === 'low'
   let vowel = ''
   const type = vowelType.split('').sort().join('')
   if (type === 'ae') {
     vowel = lowPitch ? 'a' : 'e'
   } else if (type === 'eoö') {
-    vowel = n % 10 === 5 ? 'ö' : lowPitch ? 'o' : 'e'
+    const lastDigit = getLastDigit(n)
+    vowel = lastDigit === 5 || lastDigit === 2 ? 'ö' : lowPitch ? 'o' : 'e'
   } else if (type === 'óő') {
     vowel = lowPitch ? 'ó' : 'ő'
   } else {
@@ -46,12 +71,11 @@ export function suffixVowel(num: number, vowelType: string): string {
   return vowel
 }
 
-export function dativusSuffix(value: number): string {
+export function dativusSuffix(n: number): string {
   // suffix: at/et/öt/t
-  const n = Math.abs(value)
   const nZeros = trailingZeros(n)
   if (nZeros < 6) {
-    const lastDigit = n % 10
+    const lastDigit = getLastDigit(n)
     const exceptions = {
       0: 't',
       2: 't',
@@ -71,12 +95,12 @@ export function dativusSuffix(value: number): string {
   }
 }
 
-export function placeValueSuffix(value: number, sfx: string): string {
+export function placeValueSuffix(n: number, sfx: string): string {
   // suffix: as/es/asoknak/eseket etc.
   if (!/^[aáeoö]?s/g.test(sfx)) {
     throw new Error(`Invalid suffix: "${sfx}"`)
   }
-  const n = Math.abs(value)
+  const lastDigit = getLastDigit(n)
   const lowPitch = pitch(n) === 'low'
   const nZeros = trailingZeros(n)
 
@@ -85,52 +109,85 @@ export function placeValueSuffix(value: number, sfx: string): string {
   if (nZeros < 6) {
     if (n === 0) {
       replacement = ''
-    } else if (n % 10 === 5) {
+    } else if (lastDigit === 5) {
       replacement = 'ö'
-    } else if (n % 10 === 6) {
+    } else if (lastDigit === 6) {
       replacement = 'o'
     } else {
       replacement = lowPitch ? 'a' : 'e'
     }
   } else {
-    // big numbers (see: https://hu.wikipedia.org/wiki/T%C3%ADz_hatv%C3%A1nyai)
-    const nGroups = Math.floor(nZeros / 3)
-    replacement = nGroups % 2 === 0 ? '' : 'o'
+    replacement = isNumberGroupEven(n) ? '' : 'o'
   }
   sfx = sfx.replace(/^[aáeoö]?(?=s)/g, replacement) // -s/as/es/os/ös
   sfx = sfx.replace(/(?<=s)[eoö](?=k)/g, suffixVowel(n, 'oeö')) // -sok/sek/sök
-  sfx = sfx.replace(/(?<=k)[ae](?=t)/g, suffixVowel(n, 'ae')) // -kat/ket
-  sfx = sfx.replace(/(?<=n)[ae](?=k)/g, suffixVowel(n, 'ae')) // -nak/nek
+  sfx = sfx.replace(/(?<=k)[ae](?=t|l)/g, suffixVowel(n, 'ae')) // -kat/ket/kal/kel
+  // replace trailing 2 with 1 to avoid special case: 2-höz vs. 2-esekhez
+  sfx = generalSuffix(lastDigit === 2 ? n - 1 : n, sfx)
+  return sfx
+}
+
+export function withSuffix(n: number): string {
+  // suffix: val/vel
+  const nZeros = trailingZeros(n)
+  if (nZeros <= 1) {
+    const lastDigit = getLastNonZeroDigit(n)
+    const suffixes =
+      nZeros === 0
+        ? {
+            0: 'val',
+            1: 'gyel',
+            2: 'vel',
+            3: 'mal',
+            4: 'gyel',
+            5: 'tel',
+            6: 'tal',
+            7: 'tel',
+            8: 'cal',
+            9: 'cel',
+          }
+        : {
+            1: 'zel',
+            2: 'szal',
+            3: 'cal',
+            4: 'nel',
+            5: 'nel',
+            6: 'nal',
+            7: 'nel',
+            8: 'nal',
+            9: 'nel',
+          }
+    return suffixes[lastDigit]
+  } else if (nZeros === 2) {
+    return 'zal'
+  } else if (nZeros < 6) {
+    return 'rel'
+  } else {
+    return isNumberGroupEven(n) ? 'val' : 'dal'
+  }
+}
+
+export function generalSuffix(n: number, sfx: string): string {
+  // suffix: nak/nek, ból/ből, hoz/hez/höz
   sfx = sfx.replace(/(?<=b)[óő](?=l)/g, suffixVowel(n, 'óő')) // -ból/ből
+  sfx = sfx.replace(/(?<=n)[ae](?=k)/g, suffixVowel(n, 'ae')) // -nak/nek
   sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, suffixVowel(n, 'oeö')) // -hoz/hez/höz
   return sfx
 }
 
-export function generalSuffix(value: number, sfx: string): string {
-  // suffix: nak/nek, ból/ből, hoz/hez/höz
-  const n = Math.abs(value)
-  if (/^b[óő]l$/g.test(sfx)) {
-    sfx = sfx.replace(/(?<=b)[óő](?=l)/g, suffixVowel(n, 'óő')) // -ból/ből
-  } else if (/^n[ae]k$/g.test(sfx)) {
-    sfx = sfx.replace(/(?<=n)[ae](?=k)/g, suffixVowel(n, 'ae')) // -nak/nek
-  } else if (/^h[oeö]z$/g.test(sfx)) {
-    sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, suffixVowel(n, 'oeö')) // -hoz/hez/höz
+export function convertSuffix(n: number, sfx: string): string {
+  if (/^[aáeoöő]?t$/g.test(sfx)) {
+    return dativusSuffix(n)
+  } else if (/^[aáeoö]?s/g.test(sfx)) {
+    return placeValueSuffix(n, sfx)
+  } else if (/^[acdegmnrstvyz]{2,}l$/g.test(sfx)) {
+    return withSuffix(n)
+  } else if (/^b[óő]l$/g.test(sfx) || /^n[ae]k$/g.test(sfx) || /^h[oeö]z$/g.test(sfx)) {
+    return generalSuffix(n, sfx)
   } else {
-    throw new Error(`Invalid suffix: "${sfx}"`)
-  }
-  return sfx
-}
-
-export function convertSuffix(value: number, sample: string): string {
-  if (/^[aáeoöő]?t$/g.test(sample)) {
-    return dativusSuffix(value)
-  } else if (/^[aáeoö]?s/g.test(sample)) {
-    return placeValueSuffix(value, sample)
-  } else {
-    // TODO: withSuffix (mal/gyel)
     // TODO: fractionSuffix (ad/ed)
     // TODO: multiplySuffix (szorosára)
-    return generalSuffix(value, sample)
+    throw new Error(`Invalid suffix: "${sfx}"`)
   }
 }
 
