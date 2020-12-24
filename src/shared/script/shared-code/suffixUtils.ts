@@ -60,6 +60,8 @@ export function suffixVowel(n: number, vowelType: string): string {
   const type = vowelType.split('').sort().join('')
   if (type === 'ae') {
     vowel = lowPitch ? 'a' : 'e'
+  } else if (type === 'áé') {
+    vowel = lowPitch ? 'á' : 'é'
   } else if (type === 'eoö') {
     const lastDigit = getLastDigit(n)
     vowel = lastDigit === 5 || lastDigit === 2 ? 'ö' : lowPitch ? 'o' : 'e'
@@ -71,7 +73,7 @@ export function suffixVowel(n: number, vowelType: string): string {
   return vowel
 }
 
-export function dativusSuffix(n: number): string {
+export function dativSuffix(n: number): string {
   // suffix: at/et/öt/t
   const nZeros = trailingZeros(n)
   if (nZeros < 6) {
@@ -167,26 +169,41 @@ export function withSuffix(n: number): string {
   }
 }
 
+export function multSuffix(n: number, sfx: string): string {
+  // suffix: szor/szer/ször
+  sfx = sfx.replace(/(?<=sz)[oeö](?=r)/g, suffixVowel(n, 'oeö')) // -szor/szer/ször
+  sfx = sfx.replace(/(?<=r)[oeö](?=s)/g, suffixVowel(n, 'oeö')) // -os/es/ös
+  sfx = sfx.replace(/(?<=s)[ae]$/g, suffixVowel(n, 'ae')) // -sa/se
+  sfx = sfx.replace(/(?<=s)[áé]/g, suffixVowel(n, 'áé')) // -sá/sé
+
+  // replace trailing 5 with 7 to avoid special case: 5-höz vs. 5-szöröséhez
+  const lastDigit = getLastDigit(n)
+  sfx = generalSuffix(lastDigit === 5 ? n + 2 : n, sfx)
+  return sfx
+}
+
 export function generalSuffix(n: number, sfx: string): string {
   // suffix: nak/nek, ból/ből, hoz/hez/höz
   sfx = sfx.replace(/(?<=b)[óő](?=l)/g, suffixVowel(n, 'óő')) // -ból/ből
   sfx = sfx.replace(/(?<=n)[ae](?=k)/g, suffixVowel(n, 'ae')) // -nak/nek
   sfx = sfx.replace(/(?<=h)[eoö](?=z)/g, suffixVowel(n, 'oeö')) // -hoz/hez/höz
+  sfx = sfx.replace(/(?<=r)[ae]$/g, suffixVowel(n, 'ae')) // -ra/re
   return sfx
 }
 
 export function convertSuffix(n: number, sfx: string): string {
   if (/^[aáeoöő]?t$/g.test(sfx)) {
-    return dativusSuffix(n)
+    return dativSuffix(n)
   } else if (/^[aáeoö]?s/g.test(sfx)) {
     return placeValueSuffix(n, sfx)
   } else if (/^[acdegmnrstvyz]{2,}l$/g.test(sfx)) {
     return withSuffix(n)
+  } else if (/^sz[oeö]r$/g.test(sfx)) {
+    return multSuffix(n, sfx)
   } else if (/^b[óő]l$/g.test(sfx) || /^n[ae]k$/g.test(sfx) || /^h[oeö]z$/g.test(sfx)) {
     return generalSuffix(n, sfx)
   } else {
     // TODO: fractionSuffix (ad/ed)
-    // TODO: multiplySuffix (szorosára)
     throw new Error(`Invalid suffix: "${sfx}"`)
   }
 }

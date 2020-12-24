@@ -5,10 +5,11 @@ import {
   isNumberGroupEven,
   pitch,
   trailingZeros,
-  dativusSuffix,
+  dativSuffix,
   placeValueSuffix,
   convertSuffix,
   withSuffix,
+  multSuffix,
   generalSuffix,
   suffixVowel,
 } from './suffixUtils'
@@ -94,6 +95,8 @@ describe('suffix utils', () => {
     expect(() => fn(0, 'uoe')).toThrow('Invalid vowel type: "uoe"')
     expect(fn(0, 'ea')).toEqual('a')
     expect(fn(1, 'ae')).toEqual('e')
+    expect(fn(0, 'éá')).toEqual('á')
+    expect(fn(1, 'áé')).toEqual('é')
     expect(fn(-0, 'öoe')).toEqual('o')
     expect(fn(-1, 'öoe')).toEqual('e')
     expect(fn(5, 'öoe')).toEqual('ö')
@@ -101,8 +104,8 @@ describe('suffix utils', () => {
     expect(fn(-1, 'őó')).toEqual('ő')
   })
 
-  test('dativusSuffix', () => {
-    const fn = dativusSuffix
+  test('dativSuffix', () => {
+    const fn = dativSuffix
     expect(fn(-5)).toEqual('öt')
     expect(fn(-1)).toEqual('et')
     expect(fn(0)).toEqual('t')
@@ -215,6 +218,35 @@ describe('suffix utils', () => {
     expect(fn(1_000_000_000_000_000)).toEqual('dal')
   })
 
+  test('multSuffix', () => {
+    const fn = multSuffix
+    expect(fn(0, 'unknown')).toEqual('unknown')
+    expect(fn(0, 'ször')).toEqual('szor')
+    expect(fn(1, 'szor')).toEqual('szer')
+    expect(fn(5, 'szer')).toEqual('ször')
+    expect(fn(0, 'szörös')).toEqual('szoros')
+    expect(fn(1, 'szoros')).toEqual('szeres')
+    expect(fn(5, 'szeres')).toEqual('szörös')
+    expect(fn(0, 'szöröse')).toEqual('szorosa')
+    expect(fn(1, 'szorosa')).toEqual('szerese')
+    expect(fn(5, 'szerese')).toEqual('szöröse')
+    expect(fn(0, 'szörösét')).toEqual('szorosát')
+    expect(fn(1, 'szorosát')).toEqual('szeresét')
+    expect(fn(5, 'szeresét')).toEqual('szörösét')
+    expect(fn(0, 'szörösére')).toEqual('szorosára')
+    expect(fn(1, 'szorosára')).toEqual('szeresére')
+    expect(fn(5, 'szeresére')).toEqual('szörösére')
+    expect(fn(0, 'szörösének')).toEqual('szorosának')
+    expect(fn(1, 'szorosának')).toEqual('szeresének')
+    expect(fn(5, 'szeresének')).toEqual('szörösének')
+    expect(fn(0, 'szöröséhez')).toEqual('szorosához')
+    expect(fn(1, 'szorosához')).toEqual('szereséhez')
+    expect(fn(5, 'szereséhez')).toEqual('szöröséhez')
+    expect(fn(0, 'szöröséből')).toEqual('szorosából')
+    expect(fn(1, 'szorosából')).toEqual('szereséből')
+    expect(fn(5, 'szereséből')).toEqual('szöröséből')
+  })
+
   test('generalSuffix', () => {
     const fn = generalSuffix
     expect(fn(0, 'unknown')).toEqual('unknown')
@@ -226,6 +258,9 @@ describe('suffix utils', () => {
     expect(fn(1, 'hoz')).toEqual('hez')
     expect(fn(2, 'hez')).toEqual('höz')
     expect(fn(-5, 'hez')).toEqual('höz')
+    expect(fn(1, 'ra')).toEqual('re')
+    expect(fn(2, 'ra')).toEqual('re')
+    expect(fn(-3, 're')).toEqual('ra')
   })
 
   test('convertSuffix', () => {
