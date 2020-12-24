@@ -210,6 +210,7 @@ export function fractionSuffix(n: number, sfx: string): string {
   sfx = sfx.replace(/^[aemoö]?(?=d)/g, replacement) // -d/ad/ed/od/öd/mod
   sfx = sfx.replace(/(?<=d)[ae]$/g, suffixVowel(n, 'ae')) // -da/de
   sfx = sfx.replace(/(?<=d)[áé]/g, suffixVowel(n, 'áé')) // -dá/dé
+  sfx = sfx.replace(/(?<=[dv])[ae](?=l)/g, suffixVowel(n, 'ae')) // -dal/del/val/vel
 
   sfx = multSuffix(n, sfx) // -adszorosa/edszerese
   return sfx
