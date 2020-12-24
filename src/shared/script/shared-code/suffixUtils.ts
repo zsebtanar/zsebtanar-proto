@@ -244,20 +244,21 @@ export function convertSuffix(n: number, sfx: string): string {
 
 export const suffix = (num: PLNumber | PLFractionNumber, sfx: PLString): PLString => {
   typeCheck(PLString, sfx)
-  let sfxCorrect = ''
-  if (PLNumber === num.constructor) {
-    sfxCorrect = convertSuffix(num.value, sfx.value)
-  } else if (PLFractionNumber === num.constructor) {
+  let n: number
+  if (num.constructor === PLNumber) {
+    n = num.value
+  } else if (num.constructor === PLFractionNumber) {
     if (/^[aemoö]?d/g.test(sfx.value)) {
-      sfxCorrect = convertSuffix(num.denominator, sfx.value)
+      n = num.denominator
     } else {
-      throw new Error(`Invalid suffix: "${sfx}"`)
+      throw new Error(`Invalid suffix: "${sfx.value}"`)
     }
   } else {
     throw new Error(
       `Expected '${PLNumber.name}' or '${PLFractionNumber.name}', but got '${num.constructor.name}'.`,
     )
   }
+  const sfxCorrect = convertSuffix(n, sfx.value)
   return plString(sfxCorrect)
 }
 
