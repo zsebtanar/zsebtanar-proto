@@ -41,6 +41,14 @@
     "storage": {
       ".write": "auth.token.role === 1000",
       ".read": true
+    },
+    "rewards": {
+      ".write": "auth.token.role === 1000",
+      ".read": true
+    },
+    "userStatistics": {
+      ".write": false,
+      ".read": false
     }
   }
 }

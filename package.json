@@ -128,7 +128,7 @@
     "precommit": "lint-staged",
     "::client-dev": "webpack-dev-server --config ./build/webpack.client.js",
     "::client-build": "cross-env NODE_ENV=production webpack -p --config ./build/webpack.client.js",
-    "::server-dev": "concurrently --kill-others --names \"server,firebase,client\" \"npm run ::server-compile -- --watch\" \"npm run ::server-emulator\" \"SERVER_ENV=emulator npm run ::client-dev\"",
+    "::server-dev": "concurrently --kill-others --names \"server,firebase,client\" \"npm run ::server-compile -- --watch\" \"npm run ::server-emulator\" \"cross-env SERVER_ENV=emulator npm run ::client-dev\"",
     "::server-build": "npm run ::server-compile",
     "pre::server-compile": "npm run ::server-prep",
     "::server-compile": "cross-env NODE_ENV=production webpack --display-error-details --config ./build/webpack.server.js",

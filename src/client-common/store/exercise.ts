@@ -17,6 +17,7 @@ import {
 import { checkSolution, getHint, getPublicExercise } from 'client-common/services/exercise'
 import { openSignInModal } from 'client-common/store/actions/modal'
 import { pairsInOrder } from 'shared/util/fn'
+import { updateSolvedExercise } from 'client-common/services/user-statistics'
 
 export const EXERCISE_INIT = 'EXERCISE_INIT'
 export const EXERCISE_GET = 'EXERCISE_GET'
@@ -25,9 +26,13 @@ export const EXERCISE_CHECK_SUCCESS = 'EXERCISE_CHECK_SUCCESS'
 export const EXERCISE_CHECK_FAIL = 'EXERCISE_CHECK_FAIL'
 export const EXERCISE_CHECK_ERROR = 'EXERCISE_CHECK_ERROR'
 export const EXERCISE_NEXT_SUB_TASK = 'EXERCISE_NEXT_SUB_TASK'
+export const EXERCISE_FINISHED = 'EXERCISE_FINISHED'
 
 export const HINT_GET = 'HINT_GET'
 export const HINT_GET_ERROR = 'HINT_GET_ERROR'
+export const HINT_USED = 'HINT_USED'
+
+export const ATTEMPT_HAPPEN = 'ATTEMPT_HAPPEN'
 
 export const TASK_STATUS_WAITING = 'waiting'
 export const TASK_STATUS_ACTIVE = 'active'
@@ -64,6 +69,8 @@ export function checkSolutionAction(exerciseId, subTaskId, solutions): any {
           }
         })
 
+        dispatch({ type: ATTEMPT_HAPPEN })
+
         if (isValid) {
           dispatch(activateNextSubTask())
         }
@@ -87,7 +94,7 @@ export function getHintAction(exerciseId, subTaskId, lastHintId): any {
     }
 
     return getHint(exerciseId, subTaskId, lastHintId)
-      .then(({ data }) =>
+      .then(({ data }) => {
         dispatch({
           type: HINT_GET,
           payload: data,
@@ -96,13 +103,24 @@ export function getHintAction(exerciseId, subTaskId, lastHintId): any {
             subTaskId
           }
         })
-      )
+
+        dispatch({ type: HINT_USED })
+      })
       .catch(error => dispatch({ type: HINT_GET_ERROR, payload: error }))
   }
 }
 
 export function activateNextSubTask() {
-  return { type: EXERCISE_NEXT_SUB_TASK }
+  return (dispatch, getState) => {
+    dispatch({ type: EXERCISE_NEXT_SUB_TASK })
+    const state = getState()
+    const exercise = state.app.exercise.item
+    const session = state.app.session
+
+    if (exercise.isFinished && session.signedIn) {
+      updateSolvedExercise(session.user.uid, exercise._key, exercise.statistics)
+    }
+  }
 }
 
 /**
@@ -130,10 +148,33 @@ export function exerciseReducer(state = INIT_STATE, action) {
       return reduceFailedCheck(state, action)
     case EXERCISE_CHECK_SUCCESS:
       return reduceSuccessCheck(state, action)
+    case HINT_USED:
+      return reduceHintUsed(state)
+    case ATTEMPT_HAPPEN:
+      return reduceAttemptHappened(state)
     default:
       return state
   }
 }
+
+const reduceHintUsed = (state) =>
+  evolve({
+    item: {
+      statistics: {
+        usedHelps: add(1)
+      }
+    }
+  })(state)
+
+const reduceAttemptHappened = (state) =>
+  evolve({
+    item: {
+      statistics: {
+        numberOfAttempts: add(1),
+        endTime: always(new Date().getTime())
+      }
+    }
+  })(state)
 
 const reduceExercise = (state, { payload }) => ({
   item: pipe(
@@ -146,6 +187,12 @@ const reduceExercise = (state, { payload }) => ({
         hintsLeft: pathOr(0, ['hintCount'], task),
         validity: {}
       }))
+    }),
+    assocPath(['statistics'], {
+      numberOfAttempts: 0,
+      usedHelps: 0,
+      startTime: new Date().getTime(),
+      endTime: new Date().getTime()
     }),
     assocPath(['allTasks'], keys(payload.subTasks).length),
     assocPath(['finishedTasks'], 0),

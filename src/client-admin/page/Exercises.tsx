@@ -6,15 +6,20 @@ import { getAllPrivateExercises } from 'client-common/services/exercise'
 import { Loading } from 'client-common/component/general/Loading'
 import { ExerciseState } from '../components/ExerciseState'
 import { Icon } from 'client-common/component/general/Icon'
+import { Button } from 'client-common/component/general/Button'
+import { getRewards, addExerciseToReward } from 'client-common/services/rewards'
+import { RewardSelector } from '../components/RewardSelector'
 
 export class Exercises extends React.Component<any, any> {
   state = {
-    exercises: null
+    exercises: null,
+    rewards: [],
+    selectedReward: null
   }
 
   loadList = () => {
-    Promise.all([getAllClassification(), getAllPrivateExercises()]).then(
-      ([classifications, list]) => {
+    Promise.all([getAllClassification(), getAllPrivateExercises(), getRewards()]).then(
+      ([classifications, list, rewards]) => {
         const topics = values(classifications[SUBJECT]).reduce(
           (acc, sub) => Object.assign(acc, sub[TOPIC]),
           {}
@@ -29,7 +34,8 @@ export class Exercises extends React.Component<any, any> {
                 tags: map(key => pathOr(key, [TAGS, key as string, 'name'], classifications))
               }
             })
-          )
+          ),
+          rewards
         })
       }
     )
@@ -39,11 +45,28 @@ export class Exercises extends React.Component<any, any> {
     this.loadList()
   }
 
+  rewardSelected = reward => {
+    this.setState({ selectedReward: reward })
+  }
+
+  addToReward = exerciseId => {
+    addExerciseToReward(exerciseId, this.state.selectedReward._key)
+      .then( _ => getRewards().then(rewards => {
+        const selectedReward = rewards.find(r => r._key === this.state.selectedReward._key)
+        this.setState({rewards, selectedReward})
+      }))
+      .catch(error => {
+        console.error(error);
+        window.alert("Sajnos a feladat mentése a jutalomhoz sikertelen. A hibaüzenet megtekintéséhez kérlek nyomd meg az F12-t.")
+      })
+  }
+
   render() {
     return (
       <div>
         <div className="btn-toolbar justify-content-between align-items-center">
           <h3>Feladatok</h3>
+          <RewardSelector rewards={this.state.rewards} rewardSelected={this.rewardSelected} />
           <NavLink exact to="/exercise/add" className="btn btn-outline-secondary">
             <i className="fa fa-plus" /> Feladat létrehozása
           </NavLink>
@@ -67,8 +90,8 @@ export class Exercises extends React.Component<any, any> {
             <tbody>{this.renderItem()}</tbody>
           </table>
         ) : (
-          <Loading />
-        )}
+            <Loading />
+          )}
       </div>
     )
   }
@@ -139,8 +162,28 @@ export class Exercises extends React.Component<any, any> {
           >
             <Icon fa="edit" />
           </NavLink>
+          &nbsp;
+          <Button
+            onAction={() => this.addToReward(ex._key)}
+            disabled={!this.canDisplayAddRewardButton(ex)}
+            className={`btn btn-sm btn-light`}
+            title="Hozzáadás a kiválasztott jutalomhoz"
+          >
+            <Icon fa="trophy" />
+          </Button>
         </td>
       </tr>
     ))
+  }
+
+  canDisplayAddRewardButton(ex): boolean {
+    return this.isActiveExercise(ex._state) 
+      && this.state.selectedReward 
+      && this.state.selectedReward.additionalInfo 
+      && !this.state.selectedReward.additionalInfo.shouldComplete.includes(ex._key)
+  }
+
+  isActiveExercise(exState) {
+    return exState === 'active'
   }
 }

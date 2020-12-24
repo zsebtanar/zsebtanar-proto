@@ -77,6 +77,9 @@ export const Header = withRouter(
                   <NavLink activeClassName="active" className="dropdown-item" to="/classification">
                     <Icon fa="folder" /> Kategóriák
                   </NavLink>
+                  <NavLink activeClassName="active" className="dropdown-item" to="/edit-rewards">
+                    <Icon fa="trophy" /> Jutalmak szerkesztése
+                  </NavLink>
                   <DropdownDevider />
                   <NavLink activeClassName="active" className="dropdown-item" to="/wiki-page">
                     <Icon fa="wikipedia-w" /> Wiki oldalak
