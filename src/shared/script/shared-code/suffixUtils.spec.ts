@@ -12,8 +12,9 @@ import {
   multSuffix,
   generalSuffix,
   suffixVowel,
+  fractionSuffix,
 } from './suffixUtils'
-import { pls, pln } from './utils'
+import { pls, pln, plf } from './utils'
 
 describe('suffix utils', () => {
   test('getLastDigit', () => {
@@ -223,28 +224,60 @@ describe('suffix utils', () => {
     expect(fn(0, 'unknown')).toEqual('unknown')
     expect(fn(0, 'ször')).toEqual('szor')
     expect(fn(1, 'szor')).toEqual('szer')
+    expect(fn(-2, 'szor')).toEqual('szer')
     expect(fn(5, 'szer')).toEqual('ször')
     expect(fn(0, 'szörös')).toEqual('szoros')
     expect(fn(1, 'szoros')).toEqual('szeres')
+    expect(fn(2, 'szoros')).toEqual('szeres')
     expect(fn(5, 'szeres')).toEqual('szörös')
     expect(fn(0, 'szöröse')).toEqual('szorosa')
     expect(fn(1, 'szorosa')).toEqual('szerese')
+    expect(fn(2, 'szorosa')).toEqual('szerese')
     expect(fn(5, 'szerese')).toEqual('szöröse')
     expect(fn(0, 'szörösét')).toEqual('szorosát')
     expect(fn(1, 'szorosát')).toEqual('szeresét')
+    expect(fn(2, 'szorosát')).toEqual('szeresét')
     expect(fn(5, 'szeresét')).toEqual('szörösét')
     expect(fn(0, 'szörösére')).toEqual('szorosára')
     expect(fn(1, 'szorosára')).toEqual('szeresére')
+    expect(fn(2, 'szorosára')).toEqual('szeresére')
     expect(fn(5, 'szeresére')).toEqual('szörösére')
     expect(fn(0, 'szörösének')).toEqual('szorosának')
     expect(fn(1, 'szorosának')).toEqual('szeresének')
+    expect(fn(2, 'szorosának')).toEqual('szeresének')
     expect(fn(5, 'szeresének')).toEqual('szörösének')
     expect(fn(0, 'szöröséhez')).toEqual('szorosához')
     expect(fn(1, 'szorosához')).toEqual('szereséhez')
+    expect(fn(2, 'szorosához')).toEqual('szereséhez')
     expect(fn(5, 'szereséhez')).toEqual('szöröséhez')
     expect(fn(0, 'szöröséből')).toEqual('szorosából')
     expect(fn(1, 'szorosából')).toEqual('szereséből')
+    expect(fn(2, 'szorosából')).toEqual('szereséből')
     expect(fn(5, 'szereséből')).toEqual('szöröséből')
+  })
+
+  test('fractionSuffix', () => {
+    const fn = fractionSuffix
+    expect(fn(0, 'ad')).toEqual('d')
+    expect(fn(-1, 'öd')).toEqual('ed')
+    expect(fn(-5, 'ed')).toEqual('öd')
+    expect(fn(0, 'ada')).toEqual('da')
+    expect(fn(-1, 'öde')).toEqual('ede')
+    expect(fn(-5, 'ede')).toEqual('öde')
+    expect(fn(0, 'adának')).toEqual('dának')
+    expect(fn(-1, 'ödének')).toEqual('edének')
+    expect(fn(-5, 'edének')).toEqual('ödének')
+    expect(fn(0, 'adszorosa')).toEqual('dszorosa')
+    expect(fn(-1, 'ödszöröse')).toEqual('edszerese')
+    expect(fn(-5, 'edszerese')).toEqual('ödszöröse')
+    expect(fn(1, 'ad')).toEqual('ed')
+    expect(fn(10, 'ad')).toEqual('ed')
+    expect(fn(100, 'ad')).toEqual('ad')
+    expect(fn(1000, 'ad')).toEqual('ed')
+    expect(fn(1_000_000, 'ad')).toEqual('mod')
+    expect(fn(1_000_000_000, 'ad')).toEqual('od')
+    expect(fn(1_000_000_000_000, 'ad')).toEqual('mod')
+    expect(fn(1_000_000_000_000_000, 'ad')).toEqual('od')
   })
 
   test('generalSuffix', () => {
@@ -283,10 +316,17 @@ describe('suffix utils', () => {
     const fn = suffixUtils['suffix']
     expect(() => fn(pln(0), pls('út'))).toThrow('Invalid suffix: "út"')
     expect(() => fn(pln(0), pls('et '))).toThrow('Invalid suffix: "et "')
+    expect(() => fn(plf(0, 1), pls('et'))).toThrow('Invalid suffix: "et"')
     expect(fn(pln(-0), pls('öt'))).toEqual(pls('t'))
     expect(fn(pln(1), pls('t'))).toEqual(pls('et'))
     expect(fn(pln(-2), pls('et'))).toEqual(pls('t'))
     expect(fn(pln(5), pls('et'))).toEqual(pls('öt'))
     expect(fn(pln(-6), pls('öt'))).toEqual(pls('ot'))
+    expect(fn(plf(3, 1), pls('adát'))).toEqual(pls('edét'))
+    expect(fn(plf(3, 2), pls('adához'))).toEqual(pls('edéhez'))
+    // WARNING: fractions will be simplified! -6/-8 = 3/4!!!
+    expect(fn(plf(-6, -8), pls('adszorosához'))).toEqual(pls('edszereséhez'))
+    expect(fn(plf(5, 6), pls('edének'))).toEqual(pls('odának'))
+    expect(fn(plf(-6, 5), pls('adszorosára'))).toEqual(pls('ödszörösére'))
   })
 })

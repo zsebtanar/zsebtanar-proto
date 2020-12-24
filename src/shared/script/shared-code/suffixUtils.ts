@@ -1,4 +1,5 @@
-import { PLNumber, plString, PLString } from 'pocket-lisp-stdlib'
+import { PLNumber, PLFractionNumber, plString, PLString } from 'pocket-lisp-stdlib'
+import { replace } from 'ramda'
 import { assertInteger, typeCheck } from './utils'
 
 export function getLastDigit(num: number): number {
@@ -59,13 +60,17 @@ export function suffixVowel(n: number, vowelType: string): string {
   let vowel = ''
   const type = vowelType.split('').sort().join('')
   if (type === 'ae') {
+    // nak/nek
     vowel = lowPitch ? 'a' : 'e'
   } else if (type === 'áé') {
+    // át/ét
     vowel = lowPitch ? 'á' : 'é'
   } else if (type === 'eoö') {
+    // szor/szer/ször
     const lastDigit = getLastDigit(n)
     vowel = lastDigit === 5 || lastDigit === 2 ? 'ö' : lowPitch ? 'o' : 'e'
   } else if (type === 'óő') {
+    // ból/ből
     vowel = lowPitch ? 'ó' : 'ő'
   } else {
     throw new Error(`Invalid vowel type: "${vowelType}"`)
@@ -171,14 +176,42 @@ export function withSuffix(n: number): string {
 
 export function multSuffix(n: number, sfx: string): string {
   // suffix: szor/szer/ször
+
+  // replace trailing 2 with 4 to avoid special case: 2-höz vs. 2-szer
+  const lastDigit = getLastDigit(n)
+  n = lastDigit === 2 ? Math.abs(n) + 2 : n
   sfx = sfx.replace(/(?<=sz)[oeö](?=r)/g, suffixVowel(n, 'oeö')) // -szor/szer/ször
   sfx = sfx.replace(/(?<=r)[oeö](?=s)/g, suffixVowel(n, 'oeö')) // -os/es/ös
   sfx = sfx.replace(/(?<=s)[ae]$/g, suffixVowel(n, 'ae')) // -sa/se
   sfx = sfx.replace(/(?<=s)[áé]/g, suffixVowel(n, 'áé')) // -sá/sé
 
   // replace trailing 5 with 7 to avoid special case: 5-höz vs. 5-szöröséhez
+  n = lastDigit === 5 ? Math.abs(n) + 2 : n
+  sfx = generalSuffix(n, sfx)
+  return sfx
+}
+
+export function fractionSuffix(n: number, sfx: string): string {
+  // suffix: ad/ed
   const lastDigit = getLastDigit(n)
-  sfx = generalSuffix(lastDigit === 5 ? n + 2 : n, sfx)
+  const nZeros = trailingZeros(n)
+
+  // special cases
+  let replacement = ''
+  if (n === 0) {
+    replacement = ''
+  } else if (nZeros <= 1) {
+    replacement = lastDigit === 5 ? 'ö' : lastDigit === 6 ? 'o' : suffixVowel(n, 'ae')
+  } else if (nZeros < 6) {
+    replacement = nZeros === 2 ? 'a' : 'e'
+  } else {
+    replacement = isNumberGroupEven(n) ? 'mo' : 'o'
+  }
+  sfx = sfx.replace(/^[aemoö]?(?=d)/g, replacement) // -d/ad/ed/od/öd/mod
+  sfx = sfx.replace(/(?<=d)[ae]$/g, suffixVowel(n, 'ae')) // -da/de
+  sfx = sfx.replace(/(?<=d)[áé]/g, suffixVowel(n, 'áé')) // -dá/dé
+
+  sfx = multSuffix(n, sfx) // -adszorosa/edszerese
   return sfx
 }
 
@@ -200,18 +233,31 @@ export function convertSuffix(n: number, sfx: string): string {
     return withSuffix(n)
   } else if (/^sz[oeö]r$/g.test(sfx)) {
     return multSuffix(n, sfx)
+  } else if (/^[aemoö]?d/g.test(sfx)) {
+    return fractionSuffix(n, sfx)
   } else if (/^b[óő]l$/g.test(sfx) || /^n[ae]k$/g.test(sfx) || /^h[oeö]z$/g.test(sfx)) {
     return generalSuffix(n, sfx)
   } else {
-    // TODO: fractionSuffix (ad/ed)
     throw new Error(`Invalid suffix: "${sfx}"`)
   }
 }
 
-export const suffix = (num: PLNumber, sfx: PLString): PLString => {
-  typeCheck(PLNumber, num)
+export const suffix = (num: PLNumber | PLFractionNumber, sfx: PLString): PLString => {
   typeCheck(PLString, sfx)
-  const sfxCorrect = convertSuffix(num.value, sfx.value)
+  let sfxCorrect = ''
+  if (PLNumber === num.constructor) {
+    sfxCorrect = convertSuffix(num.value, sfx.value)
+  } else if (PLFractionNumber === num.constructor) {
+    if (/^[aemoö]?d/g.test(sfx.value)) {
+      sfxCorrect = convertSuffix(num.denominator, sfx.value)
+    } else {
+      throw new Error(`Invalid suffix: "${sfx}"`)
+    }
+  } else {
+    throw new Error(
+      `Expected '${PLNumber.name}' or '${PLFractionNumber.name}', but got '${num.constructor.name}'.`,
+    )
+  }
   return plString(sfxCorrect)
 }
 
