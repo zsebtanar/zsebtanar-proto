@@ -57,5 +57,6 @@ describe('lang utils', () => {
       pls('egymilliárd-ötszázmillió-négyszázkétezer-hétszáznyolcvankilenc'),
     )
     expect(fn(pln(98_000_000_001))).toEqual(pls('kilencvennyolcmilliárd-egy'))
+    expect(fn(pln(234_001_000_000))).toEqual(pls('kétszázharmincnégymilliárd-egymillió'))
   })
 })

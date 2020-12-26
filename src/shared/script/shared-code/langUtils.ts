@@ -93,7 +93,7 @@ function article(value: number): string {
  * @return string $num_text Number with text
  * @param value
  */
-function baseNum2text(value: number) {
+export function baseNum2text(value: number): string {
   assertInteger(value)
   if (value < 0) {
     return 'mínusz ' + baseNum2text(-value)
@@ -130,7 +130,7 @@ function baseNum2text(value: number) {
         const upcomingDigits = digits.slice(digitId, Math.min(digits.length, digitId + 3))
         if (upcomingDigits.join() !== '0,0,0') {
           // only add hyphen for >2000 numbers
-          if (value > 2000 && groupId > 0) numText = `-${numText}`
+          if (value > 2000 && groupId > 0 && numText !== '') numText = `-${numText}`
           // only add group suffix if upcoming digits are not empty
           numText = groupSuffix[groupId] + numText
         }

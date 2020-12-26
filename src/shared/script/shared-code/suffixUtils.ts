@@ -1,6 +1,6 @@
 import { PLNumber, PLFractionNumber, plString, PLString } from 'pocket-lisp-stdlib'
-import { replace } from 'ramda'
 import { assertInteger, typeCheck } from './utils'
+import { baseNum2text } from './langUtils'
 
 export function getLastDigit(num: number): number {
   const n = Math.abs(num)
@@ -228,11 +228,11 @@ export function generalSuffix(n: number, sfx: string): string {
 export function convertSuffix(n: number, sfx: string): string {
   if (/^[aáeoöő]?t$/g.test(sfx)) {
     return dativSuffix(n)
-  } else if (/^[aáeoö]?s/g.test(sfx)) {
+  } else if (/^[aáeoö]?s(?!z)/g.test(sfx)) {
     return placeValueSuffix(n, sfx)
   } else if (/^[acdegmnrstvyz]{2,}l$/g.test(sfx)) {
     return withSuffix(n)
-  } else if (/^sz[oeö]r$/g.test(sfx)) {
+  } else if (/^sz[oeö]r/g.test(sfx)) {
     return multSuffix(n, sfx)
   } else if (/^[aemoö]?d/g.test(sfx)) {
     return fractionSuffix(n, sfx)
@@ -263,6 +263,43 @@ export const suffix = (num: PLNumber | PLFractionNumber, sfx: PLString): PLStrin
   return plString(sfxCorrect)
 }
 
+export function correctNumSuffix(numSuffix: string): string {
+  numSuffix = numSuffix.replace(/nulla(?!d)(?!sz)/g, 'nullá')
+  numSuffix = numSuffix.replace(/kettő(?=e)/g, 'kett')
+  numSuffix = numSuffix.replace(/kettő(?=szer)/g, 'két')
+  numSuffix = numSuffix.replace(/hároma(?!d)/g, 'hárma')
+  numSuffix = numSuffix.replace('háromad', 'harmad')
+  numSuffix = numSuffix.replace('négyed', 'negyed')
+  numSuffix = numSuffix.replace(/héte(?=d|t|s)/g, 'hete')
+  numSuffix = numSuffix.replace(/tíze(?=d|t)/g, 'tize')
+  numSuffix = numSuffix.replace(/húsza(?=d|t)/g, 'husza')
+  numSuffix = numSuffix.replace(/ezere(?=s|d|t)/g, 'ezre')
+  numSuffix = numSuffix.replace('illiómod', 'illiomod')
+  numSuffix = numSuffix.replace('gygy', 'ggy')
+  numSuffix = numSuffix.replace('szsz', 'ssz')
+  return numSuffix
+}
+
+export const numSuffix = (num: PLNumber | PLFractionNumber, sfx: PLString): PLString => {
+  typeCheck(PLString, sfx)
+  const suffixText = suffix(num, sfx).value
+  let numText = ''
+  if (num.constructor === PLNumber) {
+    numText = baseNum2text(num.value)
+  } else if (num.constructor === PLFractionNumber) {
+    const numeratorText = baseNum2text(num.numerator)
+    const denominatorText = baseNum2text(num.denominator)
+    numText = `${numeratorText} ${denominatorText}`
+  } else {
+    throw new Error(
+      `Expected '${PLNumber.name}' or '${PLFractionNumber.name}', but got '${num.constructor.name}'.`,
+    )
+  }
+  const numSuffixText = correctNumSuffix(`${numText}${suffixText}`)
+  return plString(numSuffixText)
+}
+
 export const suffixUtils = {
   suffix,
+  ['num-suffix']: numSuffix,
 }

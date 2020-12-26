@@ -13,6 +13,7 @@ import {
   generalSuffix,
   suffixVowel,
   fractionSuffix,
+  correctNumSuffix,
 } from './suffixUtils'
 import { pls, pln, plf } from './utils'
 
@@ -226,6 +227,7 @@ describe('suffix utils', () => {
     expect(fn(1, 'szor')).toEqual('szer')
     expect(fn(-2, 'szor')).toEqual('szer')
     expect(fn(5, 'szer')).toEqual('ször')
+    expect(fn(20, 'szer')).toEqual('szor')
     expect(fn(0, 'szörös')).toEqual('szoros')
     expect(fn(1, 'szoros')).toEqual('szeres')
     expect(fn(2, 'szoros')).toEqual('szeres')
@@ -352,5 +354,59 @@ describe('suffix utils', () => {
     expect(fn(plf(-6, -8), pls('adszorosához'))).toEqual(pls('edszereséhez'))
     expect(fn(plf(5, 6), pls('edének'))).toEqual(pls('odának'))
     expect(fn(plf(-6, 5), pls('adszorosára'))).toEqual(pls('ödszörösére'))
+  })
+
+  test('correctNumSuffix', () => {
+    const fn = correctNumSuffix
+    expect(fn('nullat')).toEqual('nullát')
+    expect(fn('nullas')).toEqual('nullás')
+    expect(fn('nullasokhoz')).toEqual('nullásokhoz')
+    expect(fn('nullaban')).toEqual('nullában')
+    expect(fn('nullad')).toEqual('nullad')
+    expect(fn('nullaszor')).toEqual('nullaszor')
+    expect(fn('nullahoz')).toEqual('nullához')
+    expect(fn('egygyel')).toEqual('eggyel')
+    expect(fn('kettőesével')).toEqual('kettesével')
+    expect(fn('kettőszer')).toEqual('kétszer')
+    expect(fn('kettőt')).toEqual('kettőt')
+    expect(fn('kettőed')).toEqual('ketted')
+    expect(fn('háromas')).toEqual('hármas')
+    expect(fn('háromad')).toEqual('harmad')
+    expect(fn('háromat')).toEqual('hármat')
+    expect(fn('négygyel')).toEqual('néggyel')
+    expect(fn('négyed')).toEqual('negyed')
+    expect(fn('héted')).toEqual('heted')
+    expect(fn('hétet')).toEqual('hetet')
+    expect(fn('hétes')).toEqual('hetes')
+    expect(fn('tízed')).toEqual('tized')
+    expect(fn('tízes')).toEqual('tízes')
+    expect(fn('tízet')).toEqual('tizet')
+    expect(fn('húszad')).toEqual('huszad')
+    expect(fn('húszat')).toEqual('huszat')
+    expect(fn('húszszor')).toEqual('hússzor')
+    expect(fn('húszszal')).toEqual('hússzal')
+    expect(fn('ezeret')).toEqual('ezret')
+    expect(fn('ezered')).toEqual('ezred')
+    expect(fn('milliómod')).toEqual('milliomod')
+  })
+
+  test('num-suffix', () => {
+    const fn = suffixUtils['num-suffix']
+    expect(fn(pln(0), pls('öt'))).toStrictEqual(pls('nullát'))
+    expect(fn(pln(1), pls('t'))).toStrictEqual(pls('egyet'))
+    expect(fn(pln(2), pls('ashoz'))).toStrictEqual(pls('ketteshez'))
+    expect(fn(pln(-3), pls('et'))).toStrictEqual(pls('mínusz hármat'))
+    expect(fn(pln(20), pls('szer'))).toStrictEqual(pls('hússzor'))
+    expect(fn(pln(-2), pls('szorosára'))).toStrictEqual(pls('mínusz kétszeresére'))
+    expect(fn(pln(1000), pls('asokkal'))).toStrictEqual(pls('ezresekkel'))
+    expect(fn(pln(-2010), pls('öt'))).toStrictEqual(pls('mínusz kétezer-tizet'))
+    expect(fn(pln(234_001_000_000), pls('d'))).toStrictEqual(
+      pls('kétszázharmincnégymilliárd-egymilliomod'),
+    )
+    expect(fn(plf(3, 2), pls('adához'))).toEqual(pls('három kettedéhez'))
+    // WARNING: fractions will be simplified! -6/-8 = 3/4!!!
+    expect(fn(plf(-6, -8), pls('adszorosához'))).toEqual(pls('három negyedszereséhez'))
+    expect(fn(plf(5, 6), pls('edének'))).toEqual(pls('öt hatodának'))
+    expect(fn(plf(-6, 5), pls('adszorosára'))).toEqual(pls('mínusz hat ötödszörösére'))
   })
 })
