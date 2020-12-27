@@ -62,8 +62,8 @@ export function unitConverter(num: PLNumber, from: PLString, to: PLString): PLNu
   typeCheck(PLNumber, num)
   for (const unitType in unitConversionTable) {
     const units = unitConversionTable[unitType]
-    if (from.value in units) {
-      if (to.value in units) {
+    if (units[from.value] !== undefined) {
+      if (units[to.value] !== undefined) {
         const numConverted = (num.value * units[from.value]) / units[to.value]
         return plNumber(numConverted)
       } else {
