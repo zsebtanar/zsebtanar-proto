@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ExerciseModel } from 'shared/exercise/types'
-import { exerciseDataService } from '../services/exercise'
 import { Plus as PlusIcon, Edit as EditIcon, Copy as CopyIcon, Eye as EyeIcon } from 'react-feather'
 import { Grid } from 'client/generic/components/grid/Grid'
 import { FireStoreGridDS } from 'client/generic/services/fireStoreGridDS'
@@ -11,7 +10,8 @@ import { Icon } from 'client/generic/components/icons/Icon'
 
 export function ExerciseGrid(): JSX.Element {
   const dataSource = useMemo(
-    () => new FireStoreGridDS(exerciseDataService, { orderBy: [['created', 'desc']] }),
+    () =>
+      new FireStoreGridDS<ExerciseModel>('exercise', 'private', { orderBy: [['created', 'desc']] }),
     [],
   )
 

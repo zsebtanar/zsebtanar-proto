@@ -1,5 +1,6 @@
+import type { Request, Response, NextFunction } from 'express'
 import { admin } from '../utils/firebase'
-import { ErrorHandler } from './error'
+import { HandlerError } from '../utils/HandlerError'
 
 /**
  Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -10,7 +11,7 @@ import { ErrorHandler } from './error'
  @see: https://github.com/firebase/functions-samples/tree/master/authorized-https-endpoint
  @see: https://firebase.google.com/docs/auth/admin/verify-id-tokens
  */
-export async function getToken(req, res, next) {
+export async function getToken(req: Request, res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization
 
   if ((!authHeader || !authHeader.startsWith('Bearer ')) && !req.cookies.__session) {
@@ -18,9 +19,9 @@ export async function getToken(req, res, next) {
       'No Firebase ID token was passed as a Bearer token in the Authorization header.',
       'Make sure you authorize your request by providing the following HTTP header:',
       'Authorization: Bearer <Firebase ID Token>',
-      'or by passing a "__session" cookie.'
+      'or by passing a "__session" cookie.',
     )
-    return next(new ErrorHandler(401, 'Unauthorized'))
+    return next(new HandlerError(401, 'Unauthorized'))
   }
 
   let idToken
@@ -31,9 +32,9 @@ export async function getToken(req, res, next) {
   }
 
   try {
-    req.user = await admin.auth().verifyIdToken(idToken)
+    req['user'] = await admin.auth().verifyIdToken(idToken)
     next()
   } catch (error) {
-    next(new ErrorHandler(401, 'Unauthorized', error))
+    next(new HandlerError(401, 'Unauthorized', error))
   }
 }

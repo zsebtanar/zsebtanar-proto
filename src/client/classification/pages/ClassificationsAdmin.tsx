@@ -3,7 +3,7 @@ import {
   useLoadClassifications,
   remove as removeClassification,
 } from '../services/classificationService'
-import { sortByProp } from 'shared/utils/fn'
+import { sortByProp, map2list } from 'shared/utils/fn'
 import { Plus as PlusIcon, Edit as EditIcon, Trash2 as TrashIcon } from 'react-feather'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { UpdateClassificationModal } from '../modals/UpdateClassificationModal'
@@ -13,7 +13,7 @@ import { Button } from 'client/generic/components/Button'
 import { Loading } from 'client/generic/components/Loading'
 import { Alert } from 'client/generic/components/Alert'
 import { Badge } from '../../generic/components/Badge'
-import { ClassificationModel } from 'shared/classification/type'
+import { ClassificationSummaryDoc } from 'shared/classification/type'
 import { ConfirmModal } from '../../overlay/components/ConfirmModal'
 
 import './ClassificationsAdmin.scss'
@@ -22,18 +22,20 @@ export function ClassificationsAdminPage(): JSX.Element {
   const { isLoading, isPending, isSuccess, result, hasError, error } = useLoadClassifications()
   const { openModal } = useOverlayDispatch()
 
+  const clsList = map2list(result || {}, 'id').sort(sortByProp('id'))
+
   const create = () => openModal(<UpdateClassificationModal />, true)
 
-  const update = (cls: ClassificationModel) =>
+  const update = (cls: ClassificationSummaryDoc) =>
     openModal(<UpdateClassificationModal value={cls} />, true)
 
-  const remove = (cls: ClassificationModel) => {
+  const remove = (cls: ClassificationSummaryDoc) => {
     if (!cls.id) return
     openModal(
       <ConfirmModal>
         Biztos törlöd a kategóriát?
         <br />
-        Jelenleg {cls.exercises?.length} feladathoz van hozzárendelve.
+        Jelenleg {cls.exerciseCount} feladathoz van hozzárendelve.
       </ConfirmModal>,
     ).then((res) => (res ? removeClassification(cls.id as string) : undefined))
   }
@@ -62,7 +64,7 @@ export function ClassificationsAdminPage(): JSX.Element {
                 </tr>
               </thead>
               <tbody>
-                {result.sort(sortByProp('id')).map((cls) => (
+                {clsList.map((cls) => (
                   <tr key={cls.id}>
                     <td>{cls.label}</td>
                     <td>

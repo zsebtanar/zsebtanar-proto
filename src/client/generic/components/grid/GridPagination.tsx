@@ -1,10 +1,6 @@
 import React from 'react'
 import { range } from 'shared/utils/fn'
-import {
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-  AlertTriangle as AlertTriangleIcon,
-} from 'react-feather'
+import { ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from 'react-feather'
 
 import { Button } from '../Button'
 import { Icon } from '../icons/Icon'
@@ -15,17 +11,24 @@ interface Props {
   jump: (page: number) => void
   current: number
   length: number
+  noPageButtons?: boolean
 }
 
-export function GridPagination({ prev, next, jump, current, length }: Props): JSX.Element | null {
+export function GridPagination({
+  prev,
+  next,
+  jump,
+  current,
+  length,
+  noPageButtons,
+}: Props): JSX.Element | null {
   if (length <= 1) return null
 
-  const pages = range(0, length)
   return (
     <nav aria-label="Lapozás" className="d-flex justify-content-center">
       <div className="btn-group">
         {StepBtn('Előző', ChevronLeftIcon, prev, current === 0)}
-        {pages.map((page) => jumpBtn(page, jump, current === page))}
+        {!noPageButtons && range(0, length).map((page) => jumpBtn(page, jump, current === page))}
         {StepBtn('Következő', ChevronRightIcon, next, current === length - 1)}
       </div>
     </nav>

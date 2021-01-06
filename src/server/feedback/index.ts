@@ -1,11 +1,11 @@
+import { pick } from 'ramda'
+import * as express from 'express'
 import { fireStore } from '../utils/firebase'
 import { simpleGet } from '../utils/http'
 import * as functions from 'firebase-functions'
-import { pick } from 'ramda'
-import * as express from 'express'
-import { RECAPTCHA_RESPONSE_PARAM, CreateFeedbackSchema } from './model'
-import { ErrorHandler } from '../middlewares/error'
-import { requestValidator } from '../middlewares/requestValidator'
+import { RECAPTCHA_RESPONSE_PARAM, CreateFeedbackSchema } from './schemas'
+import { HandlerError } from '../utils/HandlerError'
+import { validate } from '../utils/validator'
 
 const SITE_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
 const SECRET_KEY = functions.config()?.recaptcha?.secret_key
@@ -13,7 +13,7 @@ const Feedback = fireStore.collection('feedback')
 
 export const route = express.Router()
 
-route.post('/', [requestValidator({ body: CreateFeedbackSchema })], async (req, res, next) => {
+route.post('/', [validate({ body: CreateFeedbackSchema })], async (req, res, next) => {
   try {
     const body = req.body
 
@@ -25,7 +25,7 @@ route.post('/', [requestValidator({ body: CreateFeedbackSchema })], async (req, 
 
     res.status(204).send()
   } catch (error) {
-    next(new ErrorHandler(500, 'Create feedback error', error))
+    next(new HandlerError(500, 'Create feedback error', error))
   }
 })
 

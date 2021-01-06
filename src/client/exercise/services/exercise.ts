@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { ExerciseModel, ExerciseState } from 'shared/exercise/types'
+import { ExerciseModel, ExerciseState, ExerciseSummaryModel } from 'shared/exercise/types'
 import { useLoadAndStoreModel, LoadAndStoreModelAPI } from '../../generic/hooks/loadAndStoreModel'
 import { Service } from 'client/generic/services/fireStoreBase'
 import { useFetchData, FetchDataAPI } from 'client/generic/hooks/fetchData'
@@ -10,17 +10,19 @@ import {
   FetchFirestoreListAPI,
 } from '../../generic/hooks/fetchFirestoreList'
 
-export const exerciseDataService = new Service<ExerciseModel>('exercise')
+export const exerciseSummaryDataService = new Service<ExerciseSummaryModel>(
+  'exercise/summary/items',
+)
 
-export const exerciseAdminDataService = new Service<ExerciseModel>('exercise')
+export const exercisePrivateDataService = new Service<ExerciseModel>('exercise/private/items')
 
 export function useStoreExercise(model: ExerciseModel): FetchDataAPI<unknown> {
-  const callback = useCallback(() => exerciseDataService.store(model), [model])
+  const callback = useCallback(() => exercisePrivateDataService.store(model), [model])
   return useFetchData<unknown>(callback, [model])
 }
 
 export function useLoadExercise(id: string): FetchDataAPI<ExerciseModel> {
-  const callback = useCallback(() => exerciseDataService.get(id), [id])
+  const callback = useCallback(() => exercisePrivateDataService.get(id), [id])
   return useFetchData<ExerciseModel>(callback, [id])
 }
 
@@ -54,15 +56,22 @@ export async function storeExercise({ id, ...data }: ExerciseModel): Promise<Exe
 }
 
 export function useExerciseModel(id?: string): LoadAndStoreModelAPI<ExerciseModel> {
-  const load = useCallback((id) => exerciseDataService.get(id), [])
+  const load = useCallback((id) => exercisePrivateDataService.get(id), [])
   const store = useCallback<typeof storeExercise>(storeExercise, [])
   return useLoadAndStoreModel<ExerciseModel>(load, store, id, {
     title: '',
     description: '',
+    created: new Date(),
+    createdBy: '',
+    updated: new Date(),
+    updatedBy: '',
     classifications: [],
     difficulty: 0,
     state: ExerciseState.New,
-    script: '',
+    scripts: {
+      base: '',
+      solution: '',
+    },
     subTasks: [],
   })
 }

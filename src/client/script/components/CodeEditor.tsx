@@ -106,7 +106,7 @@ const codeCompletion = (interpreter) => {
     let start = cursor.ch
     const end = cursor.ch
 
-    while (start && /\w/.test(line.charAt(start - 1))) --start
+    while (start && /(\w|_|-)/.test(line.charAt(start - 1))) --start
     const word = line.slice(start, end).toLowerCase()
 
     return {

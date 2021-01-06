@@ -8,7 +8,7 @@ import { route as exercise } from './exercise/index'
 import { route as feedback } from './feedback/index'
 import { route as support } from './support/index'
 
-import { mainErrorHandler } from './middlewares/error'
+import { errorHandler } from './middlewares/errorHandler'
 
 const app = express()
 
@@ -21,6 +21,6 @@ app.use('/api/exercise/', exercise)
 app.use('/api/feedback/', feedback)
 app.use('/api/support/', support)
 
-app.use(mainErrorHandler)
+app.use(errorHandler)
 
 export default app

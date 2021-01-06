@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { PlayCircle as PlayCircleIcon, AlertTriangle as AlertTriangleIcon } from 'react-feather'
+import { PlayCircle as PlayCircleIcon } from 'react-feather'
 import { useParams, useHistory } from 'react-router'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
 import { useExerciseModel, changeState } from '../services/exercise'
@@ -10,7 +10,7 @@ import {
   useManageAssetsDispatch,
 } from 'client/asset/providers/ManageAssetProvider'
 import { AssetGroup } from 'shared/assets/types'
-import { ExerciseState } from 'shared/exercise/types'
+import { ExerciseDoc, ExerciseState } from 'shared/exercise/types'
 import { useQuery } from 'client/generic/hooks/navigation'
 import { Loading } from 'client/generic/components/Loading'
 import { Alert } from 'client/generic/components/Alert'
@@ -18,9 +18,9 @@ import { Button } from 'client/generic/components/Button'
 import { ClassificationProvider } from 'client/classification/provider/ClassificationProvider'
 import { ExerciseStateBadge } from '../components/form/ExerciseStateBadge'
 import { ExerciseOperations } from './ExerciseOperations'
+import { Icon } from '../../generic/components/icons/Icon'
 
 import './ExerciseForm.scss'
-import { Icon } from '../../generic/components/icons/Icon'
 
 export function ExerciseForm(): JSX.Element {
   const history = useHistory()
@@ -74,11 +74,10 @@ export function ExerciseForm(): JSX.Element {
     return (
       <div className="exercise-form bg-light">
         <Alert type="danger" className="container">
-          <h4>{error.message}</h4>
           <ul>
-            {error?.['details']?.errors.map((err, idx) => (
+            {error?.errors?.body.map((err, idx) => (
               <li key={idx}>
-                {err?.path.toString()} - {err?.message}
+                {err?.dataPath?.toString?.()} - {err?.message}
               </li>
             ))}
           </ul>

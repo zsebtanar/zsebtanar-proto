@@ -1,5 +1,5 @@
 import { curry } from 'ramda'
-import { ErrorHandler } from '../middlewares/error'
+import { HandlerError } from './HandlerError'
 
 export const ROLE_USER = 0
 export const ROLE_TEACHER = 500
@@ -12,7 +12,7 @@ export const roleCheck = curry((roles, req, res, next) => {
     next()
   } else {
     console.warn('forbidden', JSON.stringify(req.user))
-    next(new ErrorHandler(403, 'Forbidden'))
+    next(new HandlerError(403, 'Forbidden'))
   }
 })
 

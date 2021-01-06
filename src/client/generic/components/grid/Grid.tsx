@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert } from '../Alert'
 import { Loading } from '../Loading'
-import { GridPagination } from './GridPagination'
 import { GridHeader } from './GridHeader'
 import { useGridDS } from './gridProvider'
 import { GridBody } from './GridBody'
 import { genColumnDefs } from './utis'
 import { GridColumnDefinition, InternalGridColumnDefinition, RowActionFn } from './types'
-import { BaseModel } from 'shared/generic/types'
+import { BaseModel, GridDataSource } from 'shared/generic/types'
+import { Button } from '../Button'
 
 interface Props<T> {
   className?: string
@@ -60,16 +60,12 @@ export function Grid<T extends BaseModel>({
             columnDefs={colDefs}
             list={result?.list ?? []}
             rowAction={rowAction}
-            firstIdx={pageNum * defaultPageSize}
+            firstIdx={0}
           />
         </table>
-        <GridPagination
-          current={pageNum}
-          length={result?.numberOfPage ?? 0}
-          next={() => setPageNum(pageNum + 1)}
-          prev={() => setPageNum(pageNum - 1)}
-          jump={(num) => setPageNum(num)}
-        />
+        <div className="d-flex justify-content-center my-3">
+          <Button onAction={() => setPageNum(pageNum + 1)}>Még {defaultPageSize}</Button>
+        </div>
       </div>
     )
   }

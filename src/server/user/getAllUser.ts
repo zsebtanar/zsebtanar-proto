@@ -2,8 +2,8 @@ import * as express from 'express'
 import { admin } from '../utils/firebase'
 import { evolve, map, pick } from 'ramda'
 import { onlyAdmin } from '../utils/authorization'
-import { ErrorHandler } from '../middlewares/error'
 import { getToken } from '../middlewares/firebaseToken'
+import { HandlerError } from '../utils/HandlerError'
 
 export const route = express.Router()
 
@@ -22,10 +22,8 @@ route.get('/all', [getToken, onlyAdmin], async (req, res, next) => {
     ])
 
     const data = await admin.auth().listUsers(1000, nextPageToken)
-    console.log(data)
     res.json(evolve({ users: map(publicFields) }, data))
   } catch (error) {
-    console.log(error)
-    next(new ErrorHandler(500, 'User list all error', error))
+    next(new HandlerError(500, 'User list all error', error))
   }
 })

@@ -1,24 +1,27 @@
 import * as express from 'express'
-import { ExerciseState, ExerciseModel } from 'shared/exercise/types'
+import { ExerciseDoc, ExerciseModel, ExerciseState } from 'shared/exercise/types'
 import { fireStore } from '../utils/firebase'
-import { removeExerciseIndex, indexExercise } from './utils/search-indexing'
+import { indexExercise, removeExerciseIndex } from './utils/searchIndexing'
 import { onlyAdmin } from '../utils/authorization'
-import { ExerciseStateScheme, ExerciseStateSchemeType } from './model'
-import { ErrorHandler } from '../middlewares/error'
+import { changeExerciseStateSchema } from './schemas'
 import { getToken } from '../middlewares/firebaseToken'
-import { requestValidator } from '../middlewares/requestValidator'
+import { removeExerciseFromClassifications } from '../classification/utils'
+import { incrementPrivateExerciseCounter } from './utils/counters'
+import { setExerciseSummary } from './utils/exerciseSummary'
+import { validate } from '../utils/validator'
+import { HandlerError } from '../utils/HandlerError'
 
 export const route = express.Router()
 
 route.post(
   '/:exerciseId/state',
-  [getToken, onlyAdmin, requestValidator({ body: ExerciseStateScheme })],
+  [getToken, onlyAdmin, validate({ body: changeExerciseStateSchema })],
   async (req, res, next) => {
     try {
       const id = req.params.exerciseId
-      const newState = (req.body as ExerciseStateSchemeType).state as ExerciseState
+      const newState = req.body.state as ExerciseState
 
-      const exerciseRef = await fireStore.collection('exercise').doc(id).get()
+      const exerciseRef = await fireStore.collection('exercise/private/items').doc(id).get()
       const exercise = exerciseRef.data() as ExerciseModel
 
       const currentState = exercise.state
@@ -28,7 +31,7 @@ route.post(
       await method(exerciseRef.id, exercise)
       res.status(204).send()
     } catch (error) {
-      next(new ErrorHandler(500, 'Exercise status change error', error))
+      next(new HandlerError(500, 'Exercise status change error', error))
     }
   },
 )
@@ -36,7 +39,7 @@ route.post(
 const selectUpdateMethod = (
   newState: ExerciseState,
   oldState: ExerciseState,
-): ((id: string, exercise: ExerciseModel) => Promise<unknown>) => {
+): ((id: string, exercise: ExerciseDoc) => Promise<unknown>) => {
   if (
     (oldState === ExerciseState.Draft || oldState === ExerciseState.Archived) &&
     newState === ExerciseState.Public
@@ -56,16 +59,29 @@ const selectUpdateMethod = (
 }
 
 const publishExercise = async (id, exercise) => {
-  await fireStore.collection('exercise').doc(id).update('state', ExerciseState.Public)
+  await fireStore.collection('exercise/private/items').doc(id).update('state', ExerciseState.Public)
+
+  await setExerciseSummary(id, exercise)
   await indexExercise(id, exercise)
 }
 
-const archiveExercise = async (id) => {
-  await fireStore.collection('exercise').doc(id).update('state', ExerciseState.Archived)
-  await removeExerciseIndex(id)
+const archiveExercise = async (id, exercise: ExerciseDoc) => {
+  const batch = fireStore.batch()
+
+  const exerciseRef = fireStore.collection('exercise/private/items').doc(id)
+  const summaryRef = fireStore.collection('exercise/summary/items').doc(id)
+
+  batch.delete(summaryRef)
+  batch.update(exerciseRef, 'state', ExerciseState.Archived)
+
+  removeExerciseFromClassifications(batch, id, exercise.classifications)
+
+  await batch.commit()
+  await removeExerciseIndex(id, 'summary')
 }
 
 const removeExercise = async (id: string) => {
-  await fireStore.collection('exercise').doc(id).delete()
-  await removeExerciseIndex(id)
+  await fireStore.collection('exercise/private/items').doc(id).delete()
+  await incrementPrivateExerciseCounter(-1)
+  await removeExerciseIndex(id, 'admin')
 }

@@ -12,3 +12,5 @@ export const perf = fb.performance()
 export const analytics = fb.analytics()
 
 export const firebase = fb
+
+fb.firestore().enablePersistence()

@@ -8,15 +8,15 @@ import { FormGroup } from 'client/generic/components/form/FormGroup'
 import { Input } from 'client/generic/components/form/input/Input'
 import { DialogFooter } from 'client/overlay/components/base/DialogFooter'
 import { Button } from 'client/generic/components/Button'
-import { ClassificationModel } from 'shared/classification/type'
+import { ClassificationModel, ClassificationSummaryDoc } from 'shared/classification/type'
 
 interface Props {
-  value?: ClassificationModel
+  value?: ClassificationSummaryDoc
 }
 
 export function UpdateClassificationModal({ value }: Props): JSX.Element {
   const { closeModal } = useDialog()
-  const { bind, data } = useModel<ClassificationModel>({ value })
+  const { bind, data } = useModel<ClassificationSummaryDoc>({ value })
   const isNew = !value?.id
 
   const close = () => closeModal()

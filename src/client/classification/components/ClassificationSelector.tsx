@@ -13,7 +13,7 @@ export function ClassificationSelector({ title, rootCategory }: Props): JSX.Elem
   const { result } = useClassification()
   const filtered = (result?.list ?? [])
     .filter(
-      ({ id, exercises }) => exercises?.length && (!rootCategory || id?.startsWith(rootCategory)),
+      ({ id, exerciseCount }) => exerciseCount && (!rootCategory || id?.startsWith(rootCategory)),
     )
     .sort(sortByProp('id'))
 

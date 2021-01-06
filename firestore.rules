@@ -16,12 +16,21 @@ service cloud.firestore {
     }
 
 
-    match /exercise/{exerciseId} {
-      allow read: if resource.data.state == 'public';
+    match /exercise/{document=**} {
+      allow read write: if false;
+    }
+
+    match /exercise/summary/items/{exerciseId} {
+      allow read: true;
       allow write: if false; // saved by API
     }
 
-		match /wikiPage/{wikiPageId} {
+    match /exercise/private/{document=**} {
+        allow read: if isAdmin();
+        allow write: if false; // saved by API
+    }
+
+    match /wikiPage/{wikiPageId} {
     	allow read: if true;
     }
 

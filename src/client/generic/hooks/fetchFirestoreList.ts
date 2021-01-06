@@ -1,5 +1,5 @@
 import { useReducer, Reducer, useEffect, useMemo } from 'react'
-import { BaseModel } from 'shared/generic/types'
+import { BaseModel, GridFilterOptions } from 'shared/generic/types'
 import { Service } from '../services/fireStoreBase'
 import { log } from '../../../shared/utils/fn'
 import type firebaseType from 'firebase'

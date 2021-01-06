@@ -16,9 +16,9 @@ import { Home } from './pages/Home'
 import { PocketLispRepl } from './pages/PocketLispRepl'
 
 export const AdminApp = React.memo(function AdminAppBase() {
-  const { isLoading } = useUser()
+  const { isFullyLoaded } = useUser()
 
-  if (isLoading) {
+  if (!isFullyLoaded) {
     return <Loading />
   }
 

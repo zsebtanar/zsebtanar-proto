@@ -17,7 +17,9 @@
     "target": "es5",
     "jsx": "react",
     "paths": {
-      "shared": ["shared/*"]
+      "shared": ["shared/*"],
+      "server": ["server/*"],
+      "client": ["client/*"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true

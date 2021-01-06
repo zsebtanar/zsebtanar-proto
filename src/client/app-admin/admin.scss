@@ -1,7 +1,6 @@
 @import '../generic/shared';
 @import 'bootstrap-admin';
 
-
 /* Space out content a bit */
 html,
 body,
@@ -18,6 +17,7 @@ body {
 
 main {
   padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .app-container {
@@ -28,7 +28,6 @@ main {
   .app-content {
     flex: 1 0 auto;
   }
-
 }
 
 .logo {

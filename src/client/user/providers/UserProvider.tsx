@@ -24,6 +24,7 @@ interface Store {
   userToken?: UserToken
   userDetails?: UserModel
   isLoading: boolean
+  isFullyLoaded: boolean
   isRegistration: boolean
   hasError: boolean
 }
@@ -60,6 +61,7 @@ const defaultState: Store = {
   userToken: undefined,
   userDetails: undefined,
   isLoading: false,
+  isFullyLoaded: false,
   hasError: false,
   isRegistration: false,
 }
@@ -81,7 +83,7 @@ function userReducer(state: Store, action: Action): Store {
     }
     case 'SetDetails': {
       const { details, token } = action.payload
-      return { ...state, userDetails: details, userToken: token }
+      return { ...state, userDetails: details, userToken: token, isFullyLoaded: true }
     }
     case 'SingUpStart':
       return { ...defaultState, ...updateState(UserStates.RegisterUser) }

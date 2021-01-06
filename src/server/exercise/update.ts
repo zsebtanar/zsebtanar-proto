@@ -1,24 +1,25 @@
 import * as express from 'express'
 import { onlyEditors } from '../utils/authorization'
-import { ExerciseSchema, ExerciseSchemaType } from './model'
+import { exerciseSchema } from './schemas'
 import { fireStore } from '../utils/firebase'
 import { omit } from 'shared/utils/fn'
-import { ErrorHandler } from '../middlewares/error'
 import { getToken } from '../middlewares/firebaseToken'
-import { requestValidator } from '../middlewares/requestValidator'
-import { indexExercise } from './utils/search-indexing'
+import { indexExercise } from './utils/searchIndexing'
 import { difference } from '../../shared/utils/data'
-import { ExerciseModel } from '../../shared/exercise/types'
+import { ExerciseDoc } from '../../shared/exercise/types'
 import {
   addExerciseToClassifications,
   removeExerciseFromClassifications,
 } from '../classification/utils'
+import { setExerciseSummary } from './utils/exerciseSummary'
+import { validate } from '../utils/validator'
+import { HandlerError } from '../utils/HandlerError'
 
 export const route = express.Router()
 
 route.post(
   '/:exerciseId',
-  [getToken, onlyEditors, requestValidator({ body: ExerciseSchema })],
+  [getToken, onlyEditors, validate({ body: exerciseSchema })],
   async (req, res, next) => {
     try {
       const now = new Date()
@@ -26,11 +27,13 @@ route.post(
       const batch = fireStore.batch()
 
       // exercise
-      const exercise = {
-        ...omit(req.body as ExerciseSchemaType, ['state', 'created']),
+      const exercise: ExerciseDoc = {
+        ...(omit(req.body, ['state', 'created', 'createdBy']) as ExerciseDoc),
+        updated: now,
+        updatedBy: req.user.uid,
       }
-      const exerciseRef = fireStore.collection('exercise').doc(id)
-      const previousExercise = (await exerciseRef.get()).data() as ExerciseModel
+      const exerciseRef = fireStore.collection('exercise/private/items').doc(id)
+      const previousExercise = (await exerciseRef.get()).data() as ExerciseDoc
 
       batch.update(exerciseRef, exercise)
 
@@ -48,19 +51,12 @@ route.post(
         await addExerciseToClassifications(batch, id, addedClassifications)
       }
 
-      // metadata - log
-      const logRef = fireStore.collection(`exercise/${id}/metadata`).doc('log')
-      batch.update(logRef, {
-        updated: now,
-        updatedBy: req.user.uid,
-        lastUpdate: now,
-      })
-
       await batch.commit()
-      await indexExercise(id, exercise as ExerciseSchemaType)
+      await setExerciseSummary(id, exercise)
+      await indexExercise(id, exercise as ExerciseDoc)
       res.status(200).send(exercise)
     } catch (error) {
-      next(new ErrorHandler(500, 'Exercise update error', error))
+      next(new HandlerError(500, 'Exercise update error', error))
     }
   },
 )

@@ -1,10 +1,45 @@
 import { BaseModel } from '../generic/types'
 import { FractionNumber } from '../math/fractionNumber'
 
-export interface ExerciseModel extends BaseModel {
+/**
+ * Used in public app for exercise lists
+ */
+export interface ExerciseSummaryModel extends BaseModel, ExerciseSummaryDoc {}
+
+export interface ExerciseSummaryDoc {
+  title: string
+  published?: Date
+  classifications: string[]
+  difficulty: number
+  description: string
+}
+
+/**
+ * Used in public app when user soling an exercise
+ */
+export interface ExerciseDetailsModel extends ExerciseSummaryModel {
+  title: string
+  description: string
+  controls: Array<Omit<UserControl, 'solution'>>
+}
+
+export interface ExercisePublicSubTask {
+  subTasks: ExerciseDetailsModel[]
+}
+
+export interface ExerciseModel extends BaseModel, ExerciseDoc {}
+
+/**
+ * Used in admin app only
+ */
+export interface ExerciseDoc {
   title: string
   state: ExerciseState
-  metadata?: ExerciseMetadata
+  created: Date
+  createdBy: string
+  updated: Date
+  updatedBy: string
+  published?: Date
   classifications: string[]
   difficulty: number
   description: string
@@ -19,13 +54,6 @@ export enum ExerciseState {
   Public = 'public',
   Archived = 'archived',
   Remove = 'remove',
-}
-
-interface ExerciseMetadata {
-  created: Date
-  createdBy: string
-  updated: Date
-  updatedBy: string
 }
 
 export interface ExerciseSubTask {

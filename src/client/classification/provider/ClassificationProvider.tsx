@@ -1,16 +1,16 @@
 import React from 'react'
 import { useLoadClassifications } from '../services/classificationService'
 import { FetchDataAPI } from '../../generic/hooks/fetchData'
-import { ClassificationModel } from 'shared/classification/type'
-import { list2map, sortByProp } from 'shared/utils/fn'
+import { ClassificationSummaryDoc } from 'shared/classification/type'
+import { sortByProp, map2list, list2map } from 'shared/utils/fn'
 
 interface Props {
   children: React.ReactNode
 }
 
 interface ValueTypes {
-  list: ClassificationModel[]
-  map: Record<string, ClassificationModel>
+  list: ClassificationSummaryDoc[]
+  map: Record<string, ClassificationSummaryDoc>
 }
 
 type CtxType = FetchDataAPI<ValueTypes>
@@ -20,8 +20,9 @@ export const ClassificationContext = React.createContext<CtxType>({} as any)
 export function ClassificationProvider({ children }: Props): JSX.Element {
   const state = useLoadClassifications()
 
-  const list = state.result ?? [].sort(sortByProp('id'))
-  const map = list2map('id', list)
+  const result = state.result ?? {}
+  const list = map2list(result, 'id').sort(sortByProp('id'))
+  const map = list2map('id', list) as ValueTypes['map']
   const value = { ...state, result: { list, map } }
 
   return <ClassificationContext.Provider value={value}>{children}</ClassificationContext.Provider>

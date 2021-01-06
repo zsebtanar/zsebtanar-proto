@@ -1,21 +1,21 @@
 import { useFetchData } from '../../hooks/fetchData'
+import { GridDataSource } from 'shared/generic/types'
+import { useState } from 'react'
 
 export function useGridDS<T>(dataSource: GridDataSource<T>, pageNum: number, pageLimit: number) {
+  const [list, setList] = useState<T[]>([])
   return useFetchData(
     async () => {
-      const list = await dataSource.getPage(pageNum, pageLimit)
+      const listExtension = await dataSource.getNextPage(pageLimit)
+      const newList = [...list, ...listExtension]
+      setList(newList)
       return {
-        list,
-        numberOfPage: getNumOfPages(dataSource.size, pageLimit),
+        list: newList,
       }
     },
     [dataSource, pageNum, pageLimit],
     { isEmpty },
   )
-}
-
-const getNumOfPages = (size, pageSize: number): number => {
-  return Math.ceil(size / pageSize)
 }
 
 const isEmpty = <T>({ list }: { list: T[] }): boolean => {

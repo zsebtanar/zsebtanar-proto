@@ -57,3 +57,10 @@ export const list2map = <T>(prop: string, list: T[]): Record<string, T> => {
     return acc
   }, {})
 }
+
+export const map2list = <T>(object: Record<string, T>, keyName = 'key') => {
+  return Object.keys(object).reduce((list, key) => {
+    list.push({ [keyName]: key, ...object[key] })
+    return list
+  }, [] as any)
+}

@@ -67,7 +67,7 @@ function initState(exercise: ExerciseModel): State {
 }
 
 export function ExerciseProvider({ children, exercise }: Props) {
-  const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, initState(exercise))
+  const [state] = useReducer<Reducer<State, Action>>(reducer, initState(exercise))
 
   const api: ExerciseContextAPI = {
     checkActiveSubTask(data) {

@@ -1,7 +1,7 @@
 import { app } from './fireApp'
 import { pickBy } from '../utils/fn'
-import { BaseModel } from 'shared/generic/types'
 import type firebaseType from 'firebase'
+import { GridFilterOptions } from '../../../shared/generic/types'
 
 ///
 
@@ -22,7 +22,7 @@ interface StoreOptions {
 
 const db = app.firestore()
 
-export class Service<T extends BaseModel> {
+export class Service<T> {
   constructor(
     private readonly collectionName: string,
     private readonly options: ServiceOptions = { excludeId: false },
@@ -41,7 +41,7 @@ export class Service<T extends BaseModel> {
   }
 
   public async update(data: T, options?: StoreOptions): Promise<DocRef> {
-    const doc = db.collection(this.collectionName).doc(data.id)
+    const doc = db.collection(this.collectionName).doc(data['id'])
 
     await Promise.all([
       doc.set(omitInvalidFields(data, options)),
@@ -53,7 +53,7 @@ export class Service<T extends BaseModel> {
   }
 
   public async store(data: T, options?: StoreOptions): Promise<DocRef> {
-    return data.id ? this.update(data, options) : this.create(data, options)
+    return data['id'] ? this.update(data, options) : this.create(data, options)
   }
 
   public async storeAll(data: T[]): Promise<DocRef[]> {
@@ -70,7 +70,7 @@ export class Service<T extends BaseModel> {
     const collections: Partial<T> = await this.populate(doc.id, populate || [])
     const data = { ...doc.data(), ...collections } as T
     if (!this.options.excludeId) {
-      data.id = doc.id
+      data['id'] = doc.id
     }
 
     this.log('GET', id, data)
@@ -96,7 +96,15 @@ export class Service<T extends BaseModel> {
         query = query.endBefore(options.endBefore)
       }
 
-      if (options.limit) {
+      if (options.startAt !== undefined) {
+        query = query.startAt(options.startAt)
+      }
+
+      if (options.endAt !== undefined) {
+        query = query.endAt(options.endAt)
+      }
+
+      if (options.limit !== undefined) {
         query = query.limit(options.limit)
       }
     }
@@ -144,8 +152,8 @@ export class Service<T extends BaseModel> {
   private logQueryOptions(options?: GridFilterOptions, data?: unknown) {
     const opt = {
       ...options,
-      startAfter: options?.startAfter?.id ?? undefined,
-      endBefore: options?.endBefore?.id ?? undefined,
+      startAfter: options?.startAfter?.['id'] ?? undefined,
+      endBefore: options?.endBefore?.['id'] ?? undefined,
     }
 
     this.log('GET list with filter', opt, data)

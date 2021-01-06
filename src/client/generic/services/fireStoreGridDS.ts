@@ -1,61 +1,54 @@
-import { map, pipe, slice } from 'ramda'
 import { Service } from './fireStoreBase'
-import { BaseModel } from 'shared/generic/types'
+import {
+  BaseModel,
+  GridFilterOptions,
+  GridDataSource,
+  DataSourceEvents,
+} from 'shared/generic/types'
 import type firebaseType from 'firebase'
 
 export type QuerySnapshot = firebaseType.firestore.QuerySnapshot
 
 const getRecord = (d) => ({ id: d.id, ...d.data() })
 
+interface ListMateData {
+  count: number
+}
+
 export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
-  private readonly _service: Service<T>
   private readonly options?: GridFilterOptions
+  private readonly section: string
   private list?: QuerySnapshot
   private listeners = new Map<string, Set<() => void>>()
+  private metaService: Service<ListMateData>
+  private itemService: Service<T>
 
-  constructor(service: Service<T>, options?: GridFilterOptions) {
+  constructor(collection: string, section: string, options?: GridFilterOptions) {
     this.options = options
-    this._service = service
+    this.section = section
+    this.metaService = new Service<ListMateData>(collection, { excludeId: true })
+    this.itemService = new Service<T>(`${collection}/${section}/items`)
   }
 
-  public get service(): Service<T> {
-    return this._service
+  public async getNextPage(limit: number): Promise<T[]> {
+    return this.getPage({ limit, startAfter: this.list?.docs[0] })
   }
 
-  public get size(): number {
-    return this.list?.size ?? 0
+  public async getPrevPage(limit: number): Promise<T[]> {
+    return this.getPage({ limit, endBefore: this.list?.docs[0] })
   }
 
-  public async getPage(pageNumber: number, limit: number): Promise<T[]> {
-    if (!this.list) await this.loadList()
-
-    const from = pageNumber * limit
-    const to = Math.min((pageNumber + 1) * limit - 1, this.size)
-
-    if (to === 0 && from === 0) {
-      return []
-    }
-
-    if (to <= from) throw new Error('Invalid parameters')
-
-    return pipe(slice(from, to), map(getRecord))(this.list?.docs ?? [])
-  }
-
-  public async refresh(): Promise<QuerySnapshot> {
-    return this.loadList()
-  }
-
-  public async loadList(): Promise<QuerySnapshot> {
+  private async getPage(opts: GridFilterOptions): Promise<T[]> {
     this.emitEvent('loadStart')
-    this.list = undefined
 
-    this.list = await this._service.getRawList(this.options)
+    this.list = await this.itemService.getRawList({
+      ...this.options,
+      ...opts,
+    })
+
     this.emitEvent('loadEnd')
-    if (this.list) {
-      return this.list
-    } else {
-      throw Error('Missing data')
-    }
+
+    return this.list.docs.map(getRecord)
   }
 
   on(type: DataSourceEvents, callback: () => void): void {

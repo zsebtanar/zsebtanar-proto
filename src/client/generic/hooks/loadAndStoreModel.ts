@@ -13,7 +13,7 @@ interface Getters {
 
 export interface LoadAndStoreModelAPI<TModel> extends ModelAPI<TModel>, Getters {
   state: States
-  error?: Error
+  error?: any
   save(clone?: boolean): Promise<TModel>
   reload(): void
 }
