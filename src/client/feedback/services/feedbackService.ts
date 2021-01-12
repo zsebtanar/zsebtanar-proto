@@ -28,6 +28,8 @@ export interface FeedbackDataModel extends BaseModel {
   'g-recaptcha-response': string
 }
 
-export const FeedbackService = new Service<FeedbackDataModel>('feedback')
+export const collectionName = 'feedback'
+
+export const FeedbackService = new Service<FeedbackDataModel>(collectionName)
 
 export const createFeedback = (data: FeedbackDataModel) => cloudFnPost('feedback', data)

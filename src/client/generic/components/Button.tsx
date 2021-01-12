@@ -8,6 +8,7 @@ import {
 import { Icon } from './icons/Icon'
 
 import './Button.scss'
+import { ButtonType } from '../../../shared/generic/types'
 
 interface ButtonProps extends Omit<React.HTMLProps<HTMLButtonElement>, 'type' | 'onClick'> {
   btn?: ButtonType

@@ -1,6 +1,7 @@
 import { UserModel, UserToken } from '../types'
 import { cloudFnGet, cloudFnPost } from 'client/generic/services/firebase'
 import { Service } from 'client/generic/services/fireStoreBase'
+import type { UserData } from '../../../shared/types'
 import type firebase from 'firebase'
 
 export const ROLE_USER = 0
@@ -27,7 +28,7 @@ export function getUserDetails(uid: string): Promise<UserModel> {
 
 export const removeUserData = (uid: string): Promise<void> => usersService.delete(uid)
 
-export const getAllUser = (): Promise<{ users: FB.UserData[] }> =>
+export const getAllUser = (): Promise<{ users: UserData[] }> =>
   cloudFnGet(`/user/all`, {}, { withToken: true })
 
 export const updateUserRole = (uid: string, newRole: number): Promise<void> =>

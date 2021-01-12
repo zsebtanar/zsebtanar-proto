@@ -13,9 +13,9 @@ export function DropdownToggle({ id, className, children, ...props }: Props): JS
 
   const action = () => {
     if (dropdown.isOpen) {
-      dropdown.open()
-    } else {
       dropdown.close()
+    } else {
+      dropdown.open()
     }
   }
 

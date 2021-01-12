@@ -70,22 +70,6 @@ export function ExerciseForm(): JSX.Element {
   const isNotNew = id !== undefined
   const isClone = query.get('clone') !== null
 
-  if (error) {
-    return (
-      <div className="exercise-form bg-light">
-        <Alert type="danger" className="container">
-          <ul>
-            {error?.errors?.body.map((err, idx) => (
-              <li key={idx}>
-                {err?.dataPath?.toString?.()} - {err?.message}
-              </li>
-            ))}
-          </ul>
-        </Alert>
-      </div>
-    )
-  }
-
   return (
     <AssetManagerProvider {...bind('assets')}>
       <PocketLispProvider isEdit={true} seed={1} script={data.script}>
@@ -115,6 +99,17 @@ export function ExerciseForm(): JSX.Element {
                   </div>
                 </div>
               </div>
+              {error && (
+                <Alert type="danger" className="container">
+                  <ul>
+                    {error?.errors?.body.map((err, idx) => (
+                      <li key={idx}>
+                        {err?.dataPath?.toString?.()} - {err?.message}
+                      </li>
+                    ))}
+                  </ul>
+                </Alert>
+              )}
               <ExerciseFormDetails {...bindPartialModel()} />
               <hr />
               <h5>

@@ -9,6 +9,7 @@ import {
   FetchFirestoreListOptions,
   FetchFirestoreListAPI,
 } from '../../generic/hooks/fetchFirestoreList'
+import { GridFilterOptions } from '../../../shared/generic/types'
 
 export const exerciseSummaryDataService = new Service<ExerciseSummaryModel>(
   'exercise/summary/items',
@@ -68,10 +69,7 @@ export function useExerciseModel(id?: string): LoadAndStoreModelAPI<ExerciseMode
     classifications: [],
     difficulty: 0,
     state: ExerciseState.New,
-    scripts: {
-      base: '',
-      solution: '',
-    },
+    script: '',
     subTasks: [],
   })
 }

@@ -9,8 +9,8 @@ import { FormGroup } from 'client/generic/components/form/FormGroup'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { Button } from 'client/generic/components/Button'
 import { NumberInput } from 'client/generic/components/form/input/NumberInput'
-import { Input } from 'client/generic/components/form/input/Input'
 import { Icon } from 'client/generic/components/icons/Icon'
+import { Alert } from 'client/generic/components/Alert'
 
 export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCNumberList>(bindProps)
@@ -67,7 +67,7 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
       </div>
       <hr />
       <h6>
-        Megoldások{' '}
+        Szám lista{' '}
         <Button
           btn="link"
           small
@@ -76,37 +76,65 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
             append('solution', '')
           }}
         >
-          <Icon icon={PlusCircleIcon} /> Alternatív megoldás megadása
+          <Icon icon={PlusCircleIcon} /> Új mező fevétele
         </Button>
       </h6>
 
-      <ol>
-        {data.solution?.map((item, idx) => (
-          <li key={idx}>
-            <div className="d-flex">
-              <TextEditor {...bind(`props.fields.${idx}.prefix`)} preview={MarkdownWithScript} />
-              <TextEditor {...bind(`props.fields.${idx}.postfix`)} preview={MarkdownWithScript} />
-              <Input
-                {...bind(`solution.${idx}`)}
-                type="text"
-                className="form-control mt-1"
-                required
-              />
-              <Button
-                small
-                btn="link"
-                className="text-danger"
-                onAction={() => {
-                  remove(`props.fields.${idx}`)
-                  remove(`solution.${idx}`)
-                }}
-              >
-                <Icon icon={TrashIcon} />
-              </Button>
-            </div>
-          </li>
-        ))}
-      </ol>
+      {!data.solution?.length && <Alert type="warning">A szám lista üres</Alert>}
+      {data.solution?.length && (
+        <table className="table table-borderless table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th className="w-25">Előtag</th>
+              <th>Megoldás</th>
+              <th className="w-25">Utótag</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.solution?.map((item, idx) => (
+              <tr key={idx}>
+                <td>{idx + 1}</td>
+                <td>
+                  <TextEditor
+                    {...bind(`props.fields.${idx}.prefix`)}
+                    preview={MarkdownWithScript}
+                    inline
+                  />
+                </td>
+                <td>
+                  <NumberInput
+                    {...bind(`solution.${idx}`)}
+                    className="form-control mt-1"
+                    required
+                  />
+                </td>
+                <td>
+                  <TextEditor
+                    {...bind(`props.fields.${idx}.postfix`)}
+                    preview={MarkdownWithScript}
+                    inline
+                  />
+                </td>
+                <td>
+                  <Button
+                    small
+                    btn="link"
+                    className="text-danger"
+                    onAction={() => {
+                      remove(`props.fields.${idx}`)
+                      remove(`solution.${idx}`)
+                    }}
+                  >
+                    <Icon icon={TrashIcon} />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   )
 }

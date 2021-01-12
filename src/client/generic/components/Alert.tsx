@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import cx from 'classnames'
 import { CloseButton } from './CloseButton'
+import { AlertType } from '../../../shared/generic/types'
 
 interface Props {
   type?: AlertType

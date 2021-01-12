@@ -17,11 +17,11 @@ service cloud.firestore {
 
 
     match /exercise/{document=**} {
-      allow read write: if false;
+      allow read, write: if false;
     }
 
     match /exercise/summary/items/{exerciseId} {
-      allow read: true;
+      allow read: if true;
       allow write: if false; // saved by API
     }
 

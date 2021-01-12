@@ -1,6 +1,6 @@
 import React from 'react'
 import { FireStoreGridDS } from 'client/generic/services/fireStoreGridDS'
-import { FeedbackService } from '../services/feedbackService'
+import { collectionName } from '../services/feedbackService'
 import { Grid } from 'client/generic/components/grid/Grid'
 
 const opt = {
@@ -20,7 +20,7 @@ export function FeedbackGrid(): JSX.Element {
         <h3>Visszajelzések</h3>
       </div>
       <Grid
-        dataSource={new FireStoreGridDS(FeedbackService)}
+        dataSource={new FireStoreGridDS(collectionName)}
         columnDefs={[
           { title: '#', width: 50, renderer: (data, row, rowIdx) => rowIdx + 1 },
           { key: 'site', title: 'Oldal', width: 75 },

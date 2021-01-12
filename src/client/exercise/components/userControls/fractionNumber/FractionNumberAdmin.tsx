@@ -6,7 +6,7 @@ import { Checkbox } from 'client/generic/components/form/input/Checkbox'
 import { FormGroup } from 'client/generic/components/form/FormGroup'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { MarkdownWithScript } from '../../../../script/components/MarkdownWithCode'
-import { Input } from 'client/generic/components/form/input/Input'
+import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 
 export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>): JSX.Element {
   const { bind } = useModel<UCFractionNumber>(bindProps)
@@ -34,8 +34,7 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>):
 
       <FormGroup label="Számláló">
         {(id) => (
-          <Input
-            type="number"
+          <NumberInput
             {...bind('solution.numerator')}
             id={id}
             step={1}
@@ -47,8 +46,7 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>):
 
       <FormGroup label="Nevező">
         {(id) => (
-          <Input
-            type="number"
+          <NumberInput
             className="form-control form-control-sm"
             {...bind('solution.denominator')}
             id={id}

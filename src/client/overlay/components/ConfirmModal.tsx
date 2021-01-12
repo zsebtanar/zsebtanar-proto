@@ -5,6 +5,7 @@ import { Dialog } from './base/Dialog'
 import { DialogBody } from './base/DialogBody'
 import { DialogFooter } from './base/DialogFooter'
 import { Button } from 'client/generic/components/Button'
+import { ButtonType } from '../../../shared/generic/types'
 
 interface Props {
   title?: string

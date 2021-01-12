@@ -37,6 +37,7 @@ interface Props extends UseModelProps<string> {
   rows?: number
   required?: boolean
   preview?: React.FunctionComponent<MarkdownProps>
+  inline?: boolean
 }
 
 export function TextEditor({
@@ -48,6 +49,7 @@ export function TextEditor({
   rows,
   className,
   preview: Preview,
+  inline,
 }: Props): JSX.Element {
   const textRef = useRef<HTMLTextAreaElement>(null)
   const [isInFocus, setIsInFocus] = useState<boolean>(false)
@@ -152,7 +154,7 @@ export function TextEditor({
   return (
     <FocusGuard onFocus={onFocus} onBlur={onBlur}>
       <div className={cx(className, 'text-editor', 'form-control', { focused: isInFocus })}>
-        {isInFocus && (
+        {isInFocus && !inline && (
           <Tools
             wrapText={wrapText}
             multiLine={multiLine}
@@ -166,14 +168,16 @@ export function TextEditor({
           className={cx({ 'form-control': isInFocus })}
           ref={textRef}
           name={name}
-          rows={rows || 4}
+          rows={inline ? 1 : rows || 4}
           required={required}
           onChange={update}
           value={value}
         />
-        <div className="text-editor-preview">
-          {Preview ? <Preview source={value} /> : <Markdown source={value} />}
-        </div>
+        {!(inline && isInFocus) && (
+          <div className="text-editor-preview">
+            {Preview ? <Preview source={value} /> : <Markdown source={value} />}
+          </div>
+        )}
       </div>
     </FocusGuard>
   )

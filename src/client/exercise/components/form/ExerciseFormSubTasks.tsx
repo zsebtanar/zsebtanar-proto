@@ -20,6 +20,8 @@ import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { SortableList } from '../../../generic/components/SortableList'
 import { Icon } from 'client/generic/components/icons/Icon'
 
+import './ExerciseFormSubTasks.scss'
+
 interface Props extends UseModelProps<ExerciseSubTask> {
   index: number
   onRemove: (idx: number) => void
@@ -51,12 +53,12 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
               <Icon icon={PlusCircleIcon} /> Mező hozzáadása
             </DropdownToggle>
             <DropdownMenu>
-              {Object.entries(userControlNames).map(([key, label]) => (
+              {Object.entries(userControlNames).map(([type, label]) => (
                 <button
-                  key={key}
+                  key={type}
                   type="button"
                   className="dropdown-item"
-                  onClick={() => createUserControl(key)}
+                  onClick={() => createUserControl(type)}
                 >
                   {label}
                 </button>
@@ -75,35 +77,29 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
         <TextEditor {...bind(`description`)} preview={MarkdownWithScript} />
       </div>
       <hr />
-      <ul>
+      <ul className="list-unstyled">
         {bindProps.value.controls?.map((control, idx) => (
-          <li key={idx}>
-            <div className="row">
-              <div className="col-10">
-                <UserControls
-                  ctrl={control}
-                  disabled={true}
-                  onChange={noop}
-                  name={control.name}
-                  value={
-                    control.isDynamic ? evalPL(`(solution-${control.name})`) : control.solution
-                  }
-                />
-              </div>
-              <div className="col-2 text-right">
-                <span className="badge badge-secondary">{userControlNames[control.type]}</span>
-                <Button small btn="link" onAction={() => editUserControl(control, idx)}>
-                  <Icon icon={EditIcon} />
-                </Button>
-                <Button
-                  small
-                  btn="link"
-                  className="text-danger"
-                  onAction={() => remove(`controls.${idx}`)}
-                >
-                  <Icon icon={TrashIcon} />
-                </Button>
-              </div>
+          <li key={idx} className="position-relative">
+            <UserControls
+              ctrl={control}
+              disabled={true}
+              onChange={noop}
+              name={control.name}
+              value={control.isDynamic ? evalPL(`(solution-${control.name})`) : control.solution}
+            />
+            <div className="uc-controls">
+              <span className="badge badge-secondary">{userControlNames[control.type]}</span>
+              <Button small btn="link" onAction={() => editUserControl(control, idx)}>
+                <Icon icon={EditIcon} />
+              </Button>
+              <Button
+                small
+                btn="link"
+                className="text-danger"
+                onAction={() => remove(`controls.${idx}`)}
+              >
+                <Icon icon={TrashIcon} />
+              </Button>
             </div>
           </li>
         ))}

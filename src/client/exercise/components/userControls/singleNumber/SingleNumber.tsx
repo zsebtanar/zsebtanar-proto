@@ -2,10 +2,10 @@ import React from 'react'
 import { UCSingleNumber } from 'shared/exercise/types'
 import { UseModelProps } from 'client/generic/hooks/model'
 import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
-
-import './SingleNumber.scss'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { Input } from 'client/generic/components/form/input/Input'
+
+import './SingleNumber.scss'
 
 interface Props extends UseModelProps<string> {
   ctrl: UCSingleNumber

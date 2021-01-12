@@ -17,17 +17,21 @@ interface ListMateData {
 
 export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
   private readonly options?: GridFilterOptions
-  private readonly section: string
+  private readonly section?: string
   private list?: QuerySnapshot
   private listeners = new Map<string, Set<() => void>>()
-  private metaService: Service<ListMateData>
+  private metaService?: Service<ListMateData>
   private itemService: Service<T>
 
-  constructor(collection: string, section: string, options?: GridFilterOptions) {
+  constructor(collection: string, section?: string, options?: GridFilterOptions) {
     this.options = options
     this.section = section
-    this.metaService = new Service<ListMateData>(collection, { excludeId: true })
-    this.itemService = new Service<T>(`${collection}/${section}/items`)
+    if (this.section) {
+      this.metaService = new Service<ListMateData>(collection, { excludeId: true })
+      this.itemService = new Service<T>(`${collection}/${section}/items`)
+    } else {
+      this.itemService = new Service<T>(`${collection}`)
+    }
   }
 
   public async getNextPage(limit: number): Promise<T[]> {

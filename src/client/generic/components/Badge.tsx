@@ -1,4 +1,5 @@
 import React from 'react'
+import { BadgeType } from '../../../shared/generic/types'
 
 interface BadgeProps {
   type: BadgeType

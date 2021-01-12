@@ -66,7 +66,7 @@ const numberListSchema = S.object()
         S.array().items(S.object().prop('prefix', S.string()).prop('postfix', S.string())),
       ),
   )
-  .prop('solution', S.object().prop('numerator', S.number()).prop('denominator', S.number()))
+  .prop('solution', S.array().items(S.number()))
   .required(['type', 'solution'])
 
 const simpleTextSchema = S.object()
@@ -146,5 +146,4 @@ export const exerciseSchema = S.object()
   .additionalProperties(false)
   .valueOf()
 
-require('fs').writeFileSync('./schema.json', JSON.stringify(exerciseSchema.valueOf()), 'utf8')
 export const changeExerciseStateSchema = S.object().prop('state', ExerciseStateEnum).valueOf()

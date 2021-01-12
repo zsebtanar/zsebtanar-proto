@@ -4,7 +4,9 @@ import { useLoadAndStoreModel } from '../../generic/hooks/loadAndStoreModel'
 import { Service } from '../../generic/services/fireStoreBase'
 import { useFetchData } from '../../generic/hooks/fetchData'
 
-export const wikiPageService = new Service<WikiPageModel>('wikiPage')
+export const collectionName = 'wikiPage'
+
+export const wikiPageService = new Service<WikiPageModel>(collectionName)
 
 export function useStoreWikiPage(model: WikiPageModel) {
   return useFetchData<unknown>(() => wikiPageService.store(model), [model])

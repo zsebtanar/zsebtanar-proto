@@ -1,4 +1,5 @@
 import { CLASSIFICATION_PARAM } from './values'
+import { BadgeType } from '../../shared/generic/types'
 
 export function toClassificationList(...classification: string[]): string {
   return `list?${CLASSIFICATION_PARAM}=${classification.join(',')}`

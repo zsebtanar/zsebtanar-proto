@@ -1,8 +1,8 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { WikiPageModel } from 'client/wiki/types'
-import { wikiPageService } from 'client/wiki/services/wikiPageService'
-import { Plus as PlusIcon, Edit as EditIcon, Copy as CopyIcon } from 'react-feather'
+import { collectionName } from 'client/wiki/services/wikiPageService'
+import { Copy as CopyIcon, Edit as EditIcon, Plus as PlusIcon } from 'react-feather'
 import { Grid } from 'client/generic/components/grid/Grid'
 import { FireStoreGridDS } from '../../generic/services/fireStoreGridDS'
 import { Icon } from 'client/generic/components/icons/Icon'
@@ -17,7 +17,7 @@ export function WikiPageGrid(): JSX.Element {
         </NavLink>
       </div>
       <Grid
-        dataSource={new FireStoreGridDS(wikiPageService)}
+        dataSource={new FireStoreGridDS(collectionName)}
         columnDefs={[
           { title: '#', width: 100, renderer: (data, row, idx) => idx + 1 },
           { key: 'title', title: 'Név' },

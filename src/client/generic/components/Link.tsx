@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import cx from 'classnames'
 import { Link as RRLink } from 'react-router-dom'
 import * as H from 'history'
+import { BadgeType } from '../../../shared/generic/types'
 
 interface LinkProps {
   to: string | H.Path | ((location: H.Location) => H.Path)
