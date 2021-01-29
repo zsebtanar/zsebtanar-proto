@@ -1,6 +1,6 @@
 import * as https from 'https'
 
-export function simpleGet(url) {
+export function simpleGet(url): Promise<string> {
   return new Promise((res, rej) => {
     https
       .get(url, resp => {

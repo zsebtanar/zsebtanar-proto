@@ -1,0 +1,14 @@
+
+.uc-simple-number {
+  .prefix, .postfix{
+    display: inline-block;
+    padding-top: calc(.375rem + 1px);
+    padding-bottom: calc(.375rem + 1px);
+    margin-bottom: 0;
+    font-size: inherit;
+    line-height: 1.5;
+    p {
+      margin: 0;
+    }
+  }
+}

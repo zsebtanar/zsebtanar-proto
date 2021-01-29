@@ -3,7 +3,7 @@
     "baseUrl": "./src",
     "outDir": "./bin",
     "sourceMap": true,
-    "strict": false,
+    "strict": true,
     "skipDefaultLibCheck": true,
     "noImplicitAny": false,
     "removeComments": false,
@@ -15,8 +15,15 @@
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "shared": ["shared/*"],
+      "server": ["server/*"],
+      "client": ["client/*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "typeRoots": ["node_modules/@types"],
-  "exclude": ["node_modules", "./src/**/*.spec.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx"]
 }

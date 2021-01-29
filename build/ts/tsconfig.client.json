@@ -1,12 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
-    "../../src/client-admin/**/*.ts",
-    "../../src/client-admin/**/*.tsx",
-    "../../src/client-public/**/*.ts",
-    "../../src/client-public/**/*.tsx",
-    "../../src/client-common/**/*.ts",
-    "../../src/client-common/**/*.tsx",
+    "../../src/client/**/*.ts",
     "../../src/shared/**/*.ts",
     "../../src/shared/**/*.tsx"
   ]

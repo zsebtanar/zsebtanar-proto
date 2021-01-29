@@ -1,12 +1,25 @@
+import * as express from 'express'
 import { admin } from '../utils/firebase'
-import { errorHandler } from '../utils/error'
+import { onlyUser } from '../utils/authorization'
+import { profileUpdateSchema } from './schemas'
+import { getToken } from '../middlewares/firebaseToken'
+import { HandlerError } from '../utils/HandlerError'
+import { validate } from '../utils/validator'
 
-export default errorHandler((req, res) => {
-  const uid = req.params.uid
-  const data = req.body
+export const route = express.Router()
 
-  return admin
-    .auth()
-    .updateUser(uid, data)
-    .then(user => res.json(user))
-})
+route.post(
+  '/profile/:uid',
+  [getToken, onlyUser, validate({ body: profileUpdateSchema })],
+  async (req, res, next) => {
+    try {
+      const uid = req.params.uid
+      const data = req.body
+
+      const user = await admin.auth().updateUser(uid, data)
+      res.json(user)
+    } catch (error) {
+      next(new HandlerError(500, 'User update error', error))
+    }
+  },
+)
