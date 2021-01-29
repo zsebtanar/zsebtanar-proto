@@ -1,11 +1,17 @@
 import { RuntimeError } from 'pocket-lisp'
-import { PLNumber, plString, PLString, plNumber, plFractionNumber } from 'pocket-lisp-stdlib'
+import {
+  PLNumber,
+  plString,
+  PLString,
+  plNumber,
+  plFractionNumber,
+  plVector,
+} from 'pocket-lisp-stdlib'
 
 export const pls = plString
 export const pln = plNumber
 export const plf = plFractionNumber
-
-///
+export const plv = plVector
 
 export const assert = (val: boolean, msg: string): boolean => {
   // TODO remove lang dependency

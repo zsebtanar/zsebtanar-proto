@@ -5,6 +5,7 @@ import { mathUtils } from './shared-code/mathUtils'
 import { langUtils } from './shared-code/langUtils'
 import { unitConvertUtils } from './shared-code/unitConvertUtils'
 import { stringUtils } from './shared-code/stringUtils'
+import { suffixUtils } from './shared-code/suffixUtils'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
@@ -41,5 +42,6 @@ export const valueSet = (prng: PseudoRandomNumberGenerator) => ({
   ...unitConvertUtils,
   ...mathUtils,
   ...langUtils,
+  ...suffixUtils,
   ...stringUtils,
 })

@@ -51,153 +51,6 @@ export function translate(lan: PLString, str: PLString): PLString {
   return plString(trans)
 }
 
-const suffixTimes = (num: number): string => {
-  assertInteger(num)
-
-  const absNum = Math.abs(num)
-
-  switch (absNum % 10) {
-    case 1:
-    case 2:
-    case 4:
-    case 7:
-    case 9:
-      return 'szer'
-    case 3:
-    case 6:
-    case 8:
-      return 'szor'
-    case 5:
-      return 'ször'
-  }
-
-  switch ((absNum / 10) % 10) {
-    case 1:
-    case 4:
-    case 5:
-    case 7:
-    case 9:
-      return 'szer'
-    case 2:
-    case 3:
-    case 6:
-    case 8:
-      return 'szor'
-  }
-
-  if (absNum == 0) {
-    return 'szor'
-  } else if (100 <= absNum && absNum < 1000) {
-    return 'szor'
-  } else if (1000 <= absNum && absNum < 1000000) {
-    return 'szer'
-  } else {
-    return 'szor'
-  }
-}
-
-/**
- * Add modified suffix 'times' to number (szorosára/szeresére/szörösére)
- *
- * @param num Number (< 10^600)
- *
- * @return string $suffix Suffix
- */
-const suffixTimes2 = (num: number): string => {
-  assertInteger(num)
-
-  const absNum = Math.abs(num)
-
-  switch (absNum % 10) {
-    case 1:
-    case 2:
-    case 4:
-    case 7:
-    case 9:
-      return 'szeresére'
-    case 3:
-    case 6:
-    case 8:
-      return 'szorosára'
-    case 5:
-      return 'szörösére'
-  }
-
-  switch ((absNum / 10) % 10) {
-    case 1:
-    case 4:
-    case 5:
-    case 7:
-    case 9:
-      return 'szeresére'
-    case 2:
-    case 3:
-    case 6:
-    case 8:
-      return 'szorosára'
-  }
-
-  if (absNum == 0) {
-    return 'szorosára'
-  } else if (100 <= absNum && absNum < 1000) {
-    return 'szorosára'
-  } else if (1000 <= absNum && absNum < 1000000) {
-    return 'szeresére'
-  } else {
-    return 'szorosára'
-  }
-}
-
-/**
- * Add modified suffix 'th' to number (od/ed/öd)
- *
- * @param num Fraction number
- * @return string $suffix Suffix
- */
-const baseSuffixFraction = (num: number): string => {
-  const absNum = Math.abs(num)
-
-  switch (absNum % 10) {
-    case 1:
-    case 2:
-    case 4:
-    case 7:
-    case 9:
-      return 'ed'
-    case 3:
-    case 8:
-      return 'ad'
-    case 6:
-      return 'od'
-    case 5:
-      return 'öd'
-  }
-
-  switch ((absNum / 10) % 10) {
-    case 1:
-    case 4:
-    case 5:
-    case 7:
-    case 9:
-      return 'ed'
-    case 2:
-    case 3:
-    case 6:
-    case 8:
-      return 'ad'
-  }
-
-  if (absNum == 0) {
-    return 'ad'
-  } else if (100 <= absNum && absNum < 1000) {
-    return 'ad'
-  } else if (1000 <= absNum && absNum < 1000000) {
-    return 'ed'
-  } else {
-    return 'od'
-  }
-}
-
 const format = (fn: (number) => string) => (num: PLNumber | PLFractionNumber): PLString => {
   let result = ''
   if (num instanceof PLNumber) {
@@ -240,7 +93,7 @@ function article(value: number): string {
  * @return string $num_text Number with text
  * @param value
  */
-function baseNum2text(value: number) {
+export function baseNum2text(value: number): string {
   assertInteger(value)
   if (value < 0) {
     return 'mínusz ' + baseNum2text(-value)
@@ -277,7 +130,7 @@ function baseNum2text(value: number) {
         const upcomingDigits = digits.slice(digitId, Math.min(digits.length, digitId + 3))
         if (upcomingDigits.join() !== '0,0,0') {
           // only add hyphen for >2000 numbers
-          if (value > 2000 && groupId > 0) numText = `-${numText}`
+          if (value > 2000 && groupId > 0 && numText !== '') numText = `-${numText}`
           // only add group suffix if upcoming digits are not empty
           numText = groupSuffix[groupId] + numText
         }
@@ -307,139 +160,19 @@ function baseNum2text(value: number) {
   return text
 }
 
-function num2text(num: PLNumber | PLFractionNumber): PLString {
+function num2text(num: PLNumber): PLString {
   let result = ''
   if (num instanceof PLNumber) {
     if (Number.isInteger(num.value)) {
       result = baseNum2text(num.value)
     }
-  } else if (num instanceof PLFractionNumber) {
-    assertInteger(num.denominator)
-
-    result = `${baseNum2text(num.numerator)} ${baseNum2text(num.denominator)}${baseSuffixFraction(
-      num.denominator,
-    )}`
   }
   return plString(result)
 }
 
-/**
- * Add suffix dativus to number (at/et/öt/t)
- *
- *
- * @return string $suffix Suffix
- * @param value
- */
-export const dativus = (value: number): string => {
-  const absNum = Math.abs(value)
-
-  switch (absNum % 10) {
-    case 1:
-    case 4:
-    case 7:
-    case 9:
-      return 'et'
-    case 2:
-      return 't'
-    case 3:
-    case 8:
-      return 'at'
-    case 5:
-      return 'öt'
-    case 6:
-      return 'ot'
-  }
-
-  switch ((absNum / 10) % 10) {
-    case 1:
-    case 4:
-    case 5:
-    case 7:
-    case 9:
-      return 'et'
-    case 2:
-    case 3:
-    case 6:
-    case 8:
-      return 'at'
-  }
-
-  if (absNum === 0) {
-    return 't'
-  } else if (absNum === 1_000_000_000) {
-    return 'ot'
-  } else if (100 <= absNum && absNum < 1000) {
-    return 'at'
-  } else if (1000 <= absNum && absNum < 1_000_000) {
-    return 'et'
-  } else {
-    return 't'
-  }
-}
-
 export const langUtils = {
   abbreviate,
-  ['article']: format(article),
-  ['dativus']: format(dativus),
-  ['num-to-text']: num2text,
-  ['suffix']: format(baseSuffixFraction),
-  ['suffix-times']: format(suffixTimes),
-  ['suffix-times2']: format(suffixTimes2),
   translate,
+  ['article']: format(article),
+  ['num-to-text']: num2text,
 }
-;`
-
-
-
-
-/**
- * Write order of number
- *
- * @param int $num Number (<=10!)
- *
- * @return string $text Order (text)
- */
-function OrderText($num) { 
-  $text_array = array(
-    0 => 'nulladik',
-    1 => 'első',
-    2 => 'második',
-    3 => 'harmadik',
-    4 => 'negyedik',
-    5 => 'ötödik',
-    6 => 'hatodik',
-    7 => 'hetedik',
-    8 => 'nyolcadik',
-    9 => 'kilencedik',
-    10 => 'tizedik'
-  );
-
-  $text = $text_array[$num];
-
-  return $text;
-}
-
-/**
- * Format big numbers
- *
- * @param int $num Number
- *
- * @return string $num2 Number (formatted)
- */
-function BigNum($num) { 
-  if ($num < 10000) {
-    $num2 = $num;
-  } else {
-    if (is_integer($num)) {
-      $num2 = number_format($num, 0, ',', '\\,');
-    } else {
-      $digits = strlen(substr(strrchr($num, "."), 1));
-      $num2 = number_format($num, $digits, ',', '\\,');
-    }
-  }
-
-  return $num2;
-}
-
-
-`
