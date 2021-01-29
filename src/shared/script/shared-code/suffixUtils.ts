@@ -49,7 +49,7 @@ export function isNumberGroupEven(n: number): boolean {
 /**
  * Check if number is high pitch (e/i) or low pitch (a/o/u)
  */
-export function pitch(n: number): string {
+export function pitch(n: number): 'low' | 'high' {
   assertInteger(n)
   const nZeros = trailingZeros(n)
   if (nZeros <= 1) {
@@ -66,22 +66,22 @@ export function pitch(n: number): string {
  * Get vowel for given suffix
  */
 export function suffixVowel(n: number, vowelType: string): string {
-  const lowPitch = pitch(n) === 'low'
+  const isLowPitch = pitch(n) === 'low'
   let vowel = ''
   const type = vowelType.split('').sort().join('')
   if (type === 'ae') {
     // nak/nek
-    vowel = lowPitch ? 'a' : 'e'
+    vowel = isLowPitch ? 'a' : 'e'
   } else if (type === 'áé') {
     // át/ét
-    vowel = lowPitch ? 'á' : 'é'
+    vowel = isLowPitch ? 'á' : 'é'
   } else if (type === 'eoö') {
     // szor/szer/ször
     const lastDigit = getLastDigit(n)
-    vowel = lastDigit === 5 || lastDigit === 2 ? 'ö' : lowPitch ? 'o' : 'e'
+    vowel = lastDigit === 5 || lastDigit === 2 ? 'ö' : isLowPitch ? 'o' : 'e'
   } else if (type === 'óő') {
     // ból/ből
-    vowel = lowPitch ? 'ó' : 'ő'
+    vowel = isLowPitch ? 'ó' : 'ő'
   } else {
     throw new Error(`Invalid vowel type: "${vowelType}"`)
   }
