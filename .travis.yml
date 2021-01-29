@@ -2,6 +2,16 @@ language: node_js
 node_js:
   - "13"
 
+addons:
+  apt:
+    packages:
+      - libgconf-2-4
+
+cache:
+  directories:
+    - ~/.npm
+    - ~/.cache
+
 env:
   NODE_ENV=test
   SERVER_ENV=test

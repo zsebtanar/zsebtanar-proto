@@ -1,0 +1,41 @@
+.code-editor {
+  .CodeMirror {
+    border: 1px solid #dee2e6;
+    border-left: none;
+    border-radius: 0.2rem;
+    height: 400px;
+  }
+
+  .code-error {
+    color: darkred;
+    background: rgba(255, 0, 0, 0.1);
+  }
+
+  .code-log {
+    color: #222;
+    background: #f7f7f7;
+  }
+
+  .code-icon {
+    display: inline-block;
+    margin: 0 5px;
+    border-radius: 50%;
+    width: 0.8rem;
+    height: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 0.9rem;
+    color: white;
+  }
+  .code-error-icon {
+    background: red;
+  }
+  .code-log-icon {
+    background: transparent;
+    color: blue;
+  }
+
+  .syntax-error {
+    border-bottom: 3px solid red;
+  }
+}

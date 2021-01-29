@@ -4,7 +4,6 @@
 
 export function wikiLink() {
   return function wikiLinkMD(state, silent) {
-    // tslint:disable-next-line:one-variable-per-declaration
     let attrs,
       code,
       content,
@@ -14,15 +13,17 @@ export function wikiLink() {
       token,
       start,
       resRef = '',
-      // tslint:disable-next-line:prefer-const
+      // eslint-disable-next-line prefer-const
       oldPos = state.pos,
-      // tslint:disable-next-line:prefer-const
+      // eslint-disable-next-line prefer-const
       max = state.posMax
 
     if (state.src.charCodeAt(state.pos + 0) !== 0x7e /* ~ */) return false
     if (state.src.charCodeAt(state.pos + 1) !== 0x5b /* [ */) return false
 
+    // eslint-disable-next-line prefer-const
     labelStart = state.pos + 2
+    // eslint-disable-next-line prefer-const
     labelEnd = state.md.helpers.parseLinkLabel(state, state.pos + 2, false)
 
     // parser failed to find ']', so it's not a valid link

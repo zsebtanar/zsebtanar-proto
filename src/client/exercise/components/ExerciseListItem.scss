@@ -1,0 +1,28 @@
+@import '~bootstrap/scss/bootstrap';
+
+.exercise-list-item {
+  .exercise-list-item-content {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  hr {
+    margin: 2.5rem -2rem;
+  }
+
+  .exercise-list-item-content {
+    &:hover {
+      background: $gray-100;
+      outline: 0.5rem solid $gray-100;
+    }
+  }
+  .ex-description {
+    color: inherit;
+    &:hover {
+      text-underline: none;
+    }
+  }
+  .start-link {
+    margin-top: -1rem;
+  }
+}

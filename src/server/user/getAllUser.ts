@@ -1,23 +1,29 @@
+import * as express from 'express'
 import { admin } from '../utils/firebase'
-import { errorHandler } from '../utils/error'
 import { evolve, map, pick } from 'ramda'
+import { onlyAdmin } from '../utils/authorization'
+import { getToken } from '../middlewares/firebaseToken'
+import { HandlerError } from '../utils/HandlerError'
 
-export default errorHandler((req, res) => {
-  const nextPageToken = req.query.pageToken
-  const publicFields = pick([
-    'uid',
-    'disabled',
-    'email',
-    'emailVerified',
-    'metadata',
-    'providerData',
-    'displayName',
-    'customClaims'
-  ])
+export const route = express.Router()
 
-  return admin
-    .auth()
-    .listUsers(1000, nextPageToken)
-    .then(evolve({ users: map(publicFields) }))
-    .then(result => res.json(result))
+route.get('/all', [getToken, onlyAdmin], async (req, res, next) => {
+  try {
+    const nextPageToken = req.query.pageToken
+    const publicFields = pick([
+      'uid',
+      'disabled',
+      'email',
+      'emailVerified',
+      'metadata',
+      'providerData',
+      'displayName',
+      'customClaims',
+    ])
+
+    const data = await admin.auth().listUsers(1000, nextPageToken)
+    res.json(evolve({ users: map(publicFields) }, data))
+  } catch (error) {
+    next(new HandlerError(500, 'User list all error', error))
+  }
 })
