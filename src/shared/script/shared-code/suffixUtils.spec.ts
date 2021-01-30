@@ -320,6 +320,9 @@ describe('suffix utils', () => {
     expect(fn(1, 'ra')).toEqual('re')
     expect(fn(2, 'ra')).toEqual('re')
     expect(fn(-3, 're')).toEqual('ra')
+    expect(fn(1, 'ban')).toEqual('ben')
+    expect(fn(2, 'ban')).toEqual('ben')
+    expect(fn(-3, 'ben')).toEqual('ban')
   })
 
   test('convertSuffix', () => {
@@ -336,6 +339,20 @@ describe('suffix utils', () => {
     expect(fn(8, 'ös')).toEqual('as')
     expect(fn(9, 'as')).toEqual('es')
     expect(fn(-10, 'os')).toEqual('es')
+    expect(fn(0, 'ből')).toEqual('ból')
+    expect(fn(-1, 'ból')).toEqual('ből')
+    expect(fn(0, 'nek')).toEqual('nak')
+    expect(fn(1, 'nak')).toEqual('nek')
+    expect(fn(-0, 'höz')).toEqual('hoz')
+    expect(fn(1, 'hoz')).toEqual('hez')
+    expect(fn(2, 'hez')).toEqual('höz')
+    expect(fn(-5, 'hez')).toEqual('höz')
+    expect(fn(1, 'ra')).toEqual('re')
+    expect(fn(2, 'ra')).toEqual('re')
+    expect(fn(-3, 're')).toEqual('ra')
+    expect(fn(1, 'ban')).toEqual('ben')
+    expect(fn(2, 'ban')).toEqual('ben')
+    expect(fn(-3, 'ben')).toEqual('ban')
   })
 
   test('suffix', () => {

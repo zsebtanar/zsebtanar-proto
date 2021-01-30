@@ -238,13 +238,14 @@ export function fractionSuffix(n: number, sfx: string): string {
 }
 
 /**
- * General suffixes (nak/nek, ból/ből, hoz/hez/höz)
+ * General suffixes (nak/nek, ból/ből, hoz/hez/höz, ra/re, ban/ben)
  */
 export function generalSuffix(n: number, sfx: string): string {
   sfx = sfx.replace(/b[óő]l/g, `b${suffixVowel(n, 'óő')}l`) // -ból/ből
   sfx = sfx.replace(/n[ae]k/g, `n${suffixVowel(n, 'ae')}k`) // -nak/nek
   sfx = sfx.replace(/h[eoö]z/g, `h${suffixVowel(n, 'oeö')}z`) // -hoz/hez/höz
   sfx = sfx.replace(/r[ae]$/g, `r${suffixVowel(n, 'ae')}`) // -ra/re
+  sfx = sfx.replace(/b[ae]n$/g, `b${suffixVowel(n, 'ae')}n`) // -ban/ben
   return sfx
 }
 
@@ -259,7 +260,13 @@ export function convertSuffix(n: number, sfx: string): string {
     return multSuffix(n, sfx)
   } else if (/^[aemoö]?d/g.test(sfx)) {
     return fractionSuffix(n, sfx)
-  } else if (/^b[óő]l$/g.test(sfx) || /^n[ae]k$/g.test(sfx) || /^h[oeö]z$/g.test(sfx)) {
+  } else if (
+    /^b[óő]l$/g.test(sfx) ||
+    /^n[ae]k$/g.test(sfx) ||
+    /^h[oeö]z$/g.test(sfx) ||
+    /^r[ae]$/g.test(sfx) ||
+    /^b[ae]n$/g.test(sfx)
+  ) {
     return generalSuffix(n, sfx)
   } else {
     throw new Error(`Invalid suffix: "${sfx}"`)
