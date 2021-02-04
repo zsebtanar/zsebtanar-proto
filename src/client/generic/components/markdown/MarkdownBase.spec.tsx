@@ -99,7 +99,9 @@ test('Markdown should render', async () => {
             <span
               class="katex-mathml"
             >
-              <math>
+              <math
+                xmlns="http://www.w3.org/1998/Math/MathML"
+              >
                 <semantics>
                   <mrow>
                     <msup>
@@ -130,21 +132,17 @@ test('Markdown should render', async () => {
               class="katex-html"
             >
               <span
-                class="strut"
-                style="height:0.8141079999999999em;"
-              />
-              <span
-                class="strut bottom"
-                style="height:1.008548em;vertical-align:-0.19444em;"
-              />
-              <span
                 class="base"
               >
+                <span
+                  class="strut"
+                  style="height:0.8141079999999999em;vertical-align:0em;"
+                />
                 <span
                   class="mord"
                 >
                   <span
-                    class="mord mathit"
+                    class="mord mathnormal"
                   >
                     x
                   </span>
@@ -184,7 +182,7 @@ test('Markdown should render', async () => {
                   </span>
                 </span>
                 <span
-                  class="mord rule"
+                  class="mspace"
                   style="margin-right:0.2777777777777778em;"
                 />
                 <span
@@ -193,11 +191,19 @@ test('Markdown should render', async () => {
                   =
                 </span>
                 <span
-                  class="mord rule"
+                  class="mspace"
                   style="margin-right:0.2777777777777778em;"
                 />
+              </span>
+              <span
+                class="base"
+              >
                 <span
-                  class="mord mathit"
+                  class="strut"
+                  style="height:0.625em;vertical-align:-0.19444em;"
+                />
+                <span
+                  class="mord mathnormal"
                   style="margin-right:0.03588em;"
                 >
                   y

@@ -14,15 +14,12 @@ export function SingleChoice({ readonly, disabled, ctrl, ...bindProps }: Props):
   return (
     <div className="user-control uc-single-choice">
       {readonly ? (
-        <div className="row">
-          <MarkdownWithScript
-            source={ctrl?.props?.options[ctrl.solution].label ?? ''}
-            className="col-11"
-          />
+        <div className="">
+          <MarkdownWithScript source={ctrl?.props?.options[ctrl.solution].label ?? ''} />
         </div>
       ) : (
         ctrl?.props?.options.map(({ label }, idx) => (
-          <div className="row" key={idx}>
+          <div key={idx}>
             <RadioInput inputValue={idx} {...bindProps} disabled={disabled}>
               <MarkdownWithScript source={label} />
             </RadioInput>

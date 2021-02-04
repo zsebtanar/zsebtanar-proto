@@ -5,6 +5,7 @@
 [![License: GPL v2][license-shield]][license-link]
 [![Slack][slack-shield]][slack-link]
 [![CircleCI][travis-shield]][travis-link]
+![CodeQL](https://github.com/zsebtanar/zsebtanar-proto/workflows/CodeQL/badge.svg)
 
 A Zsebtanár egy interaktív feladatgyűjtemény, amely ingyenes és hatékony segítséget nyújt a tanulásban.
 Elsősorban érettségizőknek, de általános és középiskolások is haszonnal forgathatják.
