@@ -4,6 +4,8 @@ import { UCSimpleText } from 'shared/exercise/types'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { Input } from 'client/generic/components/form/input/Input'
 
+import './SimpleText.scss'
+
 interface Props extends UseModelProps<string> {
   ctrl: UCSimpleText
   readonly?: boolean
@@ -20,9 +22,9 @@ export function SimpleText({
 }: Props): JSX.Element {
   return (
     <div className="user-control uc-simple-text d-flex align-items-center">
-      <span className="prefix">
+      <div className="prefix">
         {ctrl?.props?.prefix && <MarkdownWithScript source={ctrl.props.prefix} />}
-      </span>
+      </div>
       {readonly ? (
         <strong>
           &nbsp;
@@ -39,9 +41,9 @@ export function SimpleText({
           onChange={onChange}
         />
       )}
-      <span className="postfix">
+      <div className="postfix">
         {ctrl?.props?.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
-      </span>
+      </div>
     </div>
   )
 }

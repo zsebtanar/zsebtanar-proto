@@ -35,7 +35,8 @@ export class FireStoreGridDS<T extends BaseModel> implements GridDataSource<T> {
   }
 
   public async getNextPage(limit: number): Promise<T[]> {
-    return this.getPage({ limit, startAfter: this.list?.docs[0] })
+    const docs = this.list?.docs ?? []
+    return this.getPage({ limit, startAfter: docs[docs.length - 1] })
   }
 
   public async getPrevPage(limit: number): Promise<T[]> {

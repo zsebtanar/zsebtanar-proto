@@ -14,6 +14,7 @@ interface Props extends UseModelProps<string> {
 }
 
 export function ExerciseFormSubTasksHint({ index, onRemove, ...bindProps }: Props): JSX.Element {
+  const name = bindProps.name
   return (
     <div className="form-group exercise-task-hints" key={name}>
       <div>

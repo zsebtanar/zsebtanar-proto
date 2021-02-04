@@ -6,6 +6,8 @@ import { DecimalAccuracyWarning } from '../common/DecimalAccuracyWarning'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { Input } from 'client/generic/components/form/input/Input'
 
+import './NumberList.scss'
+
 interface Props extends UseModelProps<string[]> {
   ctrl: UCNumberList
   readonly?: boolean
@@ -16,32 +18,35 @@ export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props): J
   const { bind } = useModel(bindProps)
   return (
     <div className={cx('user-control', 'uc-number-list', { multiline: ctrl?.props?.multiLine })}>
-      <span className="prefix">
-        {ctrl.props?.prefix && <MarkdownWithScript source={ctrl.props?.prefix} />}
-      </span>
-      {ctrl.props?.fields.map((field, idx) => (
-        <div key={idx}>
-          <span className="prefix">
-            {field.prefix && <MarkdownWithScript source={field.prefix} />}
-          </span>
-          {readonly ? (
-            <span className="value mx-1">{ctrl.solution[idx]}</span>
-          ) : (
-            <Input
-              {...bind(idx.toString())}
-              type="number"
-              disabled={disabled}
-              step={1 / Math.pow(10, ctrl.props?.fractionDigits ?? 0)}
-            />
-          )}
-          <span className="postfix">
-            {field.postfix && <MarkdownWithScript source={field.postfix} />}
-          </span>
+      <div className="uc-number-list-body">
+        <div className="prefix">
+          {ctrl.props?.prefix && <MarkdownWithScript source={ctrl.props?.prefix} />}
         </div>
-      ))}
-      <span className="postfix">
-        {ctrl.props?.postfix && <MarkdownWithScript source={ctrl.props?.postfix} />}
-      </span>
+        {ctrl.props?.fields.map((field, idx) => (
+          <div className="uc-number-list-item" key={idx}>
+            <div className="prefix">
+              {field.prefix && <MarkdownWithScript source={field.prefix} />}
+            </div>
+            {readonly ? (
+              <span className="value mx-1">{ctrl.solution[idx]}</span>
+            ) : (
+              <Input
+                {...bind(idx.toString())}
+                type="number"
+                className="form-control col-4 mx-1"
+                disabled={disabled}
+                step={1 / Math.pow(10, ctrl.props?.fractionDigits ?? 0)}
+              />
+            )}
+            <div className="postfix">
+              {field.postfix && <MarkdownWithScript source={field.postfix} />}
+            </div>
+          </div>
+        ))}
+        <div className="postfix">
+          {ctrl.props?.postfix && <MarkdownWithScript source={ctrl.props?.postfix} />}
+        </div>
+      </div>
       {(ctrl?.props?.fractionDigits ?? 0) > 0 && (
         <DecimalAccuracyWarning fractionDigits={ctrl?.props?.fractionDigits ?? 0} />
       )}

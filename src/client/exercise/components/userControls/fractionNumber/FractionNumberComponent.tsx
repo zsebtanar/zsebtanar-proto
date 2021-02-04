@@ -5,6 +5,8 @@ import { UseModelProps, useModel } from 'client/generic/hooks/model'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 
+import './FractionNumberComponent.scss'
+
 interface Props extends UseModelProps<FractionNumber> {
   ctrl: UCFractionNumber
   readonly?: boolean
@@ -21,17 +23,17 @@ export function FractionNumberComponent({
 
   return (
     <div className="user-control uc-fraction-number d-flex align-items-center">
-      <span className="prefix">
+      <div className="prefix">
         {ctrl?.props?.prefix && <MarkdownWithScript source={ctrl?.props.prefix} />}
-      </span>
+      </div>
       {readonly ? (
         <div className="mx-2 text-center">
           <strong>&nbsp;{bindProps.value?.numerator}&nbsp;</strong>
-          <hr className="my-1" />
+          <div className="separator" />
           <strong>&nbsp;{bindProps.value?.denominator}&nbsp;</strong>
         </div>
       ) : (
-        <>
+        <div className="inputs mx-1">
           <NumberInput
             {...bind('numerator')}
             disabled={disabled}
@@ -40,7 +42,7 @@ export function FractionNumberComponent({
             onKeyPress={onlyNumbers}
             placeholder="számláló"
           />
-          <hr className="my-1" />
+          <div className="separator" />
           <NumberInput
             {...bind('denominator')}
             disabled={disabled}
@@ -49,11 +51,11 @@ export function FractionNumberComponent({
             step={1}
             placeholder="nevező"
           />
-        </>
+        </div>
       )}
-      <span className="postfix">
+      <div className="postfix">
         {ctrl?.props?.postfix && <MarkdownWithScript source={ctrl.props.postfix} />}
-      </span>
+      </div>
     </div>
   )
 }
