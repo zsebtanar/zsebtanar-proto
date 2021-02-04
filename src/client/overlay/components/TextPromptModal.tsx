@@ -6,6 +6,7 @@ import { Dialog } from './base/Dialog'
 import { DialogHeader } from './base/DialogHeader'
 import { DialogBody } from './base/DialogBody'
 import { DialogFooter } from './base/DialogFooter'
+import { ButtonType } from 'shared/generic/types'
 
 ///
 

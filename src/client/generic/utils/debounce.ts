@@ -198,9 +198,9 @@ function debounce(func, wait, options?) {
     }
     return result
   }
-  ;(debounced as any).cancel = cancel
-  ;(debounced as any).flush = flush
-  ;(debounced as any).pending = pending
+  debounced['cancel'] = cancel
+  debounced['flush'] = flush
+  debounced['pending'] = pending
   return debounced
 }
 

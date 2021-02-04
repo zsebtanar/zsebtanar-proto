@@ -3,7 +3,7 @@ import { assertInteger, assertIntegerRange, plFnNum2Str } from './utils'
 
 // https://www.nayuki.io/page/calculate-divisors-javascript
 export function divisors(num: PLNumber): PLVector<PLNumber> {
-  const n = num.value
+  const n = num.toJSNumber()
   assertInteger(n)
   if (n < 1) {
     throw new Error('Number out of range (< 1)')
@@ -23,21 +23,22 @@ export function divisors(num: PLNumber): PLVector<PLNumber> {
   }
   large.reverse()
   const divisors = small.concat(large)
-  return plVector(...divisors.map(plNumber))
+  return plVector(...divisors.map((n) => plNumber(n)))
 }
 
 // https://www.thepolyglotdeveloper.com/2015/04/determine-if-a-number-is-prime-using-javascript/
-export function isPrime(n: PLNumber): PLBool {
-  assertInteger(n.value)
-  if (n.value < 1) {
+export function isPrime(num: PLNumber): PLBool {
+  const n = num.toJSNumber()
+  assertInteger(n)
+  if (n < 1) {
     throw new Error('Number out of range (< 1)')
   }
-  for (let i = 2; i < n.value; i++) {
-    if (n.value % i === 0) {
+  for (let i = 2; i < n; i++) {
+    if (n % i === 0) {
       return plBool(false)
     }
   }
-  return plBool(n.value > 1)
+  return plBool(n > 1)
 }
 
 // https://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript#32851198
@@ -72,10 +73,10 @@ const numToRoman = (num: number): string => {
 
 // https://dev.to/ycmjason/how-to-create-range-in-javascript-539i
 export function range(start: PLNumber, end: PLNumber): PLVector<PLNumber> {
-  assertIntegerRange(start.value, end.value)
-  const length = end.value - start.value + 1 // include upper bound
-  const rng = Array.from({ length }, (_, i) => start.value + i)
-  return plVector(...rng.map(plNumber))
+  assertIntegerRange(start.toJSNumber(), end.toJSNumber())
+  const length = end.intValue - start.intValue + 1 // include upper bound
+  const rng = Array.from({ length }, (_, i) => plNumber(start.intValue + i))
+  return plVector(...rng)
 }
 
 export const mathUtils = {
