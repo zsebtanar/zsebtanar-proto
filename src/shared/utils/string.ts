@@ -10,7 +10,8 @@ const HUN_VOWEL_MAP = {
   E: '[EÉ]',
   I: '[IÍ]',
   O: '[OÓÖŐ]',
-  U: '[UÚÜŰ]'
+  U: '[UÚÜŰ]',
 }
 
-export const matchAllHunVowel = text => text.replace(/[aeiou]/gi, x => HUN_VOWEL_MAP[x])
+export const matchAllHunVowel = (text: string): string =>
+  text.replace(/[aeiou]/gi, (x) => HUN_VOWEL_MAP[x])

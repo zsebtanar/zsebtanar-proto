@@ -25,7 +25,7 @@ export function WikiPageForm(): JSX.Element {
   useEffect(() => {
     selectGroup(AssetGroup.Wiki)
     return () => unSelectGroup()
-  }, [])
+  })
 
   if (isPending || isFetching) {
     return <Loading />

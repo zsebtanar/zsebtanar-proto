@@ -26,7 +26,11 @@ function parseNextNumber(str, pos, max) {
   return result
 }
 
-export function parseImageSize(str: string, pos: number, max: number) {
+export function parseImageSize(
+  str: string,
+  pos: number,
+  max: number,
+): { ok: boolean; pos: number; width: string; height: string } {
   let code,
     // eslint-disable-next-line prefer-const
     result = {
