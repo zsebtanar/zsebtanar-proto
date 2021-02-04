@@ -4,6 +4,7 @@
 'use strict'
 
 import { parseImageSize } from './parseImageSize'
+import { MD } from '../types'
 
 function assetImageMD(state, silent) {
   let attrs,
@@ -166,6 +167,6 @@ function isSpace(code) {
   return false
 }
 
-export function assetImage(md) {
+export function assetImage(md: MD): void {
   md.inline.ruler.before('link', 'assetImage', assetImageMD)
 }

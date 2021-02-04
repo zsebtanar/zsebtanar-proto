@@ -1,12 +1,13 @@
 export const noop = (): void => undefined
 
-export const log = (...args: unknown[]): void => {
+export const log = (...args: unknown[]): unknown => {
   if (__DEV__) {
     if (args[0] instanceof Error) {
       console.error(...args)
     } else {
       console.log(...args)
     }
+    return args[0]
   }
 }
 

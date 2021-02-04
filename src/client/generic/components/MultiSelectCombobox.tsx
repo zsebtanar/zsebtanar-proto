@@ -85,6 +85,7 @@ export function MultiSelectCombobox<TValue>({
     <div className="form-group multi-select-combobox">
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
       <label {...getLabelProps()}>{label}</label>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         className={cx('form-control', { focused: isInFocus })}
         onClick={() => inputEl.current?.focus()}

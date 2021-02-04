@@ -87,9 +87,9 @@ Az egyenlet megoldása $x=2$.
           <Markdown
             source={`
 $$\\begin{aligned}
-a\&=b+c \\\\
-a-c\&=b \\\\
-0\&=b+c-a
+a&=b+c \\
+a-c&=b \\\\
+0&=b+c-a
 \\end{aligned}$$
 `}
           />
