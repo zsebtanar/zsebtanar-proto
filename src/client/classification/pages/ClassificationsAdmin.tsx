@@ -13,7 +13,7 @@ import { Button } from 'client/generic/components/Button'
 import { Loading } from 'client/generic/components/Loading'
 import { Alert } from 'client/generic/components/Alert'
 import { Badge } from '../../generic/components/Badge'
-import { ClassificationSummaryDoc } from 'shared/classification/type'
+import { ClassificationSummaryDoc, ClassificationSummaryDocItem } from 'shared/classification/type'
 import { ConfirmModal } from '../../overlay/components/ConfirmModal'
 
 import './ClassificationsAdmin.scss'
@@ -29,7 +29,7 @@ export function ClassificationsAdminPage(): JSX.Element {
   const update = (cls: ClassificationSummaryDoc) =>
     openModal(<UpdateClassificationModal value={cls} />, true)
 
-  const remove = (cls: ClassificationSummaryDoc) => {
+  const remove = (cls: ClassificationSummaryDocItem) => {
     if (!cls.id) return
     openModal(
       <ConfirmModal>
