@@ -4,7 +4,7 @@
 
 [![License: GPL v2][license-shield]][license-link]
 [![Slack][slack-shield]][slack-link]
-[![CircleCI][travis-shield]][travis-link]
+![CI](https://github.com/zsebtanar/zsebtanar-proto/workflows/CI/badge.svg)
 ![CodeQL](https://github.com/zsebtanar/zsebtanar-proto/workflows/CodeQL/badge.svg)
 
 A Zsebtanár egy interaktív feladatgyűjtemény, amely ingyenes és hatékony segítséget nyújt a tanulásban.
@@ -44,5 +44,5 @@ A Zsebtanár kódja a [GPL License, 2.0-s változata][license] alá tartozik.
 [travis-shield]: https://travis-ci.com/zsebtanar/zsebtanar-proto.svg?branch=master
 [travis-link]: https://travis-ci.com/github/zsebtanar/zsebtanar-proto
 [license]: LICENSE
-[coc]: CODE_OF_CONDUCT.md
-[contributing]: CONTRIBUTING.md
+[coc]: .github/CODE_OF_CONDUCT.md
+[contributing]: .github/CONTRIBUTING.md

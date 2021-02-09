@@ -1,19 +1,19 @@
 import React from 'react'
 import { UseModelProps } from '../../../hooks/model'
 
-interface Props
-  extends UseModelProps<unknown>,
+interface Props<T>
+  extends UseModelProps<T>,
     Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange' | 'name'> {
-  options: { label: string; value: unknown }[]
+  options: { label: string; value: T }[]
 }
 
-export function Select({
+export function Select<T>({
   name,
   value: selectedValue,
   onChange,
   options,
   ...props
-}: Props): JSX.Element {
+}: Props<T>): JSX.Element {
   return (
     <select
       name={name}
@@ -21,9 +21,10 @@ export function Select({
         onChange({ name, value: options[parseInt(target.value, 10)]?.value })
       }
       {...props}
+      value={selectedValue as any}
     >
       {options.map(({ label }, idx) => (
-        <option key={idx} value={idx} selected={selectedValue === options[idx].value}>
+        <option key={idx} value={idx}>
           {label}
         </option>
       ))}

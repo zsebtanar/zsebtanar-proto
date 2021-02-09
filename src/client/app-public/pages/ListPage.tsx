@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react'
 import { PublicPage } from 'client/generic/components/PublicPage'
 import { useQuery } from '../../generic/hooks/navigation'
 import { CLASSIFICATION_PARAM } from '../../classification/values'
-import { useLoadExercises } from '../../exercise/services/exercise'
+import { useLoadExercisesSummary } from '../../exercise/services/exercise'
 import { Loading } from '../../generic/components/Loading'
 import { ExerciseListItem } from 'client/exercise/components/ExerciseListItem'
 import { Alert } from '../../generic/components/Alert'
@@ -23,7 +23,7 @@ export function ListPage(): JSX.Element {
 }
 
 function ListPageContent({ classifications }) {
-  const { isLoading, hasNoResult, list, hasMore, next } = useLoadExercises({
+  const { isLoading, hasNoResult, list, hasMore, next } = useLoadExercisesSummary({
     classifications,
   })
 
@@ -46,15 +46,16 @@ function ListPageContent({ classifications }) {
       </h2>
 
       {hasNoResult && <Alert type="info">Nincs elem a listában.</Alert>}
-      {list?.length &&
-        list?.map(({ id, classifications, description }) => (
-          <ExerciseListItem
-            key={id}
-            id={id ?? ''}
-            classifications={classifications}
-            description={description}
-          />
-        ))}
+      {list?.length
+        ? list?.map(({ id, classifications, description }) => (
+            <ExerciseListItem
+              key={id}
+              id={id ?? ''}
+              classifications={classifications}
+              description={description}
+            />
+          ))
+        : ''}
       {isLoading && <Loading />}
       {!isLoading && hasMore && (
         <div className="text-center">

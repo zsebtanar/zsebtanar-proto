@@ -1,13 +1,13 @@
 import { useCallback } from 'react'
 import {
-  ClassificationModel,
   ClassificationDetailsModel,
+  ClassificationSummaryDoc,
 } from '../../../shared/classification/type'
 import { Service } from 'client/generic/services/fireStoreBase'
-import { useFetchData, FetchDataAPI } from 'client/generic/hooks/fetchData'
+import { FetchDataAPI, useFetchData } from 'client/generic/hooks/fetchData'
 import { cloudFnDelete, cloudFnPost } from '../../generic/services/firebase'
 
-export const classificationService = new Service<ClassificationModel>('classification', {
+export const classificationService = new Service<ClassificationSummaryDoc>('classification', {
   excludeId: true,
 })
 
@@ -16,21 +16,21 @@ export const classificationDetailsService = new Service<ClassificationDetailsMod
   'classification/hu/details',
 )
 
-export function useLoadClassifications(): FetchDataAPI<ClassificationModel> {
+export function useLoadClassifications(): FetchDataAPI<ClassificationSummaryDoc> {
   // FIXME: remove hardcoded language code
   const callback = useCallback(() => classificationService.get('hu'), [])
-  return useFetchData<ClassificationModel>(callback, [])
+  return useFetchData<ClassificationSummaryDoc>(callback, [])
 }
 export function useLoadClassificationDetails(id: string): FetchDataAPI<ClassificationDetailsModel> {
   const callback = useCallback(() => classificationDetailsService.get(id), [id])
   return useFetchData<ClassificationDetailsModel>(callback, [])
 }
 
-export function create(data: ClassificationModel): Promise<ClassificationModel> {
+export function create(data: ClassificationSummaryDoc): Promise<ClassificationSummaryDoc> {
   return cloudFnPost(`/classification/`, data, { withToken: true })
 }
 
-export function update(data: ClassificationModel): Promise<ClassificationModel> {
+export function update(data: ClassificationSummaryDoc): Promise<ClassificationSummaryDoc> {
   return cloudFnPost(`/classification/${data.id}`, data, { withToken: true })
 }
 

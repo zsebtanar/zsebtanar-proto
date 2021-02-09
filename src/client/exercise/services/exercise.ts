@@ -1,13 +1,13 @@
 import { useCallback, useMemo } from 'react'
 import { ExerciseModel, ExerciseState, ExerciseSummaryModel } from 'shared/exercise/types'
-import { useLoadAndStoreModel, LoadAndStoreModelAPI } from '../../generic/hooks/loadAndStoreModel'
+import { LoadAndStoreModelAPI, useLoadAndStoreModel } from '../../generic/hooks/loadAndStoreModel'
 import { Service } from 'client/generic/services/fireStoreBase'
-import { useFetchData, FetchDataAPI } from 'client/generic/hooks/fetchData'
+import { FetchDataAPI, useFetchData } from 'client/generic/hooks/fetchData'
 import { cloudFnPost } from 'client/generic/services/firebase'
 import {
-  useFetchFirestoreList,
-  FetchFirestoreListOptions,
   FetchFirestoreListAPI,
+  FetchFirestoreListOptions,
+  useFetchFirestoreList,
 } from '../../generic/hooks/fetchFirestoreList'
 import { GridFilterOptions } from '../../../shared/generic/types'
 
@@ -31,13 +31,15 @@ interface ListQueryParams {
   classifications: ExerciseModel['classifications']
 }
 
-export function useLoadExercises(params: ListQueryParams): FetchFirestoreListAPI<ExerciseModel> {
+export function useLoadExercisesSummary(
+  params: ListQueryParams,
+): FetchFirestoreListAPI<ExerciseSummaryModel> {
   const options: FetchFirestoreListOptions = useMemo(() => {
     const filter: GridFilterOptions = {
-      where: [['state', '==', 'public']],
+      where: [],
       orderBy: [
         ['classifications', 'asc'],
-        ['created', 'desc'],
+        ['published', 'desc'],
       ],
     }
     if (params.classifications) {
@@ -49,7 +51,7 @@ export function useLoadExercises(params: ListQueryParams): FetchFirestoreListAPI
       filter,
     }
   }, [JSON.stringify(params)])
-  return useFetchFirestoreList<ExerciseModel>('exercise', options)
+  return useFetchFirestoreList<ExerciseSummaryModel>('exercise/summary/items', options)
 }
 
 export async function storeExercise({ id, ...data }: ExerciseModel): Promise<ExerciseModel> {
@@ -61,6 +63,7 @@ export function useExerciseModel(id?: string): LoadAndStoreModelAPI<ExerciseMode
   const store = useCallback<typeof storeExercise>(storeExercise, [])
   return useLoadAndStoreModel<ExerciseModel>(load, store, id, {
     title: '',
+    lang: 'hu',
     description: '',
     created: new Date(),
     createdBy: '',

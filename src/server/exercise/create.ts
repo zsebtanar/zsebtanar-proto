@@ -8,6 +8,7 @@ import { validate } from '../utils/validator'
 import { indexExercise } from './utils/searchIndexing'
 import { incrementPrivateExerciseCounter } from './utils/counters'
 import { HandlerError } from '../utils/HandlerError'
+import { getClassifications } from './utils/classification'
 
 export const route = express.Router()
 
@@ -32,9 +33,11 @@ route.post(
       // Store private exercise
       const result = await fireStore.collection('exercise/private/items').add(exercise)
 
+      const clsSummary = await getClassifications(exercise)
+
       // Update counter
       await incrementPrivateExerciseCounter(1)
-      await indexExercise(result.id, exercise)
+      await indexExercise(result.id, exercise, clsSummary)
 
       // Response
       res.status(201).json({ ...exercise, id: result.id })

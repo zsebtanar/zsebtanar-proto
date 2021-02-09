@@ -3,7 +3,7 @@ import { ExerciseDoc, ExerciseSummaryDoc } from '../../../shared/exercise/types'
 import { fireStore } from '../../utils/firebase'
 import { interpretExerciseMarkdown } from '../../utils/search/pocketLisp'
 
-export async function setExerciseSummary(
+export async function storeExerciseSummary(
   id: string,
   exercise: ExerciseDoc,
 ): Promise<FirebaseFirestore.WriteResult> {

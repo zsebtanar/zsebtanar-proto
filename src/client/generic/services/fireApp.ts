@@ -13,4 +13,4 @@ export const analytics = fb.analytics()
 
 export const firebase = fb
 
-fb.firestore().enablePersistence()
+fb.firestore()

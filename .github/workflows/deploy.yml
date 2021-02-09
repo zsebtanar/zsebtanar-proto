@@ -51,4 +51,4 @@ jobs:
           SERVER_ENV: 'production'
         run: |
           yarn build
-          yarn firebase deploy --only hosting -P prod --token ${{ SECRETS.CI_FIREBASE_TOKEN }} --message "$CI_FIREBASE_MESSAGE"
+          npm firebase deploy --only hosting -P prod --token ${{ SECRETS.CI_FIREBASE_TOKEN }} --message "$CI_FIREBASE_MESSAGE"

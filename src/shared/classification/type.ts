@@ -1,9 +1,5 @@
 import { BaseModel } from '../generic/types'
 
-export interface ClassificationModel {
-  [key: string]: ClassificationSummaryDoc
-}
-
 export interface ClassificationDetailsModel extends BaseModel, ClassificationDetailsDoc {}
 
 export interface ClassificationDetailsDoc {
@@ -11,6 +7,10 @@ export interface ClassificationDetailsDoc {
 }
 
 export interface ClassificationSummaryDoc {
+  [key: string]: ClassificationSummaryDocItem
+}
+
+export interface ClassificationSummaryDocItem {
   id: string
   label: string
   bgColor?: string
