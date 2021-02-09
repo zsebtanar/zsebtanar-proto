@@ -16,26 +16,26 @@ export function BinaryChoice({ readonly, disabled, ctrl, ...bindProps }: Props):
     <div className="user-control uc-binary-choice">
       {ctrl.props?.options.map((option, idx) => (
         <div key={idx}>
-          <span className="option-statement">
+          <div className="option-statement">
             {option.statement && <MarkdownWithScript source={option.statement} />}
-          </span>
+          </div>
           {readonly ? (
-            <span className="value mx-1">
+            <div className="value">
               {ctrl.solution[idx] ? (
                 <MarkdownWithScript source={option.trueLabel} />
               ) : (
                 <MarkdownWithScript source={option.falseLabel} />
               )}
-            </span>
+            </div>
           ) : (
-            <span className="value mx-1">
+            <div className="value">
               <RadioInput inputValue={true} {...bind(`${idx}`)} disabled={disabled}>
                 <MarkdownWithScript source={option.trueLabel} />
               </RadioInput>
               <RadioInput inputValue={false} {...bind(`${idx}`)} disabled={disabled}>
                 <MarkdownWithScript source={option.trueLabel} />
               </RadioInput>
-            </span>
+            </div>
           )}
         </div>
       ))}

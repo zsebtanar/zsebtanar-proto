@@ -7,6 +7,7 @@ import { FractionNumber } from '../math/fractionNumber'
 export interface ExerciseSummaryModel extends BaseModel, ExerciseSummaryDoc {}
 
 export interface ExerciseSummaryDoc {
+  lang: string
   title: string
   published?: Date
   classifications: string[]
@@ -33,6 +34,7 @@ export interface ExerciseModel extends BaseModel, ExerciseDoc {}
  * Used in admin app only
  */
 export interface ExerciseDoc {
+  lang: string
   title: string
   state: ExerciseState
   created: Date

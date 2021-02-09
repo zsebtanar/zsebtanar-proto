@@ -57,7 +57,7 @@ function ExerciseComponent({ onClose }: ExerciseComponentProps) {
           setCurrentSutTaskIdx(finishedTasks)
         }}
       >
-        <div className="ex-content offset-md-1 col-md-7">
+        <div className="ex-content offset-xl-1 col-xl-7 offset-lg-1 col-lg-6">
           <ExerciseMarkdown className="main-description mb-4" source={exercise.description} />
 
           {subtasks.map((subTask, index) => {
@@ -72,7 +72,7 @@ function ExerciseComponent({ onClose }: ExerciseComponentProps) {
             )
           })}
         </div>
-        <div className="ex-sidebar col-md-3">
+        <div className="ex-sidebar col-xl-3 col-lg-4">
           {!state.isSingle && (
             <ProgressBar value={(state.finishedTasks / state.numberOfTasks) * 100} />
           )}

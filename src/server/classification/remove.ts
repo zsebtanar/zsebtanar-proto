@@ -37,7 +37,7 @@ route.delete('/:classificationId', [getToken, onlyAdmin], async (req, res, next)
           batch.update(exRef, {
             classifications: firebase.firestore.FieldValue.arrayUnion(clsId),
           })
-          searchUpdate.push(() => indexExercise(exId, exercise as ExerciseDoc))
+          searchUpdate.push(() => indexExercise(exId, exercise as ExerciseDoc, clsSummary))
         }
       }),
     )

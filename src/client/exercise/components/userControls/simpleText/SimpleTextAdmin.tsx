@@ -19,9 +19,7 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
       <UserControlNameInput {...bind('name')} />
 
       <div>
-        <Checkbox {...bind('isDynamic')} disabled>
-          Dinamikus
-        </Checkbox>
+        <Checkbox {...bind('isDynamic')}>Dinamikus</Checkbox>
       </div>
 
       <hr />

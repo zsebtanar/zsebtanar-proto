@@ -314,8 +314,8 @@ Ez a dokumentáció más open source projektek leírása alapján készült, tö
 [repo]: https://github.com/zsebtanar/zsebtanar-proto
 [issues]: https://github.com/zsebtanar/zsebtanar-proto/issues
 [new issues]: https://github.com/zsebtanar/zsebtanar-proto/issues/new
-[repo pr tpl]: docs/pull_request_template.md
-[repo issue tpl]: docs/issue_template.md
+[repo pr tpl]: pull_request_template.md
+[repo issue tpl]: issue_template.md
 [test]: http://zsebtanar-test.firebaseapp.com/
 
 [Story points]: https://www.google.com/search?q=story+points

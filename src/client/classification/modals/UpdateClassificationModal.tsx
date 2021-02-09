@@ -8,7 +8,7 @@ import { FormGroup } from 'client/generic/components/form/FormGroup'
 import { Input } from 'client/generic/components/form/input/Input'
 import { DialogFooter } from 'client/overlay/components/base/DialogFooter'
 import { Button } from 'client/generic/components/Button'
-import { ClassificationModel, ClassificationSummaryDoc } from 'shared/classification/type'
+import { ClassificationSummaryDoc } from 'shared/classification/type'
 
 interface Props {
   value?: ClassificationSummaryDoc

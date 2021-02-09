@@ -7,9 +7,10 @@ import { changeExerciseStateSchema } from './schemas'
 import { getToken } from '../middlewares/firebaseToken'
 import { removeExerciseFromClassifications } from '../classification/utils'
 import { incrementPrivateExerciseCounter } from './utils/counters'
-import { setExerciseSummary } from './utils/exerciseSummary'
+import { storeExerciseSummary } from './utils/exerciseSummary'
 import { validate } from '../utils/validator'
 import { HandlerError } from '../utils/HandlerError'
+import { getClassifications } from './utils/classification'
 
 export const route = express.Router()
 
@@ -61,8 +62,10 @@ const selectUpdateMethod = (
 const publishExercise = async (id, exercise) => {
   await fireStore.collection('exercise/private/items').doc(id).update('state', ExerciseState.Public)
 
-  await setExerciseSummary(id, exercise)
-  await indexExercise(id, exercise)
+  const clsSummary = await getClassifications(exercise)
+
+  await storeExerciseSummary(id, exercise)
+  await indexExercise(id, exercise, clsSummary)
 }
 
 const archiveExercise = async (id, exercise: ExerciseDoc) => {
@@ -74,7 +77,7 @@ const archiveExercise = async (id, exercise: ExerciseDoc) => {
   batch.delete(summaryRef)
   batch.update(exerciseRef, 'state', ExerciseState.Archived)
 
-  removeExerciseFromClassifications(batch, id, exercise.classifications)
+  await removeExerciseFromClassifications(batch, id, exercise.classifications)
 
   await batch.commit()
   await removeExerciseIndex(id, 'summary')

@@ -11,9 +11,10 @@ import {
   addExerciseToClassifications,
   removeExerciseFromClassifications,
 } from '../classification/utils'
-import { setExerciseSummary } from './utils/exerciseSummary'
+import { storeExerciseSummary } from './utils/exerciseSummary'
 import { validate } from '../utils/validator'
 import { HandlerError } from '../utils/HandlerError'
+import { getClassifications } from './utils/classification'
 
 export const route = express.Router()
 
@@ -51,9 +52,11 @@ route.post(
         await addExerciseToClassifications(batch, id, addedClassifications)
       }
 
+      const clsSummary = await getClassifications(exercise)
+
       await batch.commit()
-      await setExerciseSummary(id, exercise)
-      await indexExercise(id, exercise as ExerciseDoc)
+      await storeExerciseSummary(id, exercise)
+      await indexExercise(id, exercise as ExerciseDoc, clsSummary)
       res.status(200).send(exercise)
     } catch (error) {
       next(new HandlerError(500, 'Exercise update error', error))

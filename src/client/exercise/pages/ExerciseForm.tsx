@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { PlayCircle as PlayCircleIcon } from 'react-feather'
-import { useParams, useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
-import { useExerciseModel, changeState } from '../services/exercise'
+import { changeState, useExerciseModel } from '../services/exercise'
 import { ExerciseFormDetails } from '../components/form/ExerciseFormDetails'
 import { ExerciseFormSubTask } from '../components/form/ExerciseFormSubTasks'
 import {
@@ -10,7 +10,7 @@ import {
   useManageAssetsDispatch,
 } from 'client/asset/providers/ManageAssetProvider'
 import { AssetGroup } from 'shared/assets/types'
-import { ExerciseDoc, ExerciseState } from 'shared/exercise/types'
+import { ExerciseState } from 'shared/exercise/types'
 import { useQuery } from 'client/generic/hooks/navigation'
 import { Loading } from 'client/generic/components/Loading'
 import { Alert } from 'client/generic/components/Alert'

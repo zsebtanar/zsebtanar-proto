@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLoadClassifications } from '../services/classificationService'
 import { FetchDataAPI } from '../../generic/hooks/fetchData'
-import { ClassificationSummaryDoc } from 'shared/classification/type'
+import { ClassificationSummaryDoc, ClassificationSummaryDocItem } from 'shared/classification/type'
 import { sortByProp, map2list, list2map } from 'shared/utils/fn'
 
 interface Props {
@@ -9,8 +9,8 @@ interface Props {
 }
 
 interface ValueTypes {
-  list: ClassificationSummaryDoc[]
-  map: Record<string, ClassificationSummaryDoc>
+  list: ClassificationSummaryDocItem[]
+  map: ClassificationSummaryDoc
 }
 
 type CtxType = FetchDataAPI<ValueTypes>

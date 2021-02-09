@@ -77,9 +77,9 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
         <TextEditor {...bind(`description`)} preview={MarkdownWithScript} />
       </div>
       <hr />
-      <ul className="list-unstyled">
+      <ul className="list-unstyled user-control-list">
         {bindProps.value.controls?.map((control, idx) => (
-          <li key={idx} className="position-relative">
+          <li key={idx}>
             <UserControls
               ctrl={control}
               disabled={true}

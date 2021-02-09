@@ -1,5 +1,11 @@
-.uc-controls {
-  position: absolute;
-  left: 0;
-  top: 0;
+.user-control-list {
+  .uc-controls {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  li {
+    position: relative;
+    margin-bottom: 1rem;
+  }
 }
