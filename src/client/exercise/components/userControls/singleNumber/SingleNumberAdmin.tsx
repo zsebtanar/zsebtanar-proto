@@ -66,7 +66,7 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
                 ctrl={data}
                 onChange={noop}
                 name={data.name}
-                value={data.isDynamic ? evalPL(`(solution-${data.name})`) : data.solution}
+                value={evalPL(`(solution-${data.name})`)['toString']()}
               />
             </div>
           ) : (
