@@ -14,6 +14,15 @@ import { SingleNumber } from 'client/exercise/components/userControls/singleNumb
 export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX.Element {
   const { bind, data } = useModel<UCSingleNumber>(bindProps)
   const { evalPL } = usePocketLisp()
+  let solution = data.solution
+  let isDynamicSolutionDefined = false
+  if (data.isDynamic) {
+    const dynamicSolution = evalPL(`(solution-${data.name})`) as { toString(): string }
+    if (dynamicSolution !== undefined) {
+      solution = dynamicSolution.toString()
+      isDynamicSolutionDefined = true
+    }
+  }
 
   return (
     <div className="user-control uc-simple-number uc-simple-number-admin">
@@ -58,16 +67,20 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
         {(id) =>
           data.isDynamic ? (
             <div className="form-control-plaintext">
-              Definiáld a megoldás függvényt:
-              <code>(def solution-{data.name} #(...))</code>
-              <SingleNumber
-                disabled={true}
-                readonly={true}
-                ctrl={data}
-                onChange={noop}
-                name={data.name}
-                value={evalPL(`(solution-${data.name})`)?.['toString']() ?? ''}
-              />
+              {isDynamicSolutionDefined ? (
+                <SingleNumber
+                  disabled={true}
+                  readonly={true}
+                  ctrl={data}
+                  onChange={noop}
+                  name={data.name}
+                  value={solution}
+                />
+              ) : (
+                <div>
+                  Definiáld a megoldás függvényt: <code>(def solution-{data.name} #(...))</code>
+                </div>
+              )}
             </div>
           ) : (
             <NumberInput
