@@ -39,7 +39,7 @@ jobs:
       - name: Build & Deploy Dev
         if: github.ref == 'refs/heads/develop'
         env:
-          SERVER_ENV: 'production'
+          SERVER_ENV: 'development'
         run: |
           yarn build
           yarn firebase deploy --only hosting -P test --token ${{ SECRETS.CI_FIREBASE_TOKEN }} --message "$CI_FIREBASE_MESSAGE"
