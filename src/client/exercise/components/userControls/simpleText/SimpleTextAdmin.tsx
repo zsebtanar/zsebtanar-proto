@@ -10,20 +10,10 @@ import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { Button } from 'client/generic/components/Button'
 import { Input } from 'client/generic/components/form/input/Input'
 import { Icon } from 'client/generic/components/icons/Icon'
-import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
+import { DynamicSolution } from '../dynamicSolution'
 
 export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCSimpleText>(bindProps)
-  const { evalPL } = usePocketLisp()
-  let solution = data.solution
-  let isDynamicSolutionDefined = false
-  if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as { toString(): string }
-    if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.toString()
-      isDynamicSolutionDefined = true
-    }
-  }
 
   return (
     <div className="user-control uc-simple-text uc-simple-text-admin">
@@ -50,40 +40,40 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
         <Checkbox {...bind('props.caseSensitive')}>Kis- és nagybetűk megkülönböztetése</Checkbox>
       </div>
 
-      <FormGroup
-        label={
-          <>
-            Megoldások{' '}
-            <Button btn="link" small onAction={() => append('solution', '')}>
-              <Icon icon={PlusCircleIcon} /> Alternatív megoldás megadása
-            </Button>
-          </>
+      <FormGroup label="Megoldások">
+        {() =>
+          data.isDynamic ? (
+            <DynamicSolution ctrl={data}></DynamicSolution>
+          ) : (
+            <div>
+              <Button btn="link" small onAction={() => append('solution', '')}>
+                <Icon icon={PlusCircleIcon} /> Alternatív megoldás megadása
+              </Button>
+              <ol>
+                {data.solution?.map((item, idx) => (
+                  <li key={idx}>
+                    <div className="d-flex">
+                      <Input
+                        {...bind(`solution.${idx}`)}
+                        type="text"
+                        className="form-control mt-1"
+                        required
+                      />
+                      <Button
+                        small
+                        btn="link"
+                        className="text-danger"
+                        onAction={() => remove(`solution.${idx}`)}
+                      >
+                        <Icon icon={TrashIcon} />
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
         }
-      >
-        {() => (
-          <ol>
-            {data.solution?.map((item, idx) => (
-              <li key={idx}>
-                <div className="d-flex">
-                  <Input
-                    {...bind(`solution.${idx}`)}
-                    type="text"
-                    className="form-control mt-1"
-                    required
-                  />
-                  <Button
-                    small
-                    btn="link"
-                    className="text-danger"
-                    onAction={() => remove(`solution.${idx}`)}
-                  >
-                    <Icon icon={TrashIcon} />
-                  </Button>
-                </div>
-              </li>
-            ))}
-          </ol>
-        )}
       </FormGroup>
     </div>
   )
