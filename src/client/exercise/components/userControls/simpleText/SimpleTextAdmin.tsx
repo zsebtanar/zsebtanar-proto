@@ -10,7 +10,6 @@ import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { Button } from 'client/generic/components/Button'
 import { Input } from 'client/generic/components/form/input/Input'
 import { Icon } from 'client/generic/components/icons/Icon'
-import { DynamicSolution } from '../dynamicSolution'
 
 export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCSimpleText>(bindProps)
