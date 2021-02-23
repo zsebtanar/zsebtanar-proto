@@ -10,17 +10,18 @@ import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
 import { noop } from 'shared/utils/fn'
 import { SingleNumber } from 'client/exercise/components/userControls/singleNumber/SingleNumber'
+import { PLNumber } from 'pocket-lisp-stdlib'
 
 export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX.Element {
   const { bind, data } = useModel<UCSingleNumber>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution = data.solution
-  let isDynamicSolutionDefined = false
+  let solution = ''
+  let hasSolution = false
   if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as { toString(): string }
+    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLNumber
     if (dynamicSolution !== undefined) {
       solution = dynamicSolution.toString()
-      isDynamicSolutionDefined = true
+      hasSolution = true
     }
   }
 
@@ -67,7 +68,7 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
         {(id) =>
           data.isDynamic ? (
             <div className="form-control-plaintext">
-              {isDynamicSolutionDefined ? (
+              {hasSolution ? (
                 <SingleNumber
                   disabled={true}
                   readonly={true}
@@ -78,7 +79,11 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
                 />
               ) : (
                 <div>
-                  Definiáld a megoldás függvényt: <code>(def solution-{data.name} #(...))</code>
+                  Definiáld a megoldás függvényt! Minta:
+                  <br />
+                  <code>(def x 0.12)</code>
+                  <br />
+                  <code>(def solution-{data.name} (const x))</code>
                 </div>
               )}
             </div>
