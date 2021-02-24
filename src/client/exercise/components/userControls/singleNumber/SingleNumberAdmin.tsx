@@ -11,6 +11,7 @@ import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
 import { noop } from 'shared/utils/fn'
 import { SingleNumber } from 'client/exercise/components/userControls/singleNumber/SingleNumber'
 import { PLNumber } from 'pocket-lisp-stdlib'
+import { CodeExample } from 'client/generic/components/CodeExample'
 
 export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX.Element {
   const { bind, data } = useModel<UCSingleNumber>(bindProps)
@@ -80,10 +81,8 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
               ) : (
                 <div>
                   Definiáld a megoldás függvényt! Minta:
-                  <br />
-                  <code>(def x 0.12)</code>
-                  <br />
-                  <code>(def solution-{data.name} (const x))</code>
+                  <CodeExample>(def x 0.12)</CodeExample>
+                  <CodeExample>(def solution-{data.name} (const x))</CodeExample>
                 </div>
               )}
             </div>
