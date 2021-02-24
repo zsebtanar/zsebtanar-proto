@@ -14,6 +14,7 @@ import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
 import { noop } from 'shared/utils/fn'
 import { SimpleText } from 'client/exercise/components/userControls/simpleText/SimpleText'
 import { PLString, PLVector } from 'pocket-lisp-stdlib'
+import { CodeExample } from 'client/generic/components/CodeExample'
 
 export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCSimpleText>(bindProps)
@@ -74,11 +75,15 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
                 </ol>
               ) : (
                 <div>
-                  Definiáld a megoldás függvényt! Minta:
-                  <br />
-                  <code>(def x [&quot;matek&quot; &quot;matematika&quot;])</code>
-                  <br />
-                  <code>(def solution-{data.name} (const x))</code>
+                  {data.name === undefined ? (
+                    <div>Adj nevet a megoldási mezőnek!</div>
+                  ) : (
+                    <div>
+                      Definiáld a megoldásfüggvényt! Minta:
+                      <CodeExample>(def x [&quot;matek&quot; &quot;matematika&quot;])</CodeExample>
+                      <CodeExample>(def solution-{data.name} (const x))</CodeExample>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

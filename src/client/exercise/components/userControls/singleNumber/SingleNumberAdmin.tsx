@@ -80,9 +80,15 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
                 />
               ) : (
                 <div>
-                  Definiáld a megoldás függvényt! Minta:
-                  <CodeExample>(def x 0.12)</CodeExample>
-                  <CodeExample>(def solution-{data.name} (const x))</CodeExample>
+                  {data.name === undefined ? (
+                    <div>Adj nevet a megoldási mezőnek!</div>
+                  ) : (
+                    <div>
+                      Definiáld a megoldás függvényt! Minta:
+                      <CodeExample>(def x 0.12)</CodeExample>
+                      <CodeExample>(def solution-{data.name} (const x))</CodeExample>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
