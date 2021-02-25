@@ -6,9 +6,8 @@ interface Props {
 
 export function CodeExample({ children }: Props): JSX.Element {
   return (
-    <code>
-      <br />
-      {children}
-    </code>
+    <pre>
+      <code>{children}</code>
+    </pre>
   )
 }

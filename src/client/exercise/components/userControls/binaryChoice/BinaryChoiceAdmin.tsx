@@ -11,17 +11,23 @@ import { Select } from 'client/generic/components/form/input/Select'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from '../../../../generic/components/Alert'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLString, PLVector } from 'pocket-lisp-stdlib'
+import { PLHashMap, PLString, PLVector } from 'pocket-lisp-stdlib'
+import { CodeExample } from 'client/generic/components/CodeExample'
+import { RadioInput } from 'client/generic/components/form/input/RadioInput'
+import { noop } from 'shared/utils/fn'
+
+export const DEFAULT_TRUE_LABEL = 'Igaz'
+export const DEFAULT_FALSE_LABEL = 'Hamis'
 
 export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCBinaryChoice>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution: string[][] = []
+  let solution: Map<string, PLString>[] = []
   let hasSolution = false
   if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLVector<PLString>>
+    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLHashMap<PLString>>
     if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.value.map((x) => x.value.map((y) => y.toString()))
+      solution = dynamicSolution.value.map((x) => x.toJS())
       hasSolution = true
     }
   }
@@ -44,7 +50,57 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
       <hr />
 
       <h6>Megoldások</h6>
-      {!!data.isDynamic && <div></div>}
+      {data.isDynamic && !hasSolution && (
+        <div>
+          Definiáld a megoldásfüggvényt! Minta:
+          <CodeExample>
+            {`(def x [{"statement" "Ez egy igaz állítás" "solution" true},
+        {"statement" "Ez egy hamis állítás" "solution" false},
+        {"statement" "Ez egy igaz állítás egyedi címkékkel" "solution" true "true-label" "IGAZ" "false-label" "HAMIS"},
+        {"statement" "Ez egy hamis állítás egyedi címkékkel" "solution" false "true-label" "I" "false-label" "H"}])
+(def solution-`}
+            {data.name}
+            {` (const x))`}
+          </CodeExample>
+        </div>
+      )}
+      {data.isDynamic && hasSolution && (
+        <div>
+          {solution.map((item, idx) => (
+            <div key={idx} className="d-flex justify-content-between">
+              {idx + 1}. {item.get('statement')?.value ?? 'N/A'}
+              <div className="d-flex">
+                <RadioInput
+                  name={idx.toString()}
+                  id={idx + '-true'}
+                  value={'true'}
+                  checked={item.get('solution')?.toString() === 'true'}
+                  onChange={noop}
+                  inputValue={item.get('solution')?.toString()}
+                  disabled
+                >
+                  <MarkdownWithScript
+                    source={item.get('true-label')?.value ?? DEFAULT_TRUE_LABEL}
+                  />
+                </RadioInput>
+                <RadioInput
+                  name={idx.toString()}
+                  id={idx + '-false'}
+                  value={'false'}
+                  checked={item.get('solution')?.toString() === 'false'}
+                  onChange={noop}
+                  inputValue={item.get('solution')?.toString()}
+                  disabled
+                >
+                  <MarkdownWithScript
+                    source={item.get('false-label')?.value ?? DEFAULT_FALSE_LABEL}
+                  />
+                </RadioInput>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       {!data.isDynamic && (
         <div>
           <Button
