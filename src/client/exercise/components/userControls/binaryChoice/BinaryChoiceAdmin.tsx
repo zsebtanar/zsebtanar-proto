@@ -24,6 +24,7 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
   const { evalPL } = usePocketLisp()
   let solution: Map<string, PLString>[] = []
   let hasSolution = false
+  const hasName = data.name !== undefined
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLHashMap<PLString>>
     if (dynamicSolution !== undefined) {
@@ -50,7 +51,8 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
       <hr />
 
       <h6>Megoldások</h6>
-      {data.isDynamic && !hasSolution && (
+      {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
+      {data.isDynamic && hasName && !hasSolution && (
         <div>
           Definiáld a megoldásfüggvényt! Minta:
           <CodeExample>
@@ -64,11 +66,12 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
           </CodeExample>
         </div>
       )}
-      {data.isDynamic && hasSolution && (
+      {data.isDynamic && hasName && hasSolution && (
         <div>
           {solution.map((item, idx) => (
             <div key={idx} className="d-flex justify-content-between">
-              {idx + 1}. {item.get('statement')?.value ?? 'N/A'}
+              {idx + 1}.&nbsp;
+              <MarkdownWithScript source={item.get('statement')?.value ?? 'N/A'} />
               <div className="d-flex">
                 <RadioInput
                   name={idx.toString()}
