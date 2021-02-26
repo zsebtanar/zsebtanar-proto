@@ -23,8 +23,8 @@ export function Select<T>({
       {...props}
       value={selectedValue as any}
     >
-      {options.map(({ label }, idx) => (
-        <option key={idx} value={idx}>
+      {options.map(({ label, value }, idx) => (
+        <option key={idx} value={String(value)}>
           {label}
         </option>
       ))}

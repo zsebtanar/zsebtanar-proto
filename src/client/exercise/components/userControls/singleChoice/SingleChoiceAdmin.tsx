@@ -43,7 +43,8 @@ export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>): JSX
       {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
       {data.isDynamic && hasName && !hasSolution && (
         <div>
-          Definiáld a megoldásfüggvényt! Ügyelj arra, hogy csak egy jó megoldást adj meg! Minta:
+          Definiáld a megoldásfüggvényt! Ügyelj arra, hogy <b>csak egy</b> jó megoldást adj meg!
+          Minta:
           <CodeExample>
             {`(def x [{"Rossz választás." false},
         {"Ez is rossz válasz." false},
