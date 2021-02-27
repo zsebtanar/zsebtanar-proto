@@ -17,15 +17,19 @@ import { CodeExample } from 'client/generic/components/CodeExample'
 export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCMultiChoice>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution: Map<string, PLString>[] = []
+  let solution: boolean[] = []
   let hasSolution = false
   const hasName = data.name !== undefined
+  let previewCtlr: UCMultiChoice | undefined = undefined
   if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLHashMap<PLString>>
+    previewCtlr = { ...data }
+    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLBool>
     if (dynamicSolution !== undefined) {
       solution = dynamicSolution.value.map((x) => x.toJS())
       hasSolution = true
     }
+    previewCtlr.solution = solution
+    previewCtlr.props.options = evalPL(`(options-${data.name})`) as PLVector<PLString>
   }
 
   return (
@@ -62,6 +66,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.E
       )}
       {data.isDynamic && hasName && hasSolution && (
         <div>
+          <MultiChoice {...previewCtlr}></MultiChoice>
           {solution.map((item, idx) => (
             <div key={idx}>
               <Checkbox
@@ -108,7 +113,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.E
                     <td>
                       <Select
                         className="form-control"
-                        {...bind('solution')}
+                        {...bind(`solution.${idx}`)}
                         options={[
                           { label: 'Igaz', value: true },
                           { label: 'Hamis', value: false },

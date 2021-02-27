@@ -15,11 +15,13 @@ export function MultiChoice({ readonly, ctrl, disabled, ...bindProps }: Props): 
   return (
     <div className="user-control uc-multi-choice">
       {readonly
-        ? ctrl?.props?.options.map(({ label }, idx) => (
-            <div key={idx}>
-              <MarkdownWithScript source={label} />
-            </div>
-          ))
+        ? ctrl?.props?.options
+            .filter((_, idx) => ctrl?.solution[idx])
+            .map(({ label }, idx) => (
+              <div key={idx}>
+                <MarkdownWithScript source={label} />
+              </div>
+            ))
         : ctrl?.props?.options.map(({ label }, idx) => (
             <div key={idx}>
               <Checkbox {...bind(`${idx}`)} disabled={disabled}>

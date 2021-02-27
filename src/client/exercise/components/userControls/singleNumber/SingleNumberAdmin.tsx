@@ -18,6 +18,7 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
   const { evalPL } = usePocketLisp()
   let solution = ''
   let hasSolution = false
+  const hasName = data.name !== undefined
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLNumber
     if (dynamicSolution !== undefined) {
@@ -66,47 +67,49 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
       </FormGroup>
 
       <FormGroup label="Megoldás">
-        {(id) =>
-          data.isDynamic ? (
-            <div className="form-control-plaintext">
-              {hasSolution ? (
-                <SingleNumber
-                  disabled={true}
-                  readonly={true}
-                  ctrl={data}
-                  onChange={noop}
-                  name={data.name}
-                  value={solution}
-                />
-              ) : (
-                <div>
-                  {data.name === undefined ? (
-                    <div>Adj nevet a megoldási mezőnek!</div>
-                  ) : (
-                    <div>
-                      Definiáld a megoldás függvényt! Minta:
-                      <CodeExample>
-                        {`(def x 0.12)
-(def solution-`}
-                        {data.name}
-                        {` (const x))`}
-                      </CodeExample>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          ) : (
-            <NumberInput
-              {...bind('solution')}
-              id={id}
-              step={1 / Math.pow(10, data.props?.fractionDigits ?? 0)}
-              min={0}
-              required
-              className="form-control form-control-sm"
-            />
-          )
-        }
+        {(id) => (
+          <>
+            ({data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
+            {data.isDynamic && hasName && !hasSolution && (
+              <div>
+                {data.name === undefined ? (
+                  <div>Adj nevet a megoldási mezőnek!</div>
+                ) : (
+                  <div>
+                    Definiáld a megoldás függvényt! Minta:
+                    <CodeExample>
+                      {`
+(def x 0.12)
+(def solution-${data.name} (const x))
+`}
+                    </CodeExample>
+                  </div>
+                )}
+              </div>
+            )}
+            {data.isDynamic && hasName && hasSolution && (
+              <SingleNumber
+                disabled={true}
+                readonly={true}
+                ctrl={data}
+                onChange={noop}
+                name={data.name}
+                value={solution}
+              />
+            )}
+            {!data.isDynamic && (
+              <NumberInput
+                {...bind('solution')}
+                id={id}
+                step={1 / Math.pow(10, data.props?.fractionDigits ?? 0)}
+                min={0}
+                required
+                className="form-control form-control-sm"
+              />
+            )}
+            )
+          </>
+        )}
       </FormGroup>
     </div>
   )

@@ -21,6 +21,7 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
   const { evalPL } = usePocketLisp()
   let solution: string[] = []
   let hasSolution = false
+  const hasName = data.name !== undefined
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLString>
     if (dynamicSolution !== undefined) {
@@ -55,72 +56,67 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
       </div>
 
       <FormGroup label="Megoldások">
-        {() =>
-          data.isDynamic ? (
-            <div className="form-control-plaintext">
-              {hasSolution ? (
-                <ol>
-                  {solution?.map((item, idx) => (
-                    <li key={idx}>
-                      <SimpleText
-                        disabled={true}
-                        readonly={true}
-                        ctrl={data}
-                        onChange={noop}
-                        name={data.name}
-                        value={item}
-                      />
-                    </li>
-                  ))}
-                </ol>
-              ) : (
-                <div>
-                  {data.name === undefined ? (
-                    <div>Adj nevet a megoldási mezőnek!</div>
-                  ) : (
-                    <div>
-                      Definiáld a megoldásfüggvényt! Minta:
-                      <CodeExample>
-                        {`(def x ["matek" "matematika"])
-(def solution-`}
-                        {data.name}
-                        {` (const x))`}
-                      </CodeExample>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div>
-              <Button btn="link" small onAction={() => append('solution', '')}>
-                <Icon icon={PlusCircleIcon} /> Alternatív megoldás megadása
-              </Button>
+        {() => (
+          <>
+            {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
+            {data.isDynamic && hasName && !hasSolution && (
+              <div>
+                Definiáld a megoldásfüggvényt! Minta:
+                <CodeExample>
+                  {`
+(def x ["matek" "matematika"])
+(def solution-${data.name} (const x))
+`}
+                </CodeExample>
+              </div>
+            )}
+            {data.isDynamic && hasName && hasSolution && (
               <ol>
-                {data.solution?.map((item, idx) => (
+                {solution?.map((item, idx) => (
                   <li key={idx}>
-                    <div className="d-flex">
-                      <Input
-                        {...bind(`solution.${idx}`)}
-                        type="text"
-                        className="form-control mt-1"
-                        required
-                      />
-                      <Button
-                        small
-                        btn="link"
-                        className="text-danger"
-                        onAction={() => remove(`solution.${idx}`)}
-                      >
-                        <Icon icon={TrashIcon} />
-                      </Button>
-                    </div>
+                    <SimpleText
+                      disabled={true}
+                      readonly={true}
+                      ctrl={data}
+                      onChange={noop}
+                      name={data.name}
+                      value={item}
+                    />
                   </li>
                 ))}
               </ol>
-            </div>
-          )
-        }
+            )}
+            {!data.isDynamic && (
+              <div>
+                <Button btn="link" small onAction={() => append('solution', '')}>
+                  <Icon icon={PlusCircleIcon} /> Alternatív megoldás megadása
+                </Button>
+                <ol>
+                  {data.solution?.map((item, idx) => (
+                    <li key={idx}>
+                      <div className="d-flex">
+                        <Input
+                          {...bind(`solution.${idx}`)}
+                          type="text"
+                          className="form-control mt-1"
+                          required
+                        />
+                        <Button
+                          small
+                          btn="link"
+                          className="text-danger"
+                          onAction={() => remove(`solution.${idx}`)}
+                        >
+                          <Icon icon={TrashIcon} />
+                        </Button>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+          </>
+        )}
       </FormGroup>
     </div>
   )

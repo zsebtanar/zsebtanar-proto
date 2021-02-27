@@ -8,22 +8,27 @@ import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { MarkdownWithScript } from '../../../../script/components/MarkdownWithCode'
 import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLHashMap, PLString, PLVector } from 'pocket-lisp-stdlib'
+import { PLFractionNumber } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { noop } from 'shared/utils/fn'
+import { FractionNumberComponent } from './FractionNumberComponent'
+import { FractionNumber } from 'shared/math/fractionNumber'
 
 export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>): JSX.Element {
   const { data, bind } = useModel<UCFractionNumber>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution: Map<string, PLString> = new Map()
+  let solution: FractionNumber = { numerator: 0, denominator: 0 }
   let hasSolution = false
   const hasName = data.name !== undefined
+  let previewCtlr: UCFractionNumber | undefined = undefined
   if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLHashMap<PLString>
+    previewCtlr = { ...data }
+    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLFractionNumber
     if (dynamicSolution !== undefined) {
       solution = dynamicSolution.toJS()
       hasSolution = true
     }
+    previewCtlr.solution = solution
   }
 
   return (
@@ -47,22 +52,24 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>):
       {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
       {data.isDynamic && hasName && !hasSolution && (
         <div>
-          Definiáld a megoldásfüggvényt! A <b>numerator</b> a számlálót, a <b>denominator</b> a
-          nevezőt jelöli. Minta:
+          Definiáld a megoldásfüggvényt! Minta:
           <CodeExample>
-            {`(def x {"numerator" 23 "denominator" 1234})
-(def solution-`}
-            {data.name}
-            {` (const x))`}
+            {`
+(def x 23/1234)
+(def solution-${data.name} (const x))
+`}
           </CodeExample>
         </div>
       )}
       {data.isDynamic && hasName && hasSolution && (
-        <div className="mx-2 text-center">
-          <strong>&nbsp;{solution.get('numerator')?.value ?? 'N/A'}&nbsp;</strong>
-          <hr className="my-1" />
-          <strong>&nbsp;{solution.get('denominator')?.value ?? 'N/A'}&nbsp;</strong>
-        </div>
+        <FractionNumberComponent
+          value={solution}
+          name={''}
+          ctrl={data}
+          onChange={noop}
+          readonly={true}
+          {...previewCtlr}
+        />
       )}
       {!data.isDynamic && (
         <div>
