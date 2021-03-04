@@ -54,13 +54,13 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.E
         <div>
           Definiáld a megoldásfüggvényt! Több jó választ is megadhatsz. Minta:
           <CodeExample>
-            {`(def x [{"Rossz választás." false},
+            {`
+(def x [{"Rossz választás." false},
         {"Ez jó válasz!" true},
         {"Ez is jó válasz!" true},
         {"Ez viszont rossz." false}])
-(def solution-`}
-            {data.name}
-            {` (const x))`}
+(def solution-${data.name} (const x))
+`}
           </CodeExample>
         </div>
       )}

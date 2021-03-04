@@ -12,12 +12,12 @@ import { PLFractionNumber } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { noop } from 'shared/utils/fn'
 import { FractionNumberComponent } from './FractionNumberComponent'
-import { FractionNumber } from 'shared/math/fractionNumber'
+import { fractionNum } from 'shared/math/fractionNumber'
 
 export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>): JSX.Element {
   const { data, bind } = useModel<UCFractionNumber>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution: FractionNumber = { numerator: 0, denominator: 0 }
+  let solution = fractionNum(0, 0)
   let hasSolution = false
   const hasName = data.name !== undefined
   let previewCtlr: UCFractionNumber | undefined = undefined
