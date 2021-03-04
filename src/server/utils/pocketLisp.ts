@@ -4,13 +4,15 @@ import { valueSet } from 'shared/script/shared-code'
 import { interpretMarkdown } from 'shared/script/pocketLispMarkdown'
 import { PseudoRandomNumberGenerator } from 'shared/math/random'
 
-export function interpretExerciseMarkdown(source: string, markdown: string, seed = 1): string {
+export type EvalScript = (s: string) => ReturnType<Interpreter['interpret']>
+
+export function initInterpreter(source: string, seed = 1): EvalScript {
   const prng = new PseudoRandomNumberGenerator(seed)
   const globals = { ...runtime, ...valueSet(prng) }
   const stdout = (msg) => console.error({ msg: msg.toJS ? msg.toJS() : msg.toString(), source })
   const interpreter = new Interpreter({ globals, stdout, utils }, literals)
 
-  const interpret = (script) => {
+  const evalScript = (script) => {
     const parserResult = new Parser(new Scanner(script), literals).parse()
     if (parserResult.hasError) {
       throw parserResult.errors
@@ -18,7 +20,13 @@ export function interpretExerciseMarkdown(source: string, markdown: string, seed
     return interpreter.interpret(parserResult.program)
   }
 
-  interpret(source)
+  evalScript(source)
 
-  return interpretMarkdown(interpret, markdown)
+  return evalScript
+}
+
+export function interpretExerciseMarkdown(source: string, markdown: string, seed = 1): string {
+  const evalScript = initInterpreter(source, seed)
+
+  return interpretMarkdown(evalScript, markdown)
 }

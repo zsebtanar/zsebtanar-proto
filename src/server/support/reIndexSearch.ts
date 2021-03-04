@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { fireStore } from '../utils/firebase'
 import { onlyAdmin } from '../utils/authorization'
-import { getToken } from '../middlewares/firebaseToken'
+import { verifyUser } from '../middlewares/firebaseToken'
 import { indexExercise, clearPublicExerciseIndexes } from '../exercise/utils/searchIndexing'
 import { ExerciseDoc } from 'shared/exercise/types'
 import { HandlerError } from '../utils/HandlerError'
@@ -9,7 +9,7 @@ import { ClassificationSummaryDoc } from '../../shared/classification/type'
 
 export const route = express.Router()
 
-route.get('/re-index-search', [getToken, onlyAdmin], async (req, res, next) => {
+route.get('/re-index-search', [verifyUser, onlyAdmin], async (req, res, next) => {
   try {
     const exercises = await fireStore.collection('exercise/private/items').get()
 

@@ -1,7 +1,7 @@
 import 'firebase/storage'
 import { app, firebase as firebaseApp } from 'client/generic/services/fireApp'
-import { identity } from 'client/generic/utils/fn'
 import type firebaseType from 'firebase'
+import { identity } from 'shared/utils/fn'
 
 ///
 

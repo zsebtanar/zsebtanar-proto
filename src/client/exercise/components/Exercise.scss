@@ -30,12 +30,16 @@
       justify-content: flex-end;
 
       &-content {
-        padding: 3rem 1rem;
+        padding: 2rem 1rem;
       }
     }
 
     .ex-content {
-      padding: 3rem;
+      padding: 4rem 2rem;
+    }
+
+    .ex-sidebar {
+      padding-top: 2rem;
     }
   }
 

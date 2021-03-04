@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import cx from 'classnames'
 import { UseModelProps } from '../../../hooks/model'
-import { uid } from '../../../utils/fn'
+import { uid } from '../../../../../shared/utils/fn'
 
 interface CheckboxProps
   extends UseModelProps<boolean>,

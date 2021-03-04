@@ -1,16 +1,12 @@
 import { UCSingleNumber } from 'shared/exercise/types'
 import { floatEq } from 'shared/utils/math'
+import { toPrecision } from '../../../math/base'
 
 export function singleNumberValidation(
   desc: UCSingleNumber,
   solution: UCSingleNumber['solution'],
-  userInput: UCSingleNumber['solution'],
+  userAnswer: string,
 ): boolean {
   const fractionDigits = desc?.props?.fractionDigits ?? 0
-  return floatEq(toPrecision(solution, fractionDigits), toPrecision(userInput, fractionDigits))
-}
-
-function toPrecision(num: string, p = 0) {
-  const x = 10 ** p
-  return Math.round(parseFloat(num) * x) / x
+  return floatEq(toPrecision(solution, fractionDigits), toPrecision(userAnswer, fractionDigits))
 }

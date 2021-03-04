@@ -2,7 +2,7 @@ import {
   GridColumnDefinition,
   InternalGridColumnDefinition,
 } from 'client/generic/components/grid/types'
-import { uid } from 'client/generic/utils/fn'
+import { uid } from 'shared/utils/fn'
 
 export function genColumnDefs<T>(
   list?: T[],

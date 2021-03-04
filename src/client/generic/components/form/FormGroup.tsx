@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { uid } from '../../utils/fn'
+import { uid } from 'shared/utils/fn'
 
 interface Props {
   label: React.ReactNode

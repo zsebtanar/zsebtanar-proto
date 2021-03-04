@@ -178,3 +178,14 @@ export interface UCSingleNumber extends BaseUserControl {
   }
   solution: string
 }
+
+export type UCSolutions =
+  | UCBinaryChoice['solution']
+  | UCFractionNumber['solution']
+  | UCMultiChoice['solution']
+  | UCNumberList['solution']
+  | UCSimpleText['solution']
+  | UCSingleChoice['solution']
+  | UCSingleNumber['solution']
+
+export type UCUserAnswer = string | number | boolean[] | string[] | FractionNumber

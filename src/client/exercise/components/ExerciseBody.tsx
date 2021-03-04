@@ -1,6 +1,6 @@
 import React from 'react'
 import { ExerciseMarkdown } from './ExerciseMarkdown'
-import { useExercise } from '../services/exerciseContext'
+import { useExercise } from '../providers/exerciseContext'
 import { ExerciseSubTask, SubTaskSolution } from './ExerciseSubTask'
 import { useModel, UseModelProps } from '../../generic/hooks/model'
 

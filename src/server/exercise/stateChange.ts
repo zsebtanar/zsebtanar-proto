@@ -4,7 +4,7 @@ import { fireStore } from '../utils/firebase'
 import { indexExercise, removeExerciseIndex } from './utils/searchIndexing'
 import { onlyAdmin } from '../utils/authorization'
 import { changeExerciseStateSchema } from './schemas'
-import { getToken } from '../middlewares/firebaseToken'
+import { verifyUser } from '../middlewares/firebaseToken'
 import { removeExerciseFromClassifications } from '../classification/utils'
 import { incrementPrivateExerciseCounter } from './utils/counters'
 import { storeExerciseSummary } from './utils/exerciseSummary'
@@ -16,7 +16,7 @@ export const route = express.Router()
 
 route.post(
   '/:exerciseId/state',
-  [getToken, onlyAdmin, validate({ body: changeExerciseStateSchema })],
+  [verifyUser, onlyAdmin, validate({ body: changeExerciseStateSchema })],
   async (req, res, next) => {
     try {
       const id = req.params.exerciseId

@@ -1,6 +1,6 @@
 import { getClient } from '../../utils/search/algolia'
 import { unTokeniseMarkdown } from '../../utils/search/markdown'
-import { interpretExerciseMarkdown } from '../../utils/search/pocketLisp'
+import { interpretExerciseMarkdown } from '../../utils/pocketLisp'
 import { SaveObjectResponse } from '@algolia/client-search'
 import { ExerciseDoc, ExerciseState } from 'shared/exercise/types'
 import { ClassificationSummaryDoc } from '../../../shared/classification/type'

@@ -2,7 +2,7 @@ import * as express from 'express'
 import firebase from 'firebase'
 import { fireStore } from '../utils/firebase'
 import { onlyAdmin } from '../utils/authorization'
-import { getToken } from '../middlewares/firebaseToken'
+import { verifyUser } from '../middlewares/firebaseToken'
 import { indexExercise } from '../exercise/utils/searchIndexing'
 import {
   ClassificationSummaryDoc,
@@ -14,7 +14,7 @@ import { HandlerError } from '../utils/HandlerError'
 
 export const route = express.Router()
 
-route.delete('/:classificationId', [getToken, onlyAdmin], async (req, res, next) => {
+route.delete('/:classificationId', [verifyUser, onlyAdmin], async (req, res, next) => {
   try {
     const batch = fireStore.batch()
     const searchUpdate: (() => Promise<unknown>)[] = []

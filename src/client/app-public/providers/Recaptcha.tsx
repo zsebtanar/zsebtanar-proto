@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { identity } from 'client/generic/utils/fn'
+import { identity } from 'shared/utils/fn'
 
 interface Props {
   children: ReactNode

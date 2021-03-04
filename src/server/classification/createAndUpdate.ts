@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { fireStore } from '../utils/firebase'
 import { onlyAdmin } from '../utils/authorization'
-import { getToken } from '../middlewares/firebaseToken'
+import { verifyUser } from '../middlewares/firebaseToken'
 import { getClassificationLang } from './utils'
 import { HandlerError } from '../utils/HandlerError'
 import { validate } from '../utils/validator'
@@ -11,7 +11,7 @@ export const route = express.Router()
 
 route.post(
   '/:classificationId',
-  [getToken, onlyAdmin, validate({ body: exerciseSchema })],
+  [verifyUser, onlyAdmin, validate({ body: exerciseSchema })],
   async (req, res, next) => {
     try {
       const classificationId = req.params.classificationId

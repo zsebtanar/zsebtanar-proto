@@ -1,8 +1,8 @@
 import React, { ReactNode, Reducer, useReducer, useContext } from 'react'
 import cx from 'classnames'
-import { uid } from '../../generic/utils/fn'
 import { DialogProvider, useDialog } from './DialogProvider'
 import { DialogData } from 'client/overlay/types'
+import { uid } from '../../../shared/utils/fn'
 
 interface State {
   modals: DialogData[]

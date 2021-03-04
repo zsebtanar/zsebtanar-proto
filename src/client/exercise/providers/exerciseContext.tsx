@@ -1,6 +1,9 @@
 import React, { ReactNode, useReducer, Reducer } from 'react'
-import { ExerciseModel } from 'shared/exercise/types'
+import { ExerciseModel, UCUserAnswer } from 'shared/exercise/types'
 import { ExerciseSolution } from '../components/ExerciseBody'
+import { checkSubTask } from '../services/exercise'
+
+type Status = 'pending' | 'checking' | 'checkFailed'
 
 interface ActiveSubTask {
   index: number
@@ -9,18 +12,25 @@ interface ActiveSubTask {
   hintsLeft: number
   isHintsLeft: boolean
 }
+
 interface State {
+  status: Status
   exercise: ExerciseModel
   activeSubTask: ActiveSubTask
   isSingle: boolean
   numberOfTasks: number
   finishedTasks: number
 }
-type Action = { type: 'nextSubTask' } | { type: 'validationFailed' } | { type: 'nextHelp' }
 
-interface ExerciseContextAPI {
+type Action =
+  | { type: 'checkSubTask' }
+  | { type: 'checkFailed' }
+  | { type: 'checkSuccess' }
+  | { type: 'nextHelp' }
+
+interface API {
   getNextHint(): void
-  checkActiveSubTask(data: ExerciseSolution): void
+  checkActiveSubTask(data: UCUserAnswer[], seed: number): Promise<void>
 }
 
 const activeSubTaskInit: ActiveSubTask = {
@@ -33,10 +43,26 @@ const activeSubTaskInit: ActiveSubTask = {
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'nextSubTask':
-      return state
-    case 'validationFailed':
-      return state
+    case 'checkSubTask':
+      return {
+        ...state,
+        status: 'checking',
+      }
+    case 'checkFailed':
+      return {
+        ...state,
+        status: 'checkFailed',
+        activeSubTask: {
+          ...state.activeSubTask,
+          numberOfAttempt: state.activeSubTask.numberOfAttempt + 1,
+        },
+      }
+    case 'checkSuccess':
+      return {
+        ...state,
+        status: 'checkFailed',
+        activeSubTask: { ...activeSubTaskInit },
+      }
     case 'nextHelp':
       return state
     default:
@@ -54,10 +80,11 @@ interface Props {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ExerciseContext = React.createContext<State>({} as any)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ExerciseDispatchContext = React.createContext<ExerciseContextAPI>({} as any)
+const ExerciseDispatchContext = React.createContext<API>({} as any)
 
 function initState(exercise: ExerciseModel): State {
   return {
+    status: 'pending',
     exercise,
     activeSubTask: { ...activeSubTaskInit },
     finishedTasks: 0,
@@ -66,13 +93,21 @@ function initState(exercise: ExerciseModel): State {
   }
 }
 
-export function ExerciseProvider({ children, exercise }: Props) {
-  const [state] = useReducer<Reducer<State, Action>>(reducer, initState(exercise))
+export function ExerciseProvider({ children, exercise }: Props): JSX.Element {
+  const [state, dispetch] = useReducer<Reducer<State, Action>>(reducer, initState(exercise))
 
-  const api: ExerciseContextAPI = {
-    checkActiveSubTask(data) {
+  const api: API = {
+    async checkActiveSubTask(data: UCUserAnswer[], seed: number) {
       console.log(data)
-      throw 'not implemented yet'
+      dispetch({ type: 'checkSubTask' })
+      let result = false
+      try {
+        if (state.exercise.id) {
+          result = await checkSubTask(state.exercise.id, seed, 0, data)
+        }
+      } finally {
+        dispetch({ type: result ? 'checkSuccess' : 'checkFailed' })
+      }
     },
     getNextHint() {
       throw 'not implemented yet'
@@ -86,7 +121,7 @@ export function ExerciseProvider({ children, exercise }: Props) {
   )
 }
 
-export function useExercise() {
+export function useExercise(): State {
   const context = React.useContext(ExerciseContext)
   if (context === undefined) {
     throw new Error('useExercise must be used within a ExerciseContext')
@@ -94,7 +129,7 @@ export function useExercise() {
   return context
 }
 
-export function useExerciseDispatch() {
+export function useExerciseDispatch(): API {
   const context = React.useContext(ExerciseDispatchContext)
   if (context === undefined) {
     throw new Error('useExerciseDispatch must be used within a ExerciseDispatchContext')
