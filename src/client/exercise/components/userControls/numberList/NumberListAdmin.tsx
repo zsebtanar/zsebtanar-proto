@@ -1,6 +1,6 @@
 import React from 'react'
 import { PlusCircle as PlusCircleIcon, Trash2 as TrashIcon } from 'react-feather'
-import { UCNumberList } from 'shared/exercise/types'
+import { UCNumberList, UCNumberListField } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
@@ -12,7 +12,7 @@ import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from 'client/generic/components/Alert'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLString, PLVector } from 'pocket-lisp-stdlib'
+import { PLString, PLVector, PLHashMap } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { NumberList } from './NumberList'
 import { noop } from 'shared/utils/fn'
@@ -20,20 +20,25 @@ import { noop } from 'shared/utils/fn'
 export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCNumberList>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution: string[] = []
   let hasSolution = false
   const hasName = data.name !== undefined
   let previewCtlr = { ...data }
   if (data.isDynamic) {
     previewCtlr = { ...data }
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLString>
+    const fields = evalPL(`(fields-${data.name})`) as PLVector<PLHashMap<PLString>>
     if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.value.map((x) => x.toString())
-      hasSolution = true
+      previewCtlr.solution = dynamicSolution.value.map((x) => x.toString())
+      if (fields !== undefined) {
+        previewCtlr.props = {
+          fractionDigits: 0,
+          acceptRandomOrder: false,
+          multiLine: false,
+          fields: fields.toJS() as UCNumberListField[],
+        }
+        hasSolution = true
+      }
     }
-    previewCtlr.props = { ...data.props }
-    previewCtlr.props.fields = []
-    previewCtlr.solution = solution
   }
 
   return (
@@ -94,6 +99,7 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
             {`
 (def x [0.12 -0.12])
 (def solution-${data.name} (const x))
+(def fields-${data.name} (const [{"prefix" "x=" "postfix" "m^3"}, {}]))
 `}
           </CodeExample>
         </div>
@@ -101,11 +107,10 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
       {data.isDynamic && hasName && hasSolution && (
         <NumberList
           readonly={true}
+          ctrl={previewCtlr}
           name={data.name}
-          value={['0', '1', '2']}
-          ctrl={data}
+          value={['sf', 'sdf']}
           onChange={noop}
-          {...previewCtlr}
         />
       )}
       {!data.isDynamic && (

@@ -25,7 +25,7 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLString>
     if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.value.map((x) => x.toString())
+      solution = dynamicSolution.toJS() as string[]
       hasSolution = true
     }
   }

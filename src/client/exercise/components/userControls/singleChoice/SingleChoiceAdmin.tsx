@@ -46,13 +46,13 @@ export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>): JSX
           Definiáld a megoldásfüggvényt! Ügyelj arra, hogy <b>csak egy</b> jó megoldást adj meg!
           Minta:
           <CodeExample>
-            {`(def x [{"Rossz választás." false},
+            {`
+(def x [{"Rossz választás." false},
         {"Ez is rossz válasz." false},
         {"Ez a jó válasz!" true},
         {"Ez szintén rossz." false}])
-(def solution-`}
-            {data.name}
-            {` (const x))`}
+(def solution-${data.name} (const x))
+`}
           </CodeExample>
         </div>
       )}

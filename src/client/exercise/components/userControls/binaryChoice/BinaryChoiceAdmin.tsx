@@ -28,7 +28,7 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLHashMap<PLString>>
     if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.value.map((x) => x.toJS())
+      solution = dynamicSolution.toJS() as Map<string, PLString>[]
       hasSolution = true
     }
   }
@@ -56,13 +56,13 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
         <div>
           Definiáld a megoldásfüggvényt! Minta:
           <CodeExample>
-            {`(def x [{"statement" "Ez egy igaz állítás" "solution" true},
+            {`
+(def x [{"statement" "Ez egy igaz állítás" "solution" true},
         {"statement" "Ez egy hamis állítás" "solution" false},
         {"statement" "Ez egy igaz állítás egyedi címkékkel" "solution" true "true-label" "IGAZ" "false-label" "HAMIS"},
         {"statement" "Ez egy hamis állítás egyedi címkékkel" "solution" false "true-label" "I" "false-label" "H"}])
-(def solution-`}
-            {data.name}
-            {` (const x))`}
+(def solution-${data.name} (const x))
+`}
           </CodeExample>
         </div>
       )}
