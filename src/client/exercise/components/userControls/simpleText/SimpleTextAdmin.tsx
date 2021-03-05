@@ -64,8 +64,8 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
                 Definiáld a megoldásfüggvényt! Minta:
                 <CodeExample>
                   {`
-(def x ["matek" "matematika"])
-(def solution-${data.name} (const x))
+(def options ["matek" "matematika"])
+(def solution-${data.name} (const options))
 `}
                 </CodeExample>
               </div>

@@ -79,8 +79,8 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
                     Definiáld a megoldás függvényt! Minta:
                     <CodeExample>
                       {`
-(def x 0.12)
-(def solution-${data.name} (const x))
+(def num 0.12)
+(def solution-${data.name} (const num))
 `}
                     </CodeExample>
                   </div>

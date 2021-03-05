@@ -96,8 +96,8 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
           Definiáld a megoldásfüggvényt! Minta:
           <CodeExample>
             {`
-(def x [0.12 -0.12])
-(def solution-${data.name} (const x))
+(def num-list [0.12 -0.12])
+(def solution-${data.name} (const num-list))
 (def fields-${data.name} (const [{"prefix" "x=" "postfix" "m^3"}, {}]))
 `}
           </CodeExample>
