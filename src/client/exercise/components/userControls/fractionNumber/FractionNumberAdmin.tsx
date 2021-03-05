@@ -55,8 +55,8 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>):
           Definiáld a megoldásfüggvényt! Minta:
           <CodeExample>
             {`
-(def x 23/1234)
-(def solution-${data.name} (const x))
+(def fraction 23/1234)
+(def solution-${data.name} (const fraction))
 `}
           </CodeExample>
         </div>
