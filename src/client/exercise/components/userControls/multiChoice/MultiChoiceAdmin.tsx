@@ -11,7 +11,7 @@ import { Select } from 'client/generic/components/form/input/Select'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from '../../../../generic/components/Alert'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLHashMap, PLString, PLVector } from 'pocket-lisp-stdlib'
+import { PLBool, PLString, PLVector } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 
 export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.Element {
@@ -25,7 +25,7 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.E
     previewCtlr = { ...data }
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLBool>
     if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.value.map((x) => x.toJS())
+      solution = dynamicSolution.toJS() as boolean[]
       hasSolution = true
     }
     previewCtlr.solution = solution

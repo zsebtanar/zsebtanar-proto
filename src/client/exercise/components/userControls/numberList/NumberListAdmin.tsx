@@ -22,9 +22,8 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
   const { evalPL } = usePocketLisp()
   let hasSolution = false
   const hasName = data.name !== undefined
-  let previewCtlr = { ...data }
+  const previewCtlr = { ...data }
   if (data.isDynamic) {
-    previewCtlr = { ...data }
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLString>
     const fields = evalPL(`(fields-${data.name})`) as PLVector<PLHashMap<PLString>>
     if (dynamicSolution !== undefined) {

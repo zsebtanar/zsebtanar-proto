@@ -1,5 +1,5 @@
 import React from 'react'
-import { UCBinaryChoice } from 'shared/exercise/types'
+import { UCBinaryChoice, UCBinaryChoiceOption } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
 import { PlusCircle, Trash2 as TrashIcon } from 'react-feather'
@@ -11,10 +11,10 @@ import { Select } from 'client/generic/components/form/input/Select'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from '../../../../generic/components/Alert'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLHashMap, PLString, PLVector } from 'pocket-lisp-stdlib'
+import { PLBool, PLString, PLVector } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
-import { RadioInput } from 'client/generic/components/form/input/RadioInput'
 import { noop } from 'shared/utils/fn'
+import { BinaryChoice } from './BinaryChoice'
 
 export const DEFAULT_TRUE_LABEL = 'Igaz'
 export const DEFAULT_FALSE_LABEL = 'Hamis'
@@ -22,14 +22,50 @@ export const DEFAULT_FALSE_LABEL = 'Hamis'
 export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCBinaryChoice>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution: Map<string, PLString>[] = []
+  let solutions: boolean[] = []
+  let statements: string[] = []
+  let trueLabels: string[] | string = []
+  let falseLabels: string[] | string = []
+  let randomOrder = false
   let hasSolution = false
   const hasName = data.name !== undefined
+  const previewCtlr = { ...data }
   if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLHashMap<PLString>>
-    if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.toJS() as Map<string, PLString>[]
-      hasSolution = true
+    const dynamicSolutions = evalPL(`(solutions-${data.name})`) as PLVector<PLBool>
+    const dynamicStatements = evalPL(`(statements-${data.name})`) as PLVector<PLString>
+    const dynamicTrueLabels = evalPL(`(true-labels-${data.name})`) as PLVector<PLString>
+    const dynamicFalseLabels = evalPL(`(false-labels-${data.name})`) as PLVector<PLString>
+    const dynamicRandomOrder = evalPL(`(random-order-${data.name})`) as PLBool
+    if (dynamicSolutions !== undefined) {
+      solutions = dynamicSolutions.toJS() as boolean[]
+      if (dynamicStatements !== undefined) {
+        hasSolution = true
+        statements = dynamicStatements.toJS() as string[]
+        trueLabels =
+          dynamicTrueLabels !== undefined
+            ? (dynamicTrueLabels.toJS() as string[])
+            : DEFAULT_TRUE_LABEL
+        falseLabels =
+          dynamicTrueLabels !== undefined
+            ? (dynamicFalseLabels.toJS() as string[])
+            : DEFAULT_FALSE_LABEL
+        if (dynamicRandomOrder !== undefined) {
+          randomOrder = dynamicRandomOrder.toJS()
+        }
+        const binaryOptions: UCBinaryChoiceOption[] = []
+        statements.forEach((item, idx) => {
+          binaryOptions[idx] = {
+            statement: item,
+            trueLabel: typeof trueLabels === 'string' ? trueLabels : trueLabels[idx],
+            falseLabel: typeof falseLabels === 'string' ? falseLabels : falseLabels[idx],
+          }
+        })
+        previewCtlr.props = {
+          randomOrder: randomOrder,
+          options: binaryOptions,
+        }
+        previewCtlr.solution = solutions
+      }
     }
   }
 
@@ -57,52 +93,32 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
           Definiáld a megoldásfüggvényt! Minta:
           <CodeExample>
             {`
-(def x [{"statement" "Ez egy igaz állítás" "solution" true},
-        {"statement" "Ez egy hamis állítás" "solution" false},
-        {"statement" "Ez egy igaz állítás egyedi címkékkel" "solution" true "true-label" "IGAZ" "false-label" "HAMIS"},
-        {"statement" "Ez egy hamis állítás egyedi címkékkel" "solution" false "true-label" "I" "false-label" "H"}])
-(def solution-${data.name} (const x))
+(def allitasok ["Ez egy igaz állítás.",
+                "Ez egy hamis állítás.",
+                "Ez egy igaz állítás.",
+                "Ez egy hamis állítás."])
+(def megoldasok [true, false, true, false])
+(def igaz-cimkek ["I", "Igaz", "i", "helyes"]) ; nem kötelező megadni
+(def hamis-cimkek ["Nem", "N", "n", "nem jó"]) ; nem kötelező megadni
+(def veletlen-sorrend true)                    ; nem kötelező megadni
+
+(def statements-${data.name} (const allitasok))
+(def solutions-${data.name} (const megoldasok))
+(def true-labels-${data.name} (const igaz-cimkek))
+(def false-labels-${data.name} (const hamis-cimkek))
+(def random-order-${data.name} (const veletlen-sorrend))
 `}
           </CodeExample>
         </div>
       )}
       {data.isDynamic && hasName && hasSolution && (
-        <div>
-          {solution.map((item, idx) => (
-            <div key={idx} className="d-flex justify-content-between">
-              {idx + 1}.&nbsp;
-              <MarkdownWithScript source={item.get('statement')?.value ?? 'N/A'} />
-              <div className="d-flex">
-                <RadioInput
-                  name={idx.toString()}
-                  id={idx + '-true'}
-                  value={'true'}
-                  checked={item.get('solution')?.toString() === 'true'}
-                  onChange={noop}
-                  inputValue={item.get('solution')?.toString()}
-                  disabled
-                >
-                  <MarkdownWithScript
-                    source={item.get('true-label')?.value ?? DEFAULT_TRUE_LABEL}
-                  />
-                </RadioInput>
-                <RadioInput
-                  name={idx.toString()}
-                  id={idx + '-false'}
-                  value={'false'}
-                  checked={item.get('solution')?.toString() === 'false'}
-                  onChange={noop}
-                  inputValue={item.get('solution')?.toString()}
-                  disabled
-                >
-                  <MarkdownWithScript
-                    source={item.get('false-label')?.value ?? DEFAULT_FALSE_LABEL}
-                  />
-                </RadioInput>
-              </div>
-            </div>
-          ))}
-        </div>
+        <BinaryChoice
+          readonly={true}
+          ctrl={previewCtlr}
+          onChange={noop}
+          name={data.name}
+          value={solutions}
+        />
       )}
       {!data.isDynamic && (
         <div>
