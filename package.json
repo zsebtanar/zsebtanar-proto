@@ -95,7 +95,7 @@
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#v2.3.0",
     "markdown-it-kbd": "^2.2.0",
     "pocket-lisp": "latest",
-    "pocket-lisp-stdlib": "latest",
+    "pocket-lisp-stdlib": "^0.10.2",
     "ramda": "^0.27.1",
     "react": "^16.13.1",
     "react-async-script": "^1.2.0",

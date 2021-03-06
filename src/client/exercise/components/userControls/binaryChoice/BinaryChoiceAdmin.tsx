@@ -11,60 +11,32 @@ import { Select } from 'client/generic/components/form/input/Select'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from '../../../../generic/components/Alert'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLBool, PLString, PLVector } from 'pocket-lisp-stdlib'
+import { PLBool, PLHashMap, PLString, PLVector } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { noop } from 'shared/utils/fn'
 import { BinaryChoice } from './BinaryChoice'
 
-export const DEFAULT_TRUE_LABEL = 'Igaz'
-export const DEFAULT_FALSE_LABEL = 'Hamis'
+function convertPLHashMap(hashmaps: PLVector<PLHashMap<PLString>>): unknown {
+  const jsObj = hashmaps.toJS() as Map<string, string>[]
+  return jsObj.map((x) => Object.fromEntries(x))
+}
 
 export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCBinaryChoice>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solutions: boolean[] = []
-  let statements: string[] = []
-  let trueLabels: string[] | string = []
-  let falseLabels: string[] | string = []
-  let randomOrder = false
   let hasSolution = false
   const hasName = data.name !== undefined
   const previewCtlr = { ...data }
   if (data.isDynamic) {
-    const dynamicSolutions = evalPL(`(solutions-${data.name})`) as PLVector<PLBool>
-    const dynamicStatements = evalPL(`(statements-${data.name})`) as PLVector<PLString>
-    const dynamicTrueLabels = evalPL(`(true-labels-${data.name})`) as PLVector<PLString>
-    const dynamicFalseLabels = evalPL(`(false-labels-${data.name})`) as PLVector<PLString>
-    const dynamicRandomOrder = evalPL(`(random-order-${data.name})`) as PLBool
-    if (dynamicSolutions !== undefined) {
-      solutions = dynamicSolutions.toJS() as boolean[]
-      if (dynamicStatements !== undefined) {
-        hasSolution = true
-        statements = dynamicStatements.toJS() as string[]
-        trueLabels =
-          dynamicTrueLabels !== undefined
-            ? (dynamicTrueLabels.toJS() as string[])
-            : DEFAULT_TRUE_LABEL
-        falseLabels =
-          dynamicTrueLabels !== undefined
-            ? (dynamicFalseLabels.toJS() as string[])
-            : DEFAULT_FALSE_LABEL
-        if (dynamicRandomOrder !== undefined) {
-          randomOrder = dynamicRandomOrder.toJS()
-        }
-        const binaryOptions: UCBinaryChoiceOption[] = []
-        statements.forEach((item, idx) => {
-          binaryOptions[idx] = {
-            statement: item,
-            trueLabel: typeof trueLabels === 'string' ? trueLabels : trueLabels[idx],
-            falseLabel: typeof falseLabels === 'string' ? falseLabels : falseLabels[idx],
-          }
-        })
-        previewCtlr.props = {
-          randomOrder: randomOrder,
-          options: binaryOptions,
-        }
-        previewCtlr.solution = solutions
+    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLBool>
+    const dynamicOptions = evalPL(`(options-${data.name})`) as PLVector<PLHashMap<PLString>>
+    if (dynamicSolution !== undefined && dynamicOptions !== undefined) {
+      hasSolution = true
+      previewCtlr.solution = dynamicSolution.toJS() as boolean[]
+      previewCtlr.props = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(data.props as any),
+        options: convertPLHashMap(dynamicOptions) as UCBinaryChoiceOption[],
       }
     }
   }
@@ -93,20 +65,13 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
           Definiáld a megoldásfüggvényt! Minta:
           <CodeExample>
             {`
-(def allitasok ["Ez egy igaz állítás.",
-                "Ez egy hamis állítás.",
-                "Ez egy igaz állítás.",
-                "Ez egy hamis állítás."])
-(def megoldasok [true, false, true, false])
-(def igaz-cimkek ["I", "Igaz", "i", "helyes"]) ; nem kötelező megadni
-(def hamis-cimkek ["Nem", "N", "n", "nem jó"]) ; nem kötelező megadni
-(def veletlen-sorrend true)                    ; nem kötelező megadni
-
-(def statements-${data.name} (const allitasok))
-(def solutions-${data.name} (const megoldasok))
-(def true-labels-${data.name} (const igaz-cimkek))
-(def false-labels-${data.name} (const hamis-cimkek))
-(def random-order-${data.name} (const veletlen-sorrend))
+(def options [{"statement" "Ez egy igaz állítás."}
+              {"statement" "Ez egy hamis állítás."}
+              {"statement" "Ez egy hamis állítás egyedi címkékkel." "trueLabel" "i" "falseLabel" "h"}
+              {"statement" "Ez egy igaz állítás egyedi címkékkel." "trueLabel" "I" "falseLabel" "H"}])
+(def solution [true, false, false, true])
+(def options-${data.name} (const options))
+(def solution-${data.name} (const solution))
 `}
           </CodeExample>
         </div>
@@ -117,7 +82,7 @@ export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX
           ctrl={previewCtlr}
           onChange={noop}
           name={data.name}
-          value={solutions}
+          value={[]}
         />
       )}
       {!data.isDynamic && (
