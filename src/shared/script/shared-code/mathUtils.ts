@@ -3,7 +3,7 @@ import { assertInteger, assertIntegerRange, plFnNum2Str } from './utils'
 
 // https://www.nayuki.io/page/calculate-divisors-javascript
 export function divisors(num: PLNumber): PLVector<PLNumber> {
-  const n = num.toJSNumber()
+  const n = num.toJS()
   assertInteger(n)
   if (n < 1) {
     throw new Error('Number out of range (< 1)')
@@ -28,7 +28,7 @@ export function divisors(num: PLNumber): PLVector<PLNumber> {
 
 // https://www.thepolyglotdeveloper.com/2015/04/determine-if-a-number-is-prime-using-javascript/
 export function isPrime(num: PLNumber): PLBool {
-  const n = num.toJSNumber()
+  const n = num.toJS()
   assertInteger(n)
   if (n < 1) {
     throw new Error('Number out of range (< 1)')
@@ -73,7 +73,7 @@ const numToRoman = (num: number): string => {
 
 // https://dev.to/ycmjason/how-to-create-range-in-javascript-539i
 export function range(start: PLNumber, end: PLNumber): PLVector<PLNumber> {
-  assertIntegerRange(start.toJSNumber(), end.toJSNumber())
+  assertIntegerRange(start.toJS(), end.toJS())
   const length = end.intValue - start.intValue + 1 // include upper bound
   const rng = Array.from({ length }, (_, i) => plNumber(start.intValue + i))
   return plVector(...rng)
