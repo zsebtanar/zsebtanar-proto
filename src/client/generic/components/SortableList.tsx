@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { UseModelProps } from '../hooks/model'
-import { uid } from '../utils/fn'
+import { uid } from '../../../shared/utils/fn'
 
 export interface Props<Item> extends UseModelProps<Item[]> {
   children(details: { key: string; item: Item; index: number }): React.ReactNode

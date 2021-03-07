@@ -3,15 +3,15 @@ import { UCSimpleText } from 'shared/exercise/types'
 export function simpleTextValidation(
   { props }: UCSimpleText,
   solution: UCSimpleText['solution'],
-  userInput,
+  userAnswer: string,
 ): boolean {
-  userInput = userInput ?? ''
+  userAnswer = userAnswer ?? ''
   if (!props?.caseSensitive) {
-    userInput = userInput.toLowerCase()
+    userAnswer = userAnswer.toLowerCase()
   }
   if (props?.ignoreSpaces) {
-    userInput = userInput.replace(/\s*/g, '')
+    userAnswer = userAnswer.replace(/\s*/g, '')
   }
 
-  return solution.some((str) => str === userInput)
+  return solution.some((str) => str === userAnswer)
 }

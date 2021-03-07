@@ -3,7 +3,7 @@ import { ExerciseState, ExerciseDoc } from 'shared/exercise/types'
 import { onlyEditors } from '../utils/authorization'
 import { exerciseSchema } from './schemas'
 import { fireStore } from '../utils/firebase'
-import { getToken } from '../middlewares/firebaseToken'
+import { verifyUser } from '../middlewares/firebaseToken'
 import { validate } from '../utils/validator'
 import { indexExercise } from './utils/searchIndexing'
 import { incrementPrivateExerciseCounter } from './utils/counters'
@@ -14,7 +14,7 @@ export const route = express.Router()
 
 route.post(
   '/',
-  [getToken, onlyEditors, validate({ body: exerciseSchema })],
+  [verifyUser, onlyEditors, validate({ body: exerciseSchema })],
   async (req, res, next) => {
     try {
       // Timestamp

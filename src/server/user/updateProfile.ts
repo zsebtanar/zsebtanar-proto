@@ -2,7 +2,7 @@ import * as express from 'express'
 import { admin } from '../utils/firebase'
 import { onlyUser } from '../utils/authorization'
 import { profileUpdateSchema } from './schemas'
-import { getToken } from '../middlewares/firebaseToken'
+import { verifyUser } from '../middlewares/firebaseToken'
 import { HandlerError } from '../utils/HandlerError'
 import { validate } from '../utils/validator'
 
@@ -10,7 +10,7 @@ export const route = express.Router()
 
 route.post(
   '/profile/:uid',
-  [getToken, onlyUser, validate({ body: profileUpdateSchema })],
+  [verifyUser, onlyUser, validate({ body: profileUpdateSchema })],
   async (req, res, next) => {
     try {
       const uid = req.params.uid

@@ -15,6 +15,7 @@ interface ValueTypes {
 
 type CtxType = FetchDataAPI<ValueTypes>
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ClassificationContext = React.createContext<CtxType>({} as any)
 
 export function ClassificationProvider({ children }: Props): JSX.Element {

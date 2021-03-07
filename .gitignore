@@ -27,7 +27,7 @@ todo.md
 
 service-account-credentials.json
 
-src/tools/
+/tools/
 ./ideas.md
 
 cypress/videos
