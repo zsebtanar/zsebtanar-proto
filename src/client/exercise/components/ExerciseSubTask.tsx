@@ -1,6 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
-import { useExercise, useExerciseDispatch } from '../services/exerciseContext'
+import { useExercise, useExerciseDispatch } from '../providers/exerciseContext'
 import { ExerciseMarkdown } from './ExerciseMarkdown'
 import { ExerciseSubTask } from 'shared/exercise/types'
 import { UserControls } from './userControls/UserControl'

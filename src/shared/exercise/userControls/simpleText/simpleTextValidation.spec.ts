@@ -34,7 +34,7 @@ describe('simpleText', () => {
     }
 
     const emptyInputs = ['', null, undefined]
-    emptyInputs.map(input => expect(simpleText(ctrl, [], input)).toBe(false))
+    emptyInputs.map((input) => expect(simpleText(ctrl, [], input as string)).toBe(false))
   })
 
   it('should fail if the input and the options list are empty', () => {
@@ -47,7 +47,7 @@ describe('simpleText', () => {
     }
 
     const emptyInputs = ['', null, undefined, 'a']
-    emptyInputs.map(input => expect(simpleText(ctrl, [], input)).toBe(false))
+    emptyInputs.map((input) => expect(simpleText(ctrl, [], input as string)).toBe(false))
   })
 
   it('should pass if the solution is part of the options', () => {

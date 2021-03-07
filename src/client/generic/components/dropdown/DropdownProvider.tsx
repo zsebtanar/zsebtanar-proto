@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react'
 
-interface Context {
+interface State {
   isOpen: boolean
   open: () => void
   close: () => void
@@ -11,7 +11,7 @@ interface Props {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const DropdownContext = React.createContext<Context>({} as any)
+const DropdownContext = React.createContext<State>({} as any)
 
 export function DropdownProvider({ children }: Props): JSX.Element {
   const [isOpen, setOpen] = useState(false)
@@ -25,7 +25,7 @@ export function DropdownProvider({ children }: Props): JSX.Element {
   return <DropdownContext.Provider value={api}>{children}</DropdownContext.Provider>
 }
 
-export function useDropdown() {
+export function useDropdown(): State {
   const context = React.useContext(DropdownContext)
   if (context === undefined) {
     throw new Error('useDropdown must be used within a DropdownContext')

@@ -3,7 +3,7 @@ import { UCSingleChoice } from 'shared/exercise/types'
 export function singleChoiceValidation(
   control: UCSingleChoice,
   solution: UCSingleChoice['solution'],
-  userInput: UCSingleChoice['solution'],
+  userAnswer: number,
 ): boolean {
-  return solution === userInput
+  return solution === userAnswer
 }

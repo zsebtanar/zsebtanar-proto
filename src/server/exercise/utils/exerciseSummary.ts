@@ -1,7 +1,7 @@
 import { pickBy } from 'ramda'
 import { ExerciseDoc, ExerciseSummaryDoc } from '../../../shared/exercise/types'
 import { fireStore } from '../../utils/firebase'
-import { interpretExerciseMarkdown } from '../../utils/search/pocketLisp'
+import { interpretExerciseMarkdown } from '../../utils/pocketLisp'
 
 export async function storeExerciseSummary(
   id: string,

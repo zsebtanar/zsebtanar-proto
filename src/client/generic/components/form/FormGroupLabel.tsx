@@ -1,8 +1,8 @@
 import React, { useRef } from 'react'
 import { Input, InputProps } from './input/Input'
-import { uid } from '../../utils/fn'
 
 import './FormGroupLabel.scss'
+import { uid } from '../../../../shared/utils/fn'
 
 interface Props extends Omit<InputProps, 'id' | 'placeholder'> {
   label: string

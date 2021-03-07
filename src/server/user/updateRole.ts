@@ -2,7 +2,7 @@ import * as express from 'express'
 import { admin } from '../utils/firebase'
 import { onlyAdmin } from '../utils/authorization'
 import { roleUpdateSchema } from './schemas'
-import { getToken } from '../middlewares/firebaseToken'
+import { verifyUser } from '../middlewares/firebaseToken'
 import { HandlerError } from '../utils/HandlerError'
 import { validate } from '../utils/validator'
 
@@ -10,7 +10,7 @@ export const route = express.Router()
 
 route.post(
   '/role/:uid',
-  [getToken, onlyAdmin, validate({ body: roleUpdateSchema })],
+  [verifyUser, onlyAdmin, validate({ body: roleUpdateSchema })],
   async (req, res, next) => {
     try {
       const data = req.body

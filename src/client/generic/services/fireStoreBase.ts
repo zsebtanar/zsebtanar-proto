@@ -1,7 +1,7 @@
 import { app } from './fireApp'
-import { pickBy } from '../utils/fn'
 import type firebaseType from 'firebase'
-import { GridFilterOptions } from '../../../shared/generic/types'
+import { GridFilterOptions } from 'shared/generic/types'
+import { pickBy } from 'shared/utils/fn'
 
 ///
 

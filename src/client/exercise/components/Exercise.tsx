@@ -1,7 +1,7 @@
-import React, { ReactNode, useState } from 'react'
-import { ExerciseModel } from 'shared/exercise/types'
-import { ExerciseProvider, useExercise, useExerciseDispatch } from '../services/exerciseContext'
-import { ExerciseBody, ExerciseSolution } from './ExerciseBody'
+import React, { useState } from 'react'
+import { ExerciseModel, UCUserAnswer } from 'shared/exercise/types'
+import { ExerciseProvider, useExercise, useExerciseDispatch } from '../providers/exerciseContext'
+import { ExerciseSolution } from './ExerciseBody'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
 import { useModel } from 'client/generic/hooks/model'
 import { CloseButton } from 'client/generic/components/CloseButton'
@@ -10,7 +10,6 @@ import { Button } from 'client/generic/components/Button'
 
 import './Exercise.scss'
 import { ExerciseMarkdown } from './ExerciseMarkdown'
-import { ExerciseSubTask, SubTaskSolution } from './ExerciseSubTask'
 import { UserControls } from './userControls/UserControl'
 
 interface Props {
@@ -19,11 +18,11 @@ interface Props {
   onClose?: () => void
 }
 
-export function Exercise({ exercise, onClose, seed }: Props) {
+export function Exercise({ exercise, onClose, seed }: Props): JSX.Element {
   return (
     <ExerciseProvider exercise={exercise}>
       <PocketLispProvider seed={seed} script={exercise.script}>
-        <ExerciseComponent onClose={onClose} />
+        <ExerciseComponent onClose={onClose} seed={seed} />
       </PocketLispProvider>
     </ExerciseProvider>
   )
@@ -31,16 +30,22 @@ export function Exercise({ exercise, onClose, seed }: Props) {
 
 interface ExerciseComponentProps {
   onClose?: () => void
+  seed: number
 }
 
-function ExerciseComponent({ onClose }: ExerciseComponentProps) {
+function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
   const state = useExercise()
   const exerciseDispatch = useExerciseDispatch()
   const [currentSubTaskIdx, setCurrentSutTaskIdx] = useState(0)
-  const { bind, bindPartialModel, data } = useModel<ExerciseSolution>({})
-  const { exercise, isSingle, finishedTasks } = useExercise()
+  const { bind: bindAnswer, data: answers } = useModel<UCUserAnswer[]>({ value: [] })
 
-  const subtasks = exercise.subTasks.slice(0, finishedTasks + 1)
+  const subtasks = state.exercise.subTasks.slice(0, state.finishedTasks + 1)
+
+  const onSubmit = (event) => {
+    event.preventDefault()
+    exerciseDispatch.checkActiveSubTask(answers, seed)
+    setCurrentSutTaskIdx(state.finishedTasks)
+  }
 
   return (
     <div className="exercise-solver container">
@@ -49,19 +54,12 @@ function ExerciseComponent({ onClose }: ExerciseComponentProps) {
           <CloseButton onClick={onClose} />
         </div>
       </div>
-      <form
-        className="row ex-body"
-        onSubmit={(event) => {
-          event.preventDefault()
-          exerciseDispatch.checkActiveSubTask(data)
-          setCurrentSutTaskIdx(finishedTasks)
-        }}
-      >
+      <form className="row ex-body" onSubmit={onSubmit}>
         <div className="ex-content offset-xl-1 col-xl-7 offset-lg-1 col-lg-6">
-          <ExerciseMarkdown className="main-description mb-4" source={exercise.description} />
+          <ExerciseMarkdown className="main-description mb-4" source={state.exercise.description} />
 
           {subtasks.map((subTask, index) => {
-            const isDone = finishedTasks > index
+            const isDone = state.finishedTasks > index
             return (
               <div key={index}>
                 <hr />
@@ -78,8 +76,9 @@ function ExerciseComponent({ onClose }: ExerciseComponentProps) {
           )}
 
           <hr />
+
           {subtasks[currentSubTaskIdx].controls.map((ctrl, idx) => (
-            <UserControls key={idx} ctrl={ctrl} {...bind(`${idx}.${ctrl.name}`)} />
+            <UserControls key={idx} ctrl={ctrl} {...bindAnswer(`${idx}`)} />
           ))}
 
           {/*<div className={cx('exercise-sub-task', { finished: isDone })}>*/}
@@ -98,7 +97,11 @@ function ExerciseComponent({ onClose }: ExerciseComponentProps) {
           {/*</div>*/}
 
           <div className="text-center">
-            <Button submit className="btn btn-secondary btn-lg">
+            <Button
+              submit
+              className="btn btn-secondary btn-lg"
+              loading={state.status === 'checking'}
+            >
               Ellenőrzés
             </Button>
           </div>

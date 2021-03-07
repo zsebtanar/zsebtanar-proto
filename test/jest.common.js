@@ -14,4 +14,5 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  coveragePathIgnorePatterns: ['node_modules', '.spec.ts', '.mock.ts', 'types.ts'],
 }

@@ -29,7 +29,7 @@ interface Store {
   hasError: boolean
 }
 
-interface UserContextAPI {
+interface API {
   signIn(email: string, password: string): Promise<Store>
   ssoSignIn(providerType: ProviderTypes): Promise<Store>
   signUp(email: string, password: string, displayName: string): Promise<Store>
@@ -51,7 +51,7 @@ type Action =
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const UserContext = React.createContext<Store>({} as any)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const UserDispatchContext = React.createContext<UserContextAPI>({} as any)
+export const UserDispatchContext = React.createContext<API>({} as any)
 
 const defaultState: Store = {
   state: UserStates.Idle,
@@ -133,7 +133,7 @@ export function UserProvider({ children }: Props): JSX.Element {
     }
   })
 
-  const api: UserContextAPI = useMemo(
+  const api: API = useMemo(
     () => ({
       async signIn(email: string, password: string): Promise<Store> {
         dispatch({ type: 'SingInStart' })
@@ -214,7 +214,7 @@ export function UserProvider({ children }: Props): JSX.Element {
   )
 }
 
-export function useUserState() {
+export function useUserState(): Store {
   const context = React.useContext(UserContext)
   if (context === undefined) {
     throw new Error('useUser must be used within a UserContext')
@@ -222,7 +222,7 @@ export function useUserState() {
   return context
 }
 
-export function useUserDispatch() {
+export function useUserDispatch(): API {
   const context = React.useContext(UserDispatchContext)
   if (context === undefined) {
     throw new Error('useUserDispatch must be used within a UserDispatchContext')
@@ -230,7 +230,7 @@ export function useUserDispatch() {
   return context
 }
 
-export function useUser() {
+export function useUser(): Store & API {
   const user = useUserState()
   const dispatch = useUserDispatch()
   return { ...user, ...dispatch }

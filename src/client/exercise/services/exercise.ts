@@ -1,5 +1,10 @@
 import { useCallback, useMemo } from 'react'
-import { ExerciseModel, ExerciseState, ExerciseSummaryModel } from 'shared/exercise/types'
+import {
+  ExerciseModel,
+  ExerciseState,
+  ExerciseSummaryModel,
+  UCUserAnswer,
+} from 'shared/exercise/types'
 import { LoadAndStoreModelAPI, useLoadAndStoreModel } from '../../generic/hooks/loadAndStoreModel'
 import { Service } from 'client/generic/services/fireStoreBase'
 import { FetchDataAPI, useFetchData } from 'client/generic/hooks/fetchData'
@@ -9,7 +14,7 @@ import {
   FetchFirestoreListOptions,
   useFetchFirestoreList,
 } from '../../generic/hooks/fetchFirestoreList'
-import { GridFilterOptions } from '../../../shared/generic/types'
+import { GridFilterOptions } from 'shared/generic/types'
 
 export const exerciseSummaryDataService = new Service<ExerciseSummaryModel>(
   'exercise/summary/items',
@@ -79,3 +84,10 @@ export function useExerciseModel(id?: string): LoadAndStoreModelAPI<ExerciseMode
 
 export const changeState = (exerciseId: string, state: ExerciseState): Promise<void> =>
   cloudFnPost(`/exercise/${exerciseId}/state`, { state }, { withToken: true })
+
+export const checkSubTask = (
+  exerciseId: string,
+  seed: number,
+  subTask: number,
+  answers: UCUserAnswer[],
+): Promise<boolean> => cloudFnPost(`/exercise/${exerciseId}/check`, { seed, subTask, answers })

@@ -2,12 +2,12 @@ import * as express from 'express'
 import { admin } from '../utils/firebase'
 import { evolve, map, pick } from 'ramda'
 import { onlyAdmin } from '../utils/authorization'
-import { getToken } from '../middlewares/firebaseToken'
+import { verifyUser } from '../middlewares/firebaseToken'
 import { HandlerError } from '../utils/HandlerError'
 
 export const route = express.Router()
 
-route.get('/all', [getToken, onlyAdmin], async (req, res, next) => {
+route.get('/all', [verifyUser, onlyAdmin], async (req, res, next) => {
   try {
     const nextPageToken = req.query.pageToken
     const publicFields = pick([

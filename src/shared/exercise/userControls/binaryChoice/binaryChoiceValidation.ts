@@ -3,9 +3,11 @@ import { UCBinaryChoice } from 'shared/exercise/types'
 export function binaryChoiceValidation(
   ctrl: UCBinaryChoice,
   solution: UCBinaryChoice['solution'],
-  userInput: UCBinaryChoice['solution'],
+  userAnswer: boolean[],
 ): boolean {
-  if (!userInput?.length) return false
+  if (!userAnswer?.length) {
+    return false
+  }
 
-  return solution.every((val, idx) => userInput[idx] === val)
+  return solution.every((val, idx) => userAnswer[idx] === val)
 }

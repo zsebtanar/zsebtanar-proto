@@ -17,7 +17,7 @@ export type InterpreterOutput = {
   position?: SnippetPosition
 }
 
-interface InterpreterContextAPI {
+interface API {
   script: string
   current?: Interpreter
   run(source: string)
@@ -27,7 +27,7 @@ interface InterpreterContextAPI {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const PocketLispContext = React.createContext<InterpreterContextAPI>({} as any)
+export const PocketLispContext = React.createContext<API>({} as any)
 
 let output: InterpreterOutput[] = []
 
@@ -101,7 +101,7 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props): J
   )
 }
 
-export function usePocketLisp() {
+export function usePocketLisp(): API {
   const context = React.useContext(PocketLispContext)
   if (context === undefined) {
     throw new Error('usePocketLisp must be used within a PocketLispContext')
