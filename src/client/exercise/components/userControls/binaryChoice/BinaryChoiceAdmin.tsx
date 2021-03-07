@@ -15,17 +15,13 @@ import { PLBool, PLHashMap, PLString, PLVector } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { noop } from 'shared/utils/fn'
 import { BinaryChoice } from './BinaryChoice'
-
-function convertPLHashMap(hashmaps: PLVector<PLHashMap<PLString>>): unknown {
-  const jsObj = hashmaps.toJS() as Map<string, string>[]
-  return jsObj.map((x) => Object.fromEntries(x))
-}
+import { convertPLHashMap } from 'client/generic/utils/fn'
 
 export function BinaryChoiceAdmin(bindProps: UseModelProps<UCBinaryChoice>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCBinaryChoice>(bindProps)
   const { evalPL } = usePocketLisp()
   let hasSolution = false
-  const hasName = data.name !== undefined
+  const hasName = data.name !== undefined || data.name === ''
   const previewCtlr = { ...data }
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLBool>

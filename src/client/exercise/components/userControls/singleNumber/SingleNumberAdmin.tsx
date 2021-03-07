@@ -18,7 +18,7 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
   const { evalPL } = usePocketLisp()
   let solution = ''
   let hasSolution = false
-  const hasName = data.name !== undefined
+  const hasName = data.name !== undefined || data.name === ''
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLNumber
     if (dynamicSolution !== undefined) {

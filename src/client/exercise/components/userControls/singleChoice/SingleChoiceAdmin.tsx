@@ -1,6 +1,6 @@
 import React from 'react'
 import { PlusCircle as PlusCircleIcon, Trash2 as TrashIcon } from 'react-feather'
-import { UCSingleChoice } from 'shared/exercise/types'
+import { UCSingleChoice, UCSingleChoiceOption } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
@@ -11,21 +11,29 @@ import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from 'client/generic/components/Alert'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLHashMap, PLString, PLVector } from 'pocket-lisp-stdlib'
+import { PLHashMap, PLString, PLVector, PLNumber } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { noop } from 'shared/utils/fn'
+import { convertPLHashMap } from 'client/generic/utils/fn'
+import { SingleChoice } from './SingleChoice'
 
 export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCSingleChoice>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution: Map<string, PLString>[] = []
   let hasSolution = false
-  const hasName = data.name !== undefined
+  const hasName = data.name !== undefined || data.name === ''
+  const previewCtlr = { ...data }
   if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLHashMap<PLString>>
-    if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.value.map((x) => x.toJS())
+    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLNumber
+    const dynamicOptions = evalPL(`(options-${data.name})`) as PLVector<PLHashMap<PLString>>
+    if (dynamicSolution !== undefined && dynamicOptions !== undefined) {
       hasSolution = true
+      previewCtlr.solution = dynamicSolution.toJS() as number
+      previewCtlr.props = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(data.props as any),
+        options: convertPLHashMap(dynamicOptions) as UCSingleChoiceOption[],
+      }
     }
   }
 
@@ -43,37 +51,29 @@ export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>): JSX
       {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
       {data.isDynamic && hasName && !hasSolution && (
         <div>
-          Definiáld a megoldásfüggvényt! Ügyelj arra, hogy <b>csak egy</b> jó megoldást adj meg!
+          Definiáld a megoldásfüggvényt! A helyes megoldás sorszámál a sorszámozást 0-val kezdd!
           Minta:
           <CodeExample>
             {`
-(def statements [{"Rossz választás." false},
-        {"Ez is rossz válasz." false},
-        {"Ez a jó válasz!" true},
-        {"Ez szintén rossz." false}])
-(def solution-${data.name} (const statements))
+(def options [{"label" "Rossz választás."},
+              {"label" "Ez is rossz válasz."},
+              {"label" "Ez a jó válasz!"},
+              {"label" "Ez szintén rossz."}])
+(def solution-index 2)
+(def solution-${data.name} (const solution-index))
+(def options-${data.name} (const options))
 `}
           </CodeExample>
         </div>
       )}
       {data.isDynamic && hasName && hasSolution && (
-        <div>
-          {solution.map((item, idx) => (
-            <div key={idx} className="d-flex justify-content-between">
-              <RadioInput
-                name={idx.toString()}
-                id={idx + '-true'}
-                value={'true'}
-                checked={item.values().next().value?.toString() === 'true'}
-                onChange={noop}
-                inputValue={item.values().next().value?.toString()}
-                disabled
-              >
-                <MarkdownWithScript source={item.keys().next().value} />
-              </RadioInput>
-            </div>
-          ))}
-        </div>
+        <SingleChoice
+          name={data.name}
+          value={previewCtlr.solution}
+          onChange={noop}
+          readonly={true}
+          ctrl={previewCtlr}
+        />
       )}
       {!data.isDynamic && (
         <div>

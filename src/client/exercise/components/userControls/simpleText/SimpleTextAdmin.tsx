@@ -21,7 +21,7 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
   const { evalPL } = usePocketLisp()
   let solution: string[] = []
   let hasSolution = false
-  const hasName = data.name !== undefined
+  const hasName = data.name !== undefined || data.name === ''
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLString>
     if (dynamicSolution !== undefined) {
