@@ -1,6 +1,6 @@
 import React from 'react'
 import { PlusCircle as PlusCircleIcon, Trash2 as TrashIcon } from 'react-feather'
-import { UCMultiChoice } from 'shared/exercise/types'
+import { UCMultiChoice, UCMultiChoiceOption } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
@@ -11,25 +11,30 @@ import { Select } from 'client/generic/components/form/input/Select'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from '../../../../generic/components/Alert'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLBool, PLString, PLVector } from 'pocket-lisp-stdlib'
+import { PLBool, PLString, PLVector, PLHashMap } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
+import { MultiChoice } from './MultiChoice'
+import { noop } from 'shared/utils/fn'
+import { convertPLHashMap } from 'client/generic/utils/fn'
 
 export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCMultiChoice>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution: boolean[] = []
   let hasSolution = false
-  const hasName = data.name !== undefined
-  let previewCtlr: UCMultiChoice | undefined = undefined
+  const hasName = data.name !== undefined || data.name === ''
+  const previewCtlr = { ...data }
   if (data.isDynamic) {
-    previewCtlr = { ...data }
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLBool>
-    if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.toJS() as boolean[]
+    const dynamicOptions = evalPL(`(options-${data.name})`) as PLVector<PLHashMap<PLString>>
+    if (dynamicSolution !== undefined && dynamicOptions !== undefined) {
       hasSolution = true
+      previewCtlr.solution = dynamicSolution.toJS() as boolean[]
+      previewCtlr.props = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(data.props as any),
+        options: convertPLHashMap(dynamicOptions) as UCMultiChoiceOption[],
+      }
     }
-    previewCtlr.solution = solution
-    previewCtlr.props.options = evalPL(`(options-${data.name})`) as PLVector<PLString>
   }
 
   return (
@@ -55,30 +60,25 @@ export function MultiChoiceAdmin(bindProps: UseModelProps<UCMultiChoice>): JSX.E
           Definiáld a megoldásfüggvényt! Több jó választ is megadhatsz. Minta:
           <CodeExample>
             {`
-(def x [{"Rossz választás." false},
-        {"Ez jó válasz!" true},
-        {"Ez is jó válasz!" true},
-        {"Ez viszont rossz." false}])
-(def solution-${data.name} (const x))
+(def options [{"label" "Rossz választás."},
+              {"label" "Ez jó válasz!"},
+              {"label" "Ez is jó válasz!"},
+              {"label" "Ez viszont rossz."}])
+(def solution [false, true, true, false])
+(def options-${data.name} (const options))
+(def solution-${data.name} (const solution))
 `}
           </CodeExample>
         </div>
       )}
       {data.isDynamic && hasName && hasSolution && (
-        <div>
-          <MultiChoice {...previewCtlr}></MultiChoice>
-          {solution.map((item, idx) => (
-            <div key={idx}>
-              <Checkbox
-                {...bind(`${idx}`)}
-                checked={item.values().next().value?.toString() === 'true'}
-                disabled
-              >
-                <MarkdownWithScript source={item.keys().next().value} />
-              </Checkbox>
-            </div>
-          ))}
-        </div>
+        <MultiChoice
+          readonly={true}
+          value={previewCtlr.solution}
+          ctrl={previewCtlr}
+          onChange={noop}
+          name={data.name}
+        ></MultiChoice>
       )}
       {!data.isDynamic && (
         <div>

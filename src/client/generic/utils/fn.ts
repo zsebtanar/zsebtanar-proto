@@ -1,3 +1,5 @@
+import { PLString, PLVector, PLHashMap } from 'pocket-lisp-stdlib'
+
 /**
  * Accept any value and return with the same value
  *
@@ -33,4 +35,12 @@ export function uid(): string {
 
 export function numberSortAsc(a: number, b: number): number {
   return a - b
+}
+
+/**
+ * Parse vector of PLHashmaps and convert into JS object
+ */
+export function convertPLHashMap(hashmaps: PLVector<PLHashMap<PLString>>): unknown {
+  const jsObj = hashmaps.toJS() as Map<string, string>[]
+  return jsObj.map((x) => Object.fromEntries(x))
 }

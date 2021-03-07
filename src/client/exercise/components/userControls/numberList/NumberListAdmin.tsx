@@ -16,26 +16,24 @@ import { PLString, PLVector, PLHashMap } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { NumberList } from './NumberList'
 import { noop } from 'shared/utils/fn'
+import { convertPLHashMap } from 'client/generic/utils/fn'
 
 export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCNumberList>(bindProps)
   const { evalPL } = usePocketLisp()
   let hasSolution = false
-  const hasName = data.name !== undefined
+  const hasName = data.name !== undefined || data.name === ''
   const previewCtlr = { ...data }
   if (data.isDynamic) {
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLString>
-    const fields = evalPL(`(fields-${data.name})`) as PLVector<PLHashMap<PLString>>
-    if (dynamicSolution !== undefined) {
-      previewCtlr.solution = dynamicSolution.value.map((x) => x.toString())
-      if (fields !== undefined) {
-        previewCtlr.props = {
-          fractionDigits: 0,
-          acceptRandomOrder: false,
-          multiLine: false,
-          fields: fields.toJS() as UCNumberListField[],
-        }
-        hasSolution = true
+    const dynamicFields = evalPL(`(fields-${data.name})`) as PLVector<PLHashMap<PLString>>
+    if (dynamicSolution !== undefined && dynamicFields !== undefined) {
+      hasSolution = true
+      previewCtlr.solution = dynamicSolution.toJS() as string[]
+      previewCtlr.props = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(data.props as any),
+        fields: convertPLHashMap(dynamicFields) as UCNumberListField[],
       }
     }
   }

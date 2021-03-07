@@ -12,23 +12,20 @@ import { PLFractionNumber } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { noop } from 'shared/utils/fn'
 import { FractionNumberComponent } from './FractionNumberComponent'
-import { fractionNum } from 'shared/math/fractionNumber'
+import { FractionNumber } from 'shared/math/fractionNumber'
 
 export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>): JSX.Element {
   const { data, bind } = useModel<UCFractionNumber>(bindProps)
   const { evalPL } = usePocketLisp()
-  let solution = fractionNum(0, 0)
   let hasSolution = false
-  const hasName = data.name !== undefined
-  let previewCtlr: UCFractionNumber | undefined = undefined
+  const hasName = data.name !== undefined || data.name === ''
+  const previewCtlr = { ...data }
   if (data.isDynamic) {
-    previewCtlr = { ...data }
     const dynamicSolution = evalPL(`(solution-${data.name})`) as PLFractionNumber
     if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.toJS()
+      previewCtlr.solution = dynamicSolution.toJS() as FractionNumber
       hasSolution = true
     }
-    previewCtlr.solution = solution
   }
 
   return (
@@ -63,8 +60,7 @@ export function FractionNumberAdmin(bindProps: UseModelProps<UCFractionNumber>):
       )}
       {data.isDynamic && hasName && hasSolution && (
         <FractionNumberComponent
-          value={solution}
-          name={''}
+          value={previewCtlr.solution}
           ctrl={data}
           onChange={noop}
           readonly={true}
