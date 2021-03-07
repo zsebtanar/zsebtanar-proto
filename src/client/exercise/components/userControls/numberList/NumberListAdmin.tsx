@@ -12,7 +12,7 @@ import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from 'client/generic/components/Alert'
 import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLString, PLVector, PLHashMap } from 'pocket-lisp-stdlib'
+import { PLString, PLVector, PLHashMap, PLNumber } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
 import { NumberList } from './NumberList'
 import { noop } from 'shared/utils/fn'
@@ -25,7 +25,7 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
   const hasName = data.name !== undefined || data.name === ''
   const previewCtlr = { ...data }
   if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLString>
+    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLNumber>
     const dynamicFields = evalPL(`(fields-${data.name})`) as PLVector<PLHashMap<PLString>>
     if (dynamicSolution !== undefined && dynamicFields !== undefined) {
       hasSolution = true
