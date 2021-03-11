@@ -25,7 +25,7 @@ route.post(
       if (result) {
         res.status(204).send()
       } else {
-        res.status(400).send()
+        res.status(400).json({ message: 'wrong answer' })
       }
     } catch (error) {
       next(new HandlerError(500, 'Exercise check error', error))

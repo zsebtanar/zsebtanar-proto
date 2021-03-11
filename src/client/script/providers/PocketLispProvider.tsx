@@ -40,7 +40,7 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props): J
         output = output.concat({
           type,
           position,
-          msg: JSON.stringify(msg.toJS ? msg.toJS() : msg.toString()),
+          msg: msg.toString(),
         })
       }
     },
