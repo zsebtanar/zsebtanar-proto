@@ -90,4 +90,5 @@ export const checkSubTask = (
   seed: number,
   subTask: number,
   answers: UCUserAnswer[],
-): Promise<boolean> => cloudFnPost(`/exercise/${exerciseId}/check`, { seed, subTask, answers })
+): Promise<boolean> =>
+  cloudFnPost(`/exercise/${exerciseId}/check`, { seed, subTask, answers }, { withToken: true })

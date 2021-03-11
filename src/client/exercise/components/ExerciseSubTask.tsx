@@ -16,10 +16,10 @@ interface SubTaskProps extends UseModelProps<SubTaskSolution> {
 
 export function ExerciseSubTask({ index, task, ...bindProps }: SubTaskProps) {
   const { bind } = useModel<SubTaskSolution>(bindProps)
-  const { activeSubTask, finishedTasks } = useExercise()
+  const { activeSubTask, numberOfFinishedTasks } = useExercise()
   const { getNextHint } = useExerciseDispatch()
 
-  const isDone = finishedTasks > index
+  const isDone = numberOfFinishedTasks > index
 
   // FIXME: scroll task and hint into view
   return (
