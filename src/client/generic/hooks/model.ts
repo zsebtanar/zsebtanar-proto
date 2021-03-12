@@ -16,6 +16,7 @@ export type UseModelProps<TValue> = BindAPI<TValue>
 export type API<TModel> = {
   data: TModel
   set: Dispatch<SetStateAction<TModel>>
+  reset: () => void
   append<TValue>(path: Path, value: TValue): void
   remove<TValue>(path: Path): void
   bind<TValue>(name: string, defaultValue?: unknown): BindAPI<TValue>
@@ -50,9 +51,12 @@ export function useModel<TModel>({
     })
   }
 
+  const reset = () => setState(initialData ?? ({} as TModel))
+
   return {
     data,
     set,
+    reset,
     append<TValue>(path: Path, value: TValue) {
       set((model) => dp.set(model, path, [...dp.get(model, path, []), value]))
     },

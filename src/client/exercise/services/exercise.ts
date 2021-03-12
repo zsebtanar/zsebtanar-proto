@@ -3,12 +3,13 @@ import {
   ExerciseModel,
   ExerciseState,
   ExerciseSummaryModel,
+  PublicExercise,
   UCUserAnswer,
 } from 'shared/exercise/types'
 import { LoadAndStoreModelAPI, useLoadAndStoreModel } from '../../generic/hooks/loadAndStoreModel'
 import { Service } from 'client/generic/services/fireStoreBase'
 import { FetchDataAPI, useFetchData } from 'client/generic/hooks/fetchData'
-import { cloudFnPost } from 'client/generic/services/firebase'
+import { cloudFnGet, cloudFnPost } from 'client/generic/services/firebase'
 import {
   FetchFirestoreListAPI,
   FetchFirestoreListOptions,
@@ -27,9 +28,14 @@ export function useStoreExercise(model: ExerciseModel): FetchDataAPI<unknown> {
   return useFetchData<unknown>(callback, [model])
 }
 
-export function useLoadExercise(id: string): FetchDataAPI<ExerciseModel> {
+export function useLoadPrivateExercise(id: string): FetchDataAPI<ExerciseModel> {
   const callback = useCallback(() => exercisePrivateDataService.get(id), [id])
   return useFetchData<ExerciseModel>(callback, [id])
+}
+
+export function useLoadExercise(id: string): FetchDataAPI<PublicExercise> {
+  const callback = useCallback(() => cloudFnGet<PublicExercise>(`/exercise/${id}`), [id])
+  return useFetchData<PublicExercise>(callback, [id])
 }
 
 interface ListQueryParams {
@@ -92,3 +98,10 @@ export const checkSubTask = (
   answers: UCUserAnswer[],
 ): Promise<boolean> =>
   cloudFnPost(`/exercise/${exerciseId}/check`, { seed, subTask, answers }, { withToken: true })
+
+export const getNextHint = (
+  exerciseId: string,
+  subTask: number,
+  hint: string,
+): Promise<{ hint: string; hasMore: boolean }> =>
+  cloudFnPost(`/exercise/${exerciseId}/hint`, { subTask, hint }, { withToken: true })

@@ -1,44 +1,54 @@
 import React, { ReactNode, useReducer, Reducer } from 'react'
-import { ExerciseModel, ExerciseSubTask, UCUserAnswer } from 'shared/exercise/types'
-import { checkSubTask } from '../services/exercise'
+import * as dp from 'dot-prop-immutable'
+import { PublicExercise, PublicExerciseSubtask, UCUserAnswer } from 'shared/exercise/types'
+import { checkSubTask, getNextHint } from '../services/exercise'
 
 type Status = 'pending' | 'checking' | 'checkFailed' | 'solved'
 
-interface SubTaskState extends ExerciseSubTask {
-  index: number
-  numberOfAttempt: number
-  usedHints: number
-  hintsLeft: number
-  isHintsLeft: boolean
-}
+type SubtaskStatus = 'done' | 'current' | 'waiting'
 
 interface State {
   status: Status
-  exercise: ExerciseModel
-  activeSubTask: SubTaskState
+  exercise: PublicExercise
+  subTasks: SubTaskState[]
+  selectedSubtask: SubTaskState
   isSingle: boolean
   numberOfTasks: number
   numberOfFinishedTasks: number
-  finishedTasks: SubTaskState[]
+  isCurrentSubtaskActive: boolean
+}
+
+interface SubTaskState extends PublicExerciseSubtask {
+  index: number
+  status: SubtaskStatus
+  answers: UCUserAnswer[]
+  numberOfAttempt: number
+  isHintsLeft: boolean
+  hints: string[]
 }
 
 type Action =
   | { type: 'checkSubTask' }
   | { type: 'checkFailed' }
-  | { type: 'initNextSubtask' }
-  | { type: 'nextHelp' }
+  | { type: 'initNextSubtask'; previousAnswers: UCUserAnswer[] }
+  | { type: 'nextHint'; hint: string; hasMoreHints: boolean }
+  | { type: 'selectSubtask'; index: number }
+  | { type: 'storeActiveSubtaskAnswer'; answer: UCUserAnswer[] }
 
 interface API {
   getNextHint(): void
   checkActiveSubTask(data: UCUserAnswer[], seed: number): Promise<void>
+  selectSubtask(index: number): void
+  storeActiveSubtaskAnswer(answer: UCUserAnswer[]): void
 }
 
-const activeSubTaskInit = {
+const subTaskInit = {
   index: 0,
+  status: 'waiting',
   numberOfAttempt: 0,
-  usedHints: 0,
-  hintsLeft: 0,
   isHintsLeft: false,
+  answers: [] as UCUserAnswer[],
+  hints: [] as string[],
 } as SubTaskState
 
 function reducer(state: State, action: Action): State {
@@ -48,31 +58,64 @@ function reducer(state: State, action: Action): State {
         ...state,
         status: 'checking',
       }
-    case 'checkFailed':
+    case 'checkFailed': {
+      const currentTaskIndex = state.selectedSubtask.index
+      const subTasks = dp.set(
+        state.subTasks,
+        [currentTaskIndex, 'numberOfAttempt'],
+        state.subTasks[currentTaskIndex].numberOfAttempt + 1,
+      )
       return {
         ...state,
         status: 'checkFailed',
-        activeSubTask: {
-          ...state.activeSubTask,
-          numberOfAttempt: state.activeSubTask.numberOfAttempt + 1,
-        },
+        subTasks,
+        selectedSubtask: subTasks[currentTaskIndex],
       }
+    }
     case 'initNextSubtask': {
-      const nextTaskIndex = state.activeSubTask.index + 1
+      const currentTaskIndex = state.numberOfFinishedTasks
+      const nextTaskIndex = currentTaskIndex + 1
       const isDone = nextTaskIndex === state.numberOfTasks
+
       return {
         ...state,
         status: isDone ? 'solved' : 'pending',
-        numberOfFinishedTasks: state.numberOfFinishedTasks + 1,
-        finishedTasks: [...state.finishedTasks, state.activeSubTask],
-        activeSubTask: isDone
-          ? state.activeSubTask
-          : initSubTaskStat(state.exercise, state.activeSubTask),
+        numberOfFinishedTasks: nextTaskIndex,
+        subTasks: dp.merge(state.subTasks, [currentTaskIndex], {
+          status: 'done',
+          answers: action.previousAnswers,
+        }),
+        selectedSubtask: isDone
+          ? state.selectedSubtask
+          : {
+              ...state.subTasks[nextTaskIndex],
+              status: 'current' as SubtaskStatus,
+            },
+        isCurrentSubtaskActive: true,
       }
     }
 
-    case 'nextHelp':
-      return state
+    case 'nextHint': {
+      const currentTaskIndex = state.selectedSubtask.index
+      const subTasks = dp.merge(state.subTasks, [currentTaskIndex], {
+        hints: state.subTasks[currentTaskIndex].hints.concat(action.hint),
+        isHintsLeft: action.hasMoreHints,
+      })
+      return {
+        ...state,
+        subTasks,
+        selectedSubtask: subTasks[currentTaskIndex],
+      }
+    }
+
+    case 'selectSubtask': {
+      const activeSubTask = state.subTasks[action.index]
+      return {
+        ...state,
+        selectedSubtask: activeSubTask,
+        isCurrentSubtaskActive: activeSubTask.index === state.numberOfFinishedTasks,
+      }
+    }
     default:
       return state
   }
@@ -82,7 +125,7 @@ function reducer(state: State, action: Action): State {
 
 interface Props {
   children: ReactNode
-  exercise: ExerciseModel
+  exercise: PublicExercise
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,28 +133,23 @@ const ExerciseContext = React.createContext<State>({} as any)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ExerciseDispatchContext = React.createContext<API>({} as any)
 
-function initState(exercise: ExerciseModel): State {
+function initState(exercise: PublicExercise): State {
+  const subTasks = exercise.subTasks.map((subtask, index) => ({
+    ...subtask,
+    ...subTaskInit,
+    index,
+    status: 'waiting' as SubtaskStatus,
+    isHintsLeft: subtask.hasHints,
+  }))
   return {
     status: 'pending',
     exercise,
-    activeSubTask: initSubTaskStat(exercise),
+    selectedSubtask: subTasks[0],
     numberOfFinishedTasks: 0,
     isSingle: exercise.subTasks.length === 1,
     numberOfTasks: exercise.subTasks.length,
-    finishedTasks: [],
-  }
-}
-
-function initSubTaskStat(exercise: ExerciseModel, currentSubTask?: SubTaskState): SubTaskState {
-  if (currentSubTask) {
-    const index = currentSubTask.index + 1
-    return {
-      ...exercise.subTasks[index],
-      ...activeSubTaskInit,
-      index,
-    }
-  } else {
-    return { ...exercise.subTasks[0], ...activeSubTaskInit }
+    subTasks,
+    isCurrentSubtaskActive: true,
   }
 }
 
@@ -124,16 +162,31 @@ export function ExerciseProvider({ children, exercise }: Props): JSX.Element {
       let result = false
       try {
         if (state.exercise.id) {
-          result = await checkSubTask(state.exercise.id, seed, 0, data)
+          result = await checkSubTask(state.exercise.id, seed, state.selectedSubtask.index, data)
         }
       } catch (e) {
         result = false
       } finally {
-        dispatch({ type: result ? 'initNextSubtask' : 'checkFailed' })
+        if (result) {
+          dispatch({ type: 'initNextSubtask', previousAnswers: data })
+        } else {
+          dispatch({ type: 'checkFailed' })
+        }
       }
     },
-    getNextHint() {
-      throw 'not implemented yet'
+    async getNextHint() {
+      const { hint, hasMore } = await getNextHint(
+        state.exercise.id,
+        state.selectedSubtask.index,
+        state.selectedSubtask.hints[state.selectedSubtask.hints.length - 1] ?? '',
+      )
+      dispatch({ type: 'nextHint', hint: hint, hasMoreHints: hasMore })
+    },
+    selectSubtask(index: number): void {
+      dispatch({ type: 'selectSubtask', index })
+    },
+    storeActiveSubtaskAnswer(answer: UCUserAnswer[]): void {
+      dispatch({ type: 'storeActiveSubtaskAnswer', answer })
     },
   }
 
