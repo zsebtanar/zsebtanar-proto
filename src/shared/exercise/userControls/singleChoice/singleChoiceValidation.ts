@@ -5,5 +5,5 @@ export function singleChoiceValidation(
   solution: UCSingleChoice['solution'],
   userAnswer: number,
 ): boolean {
-  return solution === userAnswer
+  return Number(solution) === Number(userAnswer)
 }

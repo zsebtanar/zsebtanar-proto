@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { randomInt } from 'shared/utils/math'
 import { useLoadExercise } from '../services/exercise'
 import { Exercise } from '../components/Exercise'

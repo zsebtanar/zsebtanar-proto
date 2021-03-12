@@ -1,28 +1,39 @@
 import * as express from 'express'
 import { fireStore } from '../utils/firebase'
-import { ExerciseDoc } from '../../shared/exercise/types'
+import { ExerciseDoc, PublicExercise } from '../../shared/exercise/types'
 import { HandlerError } from '../utils/HandlerError'
 
 export const route = express.Router()
 
 route.get('/:exerciseId', [], async (req, res, next) => {
   try {
-    const id = req.params.exerciseId
+    const exerciseId = req.params.exerciseId
 
-    const itemRef = fireStore.collection(`exercise/private/item`).doc(id)
+    const itemRef = fireStore.collection(`exercise/private/items`).doc(exerciseId)
     const exercise = (await itemRef.get()).data() as ExerciseDoc
 
-    const { title, classifications, difficulty, description, published, subTasks } = exercise
-
-    // Remove all private data
-    const publicExercise = {
+    const {
       title,
       classifications,
       difficulty,
       description,
       published,
-      subTasks: subTasks.map(({ controls, description }) => ({
+      subTasks,
+      script,
+    } = exercise
+
+    // Remove all private data
+    const publicExercise: PublicExercise = {
+      id: exerciseId,
+      title,
+      classifications,
+      difficulty,
+      description,
+      published,
+      script,
+      subTasks: subTasks.map(({ controls, description, hints }) => ({
         description,
+        hasHints: hints?.length > 0,
         controls: controls.map(({ name, type, props, isDynamic }) => ({
           name,
           type,

@@ -173,5 +173,10 @@ export const exerciseCheckSchema = S.object()
     ),
   )
   .required()
+  .valueOf()
 
+export const exerciseNextHintSchema = S.object()
+  .prop('subTask', S.number().minimum(0).maximum(1_000))
+  .prop('hint', S.string())
+  .required()
   .valueOf()

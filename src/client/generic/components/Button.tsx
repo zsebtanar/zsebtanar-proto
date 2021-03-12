@@ -18,6 +18,7 @@ interface ButtonProps extends Omit<React.HTMLProps<HTMLButtonElement>, 'type' | 
   inline?: boolean
   onAction?: (event: MouseEvent) => void
   small?: boolean
+  large?: boolean
 }
 
 export function Button({
@@ -33,6 +34,7 @@ export function Button({
   inline,
   children,
   small,
+  large,
 }: ButtonProps): JSX.Element {
   const onClick =
     onAction &&
@@ -47,6 +49,7 @@ export function Button({
       className={cx(className, 'btn', `btn-${btn || 'secondary'}`, {
         'btn-inline': inline,
         'btn-sm': small,
+        'btn-lg': large,
       })}
       onClick={onClick}
       tabIndex={tabIndex}

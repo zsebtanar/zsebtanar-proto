@@ -17,7 +17,6 @@ import { Navigation } from './nav/Navigation'
 import { ListPage } from './pages/ListPage'
 
 export function PublicApp(): JSX.Element {
-  console.log('public app')
   return (
     <Switch>
       <Route path="/login" exact component={LoginPage} />

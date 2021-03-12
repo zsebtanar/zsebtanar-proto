@@ -15,6 +15,27 @@ export interface ExerciseSummaryDoc {
   description: string
 }
 
+export interface PublicExerciseSubtask {
+  description: string
+  hasHints: boolean
+  controls: {
+    name: string
+    type: ExerciseSubTaskControlsType
+    props: UserControl['props']
+    isDynamic: boolean
+  }[]
+}
+export interface PublicExercise {
+  id: string
+  title: string
+  classifications: string[]
+  difficulty: number
+  description: string
+  published?: Date
+  script: string
+  subTasks: PublicExerciseSubtask[]
+}
+
 /**
  * Used in public app when user soling an exercise
  */
