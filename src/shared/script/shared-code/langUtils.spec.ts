@@ -1,5 +1,5 @@
 import { langUtils } from './langUtils'
-import { pls, pln } from './utils'
+import { pls, pln, plf } from './utils'
 
 describe('lang utils', () => {
   test('abbreviate', () => {
@@ -39,6 +39,7 @@ describe('lang utils', () => {
 
   test('num-to-text', () => {
     const fn = langUtils['num-to-text']
+    /* integers */
     expect(fn(pln(0))).toEqual(pls('nulla'))
     expect(fn(pln(2))).toEqual(pls('kettő'))
     expect(fn(pln(-5))).toEqual(pls('mínusz öt'))
@@ -58,5 +59,13 @@ describe('lang utils', () => {
     )
     expect(fn(pln(98_000_000_001))).toEqual(pls('kilencvennyolcmilliárd-egy'))
     expect(fn(pln(234_001_000_000))).toEqual(pls('kétszázharmincnégymilliárd-egymillió'))
+    /* fractions */
+    expect(fn(plf(1, 2))).toEqual(pls('egy ketted'))
+    expect(fn(plf(-3, 7))).toEqual(pls('mínusz három heted'))
+    /* simplification expected */
+    expect(fn(plf(0, 10))).toEqual(pls('nulla egyed'))
+    expect(fn(plf(-2, 4))).toEqual(pls('mínusz egy ketted'))
+    /* negative sign attached to numerator */
+    expect(fn(plf(1, -5))).toEqual(pls('mínusz egy ötöd'))
   })
 })

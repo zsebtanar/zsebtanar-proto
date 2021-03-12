@@ -1,5 +1,6 @@
 import { PLNumber, PLFractionNumber, plString, PLString } from 'pocket-lisp-stdlib'
-import { assertInteger } from './utils'
+import { numSuffix } from './suffixUtils'
+import { assertInteger, pln, pls } from './utils'
 
 const abbreviations = {
   HU: {
@@ -160,12 +161,14 @@ export function baseNum2text(value: number): string {
   return text
 }
 
-function num2text(num: PLNumber): PLString {
+function num2text(num: PLNumber | PLFractionNumber): PLString {
   let result = ''
   if (num instanceof PLNumber) {
     if (Number.isInteger(num.value)) {
       result = baseNum2text(num.value)
     }
+  } else if (num instanceof PLFractionNumber) {
+    result = `${baseNum2text(num.numerator)} ${numSuffix(pln(num.denominator), pls('ad'))}`
   }
   return plString(result)
 }
