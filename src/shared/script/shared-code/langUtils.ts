@@ -164,6 +164,15 @@ export function baseNum2text(value: number): string {
 function num2text(num: PLNumber | PLFractionNumber): PLString {
   let result = ''
   if (num instanceof PLNumber) {
+    const decimalValue = Math.pow(10, num.decimals)
+    const integerPart = Math.floor(Math.abs(num.intValue) / decimalValue) * Math.sign(num.intValue)
+    const fractionPart = Math.abs(num.intValue) - Math.abs(integerPart) * decimalValue
+    if (fractionPart === 0) {
+      result = baseNum2text(num.value)
+    } else {
+      const fractionSuffix = numSuffix(pln(decimalValue), pls('ad'))
+      result = `${baseNum2text(integerPart)} egész ${baseNum2text(fractionPart)} ${fractionSuffix}`
+    }
     if (Number.isInteger(num.value)) {
       result = baseNum2text(num.value)
     }

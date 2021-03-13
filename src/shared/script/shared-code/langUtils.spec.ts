@@ -39,7 +39,8 @@ describe('lang utils', () => {
 
   test('num-to-text', () => {
     const fn = langUtils['num-to-text']
-    /* integers */
+
+    // INTEGERS
     expect(fn(pln(0))).toEqual(pls('nulla'))
     expect(fn(pln(2))).toEqual(pls('kettő'))
     expect(fn(pln(-5))).toEqual(pls('mínusz öt'))
@@ -59,13 +60,18 @@ describe('lang utils', () => {
     )
     expect(fn(pln(98_000_000_001))).toEqual(pls('kilencvennyolcmilliárd-egy'))
     expect(fn(pln(234_001_000_000))).toEqual(pls('kétszázharmincnégymilliárd-egymillió'))
-    /* fractions */
+
+    // FRACTIONS
     expect(fn(plf(1, 2))).toEqual(pls('egy ketted'))
     expect(fn(plf(-3, 7))).toEqual(pls('mínusz három heted'))
-    /* simplification expected */
+    // simplification expected
     expect(fn(plf(0, 10))).toEqual(pls('nulla egyed'))
     expect(fn(plf(-2, 4))).toEqual(pls('mínusz egy ketted'))
-    /* negative sign attached to numerator */
+    // negative sign attached to numerator
     expect(fn(plf(1, -5))).toEqual(pls('mínusz egy ötöd'))
+
+    // DECIMALS
+    expect(fn(pln(2, 1))).toEqual(pls('nulla egész kettő tized'))
+    expect(fn(pln(-1203, 2))).toEqual(pls('mínusz tizenkettő egész három század'))
   })
 })
