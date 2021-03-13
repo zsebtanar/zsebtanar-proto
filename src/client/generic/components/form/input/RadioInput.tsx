@@ -22,7 +22,9 @@ export function RadioInput<TValue>({
 }: Props<TValue>): JSX.Element {
   const id = useRef<string>(`radio-${uid()}`)
   return (
-    <div className={cx('custom-control', 'custom-radio', className)}>
+    <div
+      className={cx('custom-control', 'custom-radio', className, { checked: value === inputValue })}
+    >
       <input
         {...props}
         id={id.current}

@@ -47,7 +47,25 @@
   }
 
   .user-control {
-    margin-bottom: 1rem;
+    margin: 2rem 0;
+
+    p:last-of-type {
+      margin: 0;
+    }
+
+    .custom-radio .custom-control-label {
+      &::after,
+      &::before {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    input[type='radio'],
+    input[type='checkbox'] {
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 
   .subtask-progressbar {

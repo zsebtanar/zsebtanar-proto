@@ -76,22 +76,19 @@ function reducer(state: State, action: Action): State {
       const currentTaskIndex = state.numberOfFinishedTasks
       const nextTaskIndex = currentTaskIndex + 1
       const isDone = nextTaskIndex === state.numberOfTasks
+      let subTasks = dp.merge(state.subTasks, [currentTaskIndex], {
+        status: 'done',
+        answers: action.previousAnswers,
+      })
 
+      subTasks = dp.merge(subTasks, [nextTaskIndex], { status: 'current' })
       return {
         ...state,
         status: isDone ? 'solved' : 'pending',
         numberOfFinishedTasks: nextTaskIndex,
-        subTasks: dp.merge(state.subTasks, [currentTaskIndex], {
-          status: 'done',
-          answers: action.previousAnswers,
-        }),
-        selectedSubtask: isDone
-          ? state.selectedSubtask
-          : {
-              ...state.subTasks[nextTaskIndex],
-              status: 'current' as SubtaskStatus,
-            },
-        isCurrentSubtaskActive: true,
+        subTasks,
+        selectedSubtask: subTasks[currentTaskIndex],
+        isCurrentSubtaskActive: false,
       }
     }
 

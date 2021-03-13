@@ -23,7 +23,11 @@ const binaryChoiceSchema = S.object()
       ),
   )
   .prop('solution', binaryChoiceSolutionSchema)
-  .required(['type', 'solution'])
+  .ifThen(
+    S.object().prop('isDynamic', S.const(false)),
+    S.object().prop('solution', binaryChoiceSolutionSchema.required()),
+  )
+  .required(['type'])
 
 const fractionNumber = S.object().prop('numerator', S.number()).prop('denominator', S.number())
 
@@ -34,7 +38,11 @@ const fractionNumberSchema = S.object()
   .prop('isDynamic', S.boolean())
   .prop('props', S.object().prop('prefix', S.string()).prop('postfix', S.string()))
   .prop('solution', fractionNumber)
-  .required(['type', 'solution'])
+  .ifThen(
+    S.object().prop('isDynamic', S.const(false)),
+    S.object().prop('solution', fractionNumber.required()),
+  )
+  .required(['type'])
 
   .prop('numerator', S.number())
   .prop('denominator', S.number())
@@ -51,7 +59,11 @@ const multiChoiceSchema = S.object()
       .prop('options', S.array().items(S.object().prop('label', S.string()))),
   )
   .prop('solution', multiChoiceSolutionSchema)
-  .required(['type', 'solution'])
+  .ifThen(
+    S.object().prop('isDynamic', S.const(false)),
+    S.object().prop('solution', multiChoiceSolutionSchema.required()),
+  )
+  .required(['type'])
 
 const numberListSolutionSchema = S.array().items(S.number())
 const numberListSchema = S.object()
@@ -73,7 +85,11 @@ const numberListSchema = S.object()
       ),
   )
   .prop('solution', numberListSolutionSchema)
-  .required(['type', 'solution'])
+  .ifThen(
+    S.object().prop('isDynamic', S.const(false)),
+    S.object().prop('solution', numberListSolutionSchema.required()),
+  )
+  .required(['type'])
 
 const simpleTextSolutionSchema = S.array().items(S.string())
 const simpleTextSchema = S.object()
@@ -90,7 +106,11 @@ const simpleTextSchema = S.object()
       .prop('caseSensitive', S.boolean()),
   )
   .prop('solution', simpleTextSolutionSchema)
-  .required(['type', 'solution'])
+  .ifThen(
+    S.object().prop('isDynamic', S.const(false)),
+    S.object().prop('solution', simpleTextSolutionSchema.required()),
+  )
+  .required(['type'])
 
 const singleChoiceSolutionSchema = S.number()
 const singleChoiceSchema = S.object()
@@ -100,7 +120,11 @@ const singleChoiceSchema = S.object()
   .prop('isDynamic', S.boolean())
   .prop('props', S.object().prop('options', S.array().items(S.object().prop('label', S.string()))))
   .prop('solution', singleChoiceSolutionSchema)
-  .required(['type', 'solution'])
+  .ifThen(
+    S.object().prop('isDynamic', S.const(false)),
+    S.object().prop('solution', singleChoiceSolutionSchema.required()),
+  )
+  .required(['type'])
 
 const singleNumberSolutionSchema = S.number()
 const singleNumberSchema = S.object()
@@ -116,7 +140,11 @@ const singleNumberSchema = S.object()
       .prop('fractionDigits', S.number()),
   )
   .prop('solution', singleNumberSolutionSchema)
-  .required(['type', 'solution'])
+  .ifThen(
+    S.object().prop('isDynamic', S.const(false)),
+    S.object().prop('solution', singleNumberSolutionSchema.required()),
+  )
+  .required(['type'])
 
 ///
 

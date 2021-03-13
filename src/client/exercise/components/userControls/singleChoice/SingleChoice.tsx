@@ -4,6 +4,8 @@ import { UseModelProps } from 'client/generic/hooks/model'
 import { RadioInput } from 'client/generic/components/form/input/RadioInput'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 
+import './SingleChoice.scss'
+
 interface Props extends UseModelProps<number> {
   ctrl: UCSingleChoice
   readonly?: boolean
