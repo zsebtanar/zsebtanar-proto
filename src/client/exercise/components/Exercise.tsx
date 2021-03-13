@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import cx from 'classnames'
+import { CheckCircle as CheckIcon, Frown as FrownIcon } from 'react-feather'
 import { PublicExercise, UCUserAnswer } from 'shared/exercise/types'
 import { ExerciseProvider, useExercise, useExerciseDispatch } from '../providers/exerciseContext'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
@@ -9,6 +10,7 @@ import { Button } from 'client/generic/components/Button'
 import { ExerciseMarkdown } from './ExerciseMarkdown'
 import { UserControls } from './userControls/UserControl'
 import { range } from '../../../shared/utils/fn'
+import { Icon } from '../../generic/components/icons/Icon'
 
 import './Exercise.scss'
 
@@ -39,6 +41,13 @@ function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
   const { bind: bindAnswer, data: answers, reset: resetAnswer } = useModel<UCUserAnswer[]>({
     value: [],
   })
+  const continueBtnRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (continueBtnRef) {
+      continueBtnRef?.current?.focus()
+    }
+  }, [state.selectedSubtask.status])
 
   const onSubmit = async (event) => {
     if (state.isCurrentSubtaskActive) {
@@ -111,23 +120,49 @@ function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
             return <UserControls disabled={isDone} key={idx} ctrl={ctrl} {...params} />
           })}
 
-          {state.isCurrentSubtaskActive && (
-            <div className="text-center">
-              <Button submit btn={'secondary'} large loading={state.status === 'checking'}>
-                Ellenőrzés
-              </Button>
-              {state.status === 'checkFailed' && (
-                <p className="text-warning">Ellenőrizd a válaszod és próbáld újra.</p>
-              )}
-              {state.selectedSubtask.isHintsLeft && state.selectedSubtask.numberOfAttempt > 0 && (
-                <div>
-                  <Button btn={'link'} onAction={getHint}>
+          <div className="text-center">
+            {state.isCurrentSubtaskActive && (
+              <>
+                {state.status === 'checkFailed' && (
+                  <p className="text-warning">
+                    <Icon icon={FrownIcon} /> Próbáld újra.
+                  </p>
+                )}
+                <Button
+                  submit
+                  btn={'primary'}
+                  loading={state.status === 'checking'}
+                  className="w-100 mb-1"
+                >
+                  Ellenőrzés
+                </Button>
+                {state.selectedSubtask.isHintsLeft && state.selectedSubtask.numberOfAttempt > 0 && (
+                  <Button btn={'outline-secondary'} className="w-100" onAction={getHint}>
                     Kérek segítésget
                   </Button>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </>
+            )}
+            {!state.isCurrentSubtaskActive && (
+              <>
+                <p>
+                  <Icon icon={CheckIcon} /> Helyse megoldás!
+                </p>
+                {state.status !== 'solved' && (
+                  <Button
+                    submit
+                    btn={'outline-primary'}
+                    loading={state.status === 'checking'}
+                    className="w-100"
+                    ref={continueBtnRef}
+                    onAction={() => selectSubtask(state.selectedSubtask.index + 1)}
+                  >
+                    Következő
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </form>
     </div>

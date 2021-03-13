@@ -21,21 +21,24 @@ interface ButtonProps extends Omit<React.HTMLProps<HTMLButtonElement>, 'type' | 
   large?: boolean
 }
 
-export function Button({
-  btn,
-  onAction,
-  tabIndex,
-  icon,
-  submit,
-  className,
-  title,
-  disabled,
-  loading,
-  inline,
-  children,
-  small,
-  large,
-}: ButtonProps): JSX.Element {
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    btn,
+    onAction,
+    tabIndex,
+    icon,
+    submit,
+    className,
+    title,
+    disabled,
+    loading,
+    inline,
+    children,
+    small,
+    large,
+  }: ButtonProps,
+  ref,
+): JSX.Element {
   const onClick =
     onAction &&
     ((event) => {
@@ -45,6 +48,7 @@ export function Button({
 
   return (
     <button
+      ref={ref}
       type={submit ? 'submit' : 'button'}
       className={cx(className, 'btn', `btn-${btn || 'secondary'}`, {
         'btn-inline': inline,
@@ -62,4 +66,4 @@ export function Button({
       {loading && <Icon icon={SettingsIcon} />}
     </button>
   )
-}
+})

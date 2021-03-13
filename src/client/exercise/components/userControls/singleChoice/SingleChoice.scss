@@ -1,0 +1,19 @@
+@import 'src/client/app-public/bootstrap-public';
+
+.user-control.uc-single-choice {
+  .custom-radio {
+    margin-bottom: 1rem;
+
+    &.checked:before {
+      content: '';
+      width: 105%;
+      height: 105%;
+      border-radius: 0.5rem;
+      background: rgba($primary, 0.1);
+      display: block;
+      position: absolute;
+      top: -2.5%;
+      left: -2.5%;
+    }
+  }
+}

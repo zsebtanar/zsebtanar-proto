@@ -1,4 +1,10 @@
-@import '../../../node_modules/bootstrap/scss/root';
+@import '../../../node_modules/bootstrap/scss/functions'; // Required
+@import '../../../node_modules/bootstrap/scss/variables'; // Required
+@import '../../../node_modules/bootstrap/scss/mixins'; // Required
+
+$custom-control-indicator-size: 1.5rem;
+
+// @import '../../../node_modules/bootstrap/scss/root';
 @import '../../../node_modules/bootstrap/scss/reboot';
 @import '../../../node_modules/bootstrap/scss/type';
 @import '../../../node_modules/bootstrap/scss/images';
