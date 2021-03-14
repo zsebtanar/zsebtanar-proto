@@ -146,7 +146,7 @@ function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
             {!state.isCurrentSubtaskActive && (
               <>
                 <p>
-                  <Icon icon={CheckIcon} /> Helyse megoldás!
+                  <Icon icon={CheckIcon} /> Helyes megoldás!
                 </p>
                 {state.status !== 'solved' && (
                   <Button
