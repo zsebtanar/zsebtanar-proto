@@ -69,7 +69,7 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
       <FormGroup label="Megoldás">
         {(id) => (
           <>
-            ({data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
+            {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
             {data.isDynamic && hasName && !hasSolution && (
               <div>
                 {data.name === undefined ? (
@@ -107,7 +107,6 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
                 className="form-control form-control-sm"
               />
             )}
-            )
           </>
         )}
       </FormGroup>
