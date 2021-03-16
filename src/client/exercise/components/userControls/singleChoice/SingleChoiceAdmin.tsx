@@ -51,7 +51,7 @@ export function SingleChoiceAdmin(bindProps: UseModelProps<UCSingleChoice>): JSX
       {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
       {data.isDynamic && hasName && !hasSolution && (
         <div>
-          Definiáld a megoldásfüggvényt! A helyes megoldás sorszámál a sorszámozást 0-val kezdd!
+          Definiáld a megoldásfüggvényt! A helyes megoldás megadásánál a sorszámozást 0-val kezdd!
           Minta:
           <CodeExample>
             {`
