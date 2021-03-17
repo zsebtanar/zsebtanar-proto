@@ -170,6 +170,12 @@
     "webpack": "^5.20.1",
     "webpack-bundle-analyzer": "^3.9.0",
     "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "workbox-core": "^6.1.2",
+    "workbox-expiration": "^6.1.2",
+    "workbox-precaching": "^6.1.2",
+    "workbox-routing": "^6.1.2",
+    "workbox-strategies": "^6.1.2",
+    "workbox-webpack-plugin": "^6.1.1"
   }
 }

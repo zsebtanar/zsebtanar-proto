@@ -30,7 +30,9 @@ interface Props extends UseModelProps<ExerciseSubTask> {
 export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): JSX.Element {
   const { evalPL, script } = usePocketLisp()
   const { openModal } = useOverlayDispatch()
-  const { bind, append, remove, set } = useModel<ExerciseSubTask>(bindProps)
+  const { bind, append, remove, set, data: subTaskData } = useModel<ExerciseSubTask>({
+    ...bindProps,
+  })
 
   const createUserControl = (type) =>
     openModal(<UserControlEditModal scriptSource={script} value={{ type } as never} />, true).then(
@@ -78,7 +80,7 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
       </div>
       <hr />
       <ul className="list-unstyled user-control-list">
-        {bindProps.value.controls?.map((control, idx) => (
+        {subTaskData.controls?.map((control, idx) => (
           <li key={idx}>
             <UserControls
               ctrl={control}
@@ -104,8 +106,8 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
           </li>
         ))}
       </ul>
-      {!!bindProps.value.hints.length && <hr />}
-      {!!bindProps.value.hints.length && (
+      {!!subTaskData.hints.length && <hr />}
+      {!!subTaskData.hints.length && (
         <SortableList<string> {...bind(`hints`)}>
           {({ key, index }) => (
             <ExerciseFormSubTasksHint

@@ -8,6 +8,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const rhTransformer = require('react-hot-ts/lib/transformer')
+const { InjectManifest } = require('workbox-webpack-plugin')
 
 const env = process.env.NODE_ENV || 'development'
 const isDev = env === 'development'
@@ -167,7 +168,19 @@ module.exports = {
       __CONFIG__: JSON.stringify(envConfig),
       __SERVER_ENV__: JSON.stringify(serverEnv),
     }),
+    new webpack.EnvironmentPlugin({
+      PUBLIC_URL: envConfig.siteUrl,
+    }),
     isDev && new webpack.HotModuleReplacementPlugin(),
-    !isDev && new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true }),
+    ...(!isDev
+      ? [
+          new BundleAnalyzerPlugin({ analyzerMode: 'static', generateStatsFile: true }),
+          new InjectManifest({
+            swSrc: path.resolve('./build/service-worker.js'),
+            swDest: 'service-worker.js',
+            mode: 'production',
+          }),
+        ]
+      : []),
   ].filter(Boolean),
 }

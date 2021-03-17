@@ -9,6 +9,7 @@ import { UserProvider } from 'client/user/providers/UserProvider'
 import { OverlayProvider } from 'client/overlay/providers/OverlayProvider'
 import { ClassificationProvider } from 'client/classification/provider/ClassificationProvider'
 import { PublicApp } from './PublicApp'
+import * as serviceWorkerRegistration from '../tools/serviceWorkerRegistration'
 
 import './public.scss'
 
@@ -28,3 +29,5 @@ initApp(() =>
     document.getElementById('root'),
   ),
 )
+
+serviceWorkerRegistration.register()

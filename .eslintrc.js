@@ -3,7 +3,9 @@ const path = require('path')
 module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
+    sourceType: 'module',
   },
+
   extends: ['eslint:recommended', 'plugin:jsx-a11y/recommended', 'prettier'],
   env: {
     node: true,
