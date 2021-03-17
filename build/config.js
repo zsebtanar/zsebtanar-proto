@@ -41,7 +41,7 @@ const commonConfig = {
 }
 
 const baseTestConfig = {
-  siteUrl: 'https://zsebtanar-test.firebaseapp.com',
+  siteUrl: 'https://zsebtanar-test.web.app',
   api: '/api',
   firebase: {
     apiKey: 'AIzaSyD3SmCO7FvzawbprcqeC42YZBDmf6TZr4A',
@@ -68,19 +68,18 @@ const baseTestConfig = {
 const envConfig = {
   emulator: {
     ...baseTestConfig,
-    siteUrl: 'http://localhost:3000/',
+    siteUrl: 'http://localhost:3000',
     api: 'http://localhost:5001/zsebtanar-test/us-central1/api/api',
     sentry: {},
   },
   development: {
     ...baseTestConfig,
-    siteUrl: 'http://localhost:3000/',
+    siteUrl: 'http://localhost:3000',
     api: 'https://zsebtanar-test.firebaseapp.com/api',
     sentry: {},
   },
   test: {
     ...baseTestConfig,
-    siteUrl: '',
     api: '/api',
     sentry: {
       dsn: 'https://51329885b5704f2d8b19d4c29cad3e9a@sentry.io/275144',
@@ -88,7 +87,7 @@ const envConfig = {
     },
   },
   production: {
-    siteUrl: 'https://zsebtanar.hu/',
+    siteUrl: 'https://zsebtanar.hu',
     api: '/api',
     firebase: {
       apiKey: 'AIzaSyAqJ6qUZfiB586kHXHZdagx-i0vzHMrqMU',

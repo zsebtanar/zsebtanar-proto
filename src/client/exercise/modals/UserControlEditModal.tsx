@@ -28,7 +28,7 @@ export function UserControlEditModal({ value, scriptSource }: Props): JSX.Elemen
       <form onSubmit={() => store(data)}>
         <DialogBody>
           <PocketLispProvider isEdit={true} seed={1} script={scriptSource}>
-            <UserControlsAdmin {...bindPartialModel()} />
+            <UserControlsAdmin {...bindPartialModel([])} />
           </PocketLispProvider>
         </DialogBody>
         <DialogFooter>

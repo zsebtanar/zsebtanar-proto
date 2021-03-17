@@ -7,7 +7,7 @@ import { useUser } from 'client/user/providers/UserProvider'
 import { FeedbackGrid } from 'client/feedback/pages/FeedbackGrid'
 import { ClassificationsAdminPage } from 'client/classification/pages/ClassificationsAdmin'
 import { ExerciseGrid } from 'client/exercise/pages/ExerciseGrid'
-import { ExerciseForm } from 'client/exercise/pages/ExerciseForm'
+import { ExerciseAdminForm } from 'client/exercise/pages/ExerciseAdminForm'
 import { WikiPageGrid } from 'client/wiki/page/WikiPageGrid'
 import { WikiPageForm } from 'client/wiki/page/WikiPageForm'
 import { Navigation } from './nav/Navigation'
@@ -33,8 +33,8 @@ export const AdminApp = React.memo(function AdminAppBase() {
 
           {/*/!* Exercises *!/*/}
           <Route path="/exercise" exact component={ExerciseGrid} />
-          <Route path="/exercise/add/" component={ExerciseForm} />
-          <Route path="/exercise/edit/:id" component={ExerciseForm} />
+          <Route path="/exercise/add/" component={ExerciseAdminForm} />
+          <Route path="/exercise/edit/:id" component={ExerciseAdminForm} />
           {/*<Route path="/exercise/view/:id" component={ExercisePreview} />*/}
 
           {/*/!* Exercises sheet *!/*/}

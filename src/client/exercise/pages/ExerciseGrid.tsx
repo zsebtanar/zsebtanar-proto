@@ -4,7 +4,7 @@ import { ExerciseModel } from 'shared/exercise/types'
 import { Plus as PlusIcon, Edit as EditIcon, Copy as CopyIcon, Eye as EyeIcon } from 'react-feather'
 import { Grid } from 'client/generic/components/grid/Grid'
 import { FireStoreGridDS } from 'client/generic/services/fireStoreGridDS'
-import { ExerciseStateBadge } from '../components/form/ExerciseStateBadge'
+import { ExerciseStateBadge } from '../components/admin/ExerciseStateBadge'
 import { ExternalLink } from '../../generic/components/ExternalLink'
 import { Icon } from 'client/generic/components/icons/Icon'
 

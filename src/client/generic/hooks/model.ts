@@ -31,7 +31,7 @@ interface Options<TModel> {
 
 ///
 
-const ROOT = '__partial_model_merge__'
+const PARTIAL_MODEL_NAME = '__partial_model_merge__'
 const noop = () => undefined
 
 export function useModel<TModel>({
@@ -46,7 +46,8 @@ export function useModel<TModel>({
     setState((model) => {
       // eslint-disable-next-line @typescript-eslint/ban-types
       const newModel = typeof newState === 'function' ? (newState as Function)(model) : newState
-      onChangeCallback({ name: modelName ?? '<root>', value: newModel })
+      // update parent after local state saved
+      new Promise(() => onChangeCallback({ name: modelName ?? '<root>', value: newModel }))
       return newModel
     })
   }
@@ -70,10 +71,23 @@ export function useModel<TModel>({
         value: dp.get(data, name),
       }
     },
-    bindPartialModel<TValue>(defaultValue?: unknown): BindAPI<TValue> {
+    bindPartialModel<TValue>(
+      fields: string[],
+      defaultValue?: Record<string, unknown>,
+    ): BindAPI<TValue> {
       return {
-        name: ROOT,
-        onChange: ({ value }) => set((model) => Object.assign({}, model, value ?? defaultValue)),
+        name: PARTIAL_MODEL_NAME,
+        onChange: ({ value }) =>
+          set((model) => {
+            if (fields.length) {
+              return fields.reduce(
+                (model, name) => dp.set(model, name, value?.[name] ?? defaultValue?.[name]),
+                model,
+              )
+            } else {
+              return Object.assign({}, model, value ?? defaultValue)
+            }
+          }),
         value: data as never,
       }
     },

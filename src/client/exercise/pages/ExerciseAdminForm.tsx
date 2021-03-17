@@ -3,8 +3,8 @@ import { PlayCircle as PlayCircleIcon } from 'react-feather'
 import { useHistory, useParams } from 'react-router'
 import { PocketLispProvider } from 'client/script/providers/PocketLispProvider'
 import { changeState, useExerciseModel } from '../services/exercise'
-import { ExerciseFormDetails } from '../components/form/ExerciseFormDetails'
-import { ExerciseFormSubTask } from '../components/form/ExerciseFormSubTasks'
+import { ExerciseFormDetails } from '../components/admin/ExerciseFormDetails'
+import { ExerciseFormSubTask } from '../components/admin/ExerciseFormSubTasks'
 import {
   AssetManagerProvider,
   useManageAssetsDispatch,
@@ -16,13 +16,13 @@ import { Loading } from 'client/generic/components/Loading'
 import { Alert } from 'client/generic/components/Alert'
 import { Button } from 'client/generic/components/Button'
 import { ClassificationProvider } from 'client/classification/provider/ClassificationProvider'
-import { ExerciseStateBadge } from '../components/form/ExerciseStateBadge'
+import { ExerciseStateBadge } from '../components/admin/ExerciseStateBadge'
 import { ExerciseOperations } from './ExerciseOperations'
 import { Icon } from '../../generic/components/icons/Icon'
 
-import './ExerciseForm.scss'
+import './ExerciseAdminForm.scss'
 
-export function ExerciseForm(): JSX.Element {
+export function ExerciseAdminForm(): JSX.Element {
   const history = useHistory()
   const { id } = useParams<{ id: string }>()
   const query = useQuery()
@@ -110,7 +110,9 @@ export function ExerciseForm(): JSX.Element {
                   </ul>
                 </Alert>
               )}
-              <ExerciseFormDetails {...bindPartialModel()} />
+              <ExerciseFormDetails
+                {...bindPartialModel(['title', 'classifications', 'lang', 'description', 'script'])}
+              />
               <hr />
               <h5>
                 Részfeldatok{' '}
