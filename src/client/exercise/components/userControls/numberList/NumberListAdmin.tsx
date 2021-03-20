@@ -65,6 +65,7 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
               step={1}
               min={0}
               max={10}
+              defaultValue={0}
               required
               aria-describedby="max-fraction-digits-desc"
               className="form-control form-control-sm"

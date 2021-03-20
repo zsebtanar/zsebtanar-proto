@@ -17,7 +17,7 @@ export function ExercisePage(): JSX.Element {
 
   const onClose = () => {
     if (window.history.length > 1) {
-      history.back()
+      window.history.back()
     } else {
       history.push('/')
     }

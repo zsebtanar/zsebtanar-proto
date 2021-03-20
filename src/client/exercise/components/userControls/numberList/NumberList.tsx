@@ -22,7 +22,7 @@ export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props): J
         <div className="prefix">
           {ctrl.props?.prefix && <MarkdownWithScript source={ctrl.props?.prefix} />}
         </div>
-        {ctrl.props?.fields.map((field, idx) => (
+        {ctrl.props?.fields?.map((field, idx) => (
           <div className="uc-number-list-item" key={idx}>
             <div className="prefix">
               {field.prefix && <MarkdownWithScript source={field.prefix} />}
