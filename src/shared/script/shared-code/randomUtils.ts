@@ -7,7 +7,7 @@ function random(prng: PseudoRandomNumberGenerator) {
    * Returns a floating-point, pseudo-random number in the range 0 to less than 1
    * (inclusive of 0, but not 1)
    */
-  return (): PLNumber => literals.Int.factory(prng.randomFloat())
+  return (): PLNumber => literals.Int.nativeConstructor(prng.randomFloat())
 }
 
 function randomInt(prng: PseudoRandomNumberGenerator) {

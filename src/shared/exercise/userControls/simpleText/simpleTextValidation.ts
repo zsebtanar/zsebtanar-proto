@@ -5,7 +5,6 @@ export function simpleTextValidation(
   solution: UCSimpleText['solution'],
   userAnswer: string,
 ): boolean {
-  console.log('SIMPLE TEXT', solution, userAnswer)
   userAnswer = userAnswer ?? ''
   if (!props?.caseSensitive) {
     userAnswer = userAnswer.toLowerCase()
