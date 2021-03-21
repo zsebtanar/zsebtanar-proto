@@ -7,7 +7,6 @@ import { PseudoRandomNumberGenerator } from 'shared/math/random'
 export type EvalScript = (s: string) => ReturnType<Interpreter['interpret']>
 
 export function initInterpreter(source: string, seed = 1): EvalScript {
-  console.log('SEED', seed)
   const prng = new PseudoRandomNumberGenerator(seed)
   const globals = { ...runtime, ...valueSet(prng) }
   const stdout = (msg) => console.error({ msg: msg.toJS ? msg.toJS() : msg.toString(), source })

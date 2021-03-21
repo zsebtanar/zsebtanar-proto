@@ -45,7 +45,8 @@
     "deploy": "npm run build && firebase --project=test deploy",
     "deploy:server": "npm run build:server && ./node_modules/.bin/firebase --project=test deploy --only functions",
     "build:profile": "cross-env NODE_ENV=production webpack -p --profile --json --config ./build/webpack.client.js",
-    "update-packages": "npx npm-check-updates -u"
+    "update-packages": "npx npm-check-updates -u",
+    "ci": "npm run lint && npm run check-types && npm run build && npm run test"
   },
   "config": {
     "firebaseFunctionDepencies": [
