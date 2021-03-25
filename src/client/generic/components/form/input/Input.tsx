@@ -6,10 +6,15 @@ export interface InputProps
     Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'name'> {}
 
 export function Input({ name, value, onChange, ...props }: InputProps): JSX.Element {
+  if (props.disabled) {
+    props['value'] = value
+  } else {
+    props.defaultValue = value
+  }
+
   return (
     <input
       name={name}
-      defaultValue={value}
       onChange={({ target }) => onChange({ name, value: target.value })}
       {...props}
     />

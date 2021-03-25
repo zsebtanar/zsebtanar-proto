@@ -7,25 +7,11 @@ import { Checkbox } from 'client/generic/components/form/input/Checkbox'
 import { FormGroup } from 'client/generic/components/form/FormGroup'
 import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { NumberInput } from 'client/generic/components/form/input/NumberInput'
-import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { noop } from 'shared/utils/fn'
-import { SingleNumber } from 'client/exercise/components/userControls/singleNumber/SingleNumber'
-import { PLNumber } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
+import { UserControlsPreview } from '../UserControlPreview'
 
 export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX.Element {
   const { bind, data } = useModel<UCSingleNumber>(bindProps)
-  const { evalPL } = usePocketLisp()
-  let solution = ''
-  let hasSolution = false
-  const hasName = data.name !== undefined || data.name === ''
-  if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLNumber
-    if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.toString()
-      hasSolution = true
-    }
-  }
 
   return (
     <div className="user-control uc-simple-number uc-simple-number-admin">
@@ -69,33 +55,18 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
       <FormGroup label="Megoldás">
         {(id) => (
           <>
-            {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
-            {data.isDynamic && hasName && !hasSolution && (
-              <div>
-                {data.name === undefined ? (
-                  <div>Adj nevet a megoldási mezőnek!</div>
-                ) : (
-                  <div>
-                    Definiáld a megoldás függvényt! Minta:
-                    <CodeExample>
-                      {`
+            {data.isDynamic && (
+              <UserControlsPreview ctrl={data}>
+                <div>
+                  Definiáld a megoldás függvényt! Minta:
+                  <CodeExample>
+                    {`
 (def num 0.12)
 (def solution-${data.name} (const num))
 `}
-                    </CodeExample>
-                  </div>
-                )}
-              </div>
-            )}
-            {data.isDynamic && hasName && hasSolution && (
-              <SingleNumber
-                disabled={true}
-                readonly={true}
-                ctrl={data}
-                onChange={noop}
-                name={data.name}
-                value={solution}
-              />
+                  </CodeExample>
+                </div>
+              </UserControlsPreview>
             )}
             {!data.isDynamic && (
               <NumberInput

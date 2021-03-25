@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react'
 import { UserControl } from 'shared/exercise/types'
 import { UseModelProps } from 'client/generic/hooks/model'

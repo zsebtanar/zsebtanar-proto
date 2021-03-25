@@ -3,8 +3,7 @@ import { Interpreter, Parser, Scanner } from 'pocket-lisp'
 import { valueSet } from 'shared/script/shared-code'
 import { interpretMarkdown } from 'shared/script/pocketLispMarkdown'
 import { PseudoRandomNumberGenerator } from 'shared/math/random'
-
-export type EvalScript = (s: string) => ReturnType<Interpreter['interpret']>
+import { EvalScript } from '../../shared/script/types'
 
 export function initInterpreter(source: string, seed = 1): EvalScript {
   const prng = new PseudoRandomNumberGenerator(seed)

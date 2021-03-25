@@ -22,20 +22,24 @@ export function SingleNumber({ readonly, disabled, ctrl, ...bindProps }: Props):
       {readonly ? (
         <strong>{bindProps.value}</strong>
       ) : (
-        <Input
-          {...bindProps}
-          type="number"
-          disabled={disabled}
-          className="form-control col-4 mx-1"
-          step={1 / Math.pow(10, ctrl?.props?.fractionDigits ?? 0)}
-        />
+        <div className="num-field-input">
+          <Input
+            {...bindProps}
+            value={bindProps.value}
+            type="number"
+            disabled={disabled}
+            className="form-control col-4 mx-1"
+            step={1 / Math.pow(10, ctrl?.props?.fractionDigits ?? 0)}
+          />
+
+          {(ctrl?.props?.fractionDigits ?? 0) > 0 && (
+            <DecimalAccuracyWarning fractionDigits={ctrl?.props?.fractionDigits ?? 0} />
+          )}
+        </div>
       )}
       <div className="postfix">
         {ctrl?.props?.postfix && <MarkdownWithScript source={ctrl?.props?.postfix} />}
       </div>
-      {(ctrl?.props?.fractionDigits ?? 0) > 0 && (
-        <DecimalAccuracyWarning fractionDigits={ctrl?.props?.fractionDigits ?? 0} />
-      )}
     </div>
   )
 }

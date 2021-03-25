@@ -3,6 +3,7 @@ import { Interpreter, Parser, Scanner, SnippetPosition } from 'pocket-lisp'
 import { runtime, utils, literals } from 'pocket-lisp-stdlib'
 import { valueSet } from 'shared/script/shared-code'
 import { PseudoRandomNumberGenerator } from 'shared/math/random'
+import { EvalScript } from 'shared/script/types'
 
 interface Props {
   seed?: number
@@ -21,7 +22,7 @@ interface API {
   script: string
   current?: Interpreter
   run(source: string)
-  evalPL(source: string): unknown
+  evalPL: EvalScript
   getGlobalNames(): string[]
   getOutput(): InterpreterOutput[]
 }
@@ -93,7 +94,11 @@ export function PocketLispProvider({ children, seed, isEdit, script }: Props): J
     }),
     [interpret, interpreter, setOutput, script],
   )
-  if (script) api.run(script)
+
+  if (script) {
+    api.run(script)
+  }
+
   return (
     <PocketLispContext.Provider value={{ ...api, script: script ?? '' }}>
       {children}

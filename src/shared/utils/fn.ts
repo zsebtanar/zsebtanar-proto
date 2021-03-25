@@ -102,3 +102,12 @@ export function uid(): string {
 export function numberSortAsc(a: number, b: number): number {
   return a - b
 }
+
+/**
+ * Parse vector of PLHashmaps and convert into JS object
+ */
+export function convertPLHashMapToObject<T extends Record<string, unknown>>(
+  hashmaps: Map<string, unknown>,
+): T {
+  return Object.fromEntries(hashmaps) as T
+}

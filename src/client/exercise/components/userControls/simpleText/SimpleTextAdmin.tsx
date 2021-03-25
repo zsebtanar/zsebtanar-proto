@@ -10,25 +10,11 @@ import { TextEditor } from 'client/generic/components/form/input/TextEditor'
 import { Button } from 'client/generic/components/Button'
 import { Input } from 'client/generic/components/form/input/Input'
 import { Icon } from 'client/generic/components/icons/Icon'
-import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { noop } from 'shared/utils/fn'
-import { SimpleText } from 'client/exercise/components/userControls/simpleText/SimpleText'
-import { PLString, PLVector } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
+import { UserControlsPreview } from '../UserControlPreview'
 
 export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Element {
   const { data, bind, remove, append } = useModel<UCSimpleText>(bindProps)
-  const { evalPL } = usePocketLisp()
-  let solution: string[] = []
-  let hasSolution = false
-  const hasName = data.name !== undefined || data.name === ''
-  if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLString>
-    if (dynamicSolution !== undefined) {
-      solution = dynamicSolution.toJS() as string[]
-      hasSolution = true
-    }
-  }
 
   return (
     <div className="user-control uc-simple-text uc-simple-text-admin">
@@ -58,33 +44,18 @@ export function SimpleTextAdmin(bindProps: UseModelProps<UCSimpleText>): JSX.Ele
       <FormGroup label="Megoldások">
         {() => (
           <>
-            {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
-            {data.isDynamic && hasName && !hasSolution && (
-              <div>
-                Definiáld a megoldásfüggvényt! Minta:
-                <CodeExample>
-                  {`
+            {data.isDynamic && (
+              <UserControlsPreview ctrl={data}>
+                <div>
+                  Definiáld a megoldásfüggvényt! Minta:
+                  <CodeExample>
+                    {`
 (def options ["matek" "matematika"])
 (def solution-${data.name} (const options))
 `}
-                </CodeExample>
-              </div>
-            )}
-            {data.isDynamic && hasName && hasSolution && (
-              <ol>
-                {solution?.map((item, idx) => (
-                  <li key={idx}>
-                    <SimpleText
-                      disabled={true}
-                      readonly={true}
-                      ctrl={data}
-                      onChange={noop}
-                      name={data.name}
-                      value={item}
-                    />
-                  </li>
-                ))}
-              </ol>
+                  </CodeExample>
+                </div>
+              </UserControlsPreview>
             )}
             {!data.isDynamic && (
               <div>

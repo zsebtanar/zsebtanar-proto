@@ -1,6 +1,6 @@
 import React from 'react'
 import { PlusCircle as PlusCircleIcon, Trash2 as TrashIcon } from 'react-feather'
-import { UCNumberList, UCNumberListField } from 'shared/exercise/types'
+import { UCNumberList } from 'shared/exercise/types'
 import { useModel, UseModelProps } from 'client/generic/hooks/model'
 import { UserControlNameInput } from '../common/UserControlNameInput'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
@@ -11,32 +11,11 @@ import { Button } from 'client/generic/components/Button'
 import { NumberInput } from 'client/generic/components/form/input/NumberInput'
 import { Icon } from 'client/generic/components/icons/Icon'
 import { Alert } from 'client/generic/components/Alert'
-import { usePocketLisp } from 'client/script/providers/PocketLispProvider'
-import { PLString, PLVector, PLHashMap, PLNumber } from 'pocket-lisp-stdlib'
 import { CodeExample } from 'client/generic/components/CodeExample'
-import { NumberList } from './NumberList'
-import { noop } from 'shared/utils/fn'
-import { convertPLHashMap } from 'client/generic/utils/fn'
+import { UserControlsPreview } from '../UserControlPreview'
 
 export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Element {
   const { bind, data, append, remove } = useModel<UCNumberList>(bindProps)
-  const { evalPL } = usePocketLisp()
-  let hasSolution = false
-  const hasName = data.name !== undefined || data.name === ''
-  const previewCtlr = { ...data }
-  if (data.isDynamic) {
-    const dynamicSolution = evalPL(`(solution-${data.name})`) as PLVector<PLNumber>
-    const dynamicFields = evalPL(`(fields-${data.name})`) as PLVector<PLHashMap<PLString>>
-    if (dynamicSolution !== undefined && dynamicFields !== undefined) {
-      hasSolution = true
-      previewCtlr.solution = dynamicSolution.toJS() as string[]
-      previewCtlr.props = {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ...(data.props as any),
-        fields: convertPLHashMap(dynamicFields) as UCNumberListField[],
-      }
-    }
-  }
 
   return (
     <div className="user-control uc-number-list uc-number-list-admin">
@@ -89,27 +68,19 @@ export function NumberListAdmin(bindProps: UseModelProps<UCNumberList>): JSX.Ele
       </div>
       <hr />
       <h6>Szám lista</h6>
-      {data.isDynamic && !hasName && <div>Adj nevet a megoldási mezőnek!</div>}
-      {data.isDynamic && hasName && !hasSolution && (
-        <div>
-          Definiáld a megoldásfüggvényt! Minta:
-          <CodeExample>
-            {`
+      {data.isDynamic && (
+        <UserControlsPreview ctrl={data}>
+          <div>
+            Definiáld a megoldásfüggvényt! Minta:
+            <CodeExample>
+              {`
 (def num-list [0.12 -0.12])
 (def solution-${data.name} (const num-list))
-(def fields-${data.name} (const [{"prefix" "x=" "postfix" "m^3"}, {}]))
+(def fields-${data.name} (const [{:prefix "x=" :postfix "m^3"}, {}]))
 `}
-          </CodeExample>
-        </div>
-      )}
-      {data.isDynamic && hasName && hasSolution && (
-        <NumberList
-          readonly={true}
-          ctrl={previewCtlr}
-          name={data.name}
-          value={['sf', 'sdf']}
-          onChange={noop}
-        />
+            </CodeExample>
+          </div>
+        </UserControlsPreview>
       )}
       {!data.isDynamic && (
         <>
