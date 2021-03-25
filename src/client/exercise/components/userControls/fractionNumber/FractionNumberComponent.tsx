@@ -36,6 +36,7 @@ export function FractionNumberComponent({
         <div className="inputs mx-1">
           <NumberInput
             {...bind('numerator')}
+            value={bindProps.value?.numerator}
             disabled={disabled}
             className="form-control"
             step={1}
@@ -45,6 +46,7 @@ export function FractionNumberComponent({
           <div className="separator" />
           <NumberInput
             {...bind('denominator')}
+            value={bindProps.value?.denominator}
             disabled={disabled}
             className="form-control"
             onKeyPress={onlyNumbers}

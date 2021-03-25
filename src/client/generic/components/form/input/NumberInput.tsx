@@ -16,11 +16,16 @@ export function NumberInput({ name, value, onChange, defaultValue, ...props }: P
       onChange({ name, value: defaultValue })
     }
   })
+  if (props.disabled) {
+    props['value'] = value
+  } else {
+    props['defaultValue'] = value
+  }
+
   return (
     <input
       name={name}
       type="number"
-      defaultValue={value}
       onChange={({ target }) => onChange({ name, value: parseFloat(target.value) })}
       {...props}
     />

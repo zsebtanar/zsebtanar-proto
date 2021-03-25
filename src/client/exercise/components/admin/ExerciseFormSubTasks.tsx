@@ -21,6 +21,7 @@ import { SortableList } from '../../../generic/components/SortableList'
 import { Icon } from 'client/generic/components/icons/Icon'
 
 import './ExerciseFormSubTasks.scss'
+import { UserControlsPreview } from '../userControls/UserControlPreview'
 
 interface Props extends UseModelProps<ExerciseSubTask> {
   index: number
@@ -82,13 +83,7 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
       <ul className="list-unstyled user-control-list">
         {subTaskData.controls?.map((control, idx) => (
           <li key={idx}>
-            <UserControls
-              ctrl={control}
-              disabled={true}
-              onChange={noop}
-              name={control.name}
-              value={control.isDynamic ? evalPL(`(solution-${control.name})`) : control.solution}
-            />
+            <UserControlsPreview ctrl={control} />
             <div className="uc-controls">
               <span className="badge badge-secondary">{userControlNames[control.type]}</span>
               <Button small btn="link" onAction={() => editUserControl(control, idx)}>
