@@ -23,6 +23,10 @@ export function ExercisePage(): JSX.Element {
     }
   }
 
+  if (error?.['status'] === 404) {
+    history.replace('/page-not-found')
+  }
+
   return (
     <PublicPage storePosition={false}>
       {isLoading && <Loading />}

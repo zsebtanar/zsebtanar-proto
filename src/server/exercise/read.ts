@@ -12,6 +12,10 @@ route.get('/:exerciseId', [], async (req, res, next) => {
     const itemRef = fireStore.collection(`exercise/private/items`).doc(exerciseId)
     const exercise = (await itemRef.get()).data() as ExerciseDoc
 
+    if (!exercise) {
+      return res.status(404).send()
+    }
+
     const {
       title,
       classifications,
