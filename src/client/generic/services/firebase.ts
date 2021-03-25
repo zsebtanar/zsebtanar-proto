@@ -45,6 +45,17 @@ async function processResponse(res: Response) {
   if (res.status >= 200 && res.status < 300) {
     return (res.status === 204 || (await res.json())) ?? true
   } else {
-    throw await res.json()
+    throw {
+      status: res.status,
+      details: await getJSONResponse(res),
+    }
+  }
+}
+
+async function getJSONResponse(res: Response) {
+  try {
+    return await res.json()
+  } catch {
+    return {}
   }
 }
