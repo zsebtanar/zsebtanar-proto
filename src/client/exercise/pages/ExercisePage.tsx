@@ -13,7 +13,7 @@ export function ExercisePage(): JSX.Element {
   const { id } = useParams<{ id: string }>()
   const query = useQuery()
   const { isLoading, isSuccess, result, error } = useLoadExercise(id)
-  const seed = parseInt(query.get('s') ?? '', 10) || randomInt()
+  const seed = parseInt(query.get('s') ?? '', 10) || randomInt() + 1
 
   const onClose = () => {
     if (window.history.length > 1) {

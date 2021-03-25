@@ -1,4 +1,4 @@
-import { literals, plNumber, PLNumber, plVector, PLVector } from 'pocket-lisp-stdlib'
+import { plNumber, PLNumber, plVector, PLVector } from 'pocket-lisp-stdlib'
 import { assertIntegerRange } from './utils'
 import { PseudoRandomNumberGenerator } from '../../math/random'
 
@@ -7,7 +7,7 @@ function random(prng: PseudoRandomNumberGenerator) {
    * Returns a floating-point, pseudo-random number in the range 0 to less than 1
    * (inclusive of 0, but not 1)
    */
-  return (): PLNumber => literals.Int.nativeConstructor(prng.randomFloat())
+  return (): PLNumber => plNumber(prng.randomFloat())
 }
 
 function randomInt(prng: PseudoRandomNumberGenerator) {
