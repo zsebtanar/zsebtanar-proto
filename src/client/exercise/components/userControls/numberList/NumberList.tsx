@@ -32,7 +32,7 @@ export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props): J
             ) : (
               <Input
                 {...bind(idx.toString())}
-                value={bindProps.value[idx]}
+                value={bindProps?.value?.[idx] ?? ''}
                 type="number"
                 className="form-control col-4 mx-1"
                 disabled={disabled}

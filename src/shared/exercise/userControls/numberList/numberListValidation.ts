@@ -7,7 +7,7 @@ export function numberListValidation(
   solution: UCNumberList['solution'],
   userAnswer: string[],
 ): boolean {
-  if (solution.length !== userAnswer.length) {
+  if ((solution?.length ?? NaN) !== (userAnswer?.length ?? NaN)) {
     return false
   }
 
