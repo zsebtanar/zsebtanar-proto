@@ -20,12 +20,22 @@ route.post(
       const exercise = (await itemRef.get()).data() as ExerciseDoc
 
       const hints = exercise?.subTasks?.[subtaskIndex]?.hints ?? []
-      const currentHintIndex = hint === '' ? 0 : hints.indexOf(hint)
+      const isFirstHint = hint === ''
 
-      if (currentHintIndex !== -1 && currentHintIndex + 1 < hints.length) {
+      let nextHintIndex = -1
+      if (isFirstHint) {
+        nextHintIndex = 0
+      } else {
+        const currentHintIndex = hints.indexOf(hint)
+        if (currentHintIndex > -1) {
+          nextHintIndex = currentHintIndex + 1
+        }
+      }
+
+      if (nextHintIndex !== -1 && nextHintIndex < hints.length) {
         res.status(200).json({
-          hint: hints[currentHintIndex + 1],
-          hasMore: currentHintIndex + 2 < hints.length,
+          hint: hints[nextHintIndex],
+          hasMore: nextHintIndex + 1 < hints.length,
         })
       } else {
         res.status(400).json({ message: 'no hint' })
