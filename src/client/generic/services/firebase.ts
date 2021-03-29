@@ -1,12 +1,16 @@
 import { auth } from 'client/generic/services/fireApp'
 
-const getTokenHeader = async (): Promise<{ Authorization: string }> => {
+const getTokenHeader = async (optional = false): Promise<{ Authorization: string }> => {
   const user = auth.currentUser
   if (user) {
     const token = await user.getIdToken()
     return { Authorization: `Bearer ${token}` }
   } else {
-    return Promise.reject('No user')
+    if (optional) {
+      return {} as any
+    } else {
+      return Promise.reject('No user')
+    }
   }
 }
 
@@ -20,7 +24,7 @@ export async function cloudFnRequest(
   body?: unknown,
   options?: Options,
 ): Promise<Response> {
-  const authHeader = options?.withToken ? await getTokenHeader() : {}
+  const authHeader = options?.withToken ? await getTokenHeader(true) : {}
 
   const config = {
     method,
