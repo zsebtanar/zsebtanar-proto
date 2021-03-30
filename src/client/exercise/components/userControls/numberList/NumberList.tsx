@@ -15,7 +15,7 @@ interface Props extends UseModelProps<string[]> {
 }
 
 export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props): JSX.Element {
-  const { bind } = useModel(bindProps)
+  const { bind } = useModel({ ...bindProps, defaultValue: [] })
   return (
     <div className={cx('user-control', 'uc-number-list', { multiline: ctrl?.props?.multiLine })}>
       <div className="uc-number-list-body">
