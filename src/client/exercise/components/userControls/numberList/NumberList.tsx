@@ -26,7 +26,8 @@ export function NumberList({ readonly, ctrl, disabled, ...bindProps }: Props): J
           <div className="uc-number-list-item" key={idx}>
             <div className="prefix">
               {field.prefix && <MarkdownWithScript source={field.prefix} />}
-            </div>
+            </div>{' '}
+            value
             {readonly ? (
               <span className="value mx-1">{ctrl.solution[idx]}</span>
             ) : (
