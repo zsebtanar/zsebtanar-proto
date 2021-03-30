@@ -83,7 +83,6 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
       <ul className="list-unstyled user-control-list">
         {subTaskData.controls?.map((control, idx) => (
           <li key={idx}>
-            <UserControlsPreview ctrl={control} />
             <div className="uc-controls">
               <span className="badge badge-secondary">{userControlNames[control.type]}</span>
               <Button small btn="link" onAction={() => editUserControl(control, idx)}>
@@ -98,6 +97,7 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
                 <Icon icon={TrashIcon} />
               </Button>
             </div>
+            <UserControlsPreview ctrl={control} />
           </li>
         ))}
       </ul>
