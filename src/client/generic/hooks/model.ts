@@ -27,6 +27,7 @@ interface Options<TModel> {
   name?: string
   value?: TModel
   onChange?: OnChange<TModel>
+  defaultValue?: TModel
 }
 
 ///
@@ -38,9 +39,10 @@ export function useModel<TModel>({
   value: initialData,
   name: modelName,
   onChange,
+  defaultValue,
 }: Options<TModel> = {}): API<TModel> {
   const onChangeCallback = useCallback<OnChange<TModel>>(onChange ?? noop, [onChange])
-  const [data, setState] = useState<TModel>(initialData ?? ({} as TModel))
+  const [data, setState] = useState<TModel>(initialData ?? defaultValue ?? ({} as TModel))
 
   const set = (newState: TModel | ((model: TModel) => TModel)) => {
     setState((model) => {
