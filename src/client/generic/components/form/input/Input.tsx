@@ -10,6 +10,7 @@ export function Input({ name, value, onChange, ...props }: InputProps): JSX.Elem
     props['value'] = value
   } else {
     props.defaultValue = value
+    props['value'] = value
   }
 
   return (
