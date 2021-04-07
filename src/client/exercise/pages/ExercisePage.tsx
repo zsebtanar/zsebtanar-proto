@@ -1,6 +1,7 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router'
 import { randomInt } from 'shared/utils/math'
+import { SEED_RANGE } from 'shared/math/constatns'
 import { useLoadExercise } from '../services/exercise'
 import { Exercise } from '../components/public/Exercise'
 import { useQuery } from 'client/generic/hooks/navigation'
@@ -13,7 +14,7 @@ export function ExercisePage(): JSX.Element {
   const { id } = useParams<{ id: string }>()
   const query = useQuery()
   const { isLoading, isSuccess, result, error } = useLoadExercise(id)
-  const seed = parseInt(query.get('s') ?? '', 10) || randomInt() + 1
+  const seed = parseInt(query.get('s') ?? '', 10) || randomInt(SEED_RANGE) + 1
 
   const onClose = () => {
     if (window.history.length > 1) {
