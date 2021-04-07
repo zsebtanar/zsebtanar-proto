@@ -22,7 +22,6 @@ const binaryChoiceSchema = S.object()
         ),
       ),
   )
-  .prop('solution', binaryChoiceSolutionSchema)
   .ifThen(
     S.object().prop('isDynamic', S.const(false)),
     S.object().prop('solution', binaryChoiceSolutionSchema.required()),
@@ -37,7 +36,6 @@ const fractionNumberSchema = S.object()
   .prop('name', S.string())
   .prop('isDynamic', S.boolean())
   .prop('props', S.object().prop('prefix', S.string()).prop('postfix', S.string()))
-  .prop('solution', fractionNumber)
   .ifThen(
     S.object().prop('isDynamic', S.const(false)),
     S.object().prop('solution', fractionNumber.required()),
@@ -58,7 +56,6 @@ const multiChoiceSchema = S.object()
       .prop('randomOrder', S.boolean())
       .prop('options', S.array().items(S.object().prop('label', S.string()))),
   )
-  .prop('solution', multiChoiceSolutionSchema)
   .ifThen(
     S.object().prop('isDynamic', S.const(false)),
     S.object().prop('solution', multiChoiceSolutionSchema.required()),
@@ -84,7 +81,6 @@ const numberListSchema = S.object()
         S.array().items(S.object().prop('prefix', S.string()).prop('postfix', S.string())),
       ),
   )
-  .prop('solution', numberListSolutionSchema)
   .ifThen(
     S.object().prop('isDynamic', S.const(false)),
     S.object().prop('solution', numberListSolutionSchema.required()),
@@ -105,7 +101,6 @@ const simpleTextSchema = S.object()
       .prop('ignoreSpaces', S.boolean())
       .prop('caseSensitive', S.boolean()),
   )
-  .prop('solution', simpleTextSolutionSchema)
   .ifThen(
     S.object().prop('isDynamic', S.const(false)),
     S.object().prop('solution', simpleTextSolutionSchema.required()),
@@ -119,14 +114,13 @@ const singleChoiceSchema = S.object()
   .prop('name', S.string())
   .prop('isDynamic', S.boolean())
   .prop('props', S.object().prop('options', S.array().items(S.object().prop('label', S.string()))))
-  .prop('solution', singleChoiceSolutionSchema)
   .ifThen(
     S.object().prop('isDynamic', S.const(false)),
     S.object().prop('solution', singleChoiceSolutionSchema.required()),
   )
   .required(['type'])
 
-const singleNumberSolutionSchema = S.number()
+const singleNumberSolutionSchema = S.string()
 const singleNumberSchema = S.object()
   .id('#singleNumber')
   .prop('type', S.const(ExerciseSubTaskControlsType.SingleNumber))
@@ -139,7 +133,6 @@ const singleNumberSchema = S.object()
       .prop('postfix', S.string())
       .prop('fractionDigits', S.number()),
   )
-  .prop('solution', singleNumberSolutionSchema)
   .ifThen(
     S.object().prop('isDynamic', S.const(false)),
     S.object().prop('solution', singleNumberSolutionSchema.required()),
