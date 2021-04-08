@@ -38,18 +38,38 @@ describe('pseudo random generator', () => {
   describe('randomInt', () => {
     it('should evenly distribute with maximum 5% difference in long run', () => {
       const prng = new PseudoRandomNumberGenerator()
-      const runCount = 100000
       const res = [] as number[]
-      for (let i = 0; i < runCount; i++) {
-        const y = prng.randomInt(10)
-        res[y] = (res[y] ?? 0) + 1
+
+      function checkDistribution(range: number) {
+        const runCount = 10000
+        const sampleSize = runCount * range
+        const frequency = 1 / range
+        const tolerance = 0.05
+        for (let i = 0; i < sampleSize; i++) {
+          const y = prng.randomInt(range)
+          res[y] = (res[y] ?? 0) + 1
+        }
+
+        expect(res.length).toEqual(range)
+        for (let i = 0; i < res.length; i++) {
+          res[i] = (res[i] ?? 0) / sampleSize
+        }
+        console.log(res)
+
+        expect(res.every((x) => frequency - tolerance < x && x < frequency + tolerance)).toEqual(
+          true,
+        )
       }
 
-      expect(res.length).toEqual(10)
-      for (let i = 0; i < res.length; i++) {
-        res[i] = (res[i] ?? 0) / runCount
-      }
-      expect(res.every((x) => 0.095 < x && x < 0.105)).toEqual(true)
+      checkDistribution(2)
+      checkDistribution(3)
+      checkDistribution(4)
+      checkDistribution(5)
+      checkDistribution(6)
+      checkDistribution(7)
+      checkDistribution(8)
+      checkDistribution(9)
+      checkDistribution(10)
     })
   })
 })
