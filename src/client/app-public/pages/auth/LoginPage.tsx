@@ -49,7 +49,7 @@ export function LoginPage(): JSX.Element {
       </AuthPageHeader>
 
       <form onSubmit={login}>
-        <h1 className="text-center">Bejelenetkezés</h1>
+        <h1 className="text-center">Bejelentkezés</h1>
         <hr />
         {hasError && <Alert type="danger">{errorToString(error, strings)}</Alert>}
         <FormGroupLabel
