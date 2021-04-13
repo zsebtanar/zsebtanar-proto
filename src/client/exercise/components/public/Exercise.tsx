@@ -91,13 +91,7 @@ function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
             <div className="btn-group subtask-progressbar" role="group">
               {range(0, state.numberOfTasks).map((idx) => {
                 const className =
-                  idx === state.selectedSubtask.index
-                    ? 'btn-primary'
-                    : idx === state.numberOfFinishedTasks
-                    ? 'btn-warning'
-                    : idx < state.numberOfFinishedTasks
-                    ? 'btn-success'
-                    : 'btn-secondary'
+                  idx < state.numberOfFinishedTasks ? 'btn-success' : 'btn-secondary'
                 return (
                   <button
                     key={idx}
