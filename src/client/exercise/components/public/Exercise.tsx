@@ -52,8 +52,10 @@ function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
   const onSubmit = async (event) => {
     if (state.isCurrentSubtaskActive) {
       event.preventDefault()
-      await exerciseDispatch.checkActiveSubTask(answers, seed)
-      resetAnswer()
+      const result = await exerciseDispatch.checkActiveSubTask(answers, seed)
+      if (result) {
+        resetAnswer()
+      }
     }
   }
 

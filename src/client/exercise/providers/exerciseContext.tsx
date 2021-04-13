@@ -37,7 +37,7 @@ type Action =
 
 interface API {
   getNextHint(): void
-  checkActiveSubTask(data: UCUserAnswer[], seed: number): Promise<void>
+  checkActiveSubTask(data: UCUserAnswer[], seed: number): Promise<boolean>
   selectSubtask(index: number): void
   storeActiveSubtaskAnswer(answer: UCUserAnswer[]): void
 }
@@ -170,6 +170,7 @@ export function ExerciseProvider({ children, exercise }: Props): JSX.Element {
           dispatch({ type: 'checkFailed' })
         }
       }
+      return result
     },
     async getNextHint() {
       const { hint, hasMore } = await getNextHint(

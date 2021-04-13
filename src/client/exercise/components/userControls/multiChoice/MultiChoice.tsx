@@ -3,6 +3,7 @@ import { UCMultiChoice } from 'shared/exercise/types'
 import { UseModelProps, useModel } from 'client/generic/hooks/model'
 import { Checkbox } from 'client/generic/components/form/input/Checkbox'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
+import { filledArray } from 'shared/utils/fn'
 
 interface Props extends UseModelProps<boolean[]> {
   ctrl: UCMultiChoice
@@ -11,7 +12,10 @@ interface Props extends UseModelProps<boolean[]> {
 }
 
 export function MultiChoice({ readonly, ctrl, disabled, ...bindProps }: Props): JSX.Element {
-  const { bind } = useModel(bindProps)
+  const { bind } = useModel({
+    ...bindProps,
+    defaultValue: filledArray(ctrl.props?.options.length ?? 0, false),
+  })
   return (
     <div className="user-control uc-multi-choice">
       {readonly
