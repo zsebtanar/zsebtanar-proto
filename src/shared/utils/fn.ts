@@ -111,3 +111,14 @@ export function convertPLHashMapToObject<T extends Record<string, unknown>>(
 ): T {
   return Object.fromEntries(hashmaps) as T
 }
+
+export function convertObjectToArray<T = unknown>(obj: Record<number, T>): T[] {
+  return Object.entries(obj ?? {}).reduce((a, [idx, val]) => {
+    a[idx] = val
+    return a
+  }, [])
+}
+
+export function filledArray<T>(length: number, data: T): T[] {
+  return Array(length).fill(data)
+}
