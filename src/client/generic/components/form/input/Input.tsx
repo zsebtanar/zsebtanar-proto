@@ -7,10 +7,10 @@ export interface InputProps
 
 export function Input({ name, value, onChange, ...props }: InputProps): JSX.Element {
   if (props.disabled) {
-    props['value'] = value
+    props['value'] = value ?? ''
   } else {
     props.defaultValue = value
-    props['value'] = value
+    props['value'] = value ?? ''
   }
 
   return (

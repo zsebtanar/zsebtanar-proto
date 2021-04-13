@@ -3,6 +3,7 @@ import { UCBinaryChoice } from 'shared/exercise/types'
 import { UseModelProps, useModel } from 'client/generic/hooks/model'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { RadioInput } from 'client/generic/components/form/input/RadioInput'
+import { filledArray } from 'shared/utils/fn'
 
 import './BinaryChoice.scss'
 
@@ -13,7 +14,10 @@ interface Props extends UseModelProps<boolean[]> {
 }
 
 export function BinaryChoice({ readonly, disabled, ctrl, ...bindProps }: Props): JSX.Element {
-  const { bind } = useModel(bindProps)
+  const { bind } = useModel({
+    ...bindProps,
+    defaultValue: filledArray<any>(ctrl.props?.options.length ?? 0, undefined),
+  })
   return (
     <div className="user-control uc-binary-choice">
       {ctrl.props?.options.map((option, idx) => (
