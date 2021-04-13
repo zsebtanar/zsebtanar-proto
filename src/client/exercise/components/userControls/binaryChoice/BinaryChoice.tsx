@@ -4,6 +4,8 @@ import { UseModelProps, useModel } from 'client/generic/hooks/model'
 import { MarkdownWithScript } from 'client/script/components/MarkdownWithCode'
 import { RadioInput } from 'client/generic/components/form/input/RadioInput'
 
+import './BinaryChoice.scss'
+
 interface Props extends UseModelProps<boolean[]> {
   ctrl: UCBinaryChoice
   readonly?: boolean
@@ -15,25 +17,25 @@ export function BinaryChoice({ readonly, disabled, ctrl, ...bindProps }: Props):
   return (
     <div className="user-control uc-binary-choice">
       {ctrl.props?.options.map((option, idx) => (
-        <div key={idx}>
+        <div key={idx} className="uc-binary-choice-item">
           <div className="option-statement">
             {option.statement && <MarkdownWithScript source={option.statement} />}
           </div>
           {readonly ? (
             <div className="value">
               {ctrl.solution[idx] ? (
-                <MarkdownWithScript source={option.trueLabel} />
+                <MarkdownWithScript source={option.trueLabel || 'Igaz'} />
               ) : (
-                <MarkdownWithScript source={option.falseLabel} />
+                <MarkdownWithScript source={option.falseLabel || 'Hamis'} />
               )}
             </div>
           ) : (
             <div className="value">
               <RadioInput inputValue={true} {...bind(`${idx}`)} disabled={disabled}>
-                <MarkdownWithScript source={option.trueLabel} />
+                <MarkdownWithScript source={option.trueLabel || 'Igaz'} />
               </RadioInput>
               <RadioInput inputValue={false} {...bind(`${idx}`)} disabled={disabled}>
-                <MarkdownWithScript source={option.trueLabel} />
+                <MarkdownWithScript source={option.trueLabel || 'Hamis'} />
               </RadioInput>
             </div>
           )}
