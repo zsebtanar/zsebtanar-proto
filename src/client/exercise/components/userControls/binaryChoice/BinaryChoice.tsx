@@ -39,7 +39,7 @@ export function BinaryChoice({ readonly, disabled, ctrl, ...bindProps }: Props):
                 <MarkdownWithScript source={option.trueLabel || 'Igaz'} />
               </RadioInput>
               <RadioInput inputValue={false} {...bind(`${idx}`)} disabled={disabled}>
-                <MarkdownWithScript source={option.trueLabel || 'Hamis'} />
+                <MarkdownWithScript source={option.falseLabel || 'Hamis'} />
               </RadioInput>
             </div>
           )}
