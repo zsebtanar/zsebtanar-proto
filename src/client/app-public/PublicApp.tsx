@@ -15,6 +15,8 @@ import { Page404 } from './pages/Page404'
 import { Footer } from './nav/Footer'
 import { Navigation } from './nav/Navigation'
 import { ListPage } from './pages/ListPage'
+import { Privacy } from './pages/Privacy'
+import { Terms } from './pages/Terms'
 
 export function PublicApp(): JSX.Element {
   return (
@@ -36,6 +38,8 @@ export function PublicApp(): JSX.Element {
                 <Route path="/about" component={About} />
                 <Route path="/joinus" component={JoinUs} />
                 <Route path="/support" component={Workarounds} />
+                <Route path="/terms" component={Terms} />
+                <Route path="/privacy" component={Privacy} />
                 <Route component={Page404} />
               </Switch>
             </main>
