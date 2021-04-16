@@ -40,9 +40,14 @@ export function Footer(): JSX.Element {
           <h5>Támogatás</h5>
           <ul className="list-unstyled">
             <li className="footer-link">
-              <ExternalLink className="text-muted" href={__CONFIG__.links.policy}>
-                Adatvédelem
-              </ExternalLink>
+              <NavLink className="text-muted" to="/terms">
+                Felhasználási feltételek
+              </NavLink>
+            </li>
+            <li className="footer-link">
+              <NavLink className="text-muted" to="/privacy">
+                Adatvédelmi nyilatkozat
+              </NavLink>
             </li>
             <li className="footer-link">
               <NavLink className="text-muted" to="/support">
