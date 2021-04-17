@@ -107,7 +107,7 @@ const simpleTextSchema = S.object()
   )
   .required(['type'])
 
-const singleChoiceSolutionSchema = S.number()
+const singleChoiceSolutionSchema = S.string()
 const singleChoiceSchema = S.object()
   .id('#singleChoice')
   .prop('type', S.const(ExerciseSubTaskControlsType.SingleChoice))
