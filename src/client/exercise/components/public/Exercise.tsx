@@ -97,7 +97,7 @@ function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
                     key={idx}
                     type="button"
                     className={cx('btn', className, {
-                      active: state.selectedSubtask.index === idx,
+                      active: state.selectedSubtask.index === idx && state.status !== 'solved',
                     })}
                     title={`${idx + 1}. részfeladat`}
                     disabled={idx > state.numberOfFinishedTasks}
@@ -136,7 +136,7 @@ function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
                 </Button>
                 {state.selectedSubtask.isHintsLeft && state.selectedSubtask.numberOfAttempt > 0 && (
                   <Button btn={'outline-secondary'} className="w-100" onAction={getHint}>
-                    Kérek segítésget
+                    Kérek segítséget
                   </Button>
                 )}
               </>
