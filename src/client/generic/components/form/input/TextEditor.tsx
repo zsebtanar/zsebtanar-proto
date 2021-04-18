@@ -9,6 +9,7 @@ import {
   HelpCircle as HelpCircleIcon,
   Edit as EditIcon,
   DollarSign as DollarSignIcon,
+  Youtube as YoutubeIcon,
 } from 'react-feather'
 import { AssetModel } from 'shared/assets/types'
 import { Markdown } from 'client/generic/components/markdown/Markdown'
@@ -139,6 +140,13 @@ export function TextEditor({
     update()
   }
 
+  const insertYouTubeEmbed = () => {
+    const ref = textRef.current
+    if (!ref) return
+    ref.value += `!![](video-id)`
+    update()
+  }
+
   const update = () => {
     const ref = textRef.current
     if (!ref) return
@@ -161,6 +169,7 @@ export function TextEditor({
             insertLink={insertLink}
             insertWikiLink={insertWikiLink}
             insertFile={insertFile}
+            insertYouTubeEmbed={insertYouTubeEmbed}
           />
         )}{' '}
         <textarea
@@ -189,9 +198,17 @@ interface ToolsProps {
   insertLink: (tag: string) => void
   insertWikiLink: (tag: string) => void
   insertFile: () => void
+  insertYouTubeEmbed: () => void
 }
 
-function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: ToolsProps) {
+function Tools({
+  wrapText,
+  multiLine,
+  insertLink,
+  insertWikiLink,
+  insertFile,
+  insertYouTubeEmbed,
+}: ToolsProps) {
   const { openModal } = useOverlayDispatch()
 
   const openEquationHelpModal = () => {
@@ -251,6 +268,16 @@ function Tools({ wrapText, multiLine, insertLink, insertWikiLink, insertFile }: 
       <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Kép">
         <Button btn="light" onAction={() => insertFile()} icon={ImageIcon}>
           Kép beszűrás
+        </Button>
+      </div>
+      <div className="btn-group btn-group-sm mr-2" role="group" aria-label="Beágyazás">
+        <Button
+          btn="light"
+          onAction={() => insertYouTubeEmbed()}
+          icon={YoutubeIcon}
+          title="YouTube video beágyazása"
+        >
+          YouTube
         </Button>
       </div>
 

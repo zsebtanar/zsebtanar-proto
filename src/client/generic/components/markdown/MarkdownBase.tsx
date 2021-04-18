@@ -5,6 +5,7 @@ import katex from 'markdown-it-katex'
 import kbd from 'markdown-it-kbd'
 import centertext from 'markdown-it-center-text'
 import { wikiLinkInit } from 'shared/markdown/wiki-link'
+import { youtubeEmbedInit } from 'shared/markdown/youtube-embed'
 import { MarkdownProps } from './types'
 import { assetImage } from 'shared/markdown/image-asset'
 
@@ -58,6 +59,7 @@ export function Markdown({
         .use(kbd)
         .use(centertext)
         .use(wikiLinkInit())
+        .use(youtubeEmbedInit())
         .use(assetImage),
     )
   }, [options])
