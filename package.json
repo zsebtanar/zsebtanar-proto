@@ -92,6 +92,7 @@
     "fluent-json-schema": "^2.0.3",
     "history": "^5.0.0",
     "json-schema-to-ts": "^1.5.0",
+    "lite-youtube-embed": "^0.2.0",
     "markdown-it": "^11.0.0",
     "markdown-it-center-text": "^1.0.4",
     "markdown-it-katex": "git+https://git@github.com/maxinteger/markdown-it-katex.git#v2.3.0",
