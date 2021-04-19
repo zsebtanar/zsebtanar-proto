@@ -15,6 +15,9 @@ export function AdminUtils(): JSX.Element {
   const reIndexSearch = () =>
     confirm(() => cloudFnGet('/support/re-index-search', {}, { withToken: true }))
 
+  const syncExercises = () =>
+    confirm(() => cloudFnGet('/support/sync-exercises', {}, { withToken: true }))
+
   return (
     <div className="container">
       <div className="alert alert-warning col-8 mx-auto">
@@ -27,11 +30,22 @@ export function AdminUtils(): JSX.Element {
         </div>
       </div>
 
-      <ul className="list-unstyled">
-        <li>
-          <Button onAction={reIndexSearch}>Re-index algolia search</Button>
-        </li>
-      </ul>
+      <table className="table table-borderless">
+        <tbody>
+          <tr>
+            <td></td>
+            <td>
+              <Button onAction={reIndexSearch}>Re-index algolia search</Button>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <Button onAction={syncExercises}>Sync privát és publikus feladatokat</Button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }
