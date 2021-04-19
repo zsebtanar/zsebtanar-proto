@@ -3,6 +3,15 @@ import 'lite-youtube-embed'
 
 import './YoutubeEmbed.scss'
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      'lite-youtube': { videoid: string; playlabel?: string }
+    }
+  }
+}
+
 const CHANNEL_ID = 'UC8aqu8qcioAPG_BTMskAcmA'
 const YT_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`
 const RRS_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(YT_FEED_URL)}`
