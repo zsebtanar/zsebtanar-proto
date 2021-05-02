@@ -65,7 +65,7 @@ v2.0 (2020.05.02.)
    - erre az adott felhasználó külön engedélyt adott rá
    - erre jogszabály kötelezi.
 
-1. Adatvédelmi hatóság: Nemzeti Adatvédelmi és Információszabadság Hatóság 1125 Budapest, Szilágyi Erzsébet fasor 22/c +36 1 391 1400 www.naih.huugyfelszolgalat@naih.hu
+1. Adatvédelmi hatóság:<br />Nemzeti Adatvédelmi és Információszabadság Hatóság<br />1125 Budapest, Szilágyi Erzsébet fasor 22/c<br />+36 1 391 1400<br />www.naih.huugyfelszolgalat@naih.hu
 
 1. A Zsebtanár minden elvárhatót megtesz annak érdekében, hogy az adatvesztés kockázatát minimalizálja, ugyanakkor semmilyen jogi garanciát nem vállal a felhasználói adatok (beleértve az elkészített kérdések, feladatlapok) megőrzéséért, ezzel kapcsolatban minden felelősséget kizár mind a felhasználók, mind bármilyen harmadik fél felé.
 
