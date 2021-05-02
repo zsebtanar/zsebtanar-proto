@@ -27,7 +27,7 @@ v2.0 (2020.05.02.)
    - A profiloldalon önkéntesen megadott adatok
    - A bejelentkezések idejére, illetve az oldal használata során a felhasználó böngészőprogramjára vonatkozó, és a böngészőprogram által megadott adatok.
    - A Zsebtanár használatával kapcsolatos adatok: keresések, szerkesztett vagy kitöltött feladatlapok, készített vagy saját feladatlaphoz felhasznált kérdések, kitöltési adatok.
-   - A felhasználó beleegyezésével a felhasználó Facebook profiljában tárolt és velünk a Facebook API-n keresztül megosztott adatok. (pl. nem, nyelv, stb.)
+   - A felhasználó beleegyezésével a felhasználó Google/Facebook profiljában tárolt és velünk a Google/Facebook API-n keresztül megosztott adatok. (pl. nem, nyelv, stb.)
   
 1. A Zsebtanár a statisztikai adatok gyűjtéséhez külső szolgáltatásokat is használ. A látogatottság méréséhez a Google Analytics szolgáltatást, amely szintén szolgáltat látogatottsági statisztikákat is, míg a főoldalon a Zsebtanár Facebook oldalának népszerűsítéséhez a Facebook beépülő pluginját használja, illetve a Google Classroom platformra kínál megosztási lehetőséget.
 
