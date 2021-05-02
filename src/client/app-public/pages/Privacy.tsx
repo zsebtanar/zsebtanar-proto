@@ -29,7 +29,7 @@ v2.0 (2020.05.02.)
    - A Zsebtanár használatával kapcsolatos adatok: keresések, szerkesztett vagy kitöltött feladatlapok, készített vagy saját feladatlaphoz felhasznált kérdések, kitöltési adatok.
    - A felhasználó beleegyezésével a felhasználó Google/Facebook profiljában tárolt és velünk a Google/Facebook API-n keresztül megosztott adatok. (pl. nem, nyelv, stb.)
   
-1. A Zsebtanár a statisztikai adatok gyűjtéséhez külső szolgáltatásokat is használ. A látogatottság méréséhez a Google Analytics szolgáltatást, amely szintén szolgáltat látogatottsági statisztikákat is, míg a főoldalon a Zsebtanár Facebook oldalának népszerűsítéséhez a Facebook beépülő pluginját használja, illetve a Google Classroom platformra kínál megosztási lehetőséget.
+1. A Zsebtanár a statisztikai adatok gyűjtéséhez külső szolgáltatásokat is használ. A látogatottság méréséhez a Google Analytics szolgáltatást, amely szintén szolgáltat látogatottsági statisztikákat is.
 
 1. A statisztikai adatok gyűjtéséhez valamint a felhasználók azonosításához a Zsebtanár sütiket (cookie) használ. A felhasznált sütik a következők:
 
