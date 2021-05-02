@@ -12,7 +12,7 @@ export function Privacy(): JSX.Element {
             source={`
 ## Zsebtanár Adatvédelmi Irányelvek
 
-v2.0 (2020.05.02.)
+v2.0 (2021.05.02.)
 
 1. Ez a dokumentum a zsebtanar.hu oldal által gyűjtött adatok köréről és azok felhasználásáról szóló tájékoztató. Az oldal használatával a felhasználó elfogadja a jelen dokumentumban foglaltakat, az oldal használatával tudomásul veszi, hogy a használat során keletkezett adatok az ezen dokumentumban foglaltak alapján tárolásra, felhasználásra kerülnek.
 
