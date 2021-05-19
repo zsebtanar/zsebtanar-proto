@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
 import { CheckCircle as CheckIcon, Frown as FrownIcon } from 'react-feather'
 import { PublicExercise, UCUserAnswer } from 'shared/exercise/types'
@@ -9,8 +9,12 @@ import { CloseButton } from 'client/generic/components/CloseButton'
 import { Button } from 'client/generic/components/Button'
 import { ExerciseMarkdown } from '../ExerciseMarkdown'
 import { UserControls } from '../userControls/UserControl'
-import { range } from '../../../../shared/utils/fn'
+import { range } from 'shared/utils/fn'
 import { Icon } from '../../../generic/components/icons/Icon'
+import { useOverlayDispatch } from '../../../overlay/providers/OverlayProvider'
+import { ExerciseDoneModal } from './ExerciseDoneModal'
+import { randomInt } from 'shared/utils/math'
+import { SEED_RANGE } from 'shared/math/constatns'
 
 import './Exercise.scss'
 
@@ -21,10 +25,14 @@ interface Props {
 }
 
 export function Exercise({ exercise, onClose, seed }: Props): JSX.Element {
+  const [seedValue, setSeedValue] = useState(seed)
+  const reloadExercise = () => {
+    setSeedValue(randomInt(SEED_RANGE) + 1)
+  }
   return (
-    <ExerciseProvider exercise={exercise}>
-      <PocketLispProvider seed={seed} script={exercise.script}>
-        <ExerciseComponent onClose={onClose} seed={seed} />
+    <ExerciseProvider key={seedValue} exercise={exercise}>
+      <PocketLispProvider seed={seedValue} script={exercise.script}>
+        <ExerciseComponent onClose={onClose} seed={seedValue} reloadExercise={reloadExercise} />
       </PocketLispProvider>
     </ExerciseProvider>
   )
@@ -33,15 +41,17 @@ export function Exercise({ exercise, onClose, seed }: Props): JSX.Element {
 interface ExerciseComponentProps {
   onClose?: () => void
   seed: number
+  reloadExercise: () => void
 }
 
-function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
+function ExerciseComponent({ onClose, seed, reloadExercise }: ExerciseComponentProps) {
   const state = useExercise()
   const exerciseDispatch = useExerciseDispatch()
   const { bind: bindAnswer, data: answers, reset: resetAnswer } = useModel<UCUserAnswer[]>({
     value: [],
   })
   const continueBtnRef = useRef<HTMLButtonElement>(null)
+  const { openModal } = useOverlayDispatch()
 
   useEffect(() => {
     if (continueBtnRef) {
@@ -58,6 +68,12 @@ function ExerciseComponent({ onClose, seed }: ExerciseComponentProps) {
       }
     }
   }
+
+  useEffect(() => {
+    if (state.status === 'solved') {
+      openModal(<ExerciseDoneModal reloadExercise={reloadExercise} />)
+    }
+  }, [state.status])
 
   const selectSubtask = (idx) => {
     exerciseDispatch.selectSubtask(idx)

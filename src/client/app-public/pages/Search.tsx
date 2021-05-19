@@ -34,7 +34,7 @@ export function Search(): JSX.Element {
   }, [result, searchTerm])
 
   return (
-    <PublicPage>
+    <PublicPage addToBackJourney>
       <div className="mb-4 mx-auto col-md-8">
         <div className="search-input-group ">
           <label className="search-label" htmlFor="search-input">

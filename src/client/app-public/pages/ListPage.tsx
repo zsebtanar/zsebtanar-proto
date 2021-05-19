@@ -33,7 +33,7 @@ function ListPageContent({ classifications }) {
   }, [isLoading])
 
   return (
-    <PublicPage className="list-page">
+    <PublicPage className="list-page" addToBackJourney>
       <h2 className="mb-5">
         <small>
           Az összes{' '}

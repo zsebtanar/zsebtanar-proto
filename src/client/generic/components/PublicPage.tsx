@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect } from 'react'
 import * as ReactGa from 'react-ga'
 import cx from 'classnames'
 import { getScrollPos, storeScrollPos } from '../utils/localStore'
+import { useBackJourney } from '../providers/BackJourneyProvider'
 
 interface Props {
   storePosition?: boolean
@@ -9,6 +10,7 @@ interface Props {
   trackOptions?: Record<string, unknown>
   className?: string
   children: ReactNode
+  addToBackJourney?: boolean
 }
 
 export function trackPage<T extends Record<string, unknown>>(page: string, options?: T): void {
@@ -29,7 +31,9 @@ export function PublicPage({
   storePosition,
   track,
   trackOptions,
+  addToBackJourney,
 }: Props): JSX.Element {
+  const bj = useBackJourney()
   useEffect(() => {
     const pageName = getPageName()
 
@@ -38,6 +42,10 @@ export function PublicPage({
     if (track) {
       trackPage(pageName, trackOptions)
     }
+    if (addToBackJourney) {
+      bj.addEntry()
+    }
+
     return () => {
       if (storePosition) {
         storeScrollPos(pageName, document.documentElement.scrollTop)

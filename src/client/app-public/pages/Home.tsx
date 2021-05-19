@@ -4,38 +4,41 @@ import { ClassificationSelector } from '../../classification/components/Classifi
 import { PatreonButton } from '../components/PatreonButton'
 import { PaypalButton } from '../components/PaypalButton'
 import { YouTubeEmbed } from '../components/YoutubeEmbed'
+import { PublicPage } from 'client/generic/components/PublicPage'
 
 import './Home.scss'
 
 export function Home(): JSX.Element {
   return (
-    <div>
-      <div className="jumbotron">
-        <HomeWelcome />
-      </div>
+    <PublicPage addToBackJourney>
+      <div>
+        <div className="jumbotron">
+          <HomeWelcome />
+        </div>
 
-      <div className="home-youtube d-flex justify-content-center">
-        <YouTubeEmbed />
-      </div>
+        <div className="home-youtube d-flex justify-content-center">
+          <YouTubeEmbed />
+        </div>
 
-      <ClassificationSelector title="Osztály" rootCategory="hu|grade|" />
+        <ClassificationSelector title="Osztály" rootCategory="hu|grade|" />
 
-      <div className="text-center pt-5 my-5">
-        <p>
-          <i>Tetszik az oldal? Támogasd munkánkat, hogy még jobb legyen!</i>
-        </p>
-        <div className="row">
-          <div className="col-md-8 mx-auto row">
-            <div className="col-md-6 mb-1">
-              <PaypalButton />
-            </div>
-            <div className="col-md-6">
-              <PatreonButton />
+        <div className="text-center pt-5 my-5">
+          <p>
+            <i>Tetszik az oldal? Támogasd munkánkat, hogy még jobb legyen!</i>
+          </p>
+          <div className="row">
+            <div className="col-md-8 mx-auto row">
+              <div className="col-md-6 mb-1">
+                <PaypalButton />
+              </div>
+              <div className="col-md-6">
+                <PatreonButton />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </PublicPage>
   )
 }
 

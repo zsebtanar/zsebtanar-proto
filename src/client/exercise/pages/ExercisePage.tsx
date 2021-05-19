@@ -8,20 +8,18 @@ import { useQuery } from 'client/generic/hooks/navigation'
 import { PublicPage } from 'client/generic/components/PublicPage'
 import { Loading } from 'client/generic/components/Loading'
 import { Alert } from 'client/generic/components/Alert'
+import { useBackJourney } from '../../generic/providers/BackJourneyProvider'
 
 export function ExercisePage(): JSX.Element {
   const history = useHistory()
+  const bj = useBackJourney()
   const { id } = useParams<{ id: string }>()
   const query = useQuery()
   const { isLoading, isSuccess, result, error } = useLoadExercise(id)
   const seed = parseInt(query.get('s') ?? '', 10) || randomInt(SEED_RANGE) + 1
 
   const onClose = () => {
-    if (window.history.length > 1) {
-      window.history.back()
-    } else {
-      history.push('/')
-    }
+    bj.back(true)
   }
 
   if (error?.['status'] === 404) {

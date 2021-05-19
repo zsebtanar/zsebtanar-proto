@@ -10,7 +10,6 @@ import { UserProfilePage } from './pages/UserProfilePage'
 import { Search } from './pages/Search'
 import { About } from './pages/About'
 import { JoinUs } from './pages/JoinUs'
-import { Workarounds } from './pages/Workarounds'
 import { Page404 } from './pages/Page404'
 import { Footer } from './nav/Footer'
 import { Navigation } from './nav/Navigation'
@@ -37,7 +36,6 @@ export function PublicApp(): JSX.Element {
                 <Route path="/search" component={Search} />
                 <Route path="/about" component={About} />
                 <Route path="/joinus" component={JoinUs} />
-                <Route path="/support" component={Workarounds} />
                 <Route path="/terms" component={Terms} />
                 <Route path="/privacy" component={Privacy} />
                 <Route component={Page404} />
