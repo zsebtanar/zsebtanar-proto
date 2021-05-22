@@ -4,6 +4,7 @@ import kbd from 'markdown-it-kbd'
 import centertext from 'markdown-it-center-text'
 import { wikiLinkInit } from 'shared/markdown/wiki-link'
 import { assetImage } from 'shared/markdown/image-asset'
+import { youtubeEmbedInit } from 'shared/markdown/youtube-embed'
 
 export const unTokeniseMarkdown = (description: string): string =>
   reduceTokenList(initMarkdown().parse(description))
@@ -15,7 +16,13 @@ export const unTokeniseMarkdown = (description: string): string =>
     .trim()
 
 const initMarkdown = () =>
-  new Markdown({}).use(katex).use(kbd).use(centertext).use(wikiLinkInit()).use(assetImage)
+  new Markdown({})
+    .use(katex)
+    .use(kbd)
+    .use(centertext)
+    .use(wikiLinkInit())
+    .use(youtubeEmbedInit())
+    .use(assetImage)
 
 const reduceTokenList = (tokenList) =>
   tokenList.reduce((acc, i) => {
