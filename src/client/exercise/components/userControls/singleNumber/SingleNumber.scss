@@ -1,0 +1,25 @@
+.uc-simple-number {
+  .prefix,
+  .postfix {
+    width: 100%;
+    padding-top: calc(0.375rem + 1px);
+    padding-bottom: calc(0.375rem + 1px);
+    margin-bottom: 0;
+    font-size: inherit;
+    line-height: 1.5;
+    p {
+      margin: 0;
+    }
+  }
+  .prefix {
+    text-align: right;
+  }
+  input {
+    padding-right: 0.1rem;
+    padding-left: 0.5rem;
+    max-width: fit-content;
+  }
+  .num-field-input {
+    width: 100%;
+  }
+}

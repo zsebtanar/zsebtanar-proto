@@ -1,0 +1,37 @@
+
+.text-editor{
+  position: relative;
+  &.form-control{
+    padding: 0;
+    height: auto;
+  }
+  &.focused {
+    textarea.form-control {
+      position: static;
+      opacity: 1;
+      border-radius: 0;
+    }
+    .text-editor-preview {
+      background: #fafafa;
+    }
+  }
+
+  textarea{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+  }
+
+  .text-editor-preview{
+    min-height: 2rem;
+    resize: vertical;
+    overflow: auto;
+    bottom: 1px;
+    left: 1px;
+    padding: 0.375rem 0.75rem;
+    .markdown p:last-child{
+      margin-bottom: 0;
+    }
+  }
+}

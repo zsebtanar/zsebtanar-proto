@@ -1,4 +1,8 @@
+import type { Request, Response, NextFunction } from 'express'
 import { admin } from '../utils/firebase'
+import { HandlerError } from '../utils/HandlerError'
+import { auth } from 'firebase-admin/lib/auth'
+import DecodedIdToken = auth.DecodedIdToken
 
 /**
  Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -9,7 +13,24 @@ import { admin } from '../utils/firebase'
  @see: https://github.com/firebase/functions-samples/tree/master/authorized-https-endpoint
  @see: https://firebase.google.com/docs/auth/admin/verify-id-tokens
  */
-export default function validateFirebaseIdToken(req, res, next) {
+export async function verifyUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    req['user'] = await getFirebaseUser(req)
+    next()
+  } catch (error) {
+    next(new HandlerError(401, 'Unauthorized', error))
+  }
+}
+
+export async function getUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    req['user'] = await getFirebaseUser(req)
+  } finally {
+    next()
+  }
+}
+
+async function getFirebaseUser(req: Request): Promise<DecodedIdToken> {
   const authHeader = req.headers.authorization
 
   if ((!authHeader || !authHeader.startsWith('Bearer ')) && !req.cookies.__session) {
@@ -17,10 +38,9 @@ export default function validateFirebaseIdToken(req, res, next) {
       'No Firebase ID token was passed as a Bearer token in the Authorization header.',
       'Make sure you authorize your request by providing the following HTTP header:',
       'Authorization: Bearer <Firebase ID Token>',
-      'or by passing a "__session" cookie.'
+      'or by passing a "__session" cookie.',
     )
-    res.status(401).send('Unauthorized')
-    return
+    throw new Error('Unauthorized')
   }
 
   let idToken
@@ -30,15 +50,5 @@ export default function validateFirebaseIdToken(req, res, next) {
     idToken = req.cookies.__session
   }
 
-  admin
-    .auth()
-    .verifyIdToken(idToken)
-    .then(decodedIdToken => {
-      req.user = decodedIdToken
-      next()
-    })
-    .catch(error => {
-      console.error('Validation error', error)
-      res.status(401).send('Unauthorized')
-    })
+  return await admin.auth().verifyIdToken(idToken)
 }

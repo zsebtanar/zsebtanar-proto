@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="keywords" content="matematika, érettségi, tanulás, gyakorlás, felkészülés"/>
+    <meta name="description" content="A Zsebtanár egy interaktív feladatgyűjtemény, aminek a célja, hogy ingyenes segítséget nyújtson a tanulásban, főként a középszintű matematika érettségire való felkészítésben."/>
+    <meta name="subject" content="Zsebtanár">
+    <meta name="copyright" content="Zsebtanár Nonprofit Alapítvány">
+    <meta name="language" content="HU">
+    <meta name="Classification" content="Education">
+    <meta name="url" content="https://www.zsebtanar.hu">
+
+    <meta property="og:title" content="Zsebtanár"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://www.zsebtanar.hu"/>
+    <meta property="og:locale" content="hu" />
+    <meta property="og:image" content="https://www.zsebtanar.hu/assets/icons/logo-192.png"/>
+    <meta property="og:site_name" content="Zsebtanár"/>
+    <meta property="og:image" content="https://www.zsebtanar.hu/assets/icons/logo-192.png" />
+    <meta property="og:image:secure_url" content="https://www.zsebtanar.hu/assets/icons/logo-192.png" />
+    <meta property="og:image:width" content="192" />
+    <meta property="og:image:height" content="192" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description" content="A Zsebtanár egy interaktív feladatgyűjtemény, aminek a célja, hogy ingyenes segítséget nyújtson a tanulásban, főként a középszintű matematika érettségire való felkészítésben." />
+    <meta name="twitter:title" content="Zsebtanár" />
+
+    <meta name="application-name" content="Zsebtanár">
+    <meta name="apple-mobile-web-app-title" content="Zsebtanár">
+    <link rel="canonical" href="https://www.zsebtanar.hu/" />
+
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <link rel="icon" href="/favicon.ico?v=2">
+    <link rel="manifest" href="/manifest.json">
+    <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+    <link rel="prefetch" href="https://zsebtanar-test.firebaseapp.com/assets/logo.png" as="image" />
+
+    <%= htmlWebpackPlugin.tags.headTags %>
+</head>
+<body>
+<noscript>
+    <div style="position: fixed; top:0; left: 0; bottom: 0; right: 0; z-index: 1; background: white; padding: 5em">
+        <div class="container">
+            <h1 class="my-5">Üdv a Zsebtanár oldalon!</h1>
+            <p class="alert alert-warning">
+                Az oldal megfelelő működéséhez JavaScript futtatására alkalmas böngészőre van szükséged.
+            </p>
+        </div>
+    </div>
+</noscript>
+<div id="root">
+    <div class="app">
+    </div>
+</div>
+
+</body>
+
+<%= htmlWebpackPlugin.tags.bodyTags %>
+<script defer>
+function loadCSS(filename, integrity){
+    var link = document.createElement("link")
+    link.setAttribute("rel", "stylesheet")
+    link.setAttribute("type", "text/css")
+    link.setAttribute("href", filename)
+    if (integrity){
+      link.setAttribute("integrity", integrity)
+      link.setAttribute("crossorigin", "anonymous" )
+    }
+
+    if (typeof link!=="undefined") {
+        document.getElementsByTagName("head")[0].appendChild(link)
+    }
+}
+loadCSS('https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css', 'sha384-qCEsSYDSH0x5I45nNW4oXemORUZnYFtPy/FqB/OjqxabTMW5HVaaH9USK4fN3goV')
+</script>
+</html>

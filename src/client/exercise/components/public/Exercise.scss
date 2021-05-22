@@ -1,0 +1,74 @@
+@import '../../../../../node_modules/bootstrap/scss/bootstrap';
+
+.exercise-solver {
+  display: flex;
+  flex-direction: column;
+
+  .ex-heading {
+    background: $gray-100;
+    height: 4rem;
+    margin-left: -$grid-gutter-width/2;
+    margin-right: -$grid-gutter-width/2;
+  }
+
+  .ex-content {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    min-height: 50vh;
+  }
+
+  @media (min-width: map-get($grid-breakpoints, 'md')) {
+    .ex-heading {
+      display: flex;
+      position: fixed;
+      z-index: 100;
+      width: 9999px;
+      right: 50%;
+      top: 0;
+      margin-right: 480px;
+      height: 100%;
+      justify-content: flex-end;
+
+      &-content {
+        padding: 2rem 1rem;
+      }
+    }
+
+    .ex-content {
+      padding: 4rem 2rem;
+    }
+
+    .ex-sidebar {
+      padding-top: 2rem;
+    }
+  }
+
+  @media (min-width: map-get($grid-breakpoints, 'lg')) {
+  }
+
+  .user-control {
+    margin: 2rem 0;
+
+    p:last-of-type {
+      margin: 0;
+    }
+
+    .custom-radio .custom-control-label {
+      &::after,
+      &::before {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    input[type='radio'],
+    input[type='checkbox'] {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .subtask-progressbar {
+    display: flex;
+  }
+}

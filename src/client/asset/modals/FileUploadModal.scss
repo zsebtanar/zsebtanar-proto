@@ -1,0 +1,10 @@
+.file-upload {
+  .img-thumbnail {
+    height: 5rem;
+    width: 5rem;
+    object-fit: contain;
+  }
+  .has-error {
+    background: #eee;
+  }
+}

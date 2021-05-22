@@ -1,10 +1,9 @@
+import { MD, State } from '../types'
+
 // Process ~[name](wikiPageRef)
 
-'use strict'
-
 export function wikiLink() {
-  return function wikiLinkMD(state, silent) {
-    // tslint:disable-next-line:one-variable-per-declaration
+  return function wikiLinkMD(state: State, silent: boolean): boolean {
     let attrs,
       code,
       content,
@@ -14,15 +13,17 @@ export function wikiLink() {
       token,
       start,
       resRef = '',
-      // tslint:disable-next-line:prefer-const
+      // eslint-disable-next-line prefer-const
       oldPos = state.pos,
-      // tslint:disable-next-line:prefer-const
+      // eslint-disable-next-line prefer-const
       max = state.posMax
 
-    if (state.src.charCodeAt(state.pos + 0) !== 0x7e /* ~ */) return false
+    if (state.src.charCodeAt(state.pos) !== 0x7e /* ~ */) return false
     if (state.src.charCodeAt(state.pos + 1) !== 0x5b /* [ */) return false
 
+    // eslint-disable-next-line prefer-const
     labelStart = state.pos + 2
+    // eslint-disable-next-line prefer-const
     labelEnd = state.md.helpers.parseLinkLabel(state, state.pos + 2, false)
 
     // parser failed to find ']', so it's not a valid link
@@ -70,7 +71,6 @@ export function wikiLink() {
       // [link](  <href>  )
       //                ^^ skipping these spaces
       // <editor-fold desc="skip spaces">
-      start = pos
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos)
         if (!isSpace(code) && code !== 0x0a) {
@@ -107,7 +107,7 @@ export function wikiLink() {
 
       state.md.inline.tokenize(state)
 
-      token = state.push('link_close', 'a', -1)
+      state.push('link_close', 'a', -1)
     }
 
     state.pos = pos
@@ -126,7 +126,7 @@ function isSpace(code) {
 }
 
 export function wikiLinkInit() {
-  return function(md) {
+  return function (md: MD): void {
     md.inline.ruler.before('link', 'wikiLink', wikiLink())
   }
 }
