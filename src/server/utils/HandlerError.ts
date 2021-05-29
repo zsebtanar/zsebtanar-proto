@@ -1,12 +1,10 @@
 export class HandlerError<TDetails = unknown> extends Error {
-  public statusCode: number
-  public originalError?: Error
-  public details?: TDetails
-
-  constructor(statusCode: number, message: string, details?: TDetails, originalError?: Error) {
+  constructor(
+    public readonly statusCode: number,
+    message: string,
+    public readonly details?: TDetails,
+    public readonly originalError?: Error,
+  ) {
     super(message)
-    this.statusCode = statusCode
-    this.originalError = originalError
-    this.details = details
   }
 }

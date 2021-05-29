@@ -13,7 +13,7 @@ export const api = functions
   .region('us-central1')
   .runWith(runtimeOpts)
   .https.onRequest((request, response) => {
-    console.info('request start')
+    functions.logger.info('request start')
     if (!request.path) {
       request.url = `/${request.url}` // prepend '/' to keep query params if any
     }
