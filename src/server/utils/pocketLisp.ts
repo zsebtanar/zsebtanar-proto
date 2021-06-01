@@ -4,11 +4,12 @@ import { valueSet } from 'shared/script/shared-code'
 import { interpretMarkdown } from 'shared/script/pocketLispMarkdown'
 import { PseudoRandomNumberGenerator } from 'shared/math/random'
 import { EvalScript } from '../../shared/script/types'
+import { logger } from 'firebase-functions'
 
 export function initInterpreter(source: string, seed = 1): EvalScript {
   const prng = new PseudoRandomNumberGenerator(seed)
   const globals = { ...runtime, ...valueSet(prng) }
-  const stdout = (msg) => console.error({ msg: msg.toJS ? msg.toJS() : msg.toString(), source })
+  const stdout = (msg) => logger.error({ msg: msg.toJS ? msg.toJS() : msg.toString(), source })
   const interpreter = new Interpreter({ globals, stdout, utils }, literals)
 
   const evalScript = (script) => {

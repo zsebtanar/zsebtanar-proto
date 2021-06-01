@@ -3,6 +3,7 @@ import { admin } from '../utils/firebase'
 import { HandlerError } from '../utils/HandlerError'
 import { auth } from 'firebase-admin/lib/auth'
 import DecodedIdToken = auth.DecodedIdToken
+import { logger } from 'firebase-functions'
 
 /**
  Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -34,7 +35,7 @@ async function getFirebaseUser(req: Request): Promise<DecodedIdToken> {
   const authHeader = req.headers.authorization
 
   if ((!authHeader || !authHeader.startsWith('Bearer ')) && !req.cookies.__session) {
-    console.error(
+    logger.error(
       'No Firebase ID token was passed as a Bearer token in the Authorization header.',
       'Make sure you authorize your request by providing the following HTTP header:',
       'Authorization: Bearer <Firebase ID Token>',

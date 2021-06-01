@@ -71,7 +71,7 @@ export function ClassificationsAdminPage(): JSX.Element {
                       <code>{cls.id}</code>
                     </td>
                     <td>
-                      <Badge type="secondary">{cls.exercises.length ?? 0}</Badge>
+                      <Badge type="secondary">{cls.exerciseCount ?? 0}</Badge>
                     </td>
                     <td>
                       <Button small btn="link" onAction={() => update(cls)}>

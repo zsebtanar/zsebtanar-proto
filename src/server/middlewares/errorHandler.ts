@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 import { HandlerError } from '../utils/HandlerError'
 import { ValidationError } from 'express-json-validator-middleware'
+import { logger } from 'firebase-functions'
 
 export function errorHandler(
   error: unknown,
@@ -20,7 +21,7 @@ export function errorHandler(
 
   if (error instanceof HandlerError) {
     const { statusCode, message, details, originalError } = error
-    console.error(message, details, originalError)
+    logger.error(message, request.path, details, originalError || error)
     response.status(statusCode).json({
       status: 'error',
       statusCode,
