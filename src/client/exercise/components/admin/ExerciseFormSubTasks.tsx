@@ -36,9 +36,10 @@ export function ExerciseFormSubTask({ index, onRemove, ...bindProps }: Props): J
   })
 
   const createUserControl = (type) =>
-    openModal(<UserControlEditModal scriptSource={script} value={{ type } as never} />, true).then(
-      (newControl) => newControl && append('controls', newControl),
-    )
+    openModal(
+      <UserControlEditModal scriptSource={script} value={{ type, isDynamic: false } as never} />,
+      true,
+    ).then((newControl) => newControl && append('controls', newControl))
 
   const editUserControl = (data, idx) =>
     openModal(<UserControlEditModal scriptSource={script} value={data} />, true).then(
