@@ -48,3 +48,12 @@ export const plFnNum2Str = (fn: (x: number) => string) => (x: PLNumber): PLStrin
   typeCheck(PLNumber, x)
   return plString(fn(x.value))
 }
+
+export const plFnNumNum2Num = (fn: (x: number, y: number) => number) => (
+  x: PLNumber,
+  y: PLNumber,
+): PLNumber => {
+  typeCheck(PLNumber, x)
+  typeCheck(PLNumber, y)
+  return plNumber(fn(x.value, y.value))
+}

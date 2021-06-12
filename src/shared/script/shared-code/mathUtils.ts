@@ -1,5 +1,5 @@
 import { PLNumber, plBool, PLBool, plNumber, PLVector, plVector } from 'pocket-lisp-stdlib'
-import { assertInteger, assertIntegerRange, plFnNum2Str } from './utils'
+import { assertInteger, assertIntegerRange, plFnNum2Str, plFnNumNum2Num } from './utils'
 
 // https://www.nayuki.io/page/calculate-divisors-javascript
 export function divisors(num: PLNumber): PLVector<PLNumber> {
@@ -79,9 +79,18 @@ export function range(start: PLNumber, end: PLNumber): PLVector<PLNumber> {
   return plVector(...rng)
 }
 
+// Euclid's algorithm
+export const gcd = (a: number, b: number): number => {
+  if (a < 0 || b < 0) {
+    throw new Error('Invalid range (< 0)')
+  }
+  return a === b || !a ? b : !b ? a : gcd(b, a % b)
+}
+
 export const mathUtils = {
   divisors,
   ['is-prime']: isPrime,
   ['num-to-roman']: plFnNum2Str(numToRoman),
+  gcd: plFnNumNum2Num(gcd),
   range,
 }

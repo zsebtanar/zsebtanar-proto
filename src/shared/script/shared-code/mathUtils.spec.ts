@@ -56,4 +56,17 @@ describe('math utils', () => {
     expect(fn(pln(2020))).toStrictEqual(pls('MMXX'))
     expect(fn(pln(3999))).toStrictEqual(pls('MMMCMXCIX'))
   })
+
+  test('gcd', () => {
+    const fn = mathUtils['gcd']
+    expect(() => {
+      fn(pln(0), pln(-2))
+    }).toThrow('Invalid range (< 0)')
+    expect(fn(pln(0), pln(0))).toStrictEqual(pln(0))
+    expect(fn(pln(1), pln(1))).toStrictEqual(pln(1))
+    expect(fn(pln(1), pln(2))).toStrictEqual(pln(1))
+    expect(fn(pln(2), pln(5))).toStrictEqual(pln(1))
+    expect(fn(pln(20), pln(50))).toStrictEqual(pln(10))
+    expect(fn(pln(0), pln(100))).toStrictEqual(pln(100))
+  })
 })
