@@ -1,5 +1,6 @@
 import { curry } from 'ramda'
 import { HandlerError } from './HandlerError'
+import { logger } from 'firebase-functions'
 
 export const ROLE_USER = 0
 export const ROLE_TEACHER = 500
@@ -11,7 +12,7 @@ export const roleCheck = curry((roles, req, res, next) => {
   if (roles.includes(userRole)) {
     next()
   } else {
-    console.warn('forbidden', JSON.stringify(req.user))
+    logger.warn('forbidden', JSON.stringify(req.user))
     next(new HandlerError(403, 'Forbidden'))
   }
 })

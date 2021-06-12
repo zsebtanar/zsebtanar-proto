@@ -61,7 +61,7 @@ export function youtubeEmbed() {
       // <editor-fold desc="skip spaces">
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos)
-        if (!isSpace(code) && code !== 0x0a) {
+        if (code === 0x5d /* ] */) {
           break
         }
       }
