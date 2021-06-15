@@ -1,5 +1,5 @@
 import { PLNumber, plBool, PLBool, plNumber, PLVector, plVector } from 'pocket-lisp-stdlib'
-import { assertInteger, assertIntegerRange, plFnNum2Str, plFnNumNum2Num } from './utils'
+import { assertInteger, assertIntegerRange, fnWrapperNumToStr, fnWrapper2NumToNum } from './utils'
 
 // https://www.nayuki.io/page/calculate-divisors-javascript
 export function divisors(num: PLNumber): PLVector<PLNumber> {
@@ -90,7 +90,7 @@ export const gcd = (a: number, b: number): number => {
 export const mathUtils = {
   divisors,
   ['is-prime']: isPrime,
-  ['num-to-roman']: plFnNum2Str(numToRoman),
-  gcd: plFnNumNum2Num(gcd),
+  ['num-to-roman']: fnWrapperNumToStr(numToRoman),
+  gcd: fnWrapper2NumToNum(gcd),
   range,
 }

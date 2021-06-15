@@ -44,12 +44,12 @@ export const assertIntegerRange = (min: number, max: number): void => {
   assert(max < min, `Invalid range (start > end)`)
 }
 
-export const plFnNum2Str = (fn: (x: number) => string) => (x: PLNumber): PLString => {
+export const fnWrapperNumToStr = (fn: (x: number) => string) => (x: PLNumber): PLString => {
   typeCheck(PLNumber, x)
   return plString(fn(x.value))
 }
 
-export const plFnNumNum2Num = (fn: (x: number, y: number) => number) => (
+export const fnWrapper2NumToNum = (fn: (x: number, y: number) => number) => (
   x: PLNumber,
   y: PLNumber,
 ): PLNumber => {
