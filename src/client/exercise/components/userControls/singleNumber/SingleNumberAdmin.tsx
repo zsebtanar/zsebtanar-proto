@@ -12,6 +12,7 @@ import { UserControlsPreview } from '../UserControlPreview'
 
 export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX.Element {
   const { bind, data } = useModel<UCSingleNumber>(bindProps)
+  const solutionBind = bind('solution')
 
   return (
     <div className="user-control uc-simple-number uc-simple-number-admin">
@@ -70,7 +71,11 @@ export function SingleNumberAdmin(bindProps: UseModelProps<UCSingleNumber>): JSX
             )}
             {!data.isDynamic && (
               <NumberInput
-                {...bind('solution')}
+                name={solutionBind.name}
+                value={Number(solutionBind.value)}
+                onChange={({ name, value }) =>
+                  solutionBind.onChange({ name, value: value?.toString() ?? '' })
+                }
                 id={id}
                 step={1 / Math.pow(10, data.props?.fractionDigits ?? 0)}
                 min={0}
